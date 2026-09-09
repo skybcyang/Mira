@@ -1,0 +1,360 @@
+{
+  "format": "mira-board",
+  "formatVersion": 1,
+  "exportedAt": "2026-09-09T11:27:11.183Z",
+  "board": {
+    "schemaVersion": 2,
+    "id": "board-4sf4zimtu0k9ue",
+    "title": "《小王子》 · 关系、时间与责任",
+    "revision": 14,
+    "lifecycle": {
+      "state": "active"
+    },
+    "cards": [
+      {
+        "id": "card-7iig8rmtu0k9uh",
+        "name": "玫瑰｜读者概括",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 0,
+        "width": 330,
+        "height": 240,
+        "color": "yellow",
+        "headVersionId": "version-ij0yarmtu0k9uh",
+        "versions": [
+          {
+            "id": "version-ij0yarmtu0k9uh",
+            "cardId": "card-7iig8rmtu0k9uh",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。"
+            },
+            "digest": "fnv1a:c17efcec",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.017Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.017Z",
+        "updatedAt": "2026-09-09T11:27:09.017Z"
+      },
+      {
+        "id": "card-a9fbzxmtu0k9uk",
+        "name": "狐狸｜读者概括",
+        "contentKind": "markdown",
+        "x": 390,
+        "y": 35,
+        "width": 320,
+        "height": 230,
+        "color": "yellow",
+        "headVersionId": "version-ph1jusmtu0k9uk",
+        "versions": [
+          {
+            "id": "version-ph1jusmtu0k9uk",
+            "cardId": "card-a9fbzxmtu0k9uk",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。"
+            },
+            "digest": "fnv1a:5d249645",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.020Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.020Z",
+        "updatedAt": "2026-09-09T11:27:09.020Z"
+      },
+      {
+        "id": "card-9gqasqmtu0k9um",
+        "name": "仍然想不明白",
+        "contentKind": "markdown",
+        "x": 800,
+        "y": 0,
+        "width": 330,
+        "height": 200,
+        "color": "violet",
+        "headVersionId": "version-7d3mvjmtu0k9um",
+        "versions": [
+          {
+            "id": "version-7d3mvjmtu0k9um",
+            "cardId": "card-9gqasqmtu0k9um",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 一个反问\n\n“对关系负责”是否意味着总要牺牲自己的边界？\n\n先保留问题，不急着生成一个正确答案。"
+            },
+            "digest": "fnv1a:b6f3c073",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.022Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.022Z",
+        "updatedAt": "2026-09-09T11:27:09.022Z"
+      },
+      {
+        "id": "card-21j6ixmtu0k9us",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 365,
+        "width": 330,
+        "height": 245,
+        "tags": [
+          "阅读",
+          "关系",
+          "生活观察"
+        ],
+        "inspirationRef": {
+          "poolId": "inspiration-pool",
+          "entryId": "inspiration-i7bktcmtu0k9uo",
+          "versionId": "inspiration-version-qfy3llmtu0k9uo"
+        },
+        "headVersionId": "version-v7ddramtu0k9us",
+        "versions": [
+          {
+            "id": "version-v7ddramtu0k9us",
+            "cardId": "card-21j6ixmtu0k9us",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？"
+            },
+            "digest": "fnv1a:8622160b",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.028Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.028Z",
+        "updatedAt": "2026-09-09T11:27:09.030Z"
+      },
+      {
+        "id": "card-0tqe5amtu0k9uz",
+        "contentKind": "markdown",
+        "x": 800,
+        "y": 340,
+        "width": 355,
+        "height": 275,
+        "headVersionId": "version-e0x5wdmtu0k9v8",
+        "versions": [
+          {
+            "id": "version-e0x5wdmtu0k9v8",
+            "cardId": "card-0tqe5amtu0k9uz",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。"
+            },
+            "digest": "fnv1a:d7c6ffa5",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:09.043Z",
+            "sourceRunId": "run-au9e2amtu0k9v4"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.035Z",
+        "updatedAt": "2026-09-09T11:27:09.043Z"
+      },
+      {
+        "id": "card-3hp950mtu0k9ys",
+        "name": "这周只试一件事",
+        "contentKind": "markdown",
+        "x": 390,
+        "y": 600,
+        "width": 320,
+        "height": 210,
+        "color": "green",
+        "headVersionId": "version-sp8txwmtu0k9ys",
+        "versions": [
+          {
+            "id": "version-sp8txwmtu0k9ys",
+            "cardId": "card-3hp950mtu0k9ys",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 一个小实践\n\n约一次不看手机的散步。\n\n结束后记下：我听到了什么以前没留意的事？\n\n不是给自己的打卡任务。"
+            },
+            "digest": "fnv1a:a88ea400",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.172Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.172Z",
+        "updatedAt": "2026-09-09T11:27:09.172Z"
+      },
+      {
+        "id": "card-3ma5b1mtu0k9yv",
+        "name": "周日回看｜改过一次",
+        "contentKind": "markdown",
+        "x": 800,
+        "y": 680,
+        "width": 355,
+        "height": 210,
+        "color": "green",
+        "headVersionId": "version-um231omtu0k9z0",
+        "versions": [
+          {
+            "id": "version-dz9j2dmtu0k9yv",
+            "cardId": "card-3ma5b1mtu0k9yv",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 周日回看\n\n原先：只要不看手机，就算认真倾听。\n\n现在：不插话、不急着解释，也需要练习。\n\n下次先确认对方是否想听建议。"
+            },
+            "digest": "fnv1a:7feed6bb",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.175Z"
+          },
+          {
+            "id": "version-um231omtu0k9z0",
+            "cardId": "card-3ma5b1mtu0k9yv",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 周日回看\n\n我原先把“专心”理解成不看手机。\n\n这次发现自己仍然很想立刻给建议。\n\n下次先问：你想让我一起想办法，还是先听你说完？"
+            },
+            "digest": "fnv1a:b1a8ddfa",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.180Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.175Z",
+        "updatedAt": "2026-09-09T11:27:09.180Z"
+      }
+    ],
+    "transformations": [
+      {
+        "id": "transformation-4jjwtgmtu0k9uz",
+        "sourceCardIds": [
+          "card-7iig8rmtu0k9uh",
+          "card-a9fbzxmtu0k9uk",
+          "card-21j6ixmtu0k9us"
+        ],
+        "targetCardId": "card-0tqe5amtu0k9uz",
+        "label": "对照书与生活",
+        "instruction": "按玫瑰片段、狐狸片段、生活观察的顺序阅读材料。分别写书中的线索、我的生活对照、仍需保留的边界。摘记只是读者概括，不能冒充原文；缺失页码不补造。不要把关系责任的问题硬写成确定答案。",
+        "acceptance": "区分书中线索和个人理解，保留未解问题；生活建议来自已给观察，不强行生成打卡计划。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:09.035Z",
+        "updatedAt": "2026-09-09T11:27:09.043Z",
+        "x": 390,
+        "y": 330,
+        "lastRunId": "run-au9e2amtu0k9v4",
+        "lastAppliedRunId": "run-au9e2amtu0k9v4"
+      }
+    ],
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    },
+    "createdAt": "2026-09-09T11:27:09.015Z",
+    "updatedAt": "2026-09-09T11:27:09.184Z",
+    "groups": [
+      {
+        "id": "group-board-4sf4zimtu0k9ue-0",
+        "title": "重读片段 · 自己的话",
+        "color": "yellow",
+        "cardIds": [
+          "card-7iig8rmtu0k9uh",
+          "card-a9fbzxmtu0k9uk"
+        ]
+      },
+      {
+        "id": "group-board-4sf4zimtu0k9ue-1",
+        "title": "带回生活",
+        "color": "green",
+        "cardIds": [
+          "card-21j6ixmtu0k9us",
+          "card-3hp950mtu0k9ys"
+        ]
+      },
+      {
+        "id": "group-board-4sf4zimtu0k9ue-2",
+        "title": "理解仍在变化",
+        "color": "violet",
+        "cardIds": [
+          "card-9gqasqmtu0k9um",
+          "card-0tqe5amtu0k9uz",
+          "card-3ma5b1mtu0k9yv"
+        ]
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": "run-au9e2amtu0k9v4",
+      "boardId": "board-4sf4zimtu0k9ue",
+      "transformationId": "transformation-4jjwtgmtu0k9uz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-7iig8rmtu0k9uh",
+          "versionId": "version-ij0yarmtu0k9uh",
+          "contentKind": "markdown",
+          "resolvedContent": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。",
+          "digest": "fnv1a:9f648adf"
+        },
+        {
+          "cardId": "card-a9fbzxmtu0k9uk",
+          "versionId": "version-ph1jusmtu0k9uk",
+          "contentKind": "markdown",
+          "resolvedContent": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。",
+          "digest": "fnv1a:a9a9221c"
+        },
+        {
+          "cardId": "card-21j6ixmtu0k9us",
+          "versionId": "version-v7ddramtu0k9us",
+          "contentKind": "markdown",
+          "resolvedContent": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？",
+          "digest": "fnv1a:5ca4028c"
+        }
+      ],
+      "targetCardId": "card-0tqe5amtu0k9uz",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.040Z",
+      "startedAt": "2026-09-09T11:27:09.040Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.043Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.042Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.043Z"
+        }
+      ],
+      "result": {
+        "output": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。",
+        "digest": "fnv1a:1bf9b90e",
+        "disposition": "applied",
+        "appliedVersionId": "version-e0x5wdmtu0k9v8"
+      },
+      "finishedAt": "2026-09-09T11:27:09.043Z"
+    }
+  ],
+  "workflowProvenance": [],
+  "fileDependencies": [],
+  "externalReferences": [
+    {
+      "kind": "inspiration",
+      "poolId": "inspiration-pool",
+      "entryId": "inspiration-i7bktcmtu0k9uo",
+      "versionId": "inspiration-version-qfy3llmtu0k9uo"
+    }
+  ]
+}

@@ -1,0 +1,2441 @@
+{
+  "format": "mira-backup",
+  "formatVersion": 2,
+  "exportedAt": "2026-09-09T11:27:11.199Z",
+  "boards": [
+    {
+      "schemaVersion": 2,
+      "id": "board-2j2gn9mtu0k9z6",
+      "title": "首次导入研究 · 别急着归因",
+      "revision": 20,
+      "lifecycle": {
+        "state": "active"
+      },
+      "cards": [
+        {
+          "id": "card-ppekztmtu0k9z8",
+          "name": "I-01｜设置太多",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 0,
+          "width": 300,
+          "height": 195,
+          "color": "blue",
+          "headVersionId": "version-cg8nrrmtu0k9z8",
+          "versions": [
+            {
+              "id": "version-cg8nrrmtu0k9z8",
+              "cardId": "card-ppekztmtu0k9z8",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 访谈摘记 I-01\n\n“我不知道哪些配置必须填完才能开始。”\n\n访谈只记录自述，尚未观察其操作。\n虚构练习材料。"
+              },
+              "digest": "fnv1a:67875f8e",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.188Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.188Z",
+          "updatedAt": "2026-09-09T11:27:09.188Z"
+        },
+        {
+          "id": "card-zhvevbmtu0k9z9",
+          "name": "O-02｜找不到示例",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 240,
+          "width": 300,
+          "height": 195,
+          "color": "blue",
+          "headVersionId": "version-1j1icumtu0k9z9",
+          "versions": [
+            {
+              "id": "version-1j1icumtu0k9z9",
+              "cardId": "card-zhvevbmtu0k9z9",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。"
+              },
+              "digest": "fnv1a:111173a3",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.189Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.189Z",
+          "updatedAt": "2026-09-09T11:27:09.189Z"
+        },
+        {
+          "id": "card-mg0qrhmtu0k9zb",
+          "name": "O-03｜反例",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 480,
+          "width": 300,
+          "height": 220,
+          "color": "red",
+          "headVersionId": "version-0qoh9fmtu0k9zb",
+          "versions": [
+            {
+              "id": "version-0qoh9fmtu0k9zb",
+              "cardId": "card-mg0qrhmtu0k9zb",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 反例 O-03\n\n另一位参与者跳过帮助，直接导入成功；此前用过类似工具。\n\n“新手都怕配置”暂时站不住。"
+              },
+              "digest": "fnv1a:86b021b0",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.191Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.191Z",
+          "updatedAt": "2026-09-09T11:27:09.191Z"
+        },
+        {
+          "id": "card-1a53pfmtu0k9zd",
+          "contentKind": "markdown",
+          "x": 640,
+          "y": 0,
+          "width": 350,
+          "height": 280,
+          "headVersionId": "version-qwmv2smtu0k9zp",
+          "versions": [
+            {
+              "id": "version-qwmv2smtu0k9zp",
+              "cardId": "card-1a53pfmtu0k9zd",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。"
+              },
+              "digest": "fnv1a:576ade55",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:09.205Z",
+              "sourceRunId": "run-enw383mtu0k9zm"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.193Z",
+          "updatedAt": "2026-09-09T11:27:09.205Z"
+        },
+        {
+          "id": "card-9arjosmtu0k9zi",
+          "contentKind": "markdown",
+          "x": 640,
+          "y": 410,
+          "width": 350,
+          "height": 280,
+          "headVersionId": "version-uoinkfmtu0kacx",
+          "versions": [
+            {
+              "id": "version-uoinkfmtu0kacx",
+              "cardId": "card-9arjosmtu0k9zi",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。"
+              },
+              "digest": "fnv1a:37b7dd01",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:09.680Z",
+              "sourceRunId": "run-ql6ctumtu0kacp"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.198Z",
+          "updatedAt": "2026-09-09T11:27:09.680Z"
+        },
+        {
+          "id": "card-n7s5kvmtu0kalx",
+          "contentKind": "markdown",
+          "x": 1300,
+          "y": 170,
+          "width": 370,
+          "height": 365,
+          "headVersionId": "version-pkugidmtu0kame",
+          "versions": [
+            {
+              "id": "version-pkugidmtu0kame",
+              "cardId": "card-n7s5kvmtu0kalx",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 下一轮研究决定\n\n先验证“成果示例是否帮助首次导入”。\n\n## 为什么\nA、B 都可能成立；目前证据不足以支持重做整个配置页。\n\n## 两个任务\n1. 让新手说出导入成功的预期。\n2. 提供示例后，观察还卡在哪。\n\n## 保留反例\nO-03 的熟练度可能是混杂因素。"
+              },
+              "digest": "fnv1a:60a3aed1",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:10.021Z",
+              "sourceRunId": "run-0hsn1nmtu0kam7"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.005Z",
+          "updatedAt": "2026-09-09T11:27:10.021Z"
+        },
+        {
+          "id": "card-f8n9m7mtu0kaqk",
+          "name": "下一次补证据",
+          "contentKind": "markdown",
+          "x": 1300,
+          "y": 625,
+          "width": 370,
+          "height": 200,
+          "color": "yellow",
+          "headVersionId": "version-xghc97mtu0kaqk",
+          "versions": [
+            {
+              "id": "version-xghc97mtu0kaqk",
+              "cardId": "card-f8n9m7mtu0kaqk",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 招募与记录待办\n\n- [ ] 分开招募新手与熟手\n- [ ] 记录中断的实际原因\n- [ ] 记录任务完成后的解释\n\n不把“想用”当成已经会用。"
+              },
+              "digest": "fnv1a:9783d24f",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:10.172Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.172Z",
+          "updatedAt": "2026-09-09T11:27:10.172Z"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "transformation-uly2r2mtu0k9zd",
+          "sourceCardIds": [
+            "card-ppekztmtu0k9z8",
+            "card-zhvevbmtu0k9z9"
+          ],
+          "targetCardId": "card-1a53pfmtu0k9zd",
+          "label": "解释 A：配置负担",
+          "instruction": "只检验“配置负担可能过高”这一解释：从 I-01 自述与 O-02 观察找支持，同时写证据不足和可推翻该解释的观察。页面停留不等于放弃，不推断发生比例。",
+          "acceptance": "自述与观察分开，保留来源编号；列出替代解释和反证条件。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:09.193Z",
+          "updatedAt": "2026-09-09T11:27:09.205Z",
+          "x": 345,
+          "y": 35,
+          "lastRunId": "run-enw383mtu0k9zm",
+          "lastAppliedRunId": "run-enw383mtu0k9zm"
+        },
+        {
+          "id": "transformation-va0xu4mtu0k9zi",
+          "sourceCardIds": [
+            "card-zhvevbmtu0k9z9",
+            "card-mg0qrhmtu0k9zb"
+          ],
+          "targetCardId": "card-9arjosmtu0k9zi",
+          "label": "解释 B：缺少预期",
+          "instruction": "独立检验“用户不知道导入成功后会得到什么”：对照 O-02 找示例的行为与 O-03 直接成功的反例。考虑熟练程度的混杂，不把所有人合成平均用户。",
+          "acceptance": "明确反例的作用，保留新手与熟手差异；没有宣称已证实原因。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:09.198Z",
+          "updatedAt": "2026-09-09T11:27:09.680Z",
+          "x": 345,
+          "y": 460,
+          "lastRunId": "run-ql6ctumtu0kacp",
+          "lastAppliedRunId": "run-ql6ctumtu0kacp"
+        },
+        {
+          "id": "transformation-uy658bmtu0kalx",
+          "sourceCardIds": [
+            "card-1a53pfmtu0k9zd",
+            "card-9arjosmtu0k9zi"
+          ],
+          "targetCardId": "card-n7s5kvmtu0kalx",
+          "label": "综合证据与反例",
+          "instruction": "比较两张竞争解释中的支持、缺口和反例，决定下一轮先验证什么。提出两个可观察任务和需保留的其他解释；不要因为摘要流畅就建议重做整个配置页。",
+          "acceptance": "能回指 I-01/O-02/O-03；下一轮任务可执行；决策仍是待验证方向，不是研究定论。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:10.005Z",
+          "updatedAt": "2026-09-09T11:27:10.021Z",
+          "x": 1030,
+          "y": 245,
+          "lastRunId": "run-0hsn1nmtu0kam7",
+          "lastAppliedRunId": "run-0hsn1nmtu0kam7"
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+      },
+      "createdAt": "2026-09-09T11:27:09.186Z",
+      "updatedAt": "2026-09-09T11:27:10.176Z",
+      "groups": [
+        {
+          "id": "group-board-2j2gn9mtu0k9z6-0",
+          "title": "原始记录 · 保留矛盾",
+          "color": "blue",
+          "cardIds": [
+            "card-ppekztmtu0k9z8",
+            "card-zhvevbmtu0k9z9",
+            "card-mg0qrhmtu0k9zb"
+          ]
+        },
+        {
+          "id": "group-board-2j2gn9mtu0k9z6-1",
+          "title": "竞争解释 · 都还未证实",
+          "color": "violet",
+          "cardIds": [
+            "card-1a53pfmtu0k9zd",
+            "card-9arjosmtu0k9zi"
+          ]
+        },
+        {
+          "id": "group-board-2j2gn9mtu0k9z6-2",
+          "title": "下一轮研究",
+          "color": "green",
+          "cardIds": [
+            "card-n7s5kvmtu0kalx",
+            "card-f8n9m7mtu0kaqk"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "board-4sf4zimtu0k9ue",
+      "title": "《小王子》 · 关系、时间与责任",
+      "revision": 14,
+      "lifecycle": {
+        "state": "active"
+      },
+      "cards": [
+        {
+          "id": "card-7iig8rmtu0k9uh",
+          "name": "玫瑰｜读者概括",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 0,
+          "width": 330,
+          "height": 240,
+          "color": "yellow",
+          "headVersionId": "version-ij0yarmtu0k9uh",
+          "versions": [
+            {
+              "id": "version-ij0yarmtu0k9uh",
+              "cardId": "card-7iig8rmtu0k9uh",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。"
+              },
+              "digest": "fnv1a:c17efcec",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.017Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.017Z",
+          "updatedAt": "2026-09-09T11:27:09.017Z"
+        },
+        {
+          "id": "card-a9fbzxmtu0k9uk",
+          "name": "狐狸｜读者概括",
+          "contentKind": "markdown",
+          "x": 390,
+          "y": 35,
+          "width": 320,
+          "height": 230,
+          "color": "yellow",
+          "headVersionId": "version-ph1jusmtu0k9uk",
+          "versions": [
+            {
+              "id": "version-ph1jusmtu0k9uk",
+              "cardId": "card-a9fbzxmtu0k9uk",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。"
+              },
+              "digest": "fnv1a:5d249645",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.020Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.020Z",
+          "updatedAt": "2026-09-09T11:27:09.020Z"
+        },
+        {
+          "id": "card-9gqasqmtu0k9um",
+          "name": "仍然想不明白",
+          "contentKind": "markdown",
+          "x": 800,
+          "y": 0,
+          "width": 330,
+          "height": 200,
+          "color": "violet",
+          "headVersionId": "version-7d3mvjmtu0k9um",
+          "versions": [
+            {
+              "id": "version-7d3mvjmtu0k9um",
+              "cardId": "card-9gqasqmtu0k9um",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 一个反问\n\n“对关系负责”是否意味着总要牺牲自己的边界？\n\n先保留问题，不急着生成一个正确答案。"
+              },
+              "digest": "fnv1a:b6f3c073",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.022Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.022Z",
+          "updatedAt": "2026-09-09T11:27:09.022Z"
+        },
+        {
+          "id": "card-21j6ixmtu0k9us",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 365,
+          "width": 330,
+          "height": 245,
+          "tags": [
+            "阅读",
+            "关系",
+            "生活观察"
+          ],
+          "inspirationRef": {
+            "poolId": "inspiration-pool",
+            "entryId": "inspiration-i7bktcmtu0k9uo",
+            "versionId": "inspiration-version-qfy3llmtu0k9uo"
+          },
+          "headVersionId": "version-v7ddramtu0k9us",
+          "versions": [
+            {
+              "id": "version-v7ddramtu0k9us",
+              "cardId": "card-21j6ixmtu0k9us",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？"
+              },
+              "digest": "fnv1a:8622160b",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.028Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.028Z",
+          "updatedAt": "2026-09-09T11:27:09.030Z"
+        },
+        {
+          "id": "card-0tqe5amtu0k9uz",
+          "contentKind": "markdown",
+          "x": 800,
+          "y": 340,
+          "width": 355,
+          "height": 275,
+          "headVersionId": "version-e0x5wdmtu0k9v8",
+          "versions": [
+            {
+              "id": "version-e0x5wdmtu0k9v8",
+              "cardId": "card-0tqe5amtu0k9uz",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。"
+              },
+              "digest": "fnv1a:d7c6ffa5",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:09.043Z",
+              "sourceRunId": "run-au9e2amtu0k9v4"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.035Z",
+          "updatedAt": "2026-09-09T11:27:09.043Z"
+        },
+        {
+          "id": "card-3hp950mtu0k9ys",
+          "name": "这周只试一件事",
+          "contentKind": "markdown",
+          "x": 390,
+          "y": 600,
+          "width": 320,
+          "height": 210,
+          "color": "green",
+          "headVersionId": "version-sp8txwmtu0k9ys",
+          "versions": [
+            {
+              "id": "version-sp8txwmtu0k9ys",
+              "cardId": "card-3hp950mtu0k9ys",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 一个小实践\n\n约一次不看手机的散步。\n\n结束后记下：我听到了什么以前没留意的事？\n\n不是给自己的打卡任务。"
+              },
+              "digest": "fnv1a:a88ea400",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.172Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.172Z",
+          "updatedAt": "2026-09-09T11:27:09.172Z"
+        },
+        {
+          "id": "card-3ma5b1mtu0k9yv",
+          "name": "周日回看｜改过一次",
+          "contentKind": "markdown",
+          "x": 800,
+          "y": 680,
+          "width": 355,
+          "height": 210,
+          "color": "green",
+          "headVersionId": "version-um231omtu0k9z0",
+          "versions": [
+            {
+              "id": "version-dz9j2dmtu0k9yv",
+              "cardId": "card-3ma5b1mtu0k9yv",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 周日回看\n\n原先：只要不看手机，就算认真倾听。\n\n现在：不插话、不急着解释，也需要练习。\n\n下次先确认对方是否想听建议。"
+              },
+              "digest": "fnv1a:7feed6bb",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.175Z"
+            },
+            {
+              "id": "version-um231omtu0k9z0",
+              "cardId": "card-3ma5b1mtu0k9yv",
+              "sequence": 2,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 周日回看\n\n我原先把“专心”理解成不看手机。\n\n这次发现自己仍然很想立刻给建议。\n\n下次先问：你想让我一起想办法，还是先听你说完？"
+              },
+              "digest": "fnv1a:b1a8ddfa",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.180Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.175Z",
+          "updatedAt": "2026-09-09T11:27:09.180Z"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "transformation-4jjwtgmtu0k9uz",
+          "sourceCardIds": [
+            "card-7iig8rmtu0k9uh",
+            "card-a9fbzxmtu0k9uk",
+            "card-21j6ixmtu0k9us"
+          ],
+          "targetCardId": "card-0tqe5amtu0k9uz",
+          "label": "对照书与生活",
+          "instruction": "按玫瑰片段、狐狸片段、生活观察的顺序阅读材料。分别写书中的线索、我的生活对照、仍需保留的边界。摘记只是读者概括，不能冒充原文；缺失页码不补造。不要把关系责任的问题硬写成确定答案。",
+          "acceptance": "区分书中线索和个人理解，保留未解问题；生活建议来自已给观察，不强行生成打卡计划。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:09.035Z",
+          "updatedAt": "2026-09-09T11:27:09.043Z",
+          "x": 390,
+          "y": 330,
+          "lastRunId": "run-au9e2amtu0k9v4",
+          "lastAppliedRunId": "run-au9e2amtu0k9v4"
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+      },
+      "createdAt": "2026-09-09T11:27:09.015Z",
+      "updatedAt": "2026-09-09T11:27:09.184Z",
+      "groups": [
+        {
+          "id": "group-board-4sf4zimtu0k9ue-0",
+          "title": "重读片段 · 自己的话",
+          "color": "yellow",
+          "cardIds": [
+            "card-7iig8rmtu0k9uh",
+            "card-a9fbzxmtu0k9uk"
+          ]
+        },
+        {
+          "id": "group-board-4sf4zimtu0k9ue-1",
+          "title": "带回生活",
+          "color": "green",
+          "cardIds": [
+            "card-21j6ixmtu0k9us",
+            "card-3hp950mtu0k9ys"
+          ]
+        },
+        {
+          "id": "group-board-4sf4zimtu0k9ue-2",
+          "title": "理解仍在变化",
+          "color": "violet",
+          "cardIds": [
+            "card-9gqasqmtu0k9um",
+            "card-0tqe5amtu0k9uz",
+            "card-3ma5b1mtu0k9yv"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "board-e10rdomtu0kaqr",
+      "title": "周复盘文章 · 编辑到一半",
+      "revision": 20,
+      "lifecycle": {
+        "state": "active"
+      },
+      "cards": [
+        {
+          "id": "card-v4i653mtu0kaqt",
+          "name": "写作任务",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 225,
+          "color": "blue",
+          "headVersionId": "version-kq7qk2mtu0kaqt",
+          "versions": [
+            {
+              "id": "version-kq7qk2mtu0kaqt",
+              "cardId": "card-v4i653mtu0kaqt",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 写给谁，留下什么\n\n读者：刚带项目的设计师。\n成果：一篇具体、平实的周复盘文章。\n\n不编造收益数据；用一个当天可做的小动作收尾。"
+              },
+              "digest": "fnv1a:9402a84a",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:10.181Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.181Z",
+          "updatedAt": "2026-09-09T11:27:10.181Z"
+        },
+        {
+          "id": "card-d78ai0mtu0kaqv",
+          "name": "素材边栏｜可以补充",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 290,
+          "width": 320,
+          "height": 250,
+          "color": "yellow",
+          "headVersionId": "version-z315mdmtu0kaqv",
+          "versions": [
+            {
+              "id": "version-z315mdmtu0kaqv",
+              "cardId": "card-d78ai0mtu0kaqv",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 手头的素材\n\n- 便签散在三处，周五靠回忆复盘\n- 按“未解决的问题”整理后更好找\n- 一次失败尝试比十条完成事项更值得写\n\n原创演示经历。"
+              },
+              "digest": "fnv1a:251ffa26",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:10.183Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.183Z",
+          "updatedAt": "2026-09-09T11:27:10.183Z"
+        },
+        {
+          "id": "card-1ndo3dmtu0kaqz",
+          "contentKind": "markdown",
+          "x": 640,
+          "y": 0,
+          "width": 355,
+          "height": 300,
+          "headVersionId": "version-xajl1dmtu0karg",
+          "versions": [
+            {
+              "id": "version-xajl1dmtu0karg",
+              "cardId": "card-1ndo3dmtu0kaqz",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 从散落便签到周复盘\n\n1. 从周五想不起发生过什么开始。\n2. 展示一条失败尝试的完整记录。\n3. 按问题归拢，不堆完成事项。\n4. 留下一个下周能验证的尝试。\n\n待补：具体项目例子。"
+              },
+              "digest": "fnv1a:804f8e4e",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:10.204Z",
+              "sourceRunId": "run-1gln37mtu0karc"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:10.204Z"
+        },
+        {
+          "id": "card-ckshd3mtu0kaqz",
+          "contentKind": "markdown",
+          "x": 640,
+          "y": 470,
+          "width": 355,
+          "height": 350,
+          "headVersionId": "version-o487timtu0kbe7",
+          "versions": [
+            {
+              "id": "version-4g1pbtmtu0kb4w",
+              "cardId": "card-ckshd3mtu0kaqz",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 不从空白开始复盘\n\n周五打开文档时，你是否也想不起这一周发生了什么？\n\n每天留一条便签：问题是什么、采取了什么动作、看到了什么结果。\n\n到周五，按问题把记录放在一起。不要急着把每个故事都写成成功。\n\n[补入一个你自己的失败尝试]\n\n今天先留下一条具体记录。"
+              },
+              "digest": "fnv1a:e32b362f",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:10.687Z",
+              "sourceRunId": "run-0bw8rhmtu0kb4h"
+            },
+            {
+              "id": "version-o487timtu0kbe7",
+              "cardId": "card-ckshd3mtu0kaqz",
+              "sequence": 2,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 那次复盘，我没有写出结论\n\n上周五，我翻了三处便签，才找到周二那次失败的尝试。\n\n它没有变成一个成功故事，但留下了一个值得继续试的问题。\n\n后来我开始记录：当时的问题、做过的动作，以及实际看到的结果。\n\n复盘不一定要立刻有结论。把还没想明白的事留下来也有价值。\n\n[补入自己的具体项目背景]"
+              },
+              "digest": "fnv1a:c12c4951",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:11.023Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:11.023Z"
+        },
+        {
+          "id": "card-hbh3a6mtu0kaqz",
+          "contentKind": "markdown",
+          "x": 1320,
+          "y": 470,
+          "width": 355,
+          "height": 270,
+          "headVersionId": "version-l2ecrimtu0kb7u",
+          "versions": [
+            {
+              "id": "version-l2ecrimtu0kb7u",
+              "cardId": "card-hbh3a6mtu0kaqz",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 发布前检查\n\n- [x] 没有未经证实的效率数字\n- [ ] 补充自己的失败尝试\n- [ ] 检查是否把经历说成普遍规律\n- [x] 结尾有一个具体动作\n\n当前还不能发布。"
+              },
+              "digest": "fnv1a:994b4d66",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:10.793Z",
+              "sourceRunId": "run-of6er1mtu0kb7l"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:10.793Z"
+        },
+        {
+          "id": "card-5chw3lmtu0kbds",
+          "name": "编辑决定｜保留自己的声音",
+          "contentKind": "markdown",
+          "x": 1320,
+          "y": 0,
+          "width": 355,
+          "height": 280,
+          "color": "red",
+          "headVersionId": "version-giqnszmtu0kbds",
+          "versions": [
+            {
+              "id": "version-giqnszmtu0kbds",
+              "cardId": "card-5chw3lmtu0kbds",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 这轮改稿只做两件事\n\n1. 把反问开场换成亲身经历。\n2. 保留“失败不一定有结论”。\n\n不要写“只需三步就能高效复盘”。"
+              },
+              "digest": "fnv1a:b3da45e7",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:11.008Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:11.008Z",
+          "updatedAt": "2026-09-09T11:27:11.008Z"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "transformation-xebd6ymtu0kaqz",
+          "sourceCardIds": [
+            "card-v4i653mtu0kaqt",
+            "card-d78ai0mtu0kaqv"
+          ],
+          "targetCardId": "card-1ndo3dmtu0kaqz",
+          "label": "确认文章提纲",
+          "instruction": "按问题、经历、可尝试行动组织提纲。",
+          "acceptance": "先核对素材支持。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "planRef": {
+            "planId": "plan-jbgm6pmtu0kaqy",
+            "source": "ad-hoc",
+            "title": "经验文章：先结构，再表达",
+            "stepIndex": 1,
+            "stepTotal": 3
+          },
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:10.204Z",
+          "x": 350,
+          "y": 80,
+          "lastRunId": "run-1gln37mtu0karc",
+          "lastAppliedRunId": "run-1gln37mtu0karc"
+        },
+        {
+          "id": "transformation-hy2jdjmtu0kaqz",
+          "sourceCardIds": [
+            "card-1ndo3dmtu0kaqz"
+          ],
+          "targetCardId": "card-ckshd3mtu0kaqz",
+          "label": "写出文章初稿",
+          "instruction": "依照已经确认的提纲写初稿，不编造经历或数据。",
+          "acceptance": "保留待补事实。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "planRef": {
+            "planId": "plan-jbgm6pmtu0kaqy",
+            "source": "ad-hoc",
+            "title": "经验文章：先结构，再表达",
+            "stepIndex": 2,
+            "stepTotal": 3
+          },
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:11.018Z",
+          "x": 670,
+          "y": 340,
+          "lastRunId": "run-llfhy7mtu0kbdz",
+          "lastAppliedRunId": "run-0bw8rhmtu0kb4h"
+        },
+        {
+          "id": "transformation-imikeimtu0kaqz",
+          "sourceCardIds": [
+            "card-ckshd3mtu0kaqz"
+          ],
+          "targetCardId": "card-hbh3a6mtu0kaqz",
+          "label": "发布前核查",
+          "instruction": "检查事实、语气、读者行动，列出待修项。",
+          "acceptance": "未确认的内容不能写成事实。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "planRef": {
+            "planId": "plan-jbgm6pmtu0kaqy",
+            "source": "ad-hoc",
+            "title": "经验文章：先结构，再表达",
+            "stepIndex": 3,
+            "stepTotal": 3
+          },
+          "createdAt": "2026-09-09T11:27:10.187Z",
+          "updatedAt": "2026-09-09T11:27:10.793Z",
+          "x": 1040,
+          "y": 525,
+          "lastRunId": "run-of6er1mtu0kb7l",
+          "lastAppliedRunId": "run-of6er1mtu0kb7l"
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+      },
+      "createdAt": "2026-09-09T11:27:10.179Z",
+      "updatedAt": "2026-09-09T11:27:11.026Z",
+      "groups": [
+        {
+          "id": "group-board-e10rdomtu0kaqr-0",
+          "title": "写作准备",
+          "color": "blue",
+          "cardIds": [
+            "card-v4i653mtu0kaqt",
+            "card-d78ai0mtu0kaqv"
+          ]
+        },
+        {
+          "id": "group-board-e10rdomtu0kaqr-1",
+          "title": "提纲与正文 · 正在改稿",
+          "color": "green",
+          "cardIds": [
+            "card-1ndo3dmtu0kaqz",
+            "card-ckshd3mtu0kaqz"
+          ]
+        },
+        {
+          "id": "group-board-e10rdomtu0kaqr-2",
+          "title": "发布前人工关口",
+          "color": "red",
+          "cardIds": [
+            "card-5chw3lmtu0kbds",
+            "card-hbh3a6mtu0kaqz"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "board-i7sabdmtu0k8t3",
+      "title": "离线阅读 1.1 · 周三变更评审",
+      "revision": 25,
+      "lifecycle": {
+        "state": "active"
+      },
+      "cards": [
+        {
+          "id": "card-niwck2mtu0k8t8",
+          "name": "F-12｜地铁里的失败",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 0,
+          "width": 290,
+          "height": 210,
+          "color": "blue",
+          "headVersionId": "version-211eskmtu0k8t8",
+          "versions": [
+            {
+              "id": "version-211eskmtu0k8t8",
+              "cardId": "card-niwck2mtu0k8t8",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。"
+              },
+              "digest": "fnv1a:bfd44027",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:07.676Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:07.676Z",
+          "updatedAt": "2026-09-09T11:27:07.676Z"
+        },
+        {
+          "id": "card-n71xocmtu0k8t9",
+          "name": "本期承诺｜两周",
+          "contentKind": "markdown",
+          "x": 0,
+          "y": 260,
+          "width": 290,
+          "height": 210,
+          "color": "yellow",
+          "headVersionId": "version-jykc52mtu0k8t9",
+          "versions": [
+            {
+              "id": "version-jykc52mtu0k8t9",
+              "cardId": "card-n71xocmtu0k8t9",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。"
+              },
+              "digest": "fnv1a:8e95c0a3",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:07.677Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:07.677Z",
+          "updatedAt": "2026-09-09T11:27:07.677Z"
+        },
+        {
+          "id": "card-r74bm2mtu0k8tc",
+          "contentKind": "markdown",
+          "x": 610,
+          "y": 70,
+          "width": 330,
+          "height": 405,
+          "headVersionId": "version-zankxjmtu0k9lw",
+          "versions": [
+            {
+              "id": "version-ih0ag2mtu0k8tj",
+              "cardId": "card-r74bm2mtu0k8tc",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？"
+              },
+              "digest": "fnv1a:267bb620",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:07.686Z",
+              "sourceRunId": "run-bbgjmumtu0k8tf"
+            },
+            {
+              "id": "version-zankxjmtu0k9lw",
+              "cardId": "card-r74bm2mtu0k8tc",
+              "sequence": 2,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。"
+              },
+              "digest": "fnv1a:8d6fdbcd",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:08.708Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:07.680Z",
+          "updatedAt": "2026-09-09T11:27:08.708Z"
+        },
+        {
+          "id": "card-bbmz85mtu0k92f",
+          "contentKind": "markdown",
+          "x": 1270,
+          "y": 0,
+          "width": 340,
+          "height": 245,
+          "headVersionId": "version-s1i35pmtu0k92w",
+          "versions": [
+            {
+              "id": "version-s1i35pmtu0k92w",
+              "cardId": "card-bbmz85mtu0k92f",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。"
+              },
+              "digest": "fnv1a:6ab09e84",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:08.023Z",
+              "sourceRunId": "run-hsz5t0mtu0k92p"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:08.007Z",
+          "updatedAt": "2026-09-09T11:27:08.023Z"
+        },
+        {
+          "id": "card-ttc1fdmtu0k970",
+          "contentKind": "markdown",
+          "x": 1270,
+          "y": 300,
+          "width": 340,
+          "height": 220,
+          "headVersionId": "version-da1z7nmtu0k9m1",
+          "versions": [
+            {
+              "id": "version-vn3aermtu0k97h",
+              "cardId": "card-ttc1fdmtu0k970",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。"
+              },
+              "digest": "fnv1a:79df3476",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:08.188Z",
+              "sourceRunId": "run-go4gwymtu0k979"
+            },
+            {
+              "id": "version-da1z7nmtu0k9m1",
+              "cardId": "card-ttc1fdmtu0k970",
+              "sequence": 2,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。"
+              },
+              "digest": "fnv1a:9315eac1",
+              "origin": "ai",
+              "createdAt": "2026-09-09T11:27:08.712Z",
+              "sourceRunId": "run-wbg9dvmtu0k9ly"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:08.172Z",
+          "updatedAt": "2026-09-09T11:27:08.712Z"
+        },
+        {
+          "id": "card-26qj27mtu0k9kw",
+          "name": "下次再讨论",
+          "contentKind": "markdown",
+          "x": 640,
+          "y": 540,
+          "width": 300,
+          "height": 210,
+          "color": "violet",
+          "headVersionId": "version-7d3cijmtu0k9kw",
+          "versions": [
+            {
+              "id": "version-7d3cijmtu0k9kw",
+              "cardId": "card-26qj27mtu0k9kw",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 暂存需求\n\n用户希望“出门前下载整个收藏夹”。\n\n先收集使用频率和存储预算，不塞进这次迭代。"
+              },
+              "digest": "fnv1a:1d30f2a0",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:08.672Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:08.672Z",
+          "updatedAt": "2026-09-09T11:27:08.672Z"
+        },
+        {
+          "id": "card-ospocjmtu0k9u4",
+          "name": "F-19｜新反馈，待回归",
+          "contentKind": "markdown",
+          "x": 650,
+          "y": -255,
+          "width": 310,
+          "height": 230,
+          "color": "red",
+          "headVersionId": "version-1cmi7jmtu0k9u4",
+          "versions": [
+            {
+              "id": "version-1cmi7jmtu0k9u4",
+              "cardId": "card-ospocjmtu0k9u4",
+              "sequence": 1,
+              "content": {
+                "kind": "markdown",
+                "markdown": "# 周三新增 F-19\n\n下载到一半切成飞行模式，页面一直显示“下载中”。\n\n期望：有明确失败提示，能够重试。"
+              },
+              "digest": "fnv1a:13c7a6c5",
+              "origin": "human",
+              "createdAt": "2026-09-09T11:27:09.004Z"
+            }
+          ],
+          "createdAt": "2026-09-09T11:27:09.004Z",
+          "updatedAt": "2026-09-09T11:27:09.004Z"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "transformation-r6ctkzmtu0k8tc",
+          "sourceCardIds": [
+            "card-niwck2mtu0k8t8",
+            "card-n71xocmtu0k8t9"
+          ],
+          "targetCardId": "card-r74bm2mtu0k8tc",
+          "label": "限定本期范围",
+          "instruction": "把用户反馈与一名开发者、两周的约束整理为离线阅读 1.1 的范围。区分本期交付、不做、评审决定和待确认；只做单篇手动下载，不承诺批量、同步或新管理页。",
+          "acceptance": "每个范围项有反馈或约束依据；下载失败与清理不能删除收藏；未定义的更新提示保持待确认。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:07.680Z",
+          "updatedAt": "2026-09-09T11:27:07.686Z",
+          "x": 330,
+          "y": 160,
+          "lastRunId": "run-bbgjmumtu0k8tf",
+          "lastAppliedRunId": "run-bbgjmumtu0k8tf"
+        },
+        {
+          "id": "transformation-f18pnemtu0k92f",
+          "sourceCardIds": [
+            "card-r74bm2mtu0k8tc",
+            "card-ospocjmtu0k9u4"
+          ],
+          "targetCardId": "card-bbmz85mtu0k92f",
+          "label": "推导回归用例",
+          "instruction": "以确认的需求为准编写前置条件、操作、可观察结果。若来源包含新反馈，单列补充回归：下载中切换飞行模式、失败提示与重试。保留旧验收覆盖，未实际执行的用例不要勾选通过。",
+          "acceptance": "覆盖在线下载、离线打开、失败重试与清理；新反馈能追溯编号；没有编造测试通过记录。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:08.007Z",
+          "updatedAt": "2026-09-09T11:27:09.011Z",
+          "x": 980,
+          "y": 95,
+          "lastRunId": "run-hsz5t0mtu0k92p",
+          "lastAppliedRunId": "run-hsz5t0mtu0k92p"
+        },
+        {
+          "id": "transformation-t16176mtu0k970",
+          "sourceCardIds": [
+            "card-r74bm2mtu0k8tc"
+          ],
+          "targetCardId": "card-ttc1fdmtu0k970",
+          "label": "写给试用用户",
+          "instruction": "把当前已确认范围写成简短内测说明，讲清从哪里下载、离线怎样使用、从哪里清理。明确不含批量下载和跨设备同步，不把待确认问题写成已交付功能。",
+          "acceptance": "清理入口与当前人工决定一致；文字面向试用用户；没有新增产品承诺。",
+          "permissions": {
+            "workspaceWrite": false
+          },
+          "createdAt": "2026-09-09T11:27:08.172Z",
+          "updatedAt": "2026-09-09T11:27:08.712Z",
+          "x": 980,
+          "y": 360,
+          "lastRunId": "run-wbg9dvmtu0k9ly",
+          "lastAppliedRunId": "run-wbg9dvmtu0k9ly"
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 1
+      },
+      "createdAt": "2026-09-09T11:27:07.671Z",
+      "updatedAt": "2026-09-09T11:27:09.011Z",
+      "groups": [
+        {
+          "id": "group-board-i7sabdmtu0k8t3-0",
+          "title": "输入与约束",
+          "color": "blue",
+          "cardIds": [
+            "card-niwck2mtu0k8t8",
+            "card-n71xocmtu0k8t9"
+          ]
+        },
+        {
+          "id": "group-board-i7sabdmtu0k8t3-1",
+          "title": "已确认的交付范围",
+          "color": "green",
+          "cardIds": [
+            "card-r74bm2mtu0k8tc",
+            "card-26qj27mtu0k9kw"
+          ]
+        },
+        {
+          "id": "group-board-i7sabdmtu0k8t3-2",
+          "title": "两条交付支线",
+          "color": "orange",
+          "cardIds": [
+            "card-bbmz85mtu0k92f",
+            "card-ttc1fdmtu0k970"
+          ]
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "run-0bw8rhmtu0kb4h",
+      "boardId": "board-e10rdomtu0kaqr",
+      "transformationId": "transformation-hy2jdjmtu0kaqz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-1ndo3dmtu0kaqz",
+          "versionId": "version-xajl1dmtu0karg",
+          "contentKind": "markdown",
+          "resolvedContent": "# 从散落便签到周复盘\n\n1. 从周五想不起发生过什么开始。\n2. 展示一条失败尝试的完整记录。\n3. 按问题归拢，不堆完成事项。\n4. 留下一个下周能验证的尝试。\n\n待补：具体项目例子。",
+          "digest": "fnv1a:936e54c7"
+        }
+      ],
+      "targetCardId": "card-ckshd3mtu0kaqz",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:10.673Z",
+      "startedAt": "2026-09-09T11:27:10.673Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:10.687Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:10.685Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:10.687Z"
+        }
+      ],
+      "result": {
+        "output": "# 不从空白开始复盘\n\n周五打开文档时，你是否也想不起这一周发生了什么？\n\n每天留一条便签：问题是什么、采取了什么动作、看到了什么结果。\n\n到周五，按问题把记录放在一起。不要急着把每个故事都写成成功。\n\n[补入一个你自己的失败尝试]\n\n今天先留下一条具体记录。",
+        "digest": "fnv1a:6f1e8052",
+        "disposition": "applied",
+        "appliedVersionId": "version-4g1pbtmtu0kb4w"
+      },
+      "finishedAt": "2026-09-09T11:27:10.687Z"
+    },
+    {
+      "id": "run-0hsn1nmtu0kam7",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-uy658bmtu0kalx",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-1a53pfmtu0k9zd",
+          "versionId": "version-qwmv2smtu0k9zp",
+          "contentKind": "markdown",
+          "resolvedContent": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。",
+          "digest": "fnv1a:e9132018"
+        },
+        {
+          "cardId": "card-9arjosmtu0k9zi",
+          "versionId": "version-uoinkfmtu0kacx",
+          "contentKind": "markdown",
+          "resolvedContent": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。",
+          "digest": "fnv1a:1deef53c"
+        }
+      ],
+      "targetCardId": "card-n7s5kvmtu0kalx",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:10.015Z",
+      "startedAt": "2026-09-09T11:27:10.015Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:10.021Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:10.020Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:10.021Z"
+        }
+      ],
+      "result": {
+        "output": "# 下一轮研究决定\n\n先验证“成果示例是否帮助首次导入”。\n\n## 为什么\nA、B 都可能成立；目前证据不足以支持重做整个配置页。\n\n## 两个任务\n1. 让新手说出导入成功的预期。\n2. 提供示例后，观察还卡在哪。\n\n## 保留反例\nO-03 的熟练度可能是混杂因素。",
+        "digest": "fnv1a:49ad52fe",
+        "disposition": "applied",
+        "appliedVersionId": "version-pkugidmtu0kame"
+      },
+      "finishedAt": "2026-09-09T11:27:10.021Z"
+    },
+    {
+      "id": "run-1gln37mtu0karc",
+      "boardId": "board-e10rdomtu0kaqr",
+      "transformationId": "transformation-xebd6ymtu0kaqz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-v4i653mtu0kaqt",
+          "versionId": "version-kq7qk2mtu0kaqt",
+          "contentKind": "markdown",
+          "resolvedContent": "# 写给谁，留下什么\n\n读者：刚带项目的设计师。\n成果：一篇具体、平实的周复盘文章。\n\n不编造收益数据；用一个当天可做的小动作收尾。",
+          "digest": "fnv1a:dc4d8c27"
+        },
+        {
+          "cardId": "card-d78ai0mtu0kaqv",
+          "versionId": "version-z315mdmtu0kaqv",
+          "contentKind": "markdown",
+          "resolvedContent": "# 手头的素材\n\n- 便签散在三处，周五靠回忆复盘\n- 按“未解决的问题”整理后更好找\n- 一次失败尝试比十条完成事项更值得写\n\n原创演示经历。",
+          "digest": "fnv1a:385616fb"
+        }
+      ],
+      "targetCardId": "card-1ndo3dmtu0kaqz",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:10.200Z",
+      "startedAt": "2026-09-09T11:27:10.200Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:10.204Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:10.203Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:10.204Z"
+        }
+      ],
+      "result": {
+        "output": "# 从散落便签到周复盘\n\n1. 从周五想不起发生过什么开始。\n2. 展示一条失败尝试的完整记录。\n3. 按问题归拢，不堆完成事项。\n4. 留下一个下周能验证的尝试。\n\n待补：具体项目例子。",
+        "digest": "fnv1a:936e54c7",
+        "disposition": "applied",
+        "appliedVersionId": "version-xajl1dmtu0karg"
+      },
+      "finishedAt": "2026-09-09T11:27:10.204Z"
+    },
+    {
+      "id": "run-au9e2amtu0k9v4",
+      "boardId": "board-4sf4zimtu0k9ue",
+      "transformationId": "transformation-4jjwtgmtu0k9uz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-7iig8rmtu0k9uh",
+          "versionId": "version-ij0yarmtu0k9uh",
+          "contentKind": "markdown",
+          "resolvedContent": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。",
+          "digest": "fnv1a:9f648adf"
+        },
+        {
+          "cardId": "card-a9fbzxmtu0k9uk",
+          "versionId": "version-ph1jusmtu0k9uk",
+          "contentKind": "markdown",
+          "resolvedContent": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。",
+          "digest": "fnv1a:a9a9221c"
+        },
+        {
+          "cardId": "card-21j6ixmtu0k9us",
+          "versionId": "version-v7ddramtu0k9us",
+          "contentKind": "markdown",
+          "resolvedContent": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？",
+          "digest": "fnv1a:5ca4028c"
+        }
+      ],
+      "targetCardId": "card-0tqe5amtu0k9uz",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.040Z",
+      "startedAt": "2026-09-09T11:27:09.040Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.043Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.042Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.043Z"
+        }
+      ],
+      "result": {
+        "output": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。",
+        "digest": "fnv1a:1bf9b90e",
+        "disposition": "applied",
+        "appliedVersionId": "version-e0x5wdmtu0k9v8"
+      },
+      "finishedAt": "2026-09-09T11:27:09.043Z"
+    },
+    {
+      "id": "run-bbgjmumtu0k8tf",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-r6ctkzmtu0k8tc",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-niwck2mtu0k8t8",
+          "versionId": "version-211eskmtu0k8t8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。",
+          "digest": "fnv1a:1866f106"
+        },
+        {
+          "cardId": "card-n71xocmtu0k8t9",
+          "versionId": "version-jykc52mtu0k8t9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。",
+          "digest": "fnv1a:1b52181e"
+        }
+      ],
+      "targetCardId": "card-r74bm2mtu0k8tc",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:07.683Z",
+      "startedAt": "2026-09-09T11:27:07.683Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:07.686Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:07.685Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:07.686Z"
+        }
+      ],
+      "result": {
+        "output": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+        "digest": "fnv1a:93852635",
+        "disposition": "applied",
+        "appliedVersionId": "version-ih0ag2mtu0k8tj"
+      },
+      "finishedAt": "2026-09-09T11:27:07.686Z"
+    },
+    {
+      "id": "run-enw383mtu0k9zm",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-uly2r2mtu0k9zd",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-ppekztmtu0k9z8",
+          "versionId": "version-cg8nrrmtu0k9z8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 访谈摘记 I-01\n\n“我不知道哪些配置必须填完才能开始。”\n\n访谈只记录自述，尚未观察其操作。\n虚构练习材料。",
+          "digest": "fnv1a:a81a4023"
+        },
+        {
+          "cardId": "card-zhvevbmtu0k9z9",
+          "versionId": "version-1j1icumtu0k9z9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。",
+          "digest": "fnv1a:d4849a12"
+        }
+      ],
+      "targetCardId": "card-1a53pfmtu0k9zd",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.202Z",
+      "startedAt": "2026-09-09T11:27:09.202Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.205Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.204Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.205Z"
+        }
+      ],
+      "result": {
+        "output": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。",
+        "digest": "fnv1a:e9132018",
+        "disposition": "applied",
+        "appliedVersionId": "version-qwmv2smtu0k9zp"
+      },
+      "finishedAt": "2026-09-09T11:27:09.205Z"
+    },
+    {
+      "id": "run-go4gwymtu0k979",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-t16176mtu0k970",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-ih0ag2mtu0k8tj",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+          "digest": "fnv1a:93852635"
+        }
+      ],
+      "targetCardId": "card-ttc1fdmtu0k970",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.181Z",
+      "startedAt": "2026-09-09T11:27:08.182Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.188Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.186Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.188Z"
+        }
+      ],
+      "result": {
+        "output": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。",
+        "digest": "fnv1a:be0f4807",
+        "disposition": "applied",
+        "appliedVersionId": "version-vn3aermtu0k97h"
+      },
+      "finishedAt": "2026-09-09T11:27:08.188Z"
+    },
+    {
+      "id": "run-hsz5t0mtu0k92p",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-f18pnemtu0k92f",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-ih0ag2mtu0k8tj",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+          "digest": "fnv1a:93852635"
+        }
+      ],
+      "targetCardId": "card-bbmz85mtu0k92f",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.017Z",
+      "startedAt": "2026-09-09T11:27:08.017Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.023Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.021Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.023Z"
+        }
+      ],
+      "result": {
+        "output": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。",
+        "digest": "fnv1a:dcca5af9",
+        "disposition": "applied",
+        "appliedVersionId": "version-s1i35pmtu0k92w"
+      },
+      "finishedAt": "2026-09-09T11:27:08.023Z"
+    },
+    {
+      "id": "run-llfhy7mtu0kbdz",
+      "boardId": "board-e10rdomtu0kaqr",
+      "transformationId": "transformation-hy2jdjmtu0kaqz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-1ndo3dmtu0kaqz",
+          "versionId": "version-xajl1dmtu0karg",
+          "contentKind": "markdown",
+          "resolvedContent": "# 从散落便签到周复盘\n\n1. 从周五想不起发生过什么开始。\n2. 展示一条失败尝试的完整记录。\n3. 按问题归拢，不堆完成事项。\n4. 留下一个下周能验证的尝试。\n\n待补：具体项目例子。",
+          "digest": "fnv1a:936e54c7"
+        }
+      ],
+      "targetCardId": "card-ckshd3mtu0kaqz",
+      "targetBaseVersionId": "version-4g1pbtmtu0kb4w",
+      "intent": "update",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:11.015Z",
+      "startedAt": "2026-09-09T11:27:11.015Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:11.024Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:11.021Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:11.024Z"
+        }
+      ],
+      "result": {
+        "output": "# 三步让周复盘更高效\n\n只需三个动作，就能告别无从下手的周复盘。\n\n每天记录问题，周五归拢素材，再确定下周目标。\n\n从今天开始，写下你的第一条记录。",
+        "digest": "fnv1a:c3dc3580",
+        "disposition": "candidate"
+      },
+      "finishedAt": "2026-09-09T11:27:11.024Z"
+    },
+    {
+      "id": "run-of6er1mtu0kb7l",
+      "boardId": "board-e10rdomtu0kaqr",
+      "transformationId": "transformation-imikeimtu0kaqz",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-ckshd3mtu0kaqz",
+          "versionId": "version-4g1pbtmtu0kb4w",
+          "contentKind": "markdown",
+          "resolvedContent": "# 不从空白开始复盘\n\n周五打开文档时，你是否也想不起这一周发生了什么？\n\n每天留一条便签：问题是什么、采取了什么动作、看到了什么结果。\n\n到周五，按问题把记录放在一起。不要急着把每个故事都写成成功。\n\n[补入一个你自己的失败尝试]\n\n今天先留下一条具体记录。",
+          "digest": "fnv1a:6f1e8052"
+        }
+      ],
+      "targetCardId": "card-hbh3a6mtu0kaqz",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:10.785Z",
+      "startedAt": "2026-09-09T11:27:10.785Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:10.793Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:10.791Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:10.793Z"
+        }
+      ],
+      "result": {
+        "output": "# 发布前检查\n\n- [x] 没有未经证实的效率数字\n- [ ] 补充自己的失败尝试\n- [ ] 检查是否把经历说成普遍规律\n- [x] 结尾有一个具体动作\n\n当前还不能发布。",
+        "digest": "fnv1a:2758ad9f",
+        "disposition": "applied",
+        "appliedVersionId": "version-l2ecrimtu0kb7u"
+      },
+      "finishedAt": "2026-09-09T11:27:10.793Z"
+    },
+    {
+      "id": "run-ql6ctumtu0kacp",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-va0xu4mtu0k9zi",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-zhvevbmtu0k9z9",
+          "versionId": "version-1j1icumtu0k9z9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。",
+          "digest": "fnv1a:d4849a12"
+        },
+        {
+          "cardId": "card-mg0qrhmtu0k9zb",
+          "versionId": "version-0qoh9fmtu0k9zb",
+          "contentKind": "markdown",
+          "resolvedContent": "# 反例 O-03\n\n另一位参与者跳过帮助，直接导入成功；此前用过类似工具。\n\n“新手都怕配置”暂时站不住。",
+          "digest": "fnv1a:f35d080d"
+        }
+      ],
+      "targetCardId": "card-9arjosmtu0k9zi",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.673Z",
+      "startedAt": "2026-09-09T11:27:09.673Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.680Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.678Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.680Z"
+        }
+      ],
+      "result": {
+        "output": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。",
+        "digest": "fnv1a:1deef53c",
+        "disposition": "applied",
+        "appliedVersionId": "version-uoinkfmtu0kacx"
+      },
+      "finishedAt": "2026-09-09T11:27:09.680Z"
+    },
+    {
+      "id": "run-wbg9dvmtu0k9ly",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-t16176mtu0k970",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-zankxjmtu0k9lw",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。",
+          "digest": "fnv1a:a7e182e6"
+        }
+      ],
+      "targetCardId": "card-ttc1fdmtu0k970",
+      "targetBaseVersionId": "version-vn3aermtu0k97h",
+      "intent": "update",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.710Z",
+      "startedAt": "2026-09-09T11:27:08.710Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.712Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.712Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.712Z"
+        }
+      ],
+      "result": {
+        "output": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。",
+        "digest": "fnv1a:bbc376d8",
+        "disposition": "applied",
+        "appliedVersionId": "version-da1z7nmtu0k9m1"
+      },
+      "finishedAt": "2026-09-09T11:27:08.712Z"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "workflow-kcwkfzmtu0kbdp",
+      "title": "经验文章：提纲 → 初稿 → 核查",
+      "description": "从经过人工检查的三步内容中提取；每次仍需审核。",
+      "inputs": [
+        {
+          "id": "workflow-input-5w5f5xmtu0kbdp",
+          "name": "写作任务",
+          "description": "读者、目的、语气与约束",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "workflow-input-jpgl81mtu0kbdp",
+          "name": "真实素材",
+          "description": "支撑文章的经历与记录",
+          "required": true,
+          "cardinality": "many"
+        }
+      ],
+      "steps": [
+        {
+          "id": "workflow-step-m9ugsumtu0kbdp",
+          "label": "确认文章提纲",
+          "instruction": "按问题、经历、可尝试行动组织提纲。",
+          "acceptance": "先核对素材支持。",
+          "sources": [
+            {
+              "kind": "input",
+              "inputId": "workflow-input-5w5f5xmtu0kbdp"
+            },
+            {
+              "kind": "input",
+              "inputId": "workflow-input-jpgl81mtu0kbdp"
+            }
+          ]
+        },
+        {
+          "id": "workflow-step-eggny9mtu0kbdp",
+          "label": "写出文章初稿",
+          "instruction": "依照已经确认的提纲写初稿，不编造经历或数据。",
+          "acceptance": "保留待补事实。",
+          "sources": [
+            {
+              "kind": "previous-output"
+            }
+          ]
+        },
+        {
+          "id": "workflow-step-z01owpmtu0kbdp",
+          "label": "发布前核查",
+          "instruction": "检查事实、语气、读者行动，列出待修项。",
+          "acceptance": "未确认的内容不能写成事实。",
+          "sources": [
+            {
+              "kind": "previous-output"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2026-09-09T11:27:11.005Z",
+      "updatedAt": "2026-09-09T11:27:11.005Z"
+    }
+  ],
+  "inspirationPool": {
+    "schemaVersion": 1,
+    "id": "inspiration-pool",
+    "entries": [
+      {
+        "id": "inspiration-i7bktcmtu0k9uo",
+        "tags": [
+          "阅读",
+          "关系",
+          "生活观察"
+        ],
+        "headVersionId": "inspiration-version-qfy3llmtu0k9uo",
+        "versions": [
+          {
+            "id": "inspiration-version-qfy3llmtu0k9uo",
+            "entryId": "inspiration-i7bktcmtu0k9uo",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？"
+            },
+            "digest": "fnv1a:8622160b",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.024Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.024Z",
+        "updatedAt": "2026-09-09T11:27:09.024Z"
+      },
+      {
+        "id": "inspiration-11esmmmtu0k9uv",
+        "tags": [
+          "阅读",
+          "复读"
+        ],
+        "headVersionId": "inspiration-version-z2cpgdmtu0k9uv",
+        "versions": [
+          {
+            "id": "inspiration-version-z2cpgdmtu0k9uv",
+            "entryId": "inspiration-11esmmmtu0k9uv",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 反复读到的句子\n\n同一个片段，隔一个月再读，我关心的问题变了。\n\n下次记录“问题怎样变了”，不只收集金句。"
+            },
+            "digest": "fnv1a:1586b372",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.031Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.031Z",
+        "updatedAt": "2026-09-09T11:27:09.031Z"
+      },
+      {
+        "id": "inspiration-fvk8s7mtu0k9ux",
+        "tags": [
+          "关系",
+          "生活观察"
+        ],
+        "headVersionId": "inspiration-version-667f37mtu0k9ux",
+        "versions": [
+          {
+            "id": "inspiration-version-667f37mtu0k9ux",
+            "entryId": "inspiration-fvk8s7mtu0k9ux",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 不把沉默解释成结论\n\n朋友没回复时，我常常自行补出原因。\n\n下次先问一个具体问题。"
+            },
+            "digest": "fnv1a:870b77d2",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.033Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.033Z",
+        "updatedAt": "2026-09-09T11:27:09.033Z"
+      }
+    ],
+    "createdAt": "2026-09-09T11:27:09.024Z",
+    "updatedAt": "2026-09-09T11:27:09.033Z"
+  },
+  "checkpoints": [
+    {
+      "schemaVersion": 1,
+      "id": "checkpoint-qqkamxmtu0k9lr",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "title": "周二评审通过 · 单篇下载",
+      "note": "范围冻结；尚未收到中断下载反馈。",
+      "baseBoardRevision": 20,
+      "artifact": {
+        "format": "mira-board",
+        "formatVersion": 1,
+        "exportedAt": "2026-09-09T11:27:08.701Z",
+        "board": {
+          "schemaVersion": 2,
+          "id": "board-i7sabdmtu0k8t3",
+          "title": "离线阅读 1.1 · 周三变更评审",
+          "revision": 20,
+          "lifecycle": {
+            "state": "active"
+          },
+          "cards": [
+            {
+              "id": "card-niwck2mtu0k8t8",
+              "name": "F-12｜地铁里的失败",
+              "contentKind": "markdown",
+              "x": 0,
+              "y": 0,
+              "width": 290,
+              "height": 210,
+              "color": "blue",
+              "headVersionId": "version-211eskmtu0k8t8",
+              "versions": [
+                {
+                  "id": "version-211eskmtu0k8t8",
+                  "cardId": "card-niwck2mtu0k8t8",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。"
+                  },
+                  "digest": "fnv1a:bfd44027",
+                  "origin": "human",
+                  "createdAt": "2026-09-09T11:27:07.676Z"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:07.676Z",
+              "updatedAt": "2026-09-09T11:27:07.676Z"
+            },
+            {
+              "id": "card-n71xocmtu0k8t9",
+              "name": "本期承诺｜两周",
+              "contentKind": "markdown",
+              "x": 0,
+              "y": 260,
+              "width": 290,
+              "height": 210,
+              "color": "yellow",
+              "headVersionId": "version-jykc52mtu0k8t9",
+              "versions": [
+                {
+                  "id": "version-jykc52mtu0k8t9",
+                  "cardId": "card-n71xocmtu0k8t9",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。"
+                  },
+                  "digest": "fnv1a:8e95c0a3",
+                  "origin": "human",
+                  "createdAt": "2026-09-09T11:27:07.677Z"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:07.677Z",
+              "updatedAt": "2026-09-09T11:27:07.677Z"
+            },
+            {
+              "id": "card-r74bm2mtu0k8tc",
+              "contentKind": "markdown",
+              "x": 610,
+              "y": 70,
+              "width": 330,
+              "height": 405,
+              "headVersionId": "version-ih0ag2mtu0k8tj",
+              "versions": [
+                {
+                  "id": "version-ih0ag2mtu0k8tj",
+                  "cardId": "card-r74bm2mtu0k8tc",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？"
+                  },
+                  "digest": "fnv1a:267bb620",
+                  "origin": "ai",
+                  "createdAt": "2026-09-09T11:27:07.686Z",
+                  "sourceRunId": "run-bbgjmumtu0k8tf"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:07.680Z",
+              "updatedAt": "2026-09-09T11:27:08.681Z"
+            },
+            {
+              "id": "card-bbmz85mtu0k92f",
+              "contentKind": "markdown",
+              "x": 1270,
+              "y": 0,
+              "width": 340,
+              "height": 245,
+              "headVersionId": "version-s1i35pmtu0k92w",
+              "versions": [
+                {
+                  "id": "version-s1i35pmtu0k92w",
+                  "cardId": "card-bbmz85mtu0k92f",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。"
+                  },
+                  "digest": "fnv1a:6ab09e84",
+                  "origin": "ai",
+                  "createdAt": "2026-09-09T11:27:08.023Z",
+                  "sourceRunId": "run-hsz5t0mtu0k92p"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:08.007Z",
+              "updatedAt": "2026-09-09T11:27:08.023Z"
+            },
+            {
+              "id": "card-ttc1fdmtu0k970",
+              "contentKind": "markdown",
+              "x": 1270,
+              "y": 300,
+              "width": 340,
+              "height": 220,
+              "headVersionId": "version-vn3aermtu0k97h",
+              "versions": [
+                {
+                  "id": "version-vn3aermtu0k97h",
+                  "cardId": "card-ttc1fdmtu0k970",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。"
+                  },
+                  "digest": "fnv1a:79df3476",
+                  "origin": "ai",
+                  "createdAt": "2026-09-09T11:27:08.188Z",
+                  "sourceRunId": "run-go4gwymtu0k979"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:08.172Z",
+              "updatedAt": "2026-09-09T11:27:08.188Z"
+            },
+            {
+              "id": "card-26qj27mtu0k9kw",
+              "name": "下次再讨论",
+              "contentKind": "markdown",
+              "x": 640,
+              "y": 540,
+              "width": 300,
+              "height": 210,
+              "color": "violet",
+              "headVersionId": "version-7d3cijmtu0k9kw",
+              "versions": [
+                {
+                  "id": "version-7d3cijmtu0k9kw",
+                  "cardId": "card-26qj27mtu0k9kw",
+                  "sequence": 1,
+                  "content": {
+                    "kind": "markdown",
+                    "markdown": "# 暂存需求\n\n用户希望“出门前下载整个收藏夹”。\n\n先收集使用频率和存储预算，不塞进这次迭代。"
+                  },
+                  "digest": "fnv1a:1d30f2a0",
+                  "origin": "human",
+                  "createdAt": "2026-09-09T11:27:08.672Z"
+                }
+              ],
+              "createdAt": "2026-09-09T11:27:08.672Z",
+              "updatedAt": "2026-09-09T11:27:08.672Z"
+            }
+          ],
+          "transformations": [
+            {
+              "id": "transformation-r6ctkzmtu0k8tc",
+              "sourceCardIds": [
+                "card-niwck2mtu0k8t8",
+                "card-n71xocmtu0k8t9"
+              ],
+              "targetCardId": "card-r74bm2mtu0k8tc",
+              "label": "限定本期范围",
+              "instruction": "把用户反馈与一名开发者、两周的约束整理为离线阅读 1.1 的范围。区分本期交付、不做、评审决定和待确认；只做单篇手动下载，不承诺批量、同步或新管理页。",
+              "acceptance": "每个范围项有反馈或约束依据；下载失败与清理不能删除收藏；未定义的更新提示保持待确认。",
+              "permissions": {
+                "workspaceWrite": false
+              },
+              "createdAt": "2026-09-09T11:27:07.680Z",
+              "updatedAt": "2026-09-09T11:27:07.686Z",
+              "x": 330,
+              "y": 160,
+              "lastRunId": "run-bbgjmumtu0k8tf",
+              "lastAppliedRunId": "run-bbgjmumtu0k8tf"
+            },
+            {
+              "id": "transformation-f18pnemtu0k92f",
+              "sourceCardIds": [
+                "card-r74bm2mtu0k8tc"
+              ],
+              "targetCardId": "card-bbmz85mtu0k92f",
+              "label": "推导回归用例",
+              "instruction": "以确认的需求为准编写前置条件、操作、可观察结果。若来源包含新反馈，单列补充回归：下载中切换飞行模式、失败提示与重试。保留旧验收覆盖，未实际执行的用例不要勾选通过。",
+              "acceptance": "覆盖在线下载、离线打开、失败重试与清理；新反馈能追溯编号；没有编造测试通过记录。",
+              "permissions": {
+                "workspaceWrite": false
+              },
+              "createdAt": "2026-09-09T11:27:08.007Z",
+              "updatedAt": "2026-09-09T11:27:08.023Z",
+              "x": 980,
+              "y": 95,
+              "lastRunId": "run-hsz5t0mtu0k92p",
+              "lastAppliedRunId": "run-hsz5t0mtu0k92p"
+            },
+            {
+              "id": "transformation-t16176mtu0k970",
+              "sourceCardIds": [
+                "card-r74bm2mtu0k8tc"
+              ],
+              "targetCardId": "card-ttc1fdmtu0k970",
+              "label": "写给试用用户",
+              "instruction": "把当前已确认范围写成简短内测说明，讲清从哪里下载、离线怎样使用、从哪里清理。明确不含批量下载和跨设备同步，不把待确认问题写成已交付功能。",
+              "acceptance": "清理入口与当前人工决定一致；文字面向试用用户；没有新增产品承诺。",
+              "permissions": {
+                "workspaceWrite": false
+              },
+              "createdAt": "2026-09-09T11:27:08.172Z",
+              "updatedAt": "2026-09-09T11:27:08.188Z",
+              "x": 980,
+              "y": 360,
+              "lastRunId": "run-go4gwymtu0k979",
+              "lastAppliedRunId": "run-go4gwymtu0k979"
+            }
+          ],
+          "viewport": {
+            "x": 0,
+            "y": 0,
+            "zoom": 1
+          },
+          "createdAt": "2026-09-09T11:27:07.671Z",
+          "updatedAt": "2026-09-09T11:27:08.681Z",
+          "groups": [
+            {
+              "id": "group-board-i7sabdmtu0k8t3-0",
+              "title": "输入与约束",
+              "color": "blue",
+              "cardIds": [
+                "card-niwck2mtu0k8t8",
+                "card-n71xocmtu0k8t9"
+              ]
+            },
+            {
+              "id": "group-board-i7sabdmtu0k8t3-1",
+              "title": "已确认的交付范围",
+              "color": "green",
+              "cardIds": [
+                "card-r74bm2mtu0k8tc",
+                "card-26qj27mtu0k9kw"
+              ]
+            },
+            {
+              "id": "group-board-i7sabdmtu0k8t3-2",
+              "title": "两条交付支线",
+              "color": "orange",
+              "cardIds": [
+                "card-bbmz85mtu0k92f",
+                "card-ttc1fdmtu0k970"
+              ]
+            }
+          ]
+        },
+        "runs": [
+          {
+            "id": "run-bbgjmumtu0k8tf",
+            "boardId": "board-i7sabdmtu0k8t3",
+            "transformationId": "transformation-r6ctkzmtu0k8tc",
+            "status": "succeeded",
+            "sourceSnapshot": [
+              {
+                "cardId": "card-niwck2mtu0k8t8",
+                "versionId": "version-211eskmtu0k8t8",
+                "contentKind": "markdown",
+                "resolvedContent": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。",
+                "digest": "fnv1a:1866f106"
+              },
+              {
+                "cardId": "card-n71xocmtu0k8t9",
+                "versionId": "version-jykc52mtu0k8t9",
+                "contentKind": "markdown",
+                "resolvedContent": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。",
+                "digest": "fnv1a:1b52181e"
+              }
+            ],
+            "targetCardId": "card-r74bm2mtu0k8tc",
+            "targetBaseVersionId": null,
+            "intent": "create",
+            "modelSnapshot": {
+              "provider": "local-demo",
+              "model": "authored-example"
+            },
+            "createdAt": "2026-09-09T11:27:07.683Z",
+            "startedAt": "2026-09-09T11:27:07.683Z",
+            "progress": {
+              "phase": "completed",
+              "label": "生成完成",
+              "updatedAt": "2026-09-09T11:27:07.686Z"
+            },
+            "progressEvents": [
+              {
+                "sequence": 1,
+                "phase": "generating",
+                "label": "正在载入人工编写的演示文本",
+                "occurredAt": "2026-09-09T11:27:07.685Z"
+              },
+              {
+                "sequence": 2,
+                "phase": "completed",
+                "label": "生成完成",
+                "occurredAt": "2026-09-09T11:27:07.686Z"
+              }
+            ],
+            "result": {
+              "output": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+              "digest": "fnv1a:93852635",
+              "disposition": "applied",
+              "appliedVersionId": "version-ih0ag2mtu0k8tj"
+            },
+            "finishedAt": "2026-09-09T11:27:07.686Z"
+          },
+          {
+            "id": "run-go4gwymtu0k979",
+            "boardId": "board-i7sabdmtu0k8t3",
+            "transformationId": "transformation-t16176mtu0k970",
+            "status": "succeeded",
+            "sourceSnapshot": [
+              {
+                "cardId": "card-r74bm2mtu0k8tc",
+                "versionId": "version-ih0ag2mtu0k8tj",
+                "contentKind": "markdown",
+                "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+                "digest": "fnv1a:93852635"
+              }
+            ],
+            "targetCardId": "card-ttc1fdmtu0k970",
+            "targetBaseVersionId": null,
+            "intent": "create",
+            "modelSnapshot": {
+              "provider": "local-demo",
+              "model": "authored-example"
+            },
+            "createdAt": "2026-09-09T11:27:08.181Z",
+            "startedAt": "2026-09-09T11:27:08.182Z",
+            "progress": {
+              "phase": "completed",
+              "label": "生成完成",
+              "updatedAt": "2026-09-09T11:27:08.188Z"
+            },
+            "progressEvents": [
+              {
+                "sequence": 1,
+                "phase": "generating",
+                "label": "正在载入人工编写的演示文本",
+                "occurredAt": "2026-09-09T11:27:08.186Z"
+              },
+              {
+                "sequence": 2,
+                "phase": "completed",
+                "label": "生成完成",
+                "occurredAt": "2026-09-09T11:27:08.188Z"
+              }
+            ],
+            "result": {
+              "output": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。",
+              "digest": "fnv1a:be0f4807",
+              "disposition": "applied",
+              "appliedVersionId": "version-vn3aermtu0k97h"
+            },
+            "finishedAt": "2026-09-09T11:27:08.188Z"
+          },
+          {
+            "id": "run-hsz5t0mtu0k92p",
+            "boardId": "board-i7sabdmtu0k8t3",
+            "transformationId": "transformation-f18pnemtu0k92f",
+            "status": "succeeded",
+            "sourceSnapshot": [
+              {
+                "cardId": "card-r74bm2mtu0k8tc",
+                "versionId": "version-ih0ag2mtu0k8tj",
+                "contentKind": "markdown",
+                "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+                "digest": "fnv1a:93852635"
+              }
+            ],
+            "targetCardId": "card-bbmz85mtu0k92f",
+            "targetBaseVersionId": null,
+            "intent": "create",
+            "modelSnapshot": {
+              "provider": "local-demo",
+              "model": "authored-example"
+            },
+            "createdAt": "2026-09-09T11:27:08.017Z",
+            "startedAt": "2026-09-09T11:27:08.017Z",
+            "progress": {
+              "phase": "completed",
+              "label": "生成完成",
+              "updatedAt": "2026-09-09T11:27:08.023Z"
+            },
+            "progressEvents": [
+              {
+                "sequence": 1,
+                "phase": "generating",
+                "label": "正在载入人工编写的演示文本",
+                "occurredAt": "2026-09-09T11:27:08.021Z"
+              },
+              {
+                "sequence": 2,
+                "phase": "completed",
+                "label": "生成完成",
+                "occurredAt": "2026-09-09T11:27:08.023Z"
+              }
+            ],
+            "result": {
+              "output": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。",
+              "digest": "fnv1a:dcca5af9",
+              "disposition": "applied",
+              "appliedVersionId": "version-s1i35pmtu0k92w"
+            },
+            "finishedAt": "2026-09-09T11:27:08.023Z"
+          }
+        ],
+        "workflowProvenance": [],
+        "fileDependencies": [],
+        "externalReferences": []
+      },
+      "createdAt": "2026-09-09T11:27:08.703Z",
+      "metadataUpdatedAt": "2026-09-09T11:27:08.703Z"
+    }
+  ]
+}

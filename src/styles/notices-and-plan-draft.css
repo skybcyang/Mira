@@ -1,0 +1,171 @@
+.v2-notice-region {
+  position: fixed;
+  z-index: 80;
+  top: 60px;
+  left: calc(var(--mira-navigation-width) + 48px);
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100dvh - 132px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: none;
+}
+
+.v2-notice-alerts,
+.v2-notice-polite {
+  display: contents;
+}
+
+.v2-notice {
+  min-width: 0;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid var(--mira-border);
+  border-left: 3px solid var(--mira-accent);
+  border-radius: 5px;
+  background: var(--mira-surface);
+  color: var(--mira-ink);
+  box-shadow: var(--mira-shadow-raised);
+  font-size: 12px;
+  pointer-events: auto;
+}
+
+.v2-notice[data-notice-kind='progress'] { border-left-color: var(--mira-workflow); }
+.v2-notice[data-notice-kind='success'] { border-left-color: var(--mira-accent); }
+.v2-notice[data-notice-kind='error'] { border-left-color: var(--mira-danger); }
+.v2-notice[data-notice-kind='attention'] { border-left-color: var(--mira-warning); }
+
+.v2-panel-loading {
+  position: fixed;
+  z-index: 50;
+  top: 52px;
+  right: 0;
+  width: min(420px, 100%);
+  height: calc(100dvh - 52px);
+  display: grid;
+  place-items: center;
+  border-left: 1px solid var(--mira-border);
+  background: var(--mira-surface);
+  color: var(--mira-muted);
+  font-size: 12px;
+}
+
+.v2-notice > span:not(.v2-notice-icon) {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.v2-notice-icon {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 18px;
+  color: var(--mira-muted);
+}
+
+.v2-notice-spinner { animation: mira-notice-spin 900ms linear infinite; }
+
+.v2-notice button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  border: 0;
+  background: transparent;
+  color: var(--mira-muted);
+}
+
+.v2-app:has(.v2-selection-toolbar) > .v2-notice-region {
+  top: 112px;
+}
+
+.v2-app.has-drawer > .v2-notice-region {
+  width: min(360px, calc(100vw - var(--mira-navigation-width) - 424px));
+}
+.v2-app:has(> .v2-detail-drawer.is-expanded) > .v2-notice-region { width: min(360px, calc(100vw - var(--mira-navigation-width) - min(800px, 100vw - var(--mira-navigation-width) - 360px) - 64px)); }
+
+.v2-workflow-draft-step {
+  position: relative;
+  width: 168px;
+  min-height: 156px;
+  padding: 9px 10px 10px;
+  border: 1px dashed var(--mira-workflow);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--mira-surface) 92%, var(--mira-workflow-soft));
+  color: var(--mira-ink);
+}
+
+.v2-workflow-draft-step > header { display: flex; justify-content: space-between; color: var(--mira-workflow); font-size: 10px; }
+.v2-workflow-draft-step > strong { display: block; margin-top: 8px; font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+.v2-draft-inputs { display: grid; gap: 8px; margin-top: 10px; }
+.v2-draft-inputs section { position: relative; display: grid; gap: 4px; padding-top: 7px; border-top: 1px solid var(--mira-border); }
+.v2-draft-inputs section > div { min-width: 0; display: grid; }
+.v2-draft-inputs b { font-size: 11px; overflow-wrap: anywhere; }
+.v2-draft-inputs small { color: var(--mira-muted); font-size: 10px; }
+.v2-draft-binding {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: center;
+  padding-left: 5px;
+  background: var(--mira-workflow-soft);
+  color: var(--mira-workflow);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+.v2-draft-binding button { width: 20px; height: 20px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: currentColor; }
+.v2-draft-use-selection { min-height: 26px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 0 5px; border: 1px solid var(--mira-border); border-radius: 3px; background: var(--mira-surface); color: var(--mira-muted); font-size: 10px; }
+
+.v2-draft-actions { display: grid; gap: 7px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--mira-border); }
+.v2-draft-actions > span { min-width: 0; display: grid; gap: 2px; }
+.v2-draft-actions b { color: var(--mira-workflow); font-size: 10px; font-variant-numeric: tabular-nums; }
+.v2-draft-actions small { color: var(--mira-muted); font-size: 10px; line-height: 1.35; }
+.v2-draft-actions > div { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 5px; }
+.v2-draft-actions button { min-height: 28px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 0 6px; border: 1px solid var(--mira-border); border-radius: 3px; font-size: 10px; }
+.v2-draft-cancel { background: transparent; color: var(--mira-muted); }
+.v2-draft-confirm { background: var(--mira-workflow); color: var(--mira-surface); }
+
+.v2-workflow-draft-target {
+  position: relative;
+  width: 360px;
+  height: 240px;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  border: 1px dashed var(--mira-workflow);
+  border-radius: 6px;
+  background: var(--mira-surface-subtle);
+  color: var(--mira-workflow);
+}
+.v2-workflow-draft-target > div { display: grid; gap: 6px; text-align: center; }
+.v2-workflow-draft-target span,
+.v2-workflow-draft-target small { color: var(--mira-muted); font-size: 10px; }
+.v2-workflow-draft-target strong { font-size: 14px; overflow-wrap: anywhere; }
+.v2-workflow-draft-step .react-flow__handle,
+.v2-workflow-draft-target .react-flow__handle { width: 11px; height: 11px; border: 2px solid var(--mira-surface); background: var(--mira-workflow); }
+.v2-draft-previous-handle { top: 28px !important; }
+.workflow-draft-internal-edge path { stroke: var(--mira-workflow); stroke-dasharray: 5 4; }
+.workflow-draft-binding-edge path { stroke: var(--mira-accent); stroke-width: 1.6; }
+
+.v2-workflow-input-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.v2-workflow-input-list > span { align-self: center; color: var(--mira-muted); font-size: 10px; }
+.v2-workflow-input-list strong { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border-left: 2px solid var(--mira-workflow); background: var(--mira-workflow-soft); color: var(--mira-ink); font-size: 10px; font-weight: 600; }
+.v2-workflow-input-list small { color: var(--mira-muted); font-size: 9px; font-weight: 500; }
+.v2-workflow-use { width: 100%; margin-top: 10px; }
+
+.v2-workflow-input-editor { display: grid; gap: 8px; }
+.v2-workflow-input-editor fieldset { min-width: 0; display: grid; gap: 8px; margin: 0; padding: 8px; border: 1px solid var(--mira-border); background: var(--mira-surface); }
+.v2-workflow-input-editor legend { max-width: 100%; padding: 0 4px; color: var(--mira-ink); font-size: 10px; overflow-wrap: anywhere; }
+.v2-workflow-input-editor legend span { margin-right: 6px; color: var(--mira-accent); }
+.v2-workflow-input-editor legend small { margin-left: 6px; color: var(--mira-faint); }
+.v2-workflow-input-editor fieldset > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 8px; }
+.v2-workflow-required { min-height: 36px; display: flex !important; grid-auto-flow: column; align-items: center; gap: 5px !important; color: var(--mira-muted); font-size: 11px; }
+.v2-workflow-required input { width: 16px; height: 16px; }

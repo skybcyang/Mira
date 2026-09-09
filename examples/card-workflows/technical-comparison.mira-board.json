@@ -1,0 +1,174 @@
+{
+  "format": "mira-board",
+  "formatVersion": 1,
+  "exportedAt": "2026-09-07T10:00:00.000Z",
+  "board": {
+    "schemaVersion": 2,
+    "id": "example-technical-comparison",
+    "title": "示例：技术资料到方案决策（虚构）",
+    "revision": 0,
+    "lifecycle": {
+      "state": "active"
+    },
+    "cards": [
+      {
+        "id": "technical-comparison-card-0",
+        "contentKind": "markdown",
+        "x": 40,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "technical-comparison-card-0-v1",
+        "versions": [
+          {
+            "id": "technical-comparison-card-0-v1",
+            "cardId": "technical-comparison-card-0",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 技术资料（虚构）\n\n人工编写的比较练习。甲方案、乙方案均为虚构系统，数值仅是题设，不代表真实产品或测试。\n\n需求题设：单人维护离线笔记工具，首版两周；必须离线读取，必须能导出正文；不需要实时多人协作。\n\n- 甲方案资料：离线读取支持；正文导出支持；题设预计接入 3 天；同步功能尚无设计。\n- 乙方案资料：离线读取需额外模块；正文导出支持；题设预计接入 8 天；具备协作模块。\n\n资料缺口：两方案都没有本项目的数据恢复演练或实际性能测量。接入天数是未验证估计。"
+            },
+            "digest": "fnv1a:b209cbd3",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "technical-comparison-card-1",
+        "contentKind": "markdown",
+        "x": 720,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "technical-comparison-card-1-v1",
+        "versions": [
+          {
+            "id": "technical-comparison-card-1-v1",
+            "cardId": "technical-comparison-card-1",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 约束清单（虚构）\n\n人工编写的中间成果，只从示例技术资料提取约束。\n\n硬约束：离线读取可用、可导出正文、首版两周内交付。维护者只有一人，因此额外模块也需要计入验证工作。\n\n当前不需要：实时多人协作，不能把协作模块当作必须优先的收益。\n\n决策时需要比较：满足硬约束的方式、接入风险、资料缺口。甲的 3 天和乙的 8 天都只是题设估计，不能当作实测成本。\n\n共同验证项：离线读取、导出再读取、数据恢复。当前没有依据对实际性能排出高低。\n\n带入下一步的资料摘录：甲已列明离线读取与正文导出，接入估计 3 天，同步无设计；乙已列明正文导出与协作模块，离线需额外模块，接入估计 8 天。两者恢复和性能测量都缺失。"
+            },
+            "digest": "fnv1a:81221072",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "technical-comparison-card-2",
+        "contentKind": "markdown",
+        "x": 1400,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "technical-comparison-card-2-v1",
+        "versions": [
+          {
+            "id": "technical-comparison-card-2-v1",
+            "cardId": "technical-comparison-card-2",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 方案比较（虚构）\n\n人工编写的中间成果，按约束清单比较题设中的两个方案。\n\n| 维度 | 甲方案 | 乙方案 |\n| --- | --- | --- |\n| 离线读取 | 资料标为支持，仍需验证 | 需要额外模块，集成有不确定性 |\n| 正文导出 | 资料标为支持 | 资料标为支持 |\n| 接入估计 | 3 天，未验证 | 8 天，未验证 |\n| 本次不需要的协作 | 未提供 | 已有模块，但不能抵消硬约束 |\n| 恢复与性能证据 | 缺失 | 缺失 |\n\n初步倾向甲：题设下需补的离线能力更少。该倾向不等于甲实际更快、更可靠；验证结果可改变选择。"
+            },
+            "digest": "fnv1a:620fa6c8",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "technical-comparison-card-3",
+        "contentKind": "markdown",
+        "x": 2080,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "technical-comparison-card-3-v1",
+        "versions": [
+          {
+            "id": "technical-comparison-card-3-v1",
+            "cardId": "technical-comparison-card-3",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 决策记录（虚构）\n\n人工编写的最终示例成果，依据比较表，而非真实基准测试。\n\n暂选甲进行受限原型验证。理由：它在题设资料中已覆盖离线与导出，接入估计较低；乙的协作模块不属于首版目标。\n\n验收：断开网络后读取已有笔记；导出正文并重新读取；模拟一次测试数据恢复。使用可丢弃测试数据，不接入真实个人笔记。\n\n转向条件：甲无法通过离线或恢复验收，或实际接入时间威胁两周期限时，重新比较乙的额外模块与其它选择。\n\n未决：性能与长期同步方案。此记录只解释本题设的暂定选择，不是通用技术推荐。"
+            },
+            "digest": "fnv1a:07a2b83c",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      }
+    ],
+    "transformations": [
+      {
+        "id": "technical-comparison-step-1",
+        "sourceCardIds": [
+          "technical-comparison-card-0"
+        ],
+        "targetCardId": "technical-comparison-card-1",
+        "label": "明确约束",
+        "instruction": "从技术资料提取硬约束、非目标和待验证事实。把题设估计与实测结果分开，不补造性能数据或产品能力。",
+        "acceptance": "硬约束与非目标明确；估计保留未验证标识。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "technical-comparison-step-2",
+        "sourceCardIds": [
+          "technical-comparison-card-1"
+        ],
+        "targetCardId": "technical-comparison-card-2",
+        "label": "比较方案",
+        "instruction": "按上一张约束清单中的维度比较资料列出的方案，保留原始资料的限制。证据不足处写未知，不用缺失信息强行排名。",
+        "acceptance": "每个方案使用相同维度；证据缺口可见。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "technical-comparison-step-3",
+        "sourceCardIds": [
+          "technical-comparison-card-2"
+        ],
+        "targetCardId": "technical-comparison-card-3",
+        "label": "形成决策",
+        "instruction": "依据上一张比较表给出暂定选择、验证清单与改变选择的条件。说明未决问题，不能把原型计划写成完成事实。",
+        "acceptance": "选择有理由；含验收、转向条件与未决项。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      }
+    ],
+    "viewport": {
+      "x": 24,
+      "y": 100,
+      "zoom": 0.45
+    },
+    "createdAt": "2026-09-07T10:00:00.000Z",
+    "updatedAt": "2026-09-07T10:00:00.000Z"
+  },
+  "runs": [],
+  "workflowProvenance": [],
+  "fileDependencies": [],
+  "externalReferences": []
+}

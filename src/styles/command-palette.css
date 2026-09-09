@@ -1,0 +1,168 @@
+.v2-command-palette {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(640px, calc(100dvh - min(16vh, 140px) - 20px));
+  display: flex;
+  flex-direction: column;
+  margin: min(16vh, 140px) auto auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--mira-control-border);
+  border-radius: var(--mira-radius-panel);
+  background: var(--mira-surface);
+  color: var(--mira-ink);
+  box-shadow: var(--mira-shadow-raised);
+}
+
+.v2-command-palette:not([open]) {
+  display: none;
+}
+
+.v2-command-palette::backdrop {
+  background: var(--mira-backdrop);
+  backdrop-filter: blur(2px);
+}
+
+.v2-command-search {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 15px;
+  border-bottom: 1px solid var(--mira-border);
+  color: var(--mira-faint);
+}
+
+.v2-command-search input {
+  min-width: 0;
+  height: 100%;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--mira-ink);
+  font-size: 14px;
+}
+
+.v2-command-search > button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--mira-radius-control);
+  background: transparent;
+  color: var(--mira-muted);
+}
+
+.v2-command-search > button:hover {
+  background: var(--mira-surface-subtle);
+  color: var(--mira-ink);
+}
+
+.v2-command-results {
+  min-height: 0;
+  flex: 1;
+  max-height: min(520px, calc(100dvh - 170px));
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.v2-command-results > small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px 7px;
+  color: var(--mira-faint);
+  font-family: var(--mira-font-meta);
+  font-size: 9px;
+}
+
+.v2-command-results > p {
+  margin: 0;
+  padding: 28px 12px;
+  color: var(--mira-faint);
+  text-align: center;
+}
+
+.v2-command-results > button {
+  width: 100%;
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--mira-radius-control);
+  background: transparent;
+  color: var(--mira-ink);
+  text-align: left;
+}
+
+.v2-command-results > button:hover,
+.v2-command-results > button[data-active='true'] {
+  background: var(--mira-surface-subtle);
+}
+
+.v2-command-results > button > span:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.v2-command-results > button[data-kind='card'] {
+  min-height: 76px;
+}
+
+.v2-command-results > button[data-kind='card'] strong {
+  font-size: 14px;
+}
+
+.v2-command-results > button[data-kind='card'] small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.v2-command-results strong,
+.v2-command-results small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-command-results strong { font-size: 12px; }
+.v2-command-results small { color: var(--mira-faint); font-size: 10px; }
+
+.v2-command-result-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--mira-border);
+  border-radius: var(--mira-radius-control);
+  color: var(--mira-muted);
+}
+
+.v2-file-picker-confirm,
+.v2-more-menu form > button,
+.v2-generate-button,
+.v2-primary-button,
+.v2-inspiration-result[aria-pressed='true'] .v2-inspiration-result-index {
+  color: var(--mira-on-accent);
+}
+
+.v2-selection-toolbar.is-confirming button.danger {
+  color: var(--mira-on-danger);
+}
+
+input,
+textarea,
+select {
+  border-color: var(--mira-control-border);
+}

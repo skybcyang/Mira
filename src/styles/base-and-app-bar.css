@@ -1,0 +1,266 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--mira-canvas);
+  color: var(--mira-ink);
+  font-family: var(--mira-font-body);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: 0;
+}
+
+button,
+summary,
+select {
+  touch-action: manipulation;
+}
+
+button,
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.react-flow__handle:focus-visible {
+  outline: 2px solid var(--mira-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--mira-accent-soft);
+  color: var(--mira-ink);
+}
+
+.v2-app {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--mira-canvas);
+  color: var(--mira-ink);
+}
+
+.v2-app-bar {
+  position: fixed;
+  z-index: 60;
+  inset: 0 0 auto;
+  height: 48px;
+  display: grid;
+  grid-template-columns: 58px minmax(120px, 260px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 16px;
+  border-bottom: 1px solid var(--mira-border);
+  background: var(--mira-surface);
+}
+
+.v2-brand {
+  color: var(--mira-ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.v2-board-select {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 0 28px 0 9px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: var(--mira-surface);
+  color: var(--mira-ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-board-select:hover,
+.v2-board-select:focus-visible {
+  border-color: var(--mira-border);
+  background: var(--mira-surface-subtle);
+}
+
+.v2-save-state {
+  min-width: 68px;
+  color: var(--mira-faint);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.v2-save-state.saving {
+  color: var(--mira-accent);
+}
+
+.v2-save-state.error {
+  color: var(--mira-danger);
+}
+
+.v2-app-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.v2-command-button,
+.v2-icon-button {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--mira-muted);
+  font-size: 12px;
+  font-weight: 600;
+  list-style: none;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.v2-icon-button:disabled,
+.v2-more-menu button:disabled {
+  cursor: default;
+  opacity: 0.38;
+}
+
+.v2-mobile-history {
+  display: none;
+}
+
+.v2-command-button {
+  padding: 0 9px;
+}
+
+.v2-icon-button {
+  width: 32px;
+  flex: 0 0 32px;
+  padding: 0;
+}
+
+.v2-command-button:hover,
+.v2-icon-button:hover {
+  background: var(--mira-surface-subtle);
+  color: var(--mira-ink);
+}
+
+.v2-multi-select-command.is-active {
+  border-color: var(--mira-accent);
+  background: var(--mira-accent-soft);
+  color: var(--mira-accent);
+}
+
+.v2-workflow-command {
+  color: var(--mira-accent);
+}
+
+.v2-workflow-command:hover {
+  background: var(--mira-accent-soft);
+  color: var(--mira-accent-hover);
+}
+
+.v2-workbench-navigation {
+  position: fixed;
+  z-index: 55;
+  inset: 78px auto auto 16px;
+  max-height: calc(100dvh - 110px);
+  overflow-y: auto;
+  width: var(--mira-navigation-width);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--mira-border);
+  border-radius: calc(var(--mira-radius-panel) + 8px);
+  box-shadow: var(--mira-shadow);
+  background: var(--mira-surface);
+}
+.v2-workbench-navigation > button {
+  min-height: 58px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0;
+  border: 1px solid transparent;
+  border-radius: var(--mira-radius-control);
+  background: transparent;
+  color: var(--mira-muted);
+  font-size: 11px;
+}
+.v2-workbench-navigation > button:hover { background: var(--mira-surface-hover); }
+.v2-workbench-navigation > button[aria-pressed='true'] { color: var(--mira-accent); background: var(--mira-accent-soft); border-color: var(--mira-border); }
+.v2-workbench-navigation > .v2-navigation-collapse { margin-top: 4px; min-height: 44px; }
+:root[data-navigation-collapsed='true'] .v2-workbench-navigation span { display: none; }
+:root[data-navigation-collapsed='true'] .v2-workbench-navigation > button { min-height: 44px; }
+.v2-workbench-navigation > .v2-navigation-create { background: var(--mira-accent); color: var(--mira-on-accent); }
+.v2-workbench-navigation > .v2-navigation-create:hover { background: var(--mira-accent-hover); }
+.v2-workbench-navigation > .v2-navigation-select { margin-bottom: 6px; }
+
+.v2-board-menu { position: relative; min-width: 0; flex: 1; max-width: 240px; }
+.v2-board-menu-trigger { display: flex; align-items: center; gap: 8px; max-width: 100%; min-height: 38px; border: 0; padding: 6px 8px; border-radius: var(--mira-radius-control); background: transparent; color: var(--mira-ink); font-size: 13px; }
+.v2-board-menu-trigger > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.v2-board-menu-trigger > svg { flex-shrink: 0; }
+.v2-board-menu-trigger:hover { background: var(--mira-surface-hover); }
+.v2-board-menu-popover { position: absolute; z-index: 90; top: calc(100% + 9px); left: 0; width: min(380px, calc(100vw - 110px)); padding: 10px; border: 1px solid var(--mira-border); border-radius: calc(var(--mira-radius-panel) + 4px); background: var(--mira-surface); color: var(--mira-ink); box-shadow: var(--mira-shadow-raised); }
+.v2-board-menu-search { display: flex; align-items: center; gap: 8px; padding: 0 6px 8px; border-bottom: 1px solid var(--mira-border); color: var(--mira-muted); }
+.v2-board-menu-search input { min-width: 0; width: 100%; height: 40px; border: 0; padding: 6px; background: transparent; color: var(--mira-ink); font-size: 13px; }
+.v2-board-menu-list { overflow-y: auto; overscroll-behavior: contain; max-height: min(380px, calc(100dvh - 260px)); }
+.v2-board-menu-list h3 { display: flex; justify-content: space-between; margin: 14px 8px 5px; color: var(--mira-muted); font-size: 11px; font-weight: 500; }
+.v2-board-menu-empty { margin: 10px 8px; color: var(--mira-muted); font-size: 12px; }
+.v2-board-menu-row { display: flex; align-items: center; gap: 3px; }
+.v2-board-menu-choice { min-width: 0; min-height: 46px; flex: 1; display: grid; gap: 3px; text-align: left; padding: 8px; border: 0; border-radius: var(--mira-radius-control); color: var(--mira-ink); background: transparent; }
+.v2-board-menu-choice:hover { background: var(--mira-surface-hover); }
+.v2-board-menu-choice[aria-current='page'] { background: var(--mira-accent-soft); color: var(--mira-accent); }
+.v2-board-menu-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; }
+.v2-board-menu-status { display: flex; gap: 9px; flex-wrap: wrap; font-size: 11px; color: var(--mira-muted); }
+.v2-board-menu-status:empty { display: none; }
+.v2-board-menu-status > span { display: flex; align-items: center; gap: 3px; }
+.v2-board-menu-status .is-attention { color: var(--mira-danger); }
+.v2-board-menu-row .v2-icon-button { flex-shrink: 0; }
+.v2-board-menu-row .v2-icon-button[aria-pressed='true'] { color: var(--mira-accent); background: var(--mira-accent-soft); }
+.v2-board-menu-popover > footer { display: grid; border-top: 1px solid var(--mira-border); margin-top: 8px; padding-top: 6px; }
+.v2-board-menu-popover > footer button { display: flex; align-items: center; gap: 9px; padding: 10px 8px; border: 0; border-radius: var(--mira-radius-control); background: transparent; color: var(--mira-ink); text-align: left; font-size: 13px; }
+.v2-board-menu-popover > footer button:hover { background: var(--mira-surface-hover); }
+.v2-board-menu-popover > footer small { padding: 5px 8px; color: var(--mira-muted); font-size: 11px; }
+.v2-board-menu-create { padding: 8px; }
+.v2-board-menu-create label { display: grid; gap: 8px; font-size: 13px; }
+.v2-board-menu-create input { width: 100%; height: 40px; padding: 8px; border: 1px solid var(--mira-border); border-radius: var(--mira-radius-control); color: var(--mira-ink); background: var(--mira-canvas); }
+.v2-board-menu-create > div { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.v2-board-menu-create button { min-height: 38px; }
+.v2-board-menu-error { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px; font-size: 12px; color: var(--mira-danger); }

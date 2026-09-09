@@ -1,0 +1,233 @@
+:root {
+  --mira-task-height: 100dvh;
+  --mira-task-top: 0px;
+  --mira-navigation-width: 148px;
+  --mira-font-body: 'Avenir Next', 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mira-font-display: 'Avenir Next', 'SF Pro Display', 'PingFang SC', sans-serif;
+  --mira-font-meta: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --mira-radius-card: 7px;
+  --mira-radius-control: 5px;
+  --mira-radius-panel: 8px;
+  --mira-shadow-card: 0 5px 18px rgba(29, 45, 36, 0.07);
+  --mira-shadow: 0 8px 24px rgba(29, 45, 36, 0.09);
+  --mira-shadow-raised: 0 18px 48px rgba(29, 45, 36, 0.14);
+  --mira-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --mira-chrome: rgba(255, 255, 255, 0.82);
+  --mira-backdrop: rgba(16, 24, 19, 0.4);
+}
+
+:root[data-navigation-collapsed='true'] { --mira-navigation-width: 54px; }
+
+:root[data-theme='studio'] {
+  --mira-font-body: 'Avenir Next', 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mira-font-display: 'Avenir Next', 'SF Pro Display', 'PingFang SC', sans-serif;
+  --mira-font-meta: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --mira-radius-card: 8px;
+  --mira-radius-control: 6px;
+  --mira-radius-panel: 8px;
+  --mira-shadow-card: 0 5px 18px rgba(29, 45, 36, 0.07);
+  --mira-shadow-raised: 0 18px 48px rgba(29, 45, 36, 0.14);
+}
+
+:root[data-theme='editorial'] {
+  --mira-font-body: 'Avenir Next', 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mira-font-display: 'Iowan Old Style', 'Baskerville', 'Songti SC', 'STSong', serif;
+  --mira-font-meta: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --mira-radius-card: 3px;
+  --mira-radius-control: 3px;
+  --mira-radius-panel: 4px;
+  --mira-shadow-card: 0 1px 0 rgba(25, 31, 27, 0.08);
+  --mira-shadow-raised: 0 10px 32px rgba(25, 31, 27, 0.12);
+}
+
+:root[data-theme='blueprint'] {
+  --mira-font-body: 'Avenir Next', 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --mira-font-display: 'Arial Narrow', 'Avenir Next Condensed', 'PingFang SC', sans-serif;
+  --mira-font-meta: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --mira-radius-card: 0px;
+  --mira-radius-control: 0px;
+  --mira-radius-panel: 0px;
+  --mira-shadow-card: 4px 4px 0 color-mix(in srgb, var(--mira-accent) 38%, transparent);
+  --mira-shadow-raised: 6px 6px 0 color-mix(in srgb, var(--mira-ink) 18%, transparent);
+}
+
+:root[data-theme='studio'][data-color-scheme='light'] {
+  --mira-canvas: #edf1ef;
+  --mira-surface: #ffffff;
+  --mira-surface-subtle: #f0f4f2;
+  --mira-surface-hover: #e5ece8;
+  --mira-ink: #172019;
+  --mira-muted: #4d5b52;
+  --mira-faint: #59685f;
+  --mira-border: #d4ddd7;
+  --mira-border-strong: #aab8af;
+  --mira-control-border: #7a8b81;
+  --mira-accent: #2f7458;
+  --mira-accent-hover: #245943;
+  --mira-accent-soft: #dcebe3;
+  --mira-on-accent: #ffffff;
+  --mira-workflow: #526772;
+  --mira-workflow-soft: #e6edf0;
+  --mira-warning: #79500d;
+  --mira-warning-soft: #f5e9cf;
+  --mira-danger: #9d3939;
+  --mira-danger-soft: #f6e2e0;
+  --mira-on-danger: #ffffff;
+  --mira-grid: #cbd5cf;
+  --mira-minimap-node: #7a8b81;
+  --mira-chrome: rgba(255, 255, 255, 0.82);
+  --mira-backdrop: rgba(16, 24, 19, 0.4);
+  color-scheme: light;
+}
+
+:root[data-theme='studio'][data-color-scheme='dark'] {
+  --mira-canvas: #101512;
+  --mira-surface: #1b221e;
+  --mira-surface-subtle: #232c27;
+  --mira-surface-hover: #2b3730;
+  --mira-ink: #f0f4f1;
+  --mira-muted: #c0cbc4;
+  --mira-faint: #9daaa2;
+  --mira-border: #3b4841;
+  --mira-border-strong: #5d6d64;
+  --mira-control-border: #718279;
+  --mira-accent: #79c6a0;
+  --mira-accent-hover: #92d6b4;
+  --mira-accent-soft: #263f33;
+  --mira-on-accent: #102019;
+  --mira-workflow: #a8c1cd;
+  --mira-workflow-soft: #26343a;
+  --mira-warning: #e3b467;
+  --mira-warning-soft: #3d3220;
+  --mira-danger: #e88982;
+  --mira-danger-soft: #432827;
+  --mira-on-danger: #24100f;
+  --mira-grid: #303b35;
+  --mira-minimap-node: #718279;
+  --mira-chrome: rgba(27, 34, 30, 0.82);
+  --mira-backdrop: rgba(0, 0, 0, 0.58);
+  color-scheme: dark;
+}
+
+:root[data-theme='editorial'][data-color-scheme='light'] {
+  --mira-canvas: #f3f4f2;
+  --mira-surface: #ffffff;
+  --mira-surface-subtle: #f0f1ef;
+  --mira-surface-hover: #e7e9e6;
+  --mira-ink: #161a18;
+  --mira-muted: #4f5752;
+  --mira-faint: #626b65;
+  --mira-border: #d4d8d4;
+  --mira-border-strong: #a8afa9;
+  --mira-control-border: #747d76;
+  --mira-accent: #2457c6;
+  --mira-accent-hover: #183f9b;
+  --mira-accent-soft: #e6ebf7;
+  --mira-on-accent: #ffffff;
+  --mira-workflow: #526371;
+  --mira-workflow-soft: #e9edef;
+  --mira-warning: #79500d;
+  --mira-warning-soft: #f5e9cf;
+  --mira-danger: #9d3939;
+  --mira-danger-soft: #f6e2e0;
+  --mira-on-danger: #ffffff;
+  --mira-grid: #cbd1cc;
+  --mira-minimap-node: #747d76;
+  --mira-chrome: #ffffff;
+  --mira-backdrop: rgba(21, 25, 22, 0.36);
+  color-scheme: light;
+}
+
+:root[data-theme='editorial'][data-color-scheme='dark'] {
+  --mira-canvas: #111311;
+  --mira-surface: #1b1e1b;
+  --mira-surface-subtle: #242824;
+  --mira-surface-hover: #2e332e;
+  --mira-ink: #f2f3f1;
+  --mira-muted: #c4c9c4;
+  --mira-faint: #a2aaa3;
+  --mira-border: #3b413b;
+  --mira-border-strong: #5f675f;
+  --mira-control-border: #727b72;
+  --mira-accent: #8baeff;
+  --mira-accent-hover: #a6c0ff;
+  --mira-accent-soft: #27334e;
+  --mira-on-accent: #0c1730;
+  --mira-workflow: #afc0cc;
+  --mira-workflow-soft: #29343a;
+  --mira-warning: #e4ba6d;
+  --mira-warning-soft: #3d3321;
+  --mira-danger: #f08f88;
+  --mira-danger-soft: #462928;
+  --mira-on-danger: #2a1010;
+  --mira-grid: #303630;
+  --mira-minimap-node: #727b72;
+  --mira-chrome: #1b1e1b;
+  --mira-backdrop: rgba(0, 0, 0, 0.62);
+  color-scheme: dark;
+}
+
+:root[data-theme='blueprint'][data-color-scheme='light'] {
+  --mira-canvas: #d9ddda;
+  --mira-surface: #f9faf8;
+  --mira-surface-subtle: #eef1ee;
+  --mira-surface-hover: #e3e7e3;
+  --mira-ink: #101411;
+  --mira-muted: #414943;
+  --mira-faint: #535d56;
+  --mira-border: #9ca59e;
+  --mira-border-strong: #68736b;
+  --mira-control-border: #68736b;
+  --mira-accent: #b92e28;
+  --mira-accent-hover: #8e211d;
+  --mira-accent-soft: #f5d9d6;
+  --mira-on-accent: #ffffff;
+  --mira-workflow: #3f5864;
+  --mira-workflow-soft: #e0e6e8;
+  --mira-warning: #74500d;
+  --mira-warning-soft: #f2e3c5;
+  --mira-danger: #981f1d;
+  --mira-danger-soft: #f4d9d6;
+  --mira-on-danger: #ffffff;
+  --mira-grid: #a9b1ab;
+  --mira-minimap-node: #768078;
+  --mira-chrome: #f9faf8;
+  --mira-backdrop: rgba(12, 16, 13, 0.42);
+  color-scheme: light;
+}
+
+:root[data-theme='blueprint'][data-color-scheme='dark'] {
+  --mira-canvas: #0c0f0d;
+  --mira-surface: #171b18;
+  --mira-surface-subtle: #202621;
+  --mira-surface-hover: #29312b;
+  --mira-ink: #f2f4f1;
+  --mira-muted: #c5cbc6;
+  --mira-faint: #a1aaa3;
+  --mira-border: #485149;
+  --mira-border-strong: #6a756c;
+  --mira-control-border: #768278;
+  --mira-accent: #ff655c;
+  --mira-accent-hover: #ff827a;
+  --mira-accent-soft: #492421;
+  --mira-on-accent: #260606;
+  --mira-workflow: #b0c2cb;
+  --mira-workflow-soft: #263238;
+  --mira-warning: #f1bf62;
+  --mira-warning-soft: #44351c;
+  --mira-danger: #ff716a;
+  --mira-danger-soft: #492421;
+  --mira-on-danger: #2d0807;
+  --mira-grid: #323a34;
+  --mira-minimap-node: #768278;
+  --mira-chrome: #171b18;
+  --mira-backdrop: rgba(0, 0, 0, 0.68);
+  color-scheme: dark;
+}
+/* Organization colors are independent of semantic status and appearance accent. */
+[data-card-color='red'] { --mira-card-color: #cc6577; }
+[data-card-color='orange'] { --mira-card-color: #ca874b; }
+[data-card-color='yellow'] { --mira-card-color: #bba340; }
+[data-card-color='green'] { --mira-card-color: #559d7b; }
+[data-card-color='blue'] { --mira-card-color: #608ed0; }
+[data-card-color='violet'] { --mira-card-color: #a280c5; }

@@ -1,0 +1,465 @@
+.v2-context-dock {
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  bottom: 16px;
+  width: min(760px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  overflow: auto;
+  transform: translateX(-50%);
+  border: 1px solid var(--mira-border);
+  border-radius: 7px;
+  background: var(--mira-surface);
+  box-shadow: var(--mira-shadow-raised);
+  animation: mira-dock-in 160ms ease-out;
+}
+
+.v2-dock-sources {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--mira-border);
+  background: var(--mira-surface-subtle);
+}
+
+.v2-branch-label {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--mira-warning);
+  font-size: 11px;
+}
+
+.v2-source-chip {
+  height: 28px;
+  max-width: 220px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 7px;
+  border: 1px solid var(--mira-border);
+  border-radius: 4px;
+  background: var(--mira-surface);
+  font-size: 11px;
+}
+
+.v2-source-chip > span {
+  color: var(--mira-accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.v2-source-chip strong {
+  max-width: 112px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-source-chip button {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--mira-muted);
+}
+
+.v2-source-chip button:hover:not(:disabled) {
+  background: var(--mira-surface-hover);
+  color: var(--mira-ink);
+}
+
+.v2-cancel-branch {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--mira-muted);
+  font-size: 11px;
+}
+
+.v2-suggestions {
+  min-height: 34px;
+  display: flex;
+  overflow-x: auto;
+  padding: 5px 8px 0;
+}
+
+.v2-suggestions button {
+  min-width: 120px;
+  min-height: 29px;
+  flex: 1 1 0;
+  padding: 5px 8px;
+  border: 0;
+  border-right: 1px solid var(--mira-border);
+  background: transparent;
+  color: var(--mira-ink);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.v2-suggestions button:last-child {
+  border-right: 0;
+}
+
+.v2-suggestions button:hover {
+  background: var(--mira-accent-soft);
+  color: var(--mira-accent);
+}
+
+.v2-suggestions > span {
+  padding: 6px;
+  color: var(--mira-muted);
+  font-size: 11px;
+}
+
+.v2-suggestions > i {
+  height: 24px;
+  flex: 1;
+  margin: 2px 4px;
+}
+
+.v2-custom-target {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: 7px 8px 8px;
+}
+
+.v2-custom-target-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 8px 0;
+  color: var(--mira-muted);
+  font-size: 10px;
+}
+
+.v2-icon-text-button {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 0 7px;
+  border: 1px solid var(--mira-border);
+  border-radius: 4px;
+  background: var(--mira-surface);
+  color: var(--mira-accent);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.v2-icon-text-button:hover:not(:disabled) {
+  border-color: var(--mira-accent);
+  background: var(--mira-accent-soft);
+}
+
+.v2-branch-target-editor {
+  display: grid;
+  gap: 0;
+  padding: 0 8px 8px;
+}
+
+.v2-branch-target-tools,
+.v2-branch-target-title,
+.v2-branch-target-row,
+.v2-branch-target-actions {
+  display: flex;
+  align-items: center;
+}
+
+.v2-branch-target-tools {
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+  padding: 0 0 2px;
+}
+
+.v2-branch-target-title {
+  min-width: 0;
+  gap: 6px;
+  color: var(--mira-ink);
+}
+
+.v2-branch-target-title svg {
+  color: var(--mira-accent);
+}
+
+.v2-branch-target-title span {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.v2-branch-target-title small {
+  color: var(--mira-muted);
+  font-size: 10px;
+}
+
+.v2-branch-target-list {
+  display: grid;
+  gap: 6px;
+  padding-top: 5px;
+}
+
+.v2-branch-target-row {
+  min-width: 0;
+  gap: 6px;
+}
+
+.v2-branch-target-row > span {
+  width: 24px;
+  flex: 0 0 24px;
+  color: var(--mira-muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.v2-branch-target-row input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--mira-border);
+  border-radius: 4px;
+  background: var(--mira-canvas);
+  color: var(--mira-ink);
+  font-size: 12px;
+}
+
+.v2-branch-target-row input::placeholder {
+  color: var(--mira-faint);
+}
+
+.v2-branch-target-row .v2-icon-button {
+  width: 28px;
+  flex-basis: 28px;
+}
+
+.v2-branch-target-actions {
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 7px;
+}
+
+.v2-generate-button {
+  min-width: 96px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--mira-accent);
+  border-radius: 4px;
+  background: var(--mira-accent);
+  color: var(--mira-on-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.v2-generate-button:hover:not(:disabled),
+.v2-primary-button:hover:not(:disabled) {
+  border-color: var(--mira-accent-hover);
+  background: var(--mira-accent-hover);
+}
+
+.v2-workflow-apply {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: 0 8px 8px;
+}
+
+.v2-workflow-apply select {
+  background: var(--mira-surface-subtle);
+  font-size: 12px;
+}
+
+.v2-workflow-apply-preview {
+  display: grid;
+  gap: 12px;
+  max-height: min(68dvh, 560px);
+  padding: 12px;
+  overflow: auto;
+  border-top: 1px solid var(--mira-border);
+  background: var(--mira-accent-soft);
+}
+
+.v2-workflow-apply-preview > header {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.v2-workflow-apply-preview > header strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-workflow-apply-preview > header p,
+.v2-workflow-apply-preview h3,
+.v2-workflow-apply-preview p {
+  margin: 0;
+}
+
+.v2-workflow-apply-preview > header p {
+  color: var(--mira-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.v2-workflow-apply-preview h3 {
+  margin-bottom: 6px;
+  color: var(--mira-faint);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.v2-workflow-preview-sources,
+.v2-workflow-preview-steps {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v2-workflow-preview-sources li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 3px 6px;
+  background: var(--mira-surface);
+}
+
+.v2-workflow-preview-sources li > span,
+.v2-workflow-preview-steps li > span {
+  color: var(--mira-accent);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.v2-workflow-preview-sources strong,
+.v2-workflow-preview-sources small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-workflow-preview-sources strong {
+  font-size: 11px;
+}
+
+.v2-workflow-preview-sources small {
+  color: var(--mira-faint);
+  font-size: 10px;
+}
+
+.v2-workflow-preview-steps li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 7px;
+  padding: 5px 0;
+  border-top: 1px solid var(--mira-border);
+}
+
+.v2-workflow-preview-steps li > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.v2-workflow-preview-steps strong {
+  font-size: 11px;
+}
+
+.v2-workflow-preview-steps p,
+.v2-workflow-preview-steps small {
+  color: var(--mira-muted);
+  font-size: 10px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.v2-workflow-preview-steps small {
+  color: var(--mira-warning);
+}
+
+.v2-workflow-object-count {
+  padding: 8px 9px;
+  border-left: 3px solid var(--mira-accent);
+  background: var(--mira-surface);
+  color: var(--mira-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.v2-workflow-apply-preview > footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.v2-workflow-apply-preview > footer > button:first-child {
+  min-height: 34px;
+  padding: 0 9px;
+  border: 0;
+  background: transparent;
+  color: var(--mira-muted);
+}
+
+.v2-primary-button,
+.v2-secondary-button,
+.v2-danger-button {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--mira-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--mira-ink);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.v2-secondary-button:hover:not(:disabled) {
+  border-color: var(--mira-border-strong);
+  background: var(--mira-surface-subtle);
+}
+
+.v2-primary-button {
+  border-color: var(--mira-accent);
+  background: var(--mira-accent);
+  color: var(--mira-on-accent);
+}
+
+.v2-danger-button {
+  color: var(--mira-danger);
+}
+
+.v2-danger-button:hover:not(:disabled) {
+  border-color: var(--mira-danger);
+  background: var(--mira-danger-soft);
+}
+.v2-source-chip .v2-source-preview-trigger { min-width: 0; flex: 1; width: auto; padding: 0; border: 0; background: transparent; text-align: left; }
+.v2-source-preview-trigger strong { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

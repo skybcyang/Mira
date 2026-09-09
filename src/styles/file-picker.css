@@ -1,0 +1,185 @@
+.v2-file-picker {
+  width: min(520px, calc(100vw - 32px));
+  max-width: none;
+  height: min(480px, calc(100dvh - 64px));
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mira-border-strong);
+  border-radius: 7px;
+  background: var(--mira-surface);
+  color: var(--mira-ink);
+  box-shadow: var(--mira-shadow-raised);
+}
+
+.v2-file-picker::backdrop {
+  background: rgba(15, 22, 18, 0.54);
+}
+
+.v2-file-picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px 10px 16px;
+  border-bottom: 1px solid var(--mira-border);
+}
+
+.v2-file-picker-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.v2-file-picker-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--mira-border);
+}
+
+.v2-file-picker-location {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--mira-muted);
+  font-size: 11px;
+  direction: rtl;
+  text-align: left;
+}
+
+.v2-file-picker-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.v2-file-picker-state {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 22px 16px;
+  color: var(--mira-muted);
+  font-size: 12px;
+}
+
+.v2-file-picker-list {
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+}
+
+.v2-file-picker-entry {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--mira-ink);
+  font-size: 12px;
+  text-align: left;
+}
+
+.v2-file-picker-entry svg {
+  flex: 0 0 auto;
+  color: var(--mira-muted);
+}
+
+.v2-file-picker-entry span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-file-picker-entry:hover {
+  background: var(--mira-surface-subtle);
+}
+
+.v2-file-picker-entry.is-selected {
+  background: var(--mira-accent-soft);
+  color: var(--mira-accent);
+}
+
+.v2-file-picker-entry.is-selected svg {
+  color: var(--mira-accent);
+}
+
+.v2-file-picker-entry em {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: var(--mira-faint);
+  font-size: 10px;
+  font-style: normal;
+}
+
+.v2-file-picker-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  border-top: 1px solid var(--mira-border);
+}
+
+.v2-file-picker-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.v2-file-picker-selection {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--mira-muted);
+  font-size: 11px;
+}
+
+.v2-file-picker-selection.is-empty {
+  color: var(--mira-faint);
+}
+
+.v2-file-picker-confirm {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--mira-accent);
+  border-radius: 4px;
+  background: var(--mira-accent);
+  color: var(--mira-on-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.v2-file-picker-confirm:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.v2-file-picker-overwrite {
+  min-height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--mira-danger);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--mira-danger);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.v2-file-picker-overwrite:hover:not(:disabled) {
+  background: var(--mira-danger-soft);
+}

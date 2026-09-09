@@ -1,0 +1,27 @@
+name: 问题反馈 / Bug report
+description: 用最小材料描述可复现的问题
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "安全问题请按 SECURITY.md 私密报告。不要上传密钥、个人工作区或真实业务材料。"
+  - type: textarea
+    id: environment
+    attributes:
+      label: 运行环境
+      description: 操作系统、源码 commit 或包版本、浏览器、Node/pnpm 版本、启动方式
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 从空工作区开始，使用虚构最小数据；截图请脱敏。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期与实际结果
+    validations:
+      required: true

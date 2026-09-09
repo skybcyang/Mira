@@ -1,0 +1,10 @@
+{
+  "name": "mira-bridge",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  }
+}

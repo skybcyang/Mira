@@ -1,0 +1,911 @@
+{
+  "cards": [
+    {
+      "id": "fixture-card-1",
+      "x": 0,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A1 · 项目边界"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-2",
+      "x": 0,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A2 · 投资上限"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-3",
+      "x": 0,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A3 · 街区范围"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-4",
+      "x": 0,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A4 · 团队条件"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-5",
+      "x": 0,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A5 · 生意目标"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-6",
+      "x": 0,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A6 · 服务约束"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-7",
+      "x": 520,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A7 · 24 位顾客访谈"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-8",
+      "x": 520,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A8 · 三日人流采样"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-9",
+      "x": 520,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A9 · 竞店观察"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-10",
+      "x": 520,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A10 · 铺位 A 报价"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-11",
+      "x": 520,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A11 · 铺位 B 报价"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-12",
+      "x": 520,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A12 · 供应商报价"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-13",
+      "x": 520,
+      "y": 1800,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# A13 · 证照与物业要求"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-14",
+      "x": 3640,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# P1 · 首周 POS 明细"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-15",
+      "x": 3640,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# P2 · 首周运营日志"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-16",
+      "x": 3640,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# P3 · 首周顾客反馈"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-17",
+      "x": 3640,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# P4 · 会员与复购数据"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-18",
+      "x": 3640,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# P5 · 首月损益"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-19",
+      "x": 1040,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B1 · 三类核心顾客"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-20",
+      "x": 1040,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B2 · 需求时段地图"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-21",
+      "x": 1040,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B3 · 铺位评分表"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-22",
+      "x": 1040,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B4 · 单店经济模型 v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-23",
+      "x": 1040,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B5 · 合规缺口清单"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-24",
+      "x": 1040,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# B6 · 服务能力模型"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-25",
+      "x": 1560,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C1 · 定位陈述"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-26",
+      "x": 1560,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C2 · 选址决策：铺位 B"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-27",
+      "x": 1560,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C3 · 店型与营业时间"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-28",
+      "x": 1560,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C4 · 首发菜单架构"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-29",
+      "x": 1560,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C5 · 价格梯度"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-30",
+      "x": 1560,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# C6 · 开业成功门槛"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-31",
+      "x": 2080,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D1 · 租约谈判清单"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-32",
+      "x": 2080,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D2 · 平面与动线要求"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-33",
+      "x": 2080,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D3 · 设备采购单"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-34",
+      "x": 2080,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D4 · 供应与补货方案"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-35",
+      "x": 2080,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D5 · 招聘与排班计划"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-36",
+      "x": 2080,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# D6 · 证照关键路径"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-37",
+      "x": 2600,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E1 · 10 天训练计划"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-38",
+      "x": 2600,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E2 · 开业前现金预算"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-39",
+      "x": 2600,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E3 · 风险登记表"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-40",
+      "x": 2600,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E4 · 开业营销日历"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-41",
+      "x": 2600,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E5 · 工程验收结果"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-42",
+      "x": 2600,
+      "y": 1500,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# E6 · 菜单压力测试"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-43",
+      "x": 3120,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# F1 · 团队就绪度"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-44",
+      "x": 3120,
+      "y": 300,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# F2 · 证照状态"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-45",
+      "x": 3120,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# F3 · 三日试营业方案"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-46",
+      "x": 3120,
+      "y": 900,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# F4 · 正式开业 Go/No-Go"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-47",
+      "x": 3120,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# F5 · 首月经营看板"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-48",
+      "x": 4160,
+      "y": 0,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# G1 · 首周复盘"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-49",
+      "x": 4160,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# G2 · 问题优先级"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-50",
+      "x": 4160,
+      "y": 1200,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# G3 · 30 天调整计划"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-51",
+      "x": 4680,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# G4 · 30 天经营复盘"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-52",
+      "x": 5200,
+      "y": 600,
+      "width": 330,
+      "height": 220,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": "# G5 · 下一阶段决策"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fixture-card-53",
+      "x": 6240,
+      "y": 900,
+      "width": 360,
+      "height": 240,
+      "headVersionId": "fixture-version",
+      "versions": [
+        {
+          "id": "fixture-version",
+          "content": {
+            "markdown": ""
+          }
+        }
+      ]
+    }
+  ],
+  "transformations": [
+    {
+      "targetCardId": "fixture-card-53",
+      "sourceCardIds": [
+        "fixture-card-1",
+        "fixture-card-2",
+        "fixture-card-3",
+        "fixture-card-4",
+        "fixture-card-5",
+        "fixture-card-6",
+        "fixture-card-7",
+        "fixture-card-8",
+        "fixture-card-9",
+        "fixture-card-10",
+        "fixture-card-11",
+        "fixture-card-12",
+        "fixture-card-13",
+        "fixture-card-14",
+        "fixture-card-15",
+        "fixture-card-16",
+        "fixture-card-17",
+        "fixture-card-18",
+        "fixture-card-19",
+        "fixture-card-20",
+        "fixture-card-21",
+        "fixture-card-22",
+        "fixture-card-23",
+        "fixture-card-24",
+        "fixture-card-25",
+        "fixture-card-26",
+        "fixture-card-27",
+        "fixture-card-28",
+        "fixture-card-29",
+        "fixture-card-30",
+        "fixture-card-31",
+        "fixture-card-32",
+        "fixture-card-33",
+        "fixture-card-34",
+        "fixture-card-35",
+        "fixture-card-36",
+        "fixture-card-37",
+        "fixture-card-38",
+        "fixture-card-39",
+        "fixture-card-40",
+        "fixture-card-41",
+        "fixture-card-42",
+        "fixture-card-43",
+        "fixture-card-44",
+        "fixture-card-45",
+        "fixture-card-46",
+        "fixture-card-47",
+        "fixture-card-48",
+        "fixture-card-49",
+        "fixture-card-50",
+        "fixture-card-51",
+        "fixture-card-52"
+      ]
+    }
+  ]
+}

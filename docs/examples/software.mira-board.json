@@ -1,0 +1,536 @@
+{
+  "format": "mira-board",
+  "formatVersion": 1,
+  "exportedAt": "2026-09-09T11:27:11.177Z",
+  "board": {
+    "schemaVersion": 2,
+    "id": "board-i7sabdmtu0k8t3",
+    "title": "离线阅读 1.1 · 周三变更评审",
+    "revision": 25,
+    "lifecycle": {
+      "state": "active"
+    },
+    "cards": [
+      {
+        "id": "card-niwck2mtu0k8t8",
+        "name": "F-12｜地铁里的失败",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 0,
+        "width": 290,
+        "height": 210,
+        "color": "blue",
+        "headVersionId": "version-211eskmtu0k8t8",
+        "versions": [
+          {
+            "id": "version-211eskmtu0k8t8",
+            "cardId": "card-niwck2mtu0k8t8",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。"
+            },
+            "digest": "fnv1a:bfd44027",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:07.676Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:07.676Z",
+        "updatedAt": "2026-09-09T11:27:07.676Z"
+      },
+      {
+        "id": "card-n71xocmtu0k8t9",
+        "name": "本期承诺｜两周",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 260,
+        "width": 290,
+        "height": 210,
+        "color": "yellow",
+        "headVersionId": "version-jykc52mtu0k8t9",
+        "versions": [
+          {
+            "id": "version-jykc52mtu0k8t9",
+            "cardId": "card-n71xocmtu0k8t9",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。"
+            },
+            "digest": "fnv1a:8e95c0a3",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:07.677Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:07.677Z",
+        "updatedAt": "2026-09-09T11:27:07.677Z"
+      },
+      {
+        "id": "card-r74bm2mtu0k8tc",
+        "contentKind": "markdown",
+        "x": 610,
+        "y": 70,
+        "width": 330,
+        "height": 405,
+        "headVersionId": "version-zankxjmtu0k9lw",
+        "versions": [
+          {
+            "id": "version-ih0ag2mtu0k8tj",
+            "cardId": "card-r74bm2mtu0k8tc",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？"
+            },
+            "digest": "fnv1a:267bb620",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:07.686Z",
+            "sourceRunId": "run-bbgjmumtu0k8tf"
+          },
+          {
+            "id": "version-zankxjmtu0k9lw",
+            "cardId": "card-r74bm2mtu0k8tc",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。"
+            },
+            "digest": "fnv1a:8d6fdbcd",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:08.708Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:07.680Z",
+        "updatedAt": "2026-09-09T11:27:08.708Z"
+      },
+      {
+        "id": "card-bbmz85mtu0k92f",
+        "contentKind": "markdown",
+        "x": 1270,
+        "y": 0,
+        "width": 340,
+        "height": 245,
+        "headVersionId": "version-s1i35pmtu0k92w",
+        "versions": [
+          {
+            "id": "version-s1i35pmtu0k92w",
+            "cardId": "card-bbmz85mtu0k92f",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。"
+            },
+            "digest": "fnv1a:6ab09e84",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:08.023Z",
+            "sourceRunId": "run-hsz5t0mtu0k92p"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:08.007Z",
+        "updatedAt": "2026-09-09T11:27:08.023Z"
+      },
+      {
+        "id": "card-ttc1fdmtu0k970",
+        "contentKind": "markdown",
+        "x": 1270,
+        "y": 300,
+        "width": 340,
+        "height": 220,
+        "headVersionId": "version-da1z7nmtu0k9m1",
+        "versions": [
+          {
+            "id": "version-vn3aermtu0k97h",
+            "cardId": "card-ttc1fdmtu0k970",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。"
+            },
+            "digest": "fnv1a:79df3476",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:08.188Z",
+            "sourceRunId": "run-go4gwymtu0k979"
+          },
+          {
+            "id": "version-da1z7nmtu0k9m1",
+            "cardId": "card-ttc1fdmtu0k970",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。"
+            },
+            "digest": "fnv1a:9315eac1",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:08.712Z",
+            "sourceRunId": "run-wbg9dvmtu0k9ly"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:08.172Z",
+        "updatedAt": "2026-09-09T11:27:08.712Z"
+      },
+      {
+        "id": "card-26qj27mtu0k9kw",
+        "name": "下次再讨论",
+        "contentKind": "markdown",
+        "x": 640,
+        "y": 540,
+        "width": 300,
+        "height": 210,
+        "color": "violet",
+        "headVersionId": "version-7d3cijmtu0k9kw",
+        "versions": [
+          {
+            "id": "version-7d3cijmtu0k9kw",
+            "cardId": "card-26qj27mtu0k9kw",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 暂存需求\n\n用户希望“出门前下载整个收藏夹”。\n\n先收集使用频率和存储预算，不塞进这次迭代。"
+            },
+            "digest": "fnv1a:1d30f2a0",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:08.672Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:08.672Z",
+        "updatedAt": "2026-09-09T11:27:08.672Z"
+      },
+      {
+        "id": "card-ospocjmtu0k9u4",
+        "name": "F-19｜新反馈，待回归",
+        "contentKind": "markdown",
+        "x": 650,
+        "y": -255,
+        "width": 310,
+        "height": 230,
+        "color": "red",
+        "headVersionId": "version-1cmi7jmtu0k9u4",
+        "versions": [
+          {
+            "id": "version-1cmi7jmtu0k9u4",
+            "cardId": "card-ospocjmtu0k9u4",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 周三新增 F-19\n\n下载到一半切成飞行模式，页面一直显示“下载中”。\n\n期望：有明确失败提示，能够重试。"
+            },
+            "digest": "fnv1a:13c7a6c5",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.004Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.004Z",
+        "updatedAt": "2026-09-09T11:27:09.004Z"
+      }
+    ],
+    "transformations": [
+      {
+        "id": "transformation-r6ctkzmtu0k8tc",
+        "sourceCardIds": [
+          "card-niwck2mtu0k8t8",
+          "card-n71xocmtu0k8t9"
+        ],
+        "targetCardId": "card-r74bm2mtu0k8tc",
+        "label": "限定本期范围",
+        "instruction": "把用户反馈与一名开发者、两周的约束整理为离线阅读 1.1 的范围。区分本期交付、不做、评审决定和待确认；只做单篇手动下载，不承诺批量、同步或新管理页。",
+        "acceptance": "每个范围项有反馈或约束依据；下载失败与清理不能删除收藏；未定义的更新提示保持待确认。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:07.680Z",
+        "updatedAt": "2026-09-09T11:27:07.686Z",
+        "x": 330,
+        "y": 160,
+        "lastRunId": "run-bbgjmumtu0k8tf",
+        "lastAppliedRunId": "run-bbgjmumtu0k8tf"
+      },
+      {
+        "id": "transformation-f18pnemtu0k92f",
+        "sourceCardIds": [
+          "card-r74bm2mtu0k8tc",
+          "card-ospocjmtu0k9u4"
+        ],
+        "targetCardId": "card-bbmz85mtu0k92f",
+        "label": "推导回归用例",
+        "instruction": "以确认的需求为准编写前置条件、操作、可观察结果。若来源包含新反馈，单列补充回归：下载中切换飞行模式、失败提示与重试。保留旧验收覆盖，未实际执行的用例不要勾选通过。",
+        "acceptance": "覆盖在线下载、离线打开、失败重试与清理；新反馈能追溯编号；没有编造测试通过记录。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:08.007Z",
+        "updatedAt": "2026-09-09T11:27:09.011Z",
+        "x": 980,
+        "y": 95,
+        "lastRunId": "run-hsz5t0mtu0k92p",
+        "lastAppliedRunId": "run-hsz5t0mtu0k92p"
+      },
+      {
+        "id": "transformation-t16176mtu0k970",
+        "sourceCardIds": [
+          "card-r74bm2mtu0k8tc"
+        ],
+        "targetCardId": "card-ttc1fdmtu0k970",
+        "label": "写给试用用户",
+        "instruction": "把当前已确认范围写成简短内测说明，讲清从哪里下载、离线怎样使用、从哪里清理。明确不含批量下载和跨设备同步，不把待确认问题写成已交付功能。",
+        "acceptance": "清理入口与当前人工决定一致；文字面向试用用户；没有新增产品承诺。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:08.172Z",
+        "updatedAt": "2026-09-09T11:27:08.712Z",
+        "x": 980,
+        "y": 360,
+        "lastRunId": "run-wbg9dvmtu0k9ly",
+        "lastAppliedRunId": "run-wbg9dvmtu0k9ly"
+      }
+    ],
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    },
+    "createdAt": "2026-09-09T11:27:07.671Z",
+    "updatedAt": "2026-09-09T11:27:09.011Z",
+    "groups": [
+      {
+        "id": "group-board-i7sabdmtu0k8t3-0",
+        "title": "输入与约束",
+        "color": "blue",
+        "cardIds": [
+          "card-niwck2mtu0k8t8",
+          "card-n71xocmtu0k8t9"
+        ]
+      },
+      {
+        "id": "group-board-i7sabdmtu0k8t3-1",
+        "title": "已确认的交付范围",
+        "color": "green",
+        "cardIds": [
+          "card-r74bm2mtu0k8tc",
+          "card-26qj27mtu0k9kw"
+        ]
+      },
+      {
+        "id": "group-board-i7sabdmtu0k8t3-2",
+        "title": "两条交付支线",
+        "color": "orange",
+        "cardIds": [
+          "card-bbmz85mtu0k92f",
+          "card-ttc1fdmtu0k970"
+        ]
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": "run-bbgjmumtu0k8tf",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-r6ctkzmtu0k8tc",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-niwck2mtu0k8t8",
+          "versionId": "version-211eskmtu0k8t8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。",
+          "digest": "fnv1a:1866f106"
+        },
+        {
+          "cardId": "card-n71xocmtu0k8t9",
+          "versionId": "version-jykc52mtu0k8t9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。",
+          "digest": "fnv1a:1b52181e"
+        }
+      ],
+      "targetCardId": "card-r74bm2mtu0k8tc",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:07.683Z",
+      "startedAt": "2026-09-09T11:27:07.683Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:07.686Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:07.685Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:07.686Z"
+        }
+      ],
+      "result": {
+        "output": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+        "digest": "fnv1a:93852635",
+        "disposition": "applied",
+        "appliedVersionId": "version-ih0ag2mtu0k8tj"
+      },
+      "finishedAt": "2026-09-09T11:27:07.686Z"
+    },
+    {
+      "id": "run-go4gwymtu0k979",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-t16176mtu0k970",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-ih0ag2mtu0k8tj",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+          "digest": "fnv1a:93852635"
+        }
+      ],
+      "targetCardId": "card-ttc1fdmtu0k970",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.181Z",
+      "startedAt": "2026-09-09T11:27:08.182Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.188Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.186Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.188Z"
+        }
+      ],
+      "result": {
+        "output": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。",
+        "digest": "fnv1a:be0f4807",
+        "disposition": "applied",
+        "appliedVersionId": "version-vn3aermtu0k97h"
+      },
+      "finishedAt": "2026-09-09T11:27:08.188Z"
+    },
+    {
+      "id": "run-hsz5t0mtu0k92p",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-f18pnemtu0k92f",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-ih0ag2mtu0k8tj",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
+          "digest": "fnv1a:93852635"
+        }
+      ],
+      "targetCardId": "card-bbmz85mtu0k92f",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.017Z",
+      "startedAt": "2026-09-09T11:27:08.017Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.023Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.021Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.023Z"
+        }
+      ],
+      "result": {
+        "output": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。",
+        "digest": "fnv1a:dcca5af9",
+        "disposition": "applied",
+        "appliedVersionId": "version-s1i35pmtu0k92w"
+      },
+      "finishedAt": "2026-09-09T11:27:08.023Z"
+    },
+    {
+      "id": "run-wbg9dvmtu0k9ly",
+      "boardId": "board-i7sabdmtu0k8t3",
+      "transformationId": "transformation-t16176mtu0k970",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-r74bm2mtu0k8tc",
+          "versionId": "version-zankxjmtu0k9lw",
+          "contentKind": "markdown",
+          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。",
+          "digest": "fnv1a:a7e182e6"
+        }
+      ],
+      "targetCardId": "card-ttc1fdmtu0k970",
+      "targetBaseVersionId": "version-vn3aermtu0k97h",
+      "intent": "update",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:08.710Z",
+      "startedAt": "2026-09-09T11:27:08.710Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:08.712Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:08.712Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:08.712Z"
+        }
+      ],
+      "result": {
+        "output": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。",
+        "digest": "fnv1a:bbc376d8",
+        "disposition": "applied",
+        "appliedVersionId": "version-da1z7nmtu0k9m1"
+      },
+      "finishedAt": "2026-09-09T11:27:08.712Z"
+    }
+  ],
+  "workflowProvenance": [],
+  "fileDependencies": [],
+  "externalReferences": []
+}

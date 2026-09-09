@@ -1,0 +1,71 @@
+{
+  "name": "mira",
+  "version": "0.1.0-beta.2",
+  "private": true,
+  "license": "MIT",
+  "description": "A local canvas for turning source material into editable, traceable work with AI.",
+  "repository": "github:skybcyang/Mira",
+  "packageManager": "pnpm@9.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:bridge": "node scripts/build-bridge.mjs",
+    "desktop:stage": "pnpm build && node scripts/stage-desktop.mjs",
+    "desktop:dev": "pnpm desktop:stage && electron .desktop-stage",
+    "desktop:make": "pnpm desktop:make:arm64 && pnpm desktop:make:x64",
+    "desktop:make:arm64": "node scripts/run-desktop-forge.mjs --arch=arm64",
+    "desktop:make:x64": "node scripts/run-desktop-forge.mjs --arch=x64",
+    "desktop:smoke:packed": "node scripts/packed-desktop-smoke.mjs",
+    "desktop:smoke:packed:arm64": "node scripts/packed-desktop-smoke.mjs --arch=arm64",
+    "desktop:smoke:packed:x64": "node scripts/packed-desktop-smoke.mjs --arch=x64",
+    "start": "node scripts/start-standalone.mjs",
+    "start:standalone": "node scripts/start-standalone.mjs",
+    "restore:backup": "node scripts/restore-backup.mjs",
+    "migrate:remove-relations": "node scripts/migrate-remove-relations.mjs",
+    "start:llm": "MIRA_MODEL_ADAPTER=./bridge/openai-compatible-adapter.js node scripts/start-standalone.mjs",
+    "service:install": "node scripts/macos-service.mjs install",
+    "service:start": "node scripts/macos-service.mjs start",
+    "service:stop": "node scripts/macos-service.mjs stop",
+    "service:restart": "node scripts/macos-service.mjs restart",
+    "service:status": "node scripts/macos-service.mjs status",
+    "service:logs": "node scripts/macos-service.mjs logs",
+    "service:uninstall": "node scripts/macos-service.mjs uninstall",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "@xyflow/react": "^12.3.6",
+    "lucide-react": "^1.33.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "4.0.1",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.2",
+    "@electron-forge/maker-dmg": "^7.11.2",
+    "@electron-forge/maker-zip": "^7.11.2",
+    "@electron-forge/plugin-fuses": "^7.11.2",
+    "@electron/fuses": "^1.8.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "electron": "44.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "~5.6.3",
+    "vite": "^6.4.3",
+    "vitest": "^4.1.11"
+  },
+  "pnpm": {
+    "overrides": {
+      "@electron/packager>extract-zip": "npm:@electron-internal/extract-zip@1.0.5",
+      "@electron/rebuild>@electron/node-gyp": "https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2",
+      "tar@<7.5.21": "^7.5.21",
+      "tmp@<0.2.6": "^0.2.6"
+    }
+  }
+}

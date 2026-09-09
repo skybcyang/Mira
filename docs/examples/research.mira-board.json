@@ -1,0 +1,477 @@
+{
+  "format": "mira-board",
+  "formatVersion": 1,
+  "exportedAt": "2026-09-09T11:27:11.189Z",
+  "board": {
+    "schemaVersion": 2,
+    "id": "board-2j2gn9mtu0k9z6",
+    "title": "首次导入研究 · 别急着归因",
+    "revision": 20,
+    "lifecycle": {
+      "state": "active"
+    },
+    "cards": [
+      {
+        "id": "card-ppekztmtu0k9z8",
+        "name": "I-01｜设置太多",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 195,
+        "color": "blue",
+        "headVersionId": "version-cg8nrrmtu0k9z8",
+        "versions": [
+          {
+            "id": "version-cg8nrrmtu0k9z8",
+            "cardId": "card-ppekztmtu0k9z8",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 访谈摘记 I-01\n\n“我不知道哪些配置必须填完才能开始。”\n\n访谈只记录自述，尚未观察其操作。\n虚构练习材料。"
+            },
+            "digest": "fnv1a:67875f8e",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.188Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.188Z",
+        "updatedAt": "2026-09-09T11:27:09.188Z"
+      },
+      {
+        "id": "card-zhvevbmtu0k9z9",
+        "name": "O-02｜找不到示例",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 240,
+        "width": 300,
+        "height": 195,
+        "color": "blue",
+        "headVersionId": "version-1j1icumtu0k9z9",
+        "versions": [
+          {
+            "id": "version-1j1icumtu0k9z9",
+            "cardId": "card-zhvevbmtu0k9z9",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。"
+            },
+            "digest": "fnv1a:111173a3",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.189Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.189Z",
+        "updatedAt": "2026-09-09T11:27:09.189Z"
+      },
+      {
+        "id": "card-mg0qrhmtu0k9zb",
+        "name": "O-03｜反例",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 480,
+        "width": 300,
+        "height": 220,
+        "color": "red",
+        "headVersionId": "version-0qoh9fmtu0k9zb",
+        "versions": [
+          {
+            "id": "version-0qoh9fmtu0k9zb",
+            "cardId": "card-mg0qrhmtu0k9zb",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 反例 O-03\n\n另一位参与者跳过帮助，直接导入成功；此前用过类似工具。\n\n“新手都怕配置”暂时站不住。"
+            },
+            "digest": "fnv1a:86b021b0",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:09.191Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.191Z",
+        "updatedAt": "2026-09-09T11:27:09.191Z"
+      },
+      {
+        "id": "card-1a53pfmtu0k9zd",
+        "contentKind": "markdown",
+        "x": 640,
+        "y": 0,
+        "width": 350,
+        "height": 280,
+        "headVersionId": "version-qwmv2smtu0k9zp",
+        "versions": [
+          {
+            "id": "version-qwmv2smtu0k9zp",
+            "cardId": "card-1a53pfmtu0k9zd",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。"
+            },
+            "digest": "fnv1a:576ade55",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:09.205Z",
+            "sourceRunId": "run-enw383mtu0k9zm"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.193Z",
+        "updatedAt": "2026-09-09T11:27:09.205Z"
+      },
+      {
+        "id": "card-9arjosmtu0k9zi",
+        "contentKind": "markdown",
+        "x": 640,
+        "y": 410,
+        "width": 350,
+        "height": 280,
+        "headVersionId": "version-uoinkfmtu0kacx",
+        "versions": [
+          {
+            "id": "version-uoinkfmtu0kacx",
+            "cardId": "card-9arjosmtu0k9zi",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。"
+            },
+            "digest": "fnv1a:37b7dd01",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:09.680Z",
+            "sourceRunId": "run-ql6ctumtu0kacp"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:09.198Z",
+        "updatedAt": "2026-09-09T11:27:09.680Z"
+      },
+      {
+        "id": "card-n7s5kvmtu0kalx",
+        "contentKind": "markdown",
+        "x": 1300,
+        "y": 170,
+        "width": 370,
+        "height": 365,
+        "headVersionId": "version-pkugidmtu0kame",
+        "versions": [
+          {
+            "id": "version-pkugidmtu0kame",
+            "cardId": "card-n7s5kvmtu0kalx",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 下一轮研究决定\n\n先验证“成果示例是否帮助首次导入”。\n\n## 为什么\nA、B 都可能成立；目前证据不足以支持重做整个配置页。\n\n## 两个任务\n1. 让新手说出导入成功的预期。\n2. 提供示例后，观察还卡在哪。\n\n## 保留反例\nO-03 的熟练度可能是混杂因素。"
+            },
+            "digest": "fnv1a:60a3aed1",
+            "origin": "ai",
+            "createdAt": "2026-09-09T11:27:10.021Z",
+            "sourceRunId": "run-0hsn1nmtu0kam7"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:10.005Z",
+        "updatedAt": "2026-09-09T11:27:10.021Z"
+      },
+      {
+        "id": "card-f8n9m7mtu0kaqk",
+        "name": "下一次补证据",
+        "contentKind": "markdown",
+        "x": 1300,
+        "y": 625,
+        "width": 370,
+        "height": 200,
+        "color": "yellow",
+        "headVersionId": "version-xghc97mtu0kaqk",
+        "versions": [
+          {
+            "id": "version-xghc97mtu0kaqk",
+            "cardId": "card-f8n9m7mtu0kaqk",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 招募与记录待办\n\n- [ ] 分开招募新手与熟手\n- [ ] 记录中断的实际原因\n- [ ] 记录任务完成后的解释\n\n不把“想用”当成已经会用。"
+            },
+            "digest": "fnv1a:9783d24f",
+            "origin": "human",
+            "createdAt": "2026-09-09T11:27:10.172Z"
+          }
+        ],
+        "createdAt": "2026-09-09T11:27:10.172Z",
+        "updatedAt": "2026-09-09T11:27:10.172Z"
+      }
+    ],
+    "transformations": [
+      {
+        "id": "transformation-uly2r2mtu0k9zd",
+        "sourceCardIds": [
+          "card-ppekztmtu0k9z8",
+          "card-zhvevbmtu0k9z9"
+        ],
+        "targetCardId": "card-1a53pfmtu0k9zd",
+        "label": "解释 A：配置负担",
+        "instruction": "只检验“配置负担可能过高”这一解释：从 I-01 自述与 O-02 观察找支持，同时写证据不足和可推翻该解释的观察。页面停留不等于放弃，不推断发生比例。",
+        "acceptance": "自述与观察分开，保留来源编号；列出替代解释和反证条件。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:09.193Z",
+        "updatedAt": "2026-09-09T11:27:09.205Z",
+        "x": 345,
+        "y": 35,
+        "lastRunId": "run-enw383mtu0k9zm",
+        "lastAppliedRunId": "run-enw383mtu0k9zm"
+      },
+      {
+        "id": "transformation-va0xu4mtu0k9zi",
+        "sourceCardIds": [
+          "card-zhvevbmtu0k9z9",
+          "card-mg0qrhmtu0k9zb"
+        ],
+        "targetCardId": "card-9arjosmtu0k9zi",
+        "label": "解释 B：缺少预期",
+        "instruction": "独立检验“用户不知道导入成功后会得到什么”：对照 O-02 找示例的行为与 O-03 直接成功的反例。考虑熟练程度的混杂，不把所有人合成平均用户。",
+        "acceptance": "明确反例的作用，保留新手与熟手差异；没有宣称已证实原因。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:09.198Z",
+        "updatedAt": "2026-09-09T11:27:09.680Z",
+        "x": 345,
+        "y": 460,
+        "lastRunId": "run-ql6ctumtu0kacp",
+        "lastAppliedRunId": "run-ql6ctumtu0kacp"
+      },
+      {
+        "id": "transformation-uy658bmtu0kalx",
+        "sourceCardIds": [
+          "card-1a53pfmtu0k9zd",
+          "card-9arjosmtu0k9zi"
+        ],
+        "targetCardId": "card-n7s5kvmtu0kalx",
+        "label": "综合证据与反例",
+        "instruction": "比较两张竞争解释中的支持、缺口和反例，决定下一轮先验证什么。提出两个可观察任务和需保留的其他解释；不要因为摘要流畅就建议重做整个配置页。",
+        "acceptance": "能回指 I-01/O-02/O-03；下一轮任务可执行；决策仍是待验证方向，不是研究定论。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-09T11:27:10.005Z",
+        "updatedAt": "2026-09-09T11:27:10.021Z",
+        "x": 1030,
+        "y": 245,
+        "lastRunId": "run-0hsn1nmtu0kam7",
+        "lastAppliedRunId": "run-0hsn1nmtu0kam7"
+      }
+    ],
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    },
+    "createdAt": "2026-09-09T11:27:09.186Z",
+    "updatedAt": "2026-09-09T11:27:10.176Z",
+    "groups": [
+      {
+        "id": "group-board-2j2gn9mtu0k9z6-0",
+        "title": "原始记录 · 保留矛盾",
+        "color": "blue",
+        "cardIds": [
+          "card-ppekztmtu0k9z8",
+          "card-zhvevbmtu0k9z9",
+          "card-mg0qrhmtu0k9zb"
+        ]
+      },
+      {
+        "id": "group-board-2j2gn9mtu0k9z6-1",
+        "title": "竞争解释 · 都还未证实",
+        "color": "violet",
+        "cardIds": [
+          "card-1a53pfmtu0k9zd",
+          "card-9arjosmtu0k9zi"
+        ]
+      },
+      {
+        "id": "group-board-2j2gn9mtu0k9z6-2",
+        "title": "下一轮研究",
+        "color": "green",
+        "cardIds": [
+          "card-n7s5kvmtu0kalx",
+          "card-f8n9m7mtu0kaqk"
+        ]
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": "run-0hsn1nmtu0kam7",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-uy658bmtu0kalx",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-1a53pfmtu0k9zd",
+          "versionId": "version-qwmv2smtu0k9zp",
+          "contentKind": "markdown",
+          "resolvedContent": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。",
+          "digest": "fnv1a:e9132018"
+        },
+        {
+          "cardId": "card-9arjosmtu0k9zi",
+          "versionId": "version-uoinkfmtu0kacx",
+          "contentKind": "markdown",
+          "resolvedContent": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。",
+          "digest": "fnv1a:1deef53c"
+        }
+      ],
+      "targetCardId": "card-n7s5kvmtu0kalx",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:10.015Z",
+      "startedAt": "2026-09-09T11:27:10.015Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:10.021Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:10.020Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:10.021Z"
+        }
+      ],
+      "result": {
+        "output": "# 下一轮研究决定\n\n先验证“成果示例是否帮助首次导入”。\n\n## 为什么\nA、B 都可能成立；目前证据不足以支持重做整个配置页。\n\n## 两个任务\n1. 让新手说出导入成功的预期。\n2. 提供示例后，观察还卡在哪。\n\n## 保留反例\nO-03 的熟练度可能是混杂因素。",
+        "digest": "fnv1a:49ad52fe",
+        "disposition": "applied",
+        "appliedVersionId": "version-pkugidmtu0kame"
+      },
+      "finishedAt": "2026-09-09T11:27:10.021Z"
+    },
+    {
+      "id": "run-enw383mtu0k9zm",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-uly2r2mtu0k9zd",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-ppekztmtu0k9z8",
+          "versionId": "version-cg8nrrmtu0k9z8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 访谈摘记 I-01\n\n“我不知道哪些配置必须填完才能开始。”\n\n访谈只记录自述，尚未观察其操作。\n虚构练习材料。",
+          "digest": "fnv1a:a81a4023"
+        },
+        {
+          "cardId": "card-zhvevbmtu0k9z9",
+          "versionId": "version-1j1icumtu0k9z9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。",
+          "digest": "fnv1a:d4849a12"
+        }
+      ],
+      "targetCardId": "card-1a53pfmtu0k9zd",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.202Z",
+      "startedAt": "2026-09-09T11:27:09.202Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.205Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.204Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.205Z"
+        }
+      ],
+      "result": {
+        "output": "# A｜配置负担可能过高\n\n支持：I-01 不理解必填范围。\n\n不足：O-02 可能只是想先看示例。\n\n反证条件：明确必填项后仍无法继续。\n\n不能仅凭页面停留判断放弃。",
+        "digest": "fnv1a:e9132018",
+        "disposition": "applied",
+        "appliedVersionId": "version-qwmv2smtu0k9zp"
+      },
+      "finishedAt": "2026-09-09T11:27:09.205Z"
+    },
+    {
+      "id": "run-ql6ctumtu0kacp",
+      "boardId": "board-2j2gn9mtu0k9z6",
+      "transformationId": "transformation-va0xu4mtu0k9zi",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-zhvevbmtu0k9z9",
+          "versionId": "version-1j1icumtu0k9z9",
+          "contentKind": "markdown",
+          "resolvedContent": "# 观察 O-02\n\n参与者打开导入页后，先去帮助页寻找示例文件。\n\n返回后才开始填写配置。\n虚构练习材料。",
+          "digest": "fnv1a:d4849a12"
+        },
+        {
+          "cardId": "card-mg0qrhmtu0k9zb",
+          "versionId": "version-0qoh9fmtu0k9zb",
+          "contentKind": "markdown",
+          "resolvedContent": "# 反例 O-03\n\n另一位参与者跳过帮助，直接导入成功；此前用过类似工具。\n\n“新手都怕配置”暂时站不住。",
+          "digest": "fnv1a:f35d080d"
+        }
+      ],
+      "targetCardId": "card-9arjosmtu0k9zi",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "local-demo",
+        "model": "authored-example"
+      },
+      "createdAt": "2026-09-09T11:27:09.673Z",
+      "startedAt": "2026-09-09T11:27:09.673Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-09T11:27:09.680Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在载入人工编写的演示文本",
+          "occurredAt": "2026-09-09T11:27:09.678Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-09T11:27:09.680Z"
+        }
+      ],
+      "result": {
+        "output": "# B｜不知道成功长什么样\n\n支持：O-02 先找示例。\n\n反例：O-03 有经验，直接完成。\n\n下一次分开记录新手与熟手，不把所有人合成一个平均用户。",
+        "digest": "fnv1a:1deef53c",
+        "disposition": "applied",
+        "appliedVersionId": "version-uoinkfmtu0kacx"
+      },
+      "finishedAt": "2026-09-09T11:27:09.680Z"
+    }
+  ],
+  "workflowProvenance": [],
+  "fileDependencies": [],
+  "externalReferences": []
+}

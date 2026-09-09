@@ -1,0 +1,83 @@
+@media (min-width: 1100px) {
+  :root:not([data-navigation-collapsed='true']) .v2-workbench-navigation > button { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 10px; min-height: 44px; font-size: 12px; }
+  .v2-selection-toolbar, .v2-context-dock, .v2-source-picker {
+    left: calc((100% + var(--mira-navigation-width) + 32px) / 2);
+    max-width: calc(100% - var(--mira-navigation-width) - 64px);
+  }
+  .v2-app.has-drawer .v2-canvas-shell {
+    right: 392px;
+  }
+  .v2-app.has-drawer:has(> .v2-detail-drawer.is-expanded) .v2-canvas-shell { right: min(800px, calc(100% - var(--mira-navigation-width) - 360px)); }
+  .v2-app.has-drawer:has(.v2-preserved-panel:not([hidden]) .v2-board-history) .v2-canvas-shell { right: 360px; }
+  .v2-app.has-drawer:has(> .v2-board-history) .v2-canvas-shell {
+    right: 360px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .v2-inspiration-picker { width: calc(100vw - 32px); height: min(720px, calc(100dvh - 32px)); }
+  .v2-candidate-dialog { width: calc(100vw - 32px); height: calc(100dvh - 32px); }
+  .v2-workbench-navigation { width: 54px; }
+  .v2-workbench-navigation span, .v2-workbench-navigation > .v2-navigation-collapse { display: none; }
+  .v2-workbench-navigation > button { min-height: 44px; }
+  .v2-canvas-shell { left: 0; }
+  .v2-more-menu { left: 86px; top: 78px; max-height: calc(100dvh - 100px); }
+  .v2-detail-drawer.is-expanded { width: min(800px, calc(100% - 86px)); }
+  :is(.v2-detail-drawer, .v2-workflow-library, .v2-model-settings, .v2-board-history) > .v2-notice-region {
+    position: static; flex: 0 0 auto; width: auto; max-height: min(120px, 20dvh); margin: 0 12px 8px; pointer-events: auto;
+  }
+  .v2-drawer-scrim { position: fixed; z-index: 45; inset: 58px 0 0; display: block; border: 0; background: var(--mira-backdrop); }
+  .v2-app-bar {
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 280px) minmax(0, 1fr);
+  }
+
+  .v2-save-state {
+    display: none;
+  }
+
+  .v2-command-trigger {
+    width: 100%;
+  }
+
+  .v2-file-command,
+  .v2-plan-command,
+  .v2-workflow-command,
+  .v2-board-manager-command {
+    display: none;
+  }
+
+  .v2-app.has-drawer .v2-canvas-shell {
+    right: 0;
+  }
+
+  .v2-detail-drawer,
+  .v2-workflow-library,
+  .v2-model-settings {
+    box-shadow: -10px 0 30px rgba(27, 44, 35, 0.14);
+  }
+
+  .v2-app.has-drawer .v2-context-dock {
+    right: 408px;
+    left: auto;
+    width: min(760px, calc(100% - 440px));
+    transform: none;
+  }
+
+  .v2-app.has-drawer .v2-minimap {
+    right: 408px !important;
+  }
+
+  .v2-app.has-drawer .react-flow__controls {
+    right: 408px !important;
+  }
+
+  .v2-app.has-drawer .v2-selection-toolbar {
+    right: 408px;
+    left: 16px;
+    width: max-content;
+    max-width: calc(100% - 424px);
+    margin-inline: auto;
+    overflow-x: auto;
+    transform: none;
+  }
+}

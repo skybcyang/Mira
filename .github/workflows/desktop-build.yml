@@ -1,0 +1,101 @@
+name: Internal desktop builds
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/desktop-build.yml'
+      - 'desktop/**'
+      - 'forge.config.mjs'
+      - 'scripts/stage-desktop.mjs'
+      - 'scripts/run-desktop-forge.mjs'
+      - 'scripts/packed-desktop-smoke.mjs'
+      - 'test/desktop/**'
+      - 'test/scripts/desktop-*.test.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+permissions:
+  contents: read
+
+# Existing UI date assertions use the repository's Shanghai development timezone.
+env:
+  TZ: Asia/Shanghai
+
+concurrency:
+  group: desktop-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Repository checks
+    # Unsigned artifacts remain private until desktop distribution is approved.
+    if: github.event.repository.private == true
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 9.0.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm build
+      - run: pnpm build:bridge
+      - run: git diff --check
+
+  package:
+    name: ${{ matrix.platform }}-${{ matrix.arch }} (unsigned)
+    needs: verify
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            platform: darwin
+            arch: arm64
+          - runner: macos-15-intel
+            platform: darwin
+            arch: x64
+          - runner: windows-2022
+            platform: win32
+            arch: x64
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 9.0.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Desktop and packaging tests
+        run: pnpm test test/desktop test/scripts/desktop-package.test.js test/scripts/desktop-cross-platform.test.js test/architecture/desktop-boundary.test.js test/bridge/standalone-host.test.js test/bridge/node-runtime.test.js
+      - name: Make native artifacts
+        run: node scripts/run-desktop-forge.mjs --arch=${{ matrix.arch }}
+      - name: Packed startup and graceful shutdown
+        run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }}
+      - name: Packed backup and checkpoint restore
+        run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }} --restore
+      - name: Upload internal packages
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Mira-${{ matrix.platform }}-${{ matrix.arch }}-unsigned-${{ github.sha }}
+          path: |
+            out/desktop/make/**/*.dmg
+            out/desktop/make/**/*.zip
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

@@ -1,0 +1,252 @@
+.v2-workflow-list {
+  display: grid;
+}
+
+.v2-plan-entry {
+  padding: 16px;
+}
+
+.v2-plan-entry > button {
+  width: 100%;
+  min-height: 76px;
+  display: flex; gap: 12px; padding: 14px; text-align: left;
+  background: var(--mira-accent-soft); color: var(--mira-accent);
+}
+.v2-plan-entry > button > span { flex: 1; display: grid; gap: 5px; }
+.v2-plan-entry strong { font-size: 14px; font-weight: 600; }
+.v2-plan-entry small { font-size: 11px; color: var(--mira-muted); font-weight: 400; }
+.v2-library-section-title { padding: 8px 16px 16px; }
+.v2-library-section-title h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.v2-library-section-title p { margin: 6px 0 0; color: var(--mira-muted); font-size: 12px; }
+.v2-plan-description { margin: 0; font-size: 12px; line-height: 1.7; color: var(--mira-muted); }
+.v2-plan-section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.v2-plan-section-title h3 { margin: 0; font-size: 14px; }
+.v2-plan-section-title > span { color: var(--mira-muted); font-size: 11px; }
+.v2-plan-back { display: flex; align-items: center; gap: 7px; padding: 4px 0; margin-bottom: 10px; border: 0; color: var(--mira-muted); background: transparent; font-size: 12px; }
+
+.v2-plan-composer {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.v2-plan-composer > label,
+.v2-plan-step-editor label {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  color: var(--mira-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.v2-plan-composer input,
+.v2-plan-composer textarea {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--mira-border);
+  border-radius: 4px;
+  background: var(--mira-canvas);
+  color: var(--mira-ink);
+}
+.v2-plan-composer textarea { height: auto; min-height: 78px; resize: vertical; padding: 10px; font: inherit; font-size: 13px; line-height: 1.7; }
+.v2-plan-composer input[readonly] { color: var(--mira-muted); background: var(--mira-surface-subtle); }
+
+.v2-plan-composer input:focus-visible,
+.v2-plan-composer textarea:focus-visible {
+  border-color: var(--mira-accent);
+  outline: 2px solid var(--mira-accent-soft);
+  outline-offset: 1px;
+}
+
+.v2-plan-step-editor {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  counter-reset: plan-step;
+  list-style: none;
+}
+
+.v2-plan-step-editor > li {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid var(--mira-border);
+}
+
+.v2-plan-step-editor > li:last-child {
+  border-bottom: 1px solid var(--mira-border);
+}
+
+.v2-plan-step-editor > li > div {
+  display: flex;
+  gap: 2px;
+}
+.v2-plan-step-editor > li > label { grid-column: 1 / -1; margin-top: 6px; }
+.v2-plan-step-editor > li > strong { color: var(--mira-accent); font-size: 12px; align-self: center; }
+
+.v2-plan-step-editor > li > div > button:last-child:hover:not(:disabled) {
+  background: var(--mira-danger-soft);
+  color: var(--mira-danger);
+}
+
+.v2-plan-composer > footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--mira-border);
+}
+
+.v2-plan-composer > footer > button {
+  min-width: 0;
+  min-height: 40px;
+}
+
+.v2-workflow-item {
+  padding: 16px;
+  border-bottom: 1px solid var(--mira-border);
+}
+
+.v2-workflow-item > header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px;
+  gap: 8px;
+  align-items: start;
+}
+
+.v2-workflow-item h3 {
+  margin: 0;
+  color: var(--mira-ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.v2-workflow-item p {
+  margin: 4px 0 0;
+  color: var(--mira-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.v2-workflow-item > header > .v2-icon-button:hover {
+  background: var(--mira-danger-soft);
+  color: var(--mira-danger);
+}
+
+.v2-workflow-delete-confirm {
+  grid-column: 1 / -1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px;
+  border-left: 3px solid var(--mira-danger);
+  background: var(--mira-danger-soft);
+}
+
+.v2-workflow-delete-confirm p {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.v2-workflow-delete-confirm p strong {
+  color: var(--mira-danger);
+  font-size: 11px;
+}
+
+.v2-workflow-delete-confirm p span {
+  color: var(--mira-muted);
+  font-size: 10px;
+}
+
+.v2-workflow-delete-confirm > div {
+  display: flex;
+  gap: 5px;
+}
+
+.v2-workflow-delete-confirm > div > button:first-child {
+  min-height: 34px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: var(--mira-muted);
+  font-size: 11px;
+}
+
+.v2-workflow-step-list {
+  display: grid;
+  gap: 0;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v2-workflow-step-list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  min-height: 48px;
+  padding: 6px 0;
+}
+
+.v2-workflow-step-list li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  bottom: -4px;
+  left: 13px;
+  width: 1px;
+  background: var(--mira-border);
+}
+
+.v2-workflow-step-list li > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--mira-border);
+  background: var(--mira-surface);
+  color: var(--mira-accent);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.v2-workflow-step-list li > div {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.v2-workflow-step-list strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.v2-workflow-step-list small {
+  overflow: hidden;
+  color: var(--mira-muted);
+  font-size: 10px;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.v2-workflow-summary { display: grid; gap: 6px; }
+.v2-workflow-outcome { font-size: 13px; line-height: 1.5; color: var(--mira-ink); overflow-wrap: anywhere; }
+.v2-workflow-details { padding: 8px 0; }
+.v2-workflow-details summary { min-height: 32px; color: var(--mira-muted); font-size: 12px; cursor: pointer; }

@@ -1,0 +1,174 @@
+{
+  "format": "mira-board",
+  "formatVersion": 1,
+  "exportedAt": "2026-09-07T10:00:00.000Z",
+  "board": {
+    "schemaVersion": 2,
+    "id": "example-writing",
+    "title": "示例：笔记到文章（虚构）",
+    "revision": 0,
+    "lifecycle": {
+      "state": "active"
+    },
+    "cards": [
+      {
+        "id": "writing-card-0",
+        "contentKind": "markdown",
+        "x": 40,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "writing-card-0-v1",
+        "versions": [
+          {
+            "id": "writing-card-0-v1",
+            "cardId": "writing-card-0",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 写作笔记（虚构）\n\n人工编写的写作练习；“周五读书小组”及活动经过都是虚构情境。\n\n目标读者：第一次主持小型读书讨论的人。拟表达：结束讨论时，留下一段下次能接着用的记录，比追求一次写完整更实际。\n\n可用情境：大家讨论了三个问题，结束前只剩五分钟。主持人写下一个共识、一个分歧和一个下次问题；下一次先打开这份记录。\n\n语气：平实、具体，不训导读者。边界：不加入真实研究数据，不声称这种做法适合所有小组，不扩写成完整会议管理指南。"
+            },
+            "digest": "fnv1a:500a7e58",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "writing-card-1",
+        "contentKind": "markdown",
+        "x": 720,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "writing-card-1-v1",
+        "versions": [
+          {
+            "id": "writing-card-1-v1",
+            "cardId": "writing-card-1",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 文章提纲（虚构）\n\n人工编写的中间成果，根据写作笔记组织。\n\n标题：给下一次讨论留一个入口。\n\n1. 开头：用虚构小组结束前只剩五分钟的情境说明困境，避免泛泛谈效率。\n2. 主体：分别说明记录一个共识、一个分歧和一个下次问题，各用一句具体解释。\n3. 结尾：下一次先读这份短记录，决定继续什么，而非补写完整会议纪要。\n\n写作约束：面向初次主持者，保留“这只是可尝试的办法”；不引用未经提供的数据，不保证能解决所有讨论问题。初稿围绕上述三段展开。"
+            },
+            "digest": "fnv1a:91b2fd35",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "writing-card-2",
+        "contentKind": "markdown",
+        "x": 1400,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "writing-card-2-v1",
+        "versions": [
+          {
+            "id": "writing-card-2-v1",
+            "cardId": "writing-card-2",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 文章初稿（虚构）\n\n人工编写的中间成果，按提纲写成；故事为虚构示例。\n\n周五读书小组快结束时，只剩下五分钟。三个问题都谈过了，但主持人还没有完整纪要。此时不必把所有发言重新抄一遍，可以先留下三个句子。\n\n第一句写大家暂时同意什么，让下一次不必从头重复。第二句写还有什么分歧，提醒自己不要把沉默当成一致。第三句写下次要继续追问什么，让未完成的问题有一个位置。\n\n下一次开始，先打开这份记录。它不能保证讨论更好，也不是完整会议管理方法，但能提供一个可以接着工作的入口。初次主持的人可以从这份很短的记录试起。"
+            },
+            "digest": "fnv1a:c7515ef7",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "writing-card-3",
+        "contentKind": "markdown",
+        "x": 2080,
+        "y": 80,
+        "width": 360,
+        "height": 260,
+        "headVersionId": "writing-card-3-v1",
+        "versions": [
+          {
+            "id": "writing-card-3-v1",
+            "cardId": "writing-card-3",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 给下一次讨论留一个入口（虚构）\n\n人工编写的最终示例文章；以下小组情境为虚构。\n\n读书小组快结束了，只剩五分钟。三个问题已经谈过，主持人却还没写好纪要。可以先不追求完整，只留下三句话。\n\n一句写暂时形成的共识，让下次不用从头重复；一句写仍存在的分歧，不把沉默当成一致；再用一句写下次想继续追问的问题。\n\n下一次开始时，先打开这份短记录，决定从哪里继续。记录不必替你保存每一次发言，但可以保留尚未完成的思考。\n\n这只是初次主持者可以尝试的一种办法，不保证适合每个小组。先留下一个入口，再根据实际使用补充，比在这五分钟里勉强写成完整指南更符合这个情境。"
+            },
+            "digest": "fnv1a:7bdc22c8",
+            "origin": "human",
+            "createdAt": "2026-09-07T10:00:00.000Z"
+          }
+        ],
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      }
+    ],
+    "transformations": [
+      {
+        "id": "writing-step-1",
+        "sourceCardIds": [
+          "writing-card-0"
+        ],
+        "targetCardId": "writing-card-1",
+        "label": "组织提纲",
+        "instruction": "从零散笔记提取目标读者、中心表达、可用情境与边界，安排开头、主体、结尾。不要加入笔记没有提供的研究或事实。",
+        "acceptance": "提纲覆盖中心表达；读者与事实边界明确。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "writing-step-2",
+        "sourceCardIds": [
+          "writing-card-1"
+        ],
+        "targetCardId": "writing-card-2",
+        "label": "完成初稿",
+        "instruction": "按上一张提纲写成一篇连贯短文，使用给定情境与语气。保留虚构声明，不添加未提供的统计、引文或效果承诺。",
+        "acceptance": "短文结构完整；虚构与不确定性声明保留。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      },
+      {
+        "id": "writing-step-3",
+        "sourceCardIds": [
+          "writing-card-2"
+        ],
+        "targetCardId": "writing-card-3",
+        "label": "编辑成文",
+        "instruction": "编辑上一张初稿，删去重复表达并改善段落衔接，不改变核心观点或新增事实。保留必要限制，形成可直接阅读的文章。",
+        "acceptance": "正文连贯、少重复；不添加未经支持的事实。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-07T10:00:00.000Z",
+        "updatedAt": "2026-09-07T10:00:00.000Z"
+      }
+    ],
+    "viewport": {
+      "x": 24,
+      "y": 100,
+      "zoom": 0.45
+    },
+    "createdAt": "2026-09-07T10:00:00.000Z",
+    "updatedAt": "2026-09-07T10:00:00.000Z"
+  },
+  "runs": [],
+  "workflowProvenance": [],
+  "fileDependencies": [],
+  "externalReferences": []
+}
