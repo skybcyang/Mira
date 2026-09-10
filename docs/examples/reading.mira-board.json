@@ -1,246 +1,374 @@
 {
   "format": "mira-board",
   "formatVersion": 1,
-  "exportedAt": "2026-09-09T11:27:11.183Z",
+  "exportedAt": "2026-09-10T03:36:23.762Z",
   "board": {
     "schemaVersion": 2,
-    "id": "board-4sf4zimtu0k9ue",
-    "title": "《小王子》 · 关系、时间与责任",
-    "revision": 14,
+    "id": "board-pdny58mtux7ch5",
+    "title": "原典阅读｜分工的效率与人的完整性",
+    "revision": 61,
     "lifecycle": {
       "state": "active"
     },
     "cards": [
       {
-        "id": "card-7iig8rmtu0k9uh",
-        "name": "玫瑰｜读者概括",
+        "id": "card-ysslzlmtux7ch7",
         "contentKind": "markdown",
         "x": 0,
         "y": 0,
-        "width": 330,
-        "height": 240,
-        "color": "yellow",
-        "headVersionId": "version-ij0yarmtu0k9uh",
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-rwmqkymtux7ch7",
         "versions": [
           {
-            "id": "version-ij0yarmtu0k9uh",
-            "cardId": "card-7iig8rmtu0k9uh",
+            "id": "version-rwmqkymtux7ch7",
+            "cardId": "card-ysslzlmtux7ch7",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。"
+              "markdown": "# 分工为什么提高产量\n\n原文：Adam Smith, The Wealth of Nations (1776), Book I, Chapter I, “Of the Division of Labour”。公共领域英文原文，定位：段落起句 This great increase。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> This great increase in the quantity of work, which, in consequence of the division of labour, the same number of people are capable of performing, is owing to three different circumstances; first, to the increase of dexterity in every particular workman; secondly, to the saving of the time which is commonly lost in passing from one species of work to another; and, lastly, to the invention of a great number of machines which facilitate and abridge labour, and enable one man to do the work of many.\n\n阅读任务：分别解释熟练、转换损耗、机器发明三种机制，不把生产率等同于个人福祉。"
             },
-            "digest": "fnv1a:c17efcec",
+            "digest": "fnv1a:6d0d2383",
             "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.017Z"
+            "createdAt": "2026-09-10T02:40:53.227Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:09.017Z",
-        "updatedAt": "2026-09-09T11:27:09.017Z"
+        "createdAt": "2026-09-10T02:40:53.227Z",
+        "updatedAt": "2026-09-10T03:36:23.752Z",
+        "name": "R1｜分工为什么提高产量"
       },
       {
-        "id": "card-a9fbzxmtu0k9uk",
-        "name": "狐狸｜读者概括",
+        "id": "card-v28tdqmtux7ch8",
         "contentKind": "markdown",
-        "x": 390,
-        "y": 35,
-        "width": 320,
+        "x": 0,
+        "y": 250,
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-ev6hytmtux7ch8",
+        "versions": [
+          {
+            "id": "version-ev6hytmtux7ch8",
+            "cardId": "card-v28tdqmtux7ch8",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 专门化可能损害什么\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II, “Of the Expense of the Institutions for the Education of Youth”。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> In the progress of the division of labour, the employment of the far greater part of those who live by labour, that is, of the great body of the people, comes to be confined to a few very simple operations; frequently to one or two. But the understandings of the greater part of men are necessarily formed by their ordinary employments.\n\n> His dexterity at his own particular trade seems, in this manner, to be acquired at the expense of his intellectual, social, and martial virtues.\n\n阅读任务：识别“工作塑造能力”的假设；区分18世纪作者的判断与经现代研究验证的事实。不要去掉其历史语境。"
+            },
+            "digest": "fnv1a:6309183b",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:40:53.228Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:40:53.228Z",
+        "updatedAt": "2026-09-10T03:36:23.753Z",
+        "name": "R2｜专门化可能损害什么"
+      },
+      {
+        "id": "card-3u8eo4mtux7chb",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 500,
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-65cruxmtux7chb",
+        "versions": [
+          {
+            "id": "version-65cruxmtux7chb",
+            "cardId": "card-3u8eo4mtux7chb",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 教育如何进入论证\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> But though the common people cannot, in any civilized society, be so well instructed as people of some rank and fortune; the most essential parts of education, however, to read, write, and account, can be acquired at so early a period of life, that the greater part, even of those who are to be bred to the lowest occupations, have time to acquire them before they can be employed in those occupations.\n\n> For a very small expense, the public can facilitate, can encourage and can even impose upon almost the whole body of the people, the necessity of acquiring those most essential parts of education.\n\n阅读任务：解释教育在前两段论证中的位置，不能推断斯密主张取消分工或已设计现代教育制度。"
+            },
+            "digest": "fnv1a:10f06490",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:40:53.231Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:40:53.231Z",
+        "updatedAt": "2026-09-10T03:36:23.755Z",
+        "name": "R3｜教育如何进入论证"
+      },
+      {
+        "id": "card-qsfh4gmtux7chd",
+        "contentKind": "markdown",
+        "x": 1480,
+        "y": 0,
+        "width": 430,
         "height": 230,
         "color": "yellow",
-        "headVersionId": "version-ph1jusmtu0k9uk",
+        "headVersionId": "version-woq2zjmtux7chd",
         "versions": [
           {
-            "id": "version-ph1jusmtu0k9uk",
-            "cardId": "card-a9fbzxmtu0k9uk",
+            "id": "version-woq2zjmtux7chd",
+            "cardId": "card-qsfh4gmtux7chd",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。"
+              "markdown": "# 本次要解决的问题\n\n斯密一方面赞扬分工提高产量，另一方面担心劳动者判断力受损。两种论证是否矛盾？从原文机制出发阅读，不把它直接套成现代管理处方。\n\n材料由案例编辑选取；成果通过 Kimi 实际生成。模型分析不等于作者、维护者或研究机构的结论。"
             },
-            "digest": "fnv1a:5d249645",
+            "digest": "fnv1a:70eb0dad",
             "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.020Z"
+            "createdAt": "2026-09-10T02:40:53.233Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:09.020Z",
-        "updatedAt": "2026-09-09T11:27:09.020Z"
+        "createdAt": "2026-09-10T02:40:53.233Z",
+        "updatedAt": "2026-09-10T03:36:23.756Z",
+        "name": "问题与边界"
       },
       {
-        "id": "card-9gqasqmtu0k9um",
-        "name": "仍然想不明白",
+        "id": "card-lzck19mtux7chf",
         "contentKind": "markdown",
-        "x": 800,
+        "x": 710,
         "y": 0,
-        "width": 330,
-        "height": 200,
-        "color": "violet",
-        "headVersionId": "version-7d3mvjmtu0k9um",
+        "width": 460,
+        "height": 490,
+        "headVersionId": "version-i5qy5xmtuy3a8d",
         "versions": [
           {
-            "id": "version-7d3mvjmtu0k9um",
-            "cardId": "card-9gqasqmtu0k9um",
+            "id": "version-gf32gqmtux841z",
+            "cardId": "card-lzck19mtux7chf",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 一个反问\n\n“对关系负责”是否意味着总要牺牲自己的边界？\n\n先保留问题，不急着生成一个正确答案。"
+              "markdown": "# 分工提高产量的论证重建\n\n## 核心判断\n\n亚当·斯密在《国富论》（1776）Book I, Chapter I \"Of the Division of Labour\" 中提出：同数量劳动者因分工而能完成的劳动量出现巨大增长，这一增长可归因于三个不同因素——工人熟练程度的提高、工种间转换时间的节省，以及大量简化和缩短劳动的机器的发明。这一论证的核心是一个生产率命题，而非关于个人福祉的命题。\n\n## 论点\n\n原文以 \"This great increase in the quantity of work\" 起句，论点明确：劳动分工导致相同人数可完成的劳动量大幅增加，且这一结果完全由三种机制（three different circumstances）解释。斯密在此将分工与产量之间的因果链条拆解为三个可分别考察的环节，而非把分工当作一个笼统的\"增效\"标签。需要强调，原文该段落只谈\"work\"的数量增长，并未在此断言工人收入、闲暇或生活水平的相应改善。\n\n## 三个机制\n\n**其一，熟练（dexterity）。** 分工使每个工人长期专注于单一操作，动作反复演练，灵巧程度随之提高。这是个体技能维度的解释：同样的劳动者因专业化而变得更快、更精准。\n\n**其二，节省转换时间（saving of the time lost in passing from one species of work to another）。** 若工人在不同工种之间来回切换，转换过程本身会损耗时间；分工消除了这种损耗。这是时间结构维度的解释：即使技能不变，仅减少工序切换也能释放劳动时间。\n\n**其三，机器的发明（the invention of a great number of machines）。** 分工催生大量\"facilitate and abridge labour\"的机器，使一人能完成多人的工作。这是技术维度的解释：专注于单一操作的劳动环境有利于机器的产生与应用。\n\n三种机制分别作用于技能、时间与技术三个层面，斯密将其并列为产量增长的全部归因（is owing to）。\n\n## 隐含条件\n\n原文表述隐含若干未经论证的前提：\n\n1. **专业化确实产生熟练。** 论证假定重复单一操作会带来灵巧提升，而非单调导致的退化；原文未在此处理反例。\n2. **工种转换必然损耗时间。** \"commonly lost\" 中的\"通常\"一词表明斯密将其视为经验观察而非逻辑必然，论证依赖这一观察的普遍性。\n3. **分工与机器发明之间存在因果联系。** 原文将机器发明列为分工的后果之一，但并未说明机器究竟由谁发明、为何分工环境更有利于发明，因果机制本身在此是断言而非证明。\n4. **产量增长是可欲的目标。** 整段以劳动量增长为正面结果展开，未讨论增长如何分配、由谁受益。\n\n以上均属对原文的推断性重构，原文并未明言这些条件。\n\n## 没有回答的问题\n\n- **生产率与福祉的关系**：阅读任务要求\"不把生产率等同于个人福祉\"，而原文此段确实只谈产量。分工是否改善工人的生活、重复劳动对工人的身心影响如何，在此段均无回答（斯密在 Book V 另有涉及，但不属于本段论证范围）。\n- **三机制的相对权重**：三种因素各自贡献多少、是否可分离测量，原文未提供量化或比较。\n- **机器发明的微观过程**：机器从何而来、发明者是谁、发明激励为何，均未交代。\n- **分工的限度**：分工能推进到什么程度、受什么条件约束（如市场规模），本段未涉及。\n- **三机制的穷尽性**：\"three different circumstances\" 是否穷尽了分工增效的所有来源，原文以列举方式给出，未论证其完备性。\n\n## 材料与推断的界限\n\n\"论点\"与\"三个机制\"两节直接依据原文引文，属来源内容；\"隐含条件\"与\"没有回答的问题\"两节为基于原文表述的分析性推断，标注了哪些前提未被原文明言或论证。全段未引入原文之外的实验数据、后续研究或现代例证。"
             },
-            "digest": "fnv1a:b6f3c073",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.022Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:09.022Z",
-        "updatedAt": "2026-09-09T11:27:09.022Z"
-      },
-      {
-        "id": "card-21j6ixmtu0k9us",
-        "contentKind": "markdown",
-        "x": 0,
-        "y": 365,
-        "width": 330,
-        "height": 245,
-        "tags": [
-          "阅读",
-          "关系",
-          "生活观察"
-        ],
-        "inspirationRef": {
-          "poolId": "inspiration-pool",
-          "entryId": "inspiration-i7bktcmtu0k9uo",
-          "versionId": "inspiration-version-qfy3llmtu0k9uo"
-        },
-        "headVersionId": "version-v7ddramtu0k9us",
-        "versions": [
-          {
-            "id": "version-v7ddramtu0k9us",
-            "cardId": "card-21j6ixmtu0k9us",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？"
-            },
-            "digest": "fnv1a:8622160b",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.028Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:09.028Z",
-        "updatedAt": "2026-09-09T11:27:09.030Z"
-      },
-      {
-        "id": "card-0tqe5amtu0k9uz",
-        "contentKind": "markdown",
-        "x": 800,
-        "y": 340,
-        "width": 355,
-        "height": 275,
-        "headVersionId": "version-e0x5wdmtu0k9v8",
-        "versions": [
-          {
-            "id": "version-e0x5wdmtu0k9v8",
-            "cardId": "card-0tqe5amtu0k9uz",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。"
-            },
-            "digest": "fnv1a:d7c6ffa5",
+            "digest": "fnv1a:094dbbfe",
             "origin": "ai",
-            "createdAt": "2026-09-09T11:27:09.043Z",
-            "sourceRunId": "run-au9e2amtu0k9v4"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:09.035Z",
-        "updatedAt": "2026-09-09T11:27:09.043Z"
-      },
-      {
-        "id": "card-3hp950mtu0k9ys",
-        "name": "这周只试一件事",
-        "contentKind": "markdown",
-        "x": 390,
-        "y": 600,
-        "width": 320,
-        "height": 210,
-        "color": "green",
-        "headVersionId": "version-sp8txwmtu0k9ys",
-        "versions": [
-          {
-            "id": "version-sp8txwmtu0k9ys",
-            "cardId": "card-3hp950mtu0k9ys",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 一个小实践\n\n约一次不看手机的散步。\n\n结束后记下：我听到了什么以前没留意的事？\n\n不是给自己的打卡任务。"
-            },
-            "digest": "fnv1a:a88ea400",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.172Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:09.172Z",
-        "updatedAt": "2026-09-09T11:27:09.172Z"
-      },
-      {
-        "id": "card-3ma5b1mtu0k9yv",
-        "name": "周日回看｜改过一次",
-        "contentKind": "markdown",
-        "x": 800,
-        "y": 680,
-        "width": 355,
-        "height": 210,
-        "color": "green",
-        "headVersionId": "version-um231omtu0k9z0",
-        "versions": [
-          {
-            "id": "version-dz9j2dmtu0k9yv",
-            "cardId": "card-3ma5b1mtu0k9yv",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 周日回看\n\n原先：只要不看手机，就算认真倾听。\n\n现在：不插话、不急着解释，也需要练习。\n\n下次先确认对方是否想听建议。"
-            },
-            "digest": "fnv1a:7feed6bb",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.175Z"
+            "createdAt": "2026-09-10T02:41:28.966Z",
+            "sourceRunId": "run-u1g3bmmtux7chj"
           },
           {
-            "id": "version-um231omtu0k9z0",
-            "cardId": "card-3ma5b1mtu0k9yv",
+            "id": "version-k2uirmmtuxuiq4",
+            "cardId": "card-lzck19mtux7chf",
             "sequence": 2,
             "content": {
               "kind": "markdown",
-              "markdown": "# 周日回看\n\n我原先把“专心”理解成不看手机。\n\n这次发现自己仍然很想立刻给建议。\n\n下次先问：你想让我一起想办法，还是先听你说完？"
+              "markdown": "# 分工提高产量的论证重建\n\n## 核心判断\n\n亚当·斯密在《国富论》（1776）Book I, Chapter I \"Of the Division of Labour\" 中提出：同数量劳动者因分工而能完成的劳动量出现巨大增长，这一增长可归因于三个不同因素——工人熟练程度的提高、工种间转换时间的节省，以及大量简化和缩短劳动的机器的发明。这一论证的核心是一个生产率命题，而非关于个人福祉的命题。\n\n## 论点\n\n原文以 \"This great increase in the quantity of work\" 起句，论点明确：劳动分工导致相同人数可完成的劳动量大幅增加，且这一结果完全由三种机制（three different circumstances）解释。斯密在此将分工与产量之间的因果链条拆解为三个可分别考察的环节，而非把分工当作一个笼统的\"增效\"标签。需要强调，原文该段落只谈\"work\"的数量增长，并未在此断言工人收入、闲暇或生活水平的相应改善。\n\n## 三个机制\n\n**其一，熟练（dexterity）。** 分工使每个工人长期专注于单一操作，动作反复演练，灵巧程度随之提高。这是个体技能维度的解释：同样的劳动者因专业化而变得更快、更精准。\n\n**其二，节省转换时间（saving of the time lost in passing from one species of work to another）。** 若工人在不同工种之间来回切换，转换过程本身会损耗时间；分工消除了这种损耗。这是时间结构维度的解释：即使技能不变，仅减少工序切换也能释放劳动时间。\n\n**其三，机器的发明（the invention of a great number of machines）。** 分工催生大量\"facilitate and abridge labour\"的机器，使一人能完成多人的工作。这是技术维度的解释：专注于单一操作的劳动环境有利于机器的产生与应用。\n\n三种机制分别作用于技能、时间与技术三个层面，斯密将其并列为产量增长的全部归因（is owing to）。\n\n## 隐含条件\n\n原文表述隐含若干未经论证的前提：\n\n1. **专业化确实产生熟练。** 论证假定重复单一操作会带来灵巧提升，而非单调导致的退化；原文未在此处理反例。\n2. **工种转换必然损耗时间。** \"commonly lost\" 中的\"通常\"一词表明斯密将其视为经验观察而非逻辑必然，论证依赖这一观察的普遍性。\n3. **分工与机器发明之间存在因果联系。** 原文将机器发明列为分工的后果之一，但并未说明机器究竟由谁发明、为何分工环境更有利于发明，因果机制本身在此是断言而非证明。\n4. **产量增长是可欲的目标。** 整段以劳动量增长为正面结果展开，未讨论增长如何分配、由谁受益。\n\n以上均属对原文的推断性重构，原文并未明言这些条件。\n\n## 没有回答的问题\n\n- **生产率与福祉的关系**：阅读任务要求\"不把生产率等同于个人福祉\"，而原文此段确实只谈产量。分工是否改善工人的生活、重复劳动对工人的身心影响如何，在此段均无回答（斯密在 Book V 另有涉及，但不属于本段论证范围）。\n- **三机制的相对权重**：三种因素各自贡献多少、是否可分离测量，原文未提供量化或比较。\n- **机器发明的微观过程**：机器从何而来、发明者是谁、发明激励为何，均未交代。\n- **分工的限度**：分工能推进到什么程度、受什么条件约束（如市场规模），本段未涉及。\n- **三机制的穷尽性**：\"three different circumstances\" 是否穷尽了分工增效的所有来源，原文以列举方式给出，未论证其完备性。\n\n## 材料与推断的界限\n\n\"论点\"与\"三个机制\"两节直接依据原文引文，属来源内容；\"隐含条件\"与\"没有回答的问题\"两节为基于原文表述的分析性推断，标注了哪些前提未被原文明言或论证。全段未引入原文之外的实验数据、后续研究或现代例证。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。\n\n<!-- editorial-review-2026-09-10 -->"
             },
-            "digest": "fnv1a:b1a8ddfa",
+            "digest": "fnv1a:5ceb38c2",
             "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.180Z"
+            "createdAt": "2026-09-10T02:58:54.412Z"
+          },
+          {
+            "id": "version-i5qy5xmtuy3a8d",
+            "cardId": "card-lzck19mtux7chf",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 分工提高产量的论证重建\n\n## 核心判断\n\n亚当·斯密在《国富论》（1776）Book I, Chapter I \"Of the Division of Labour\" 中提出：同数量劳动者因分工而能完成的劳动量出现巨大增长，这一增长可归因于三个不同因素——工人熟练程度的提高、工种间转换时间的节省，以及大量简化和缩短劳动的机器的发明。这一论证的核心是一个生产率命题，而非关于个人福祉的命题。\n\n## 论点\n\n原文以 \"This great increase in the quantity of work\" 起句，论点明确：劳动分工导致相同人数可完成的劳动量大幅增加，且这一结果完全由三种机制（three different circumstances）解释。斯密在此将分工与产量之间的因果链条拆解为三个可分别考察的环节，而非把分工当作一个笼统的\"增效\"标签。需要强调，原文该段落只谈\"work\"的数量增长，并未在此断言工人收入、闲暇或生活水平的相应改善。\n\n## 三个机制\n\n**其一，熟练（dexterity）。** 分工使每个工人长期专注于单一操作，动作反复演练，灵巧程度随之提高。这是个体技能维度的解释：同样的劳动者因专业化而变得更快、更精准。\n\n**其二，节省转换时间（saving of the time lost in passing from one species of work to another）。** 若工人在不同工种之间来回切换，转换过程本身会损耗时间；分工消除了这种损耗。这是时间结构维度的解释：即使技能不变，仅减少工序切换也能释放劳动时间。\n\n**其三，机器的发明（the invention of a great number of machines）。** 分工催生大量\"facilitate and abridge labour\"的机器，使一人能完成多人的工作。这是技术维度的解释：专注于单一操作的劳动环境有利于机器的产生与应用。\n\n三种机制分别作用于技能、时间与技术三个层面，斯密将其并列为产量增长的全部归因（is owing to）。\n\n## 隐含条件\n\n原文表述隐含若干未经论证的前提：\n\n1. **专业化确实产生熟练。** 论证假定重复单一操作会带来灵巧提升，而非单调导致的退化；原文未在此处理反例。\n2. **工种转换必然损耗时间。** \"commonly lost\" 中的\"通常\"一词表明斯密将其视为经验观察而非逻辑必然，论证依赖这一观察的普遍性。\n3. **分工与机器发明之间存在因果联系。** 原文将机器发明列为分工的后果之一，但并未说明机器究竟由谁发明、为何分工环境更有利于发明，因果机制本身在此是断言而非证明。\n4. **产量增长是可欲的目标。** 整段以劳动量增长为正面结果展开，未讨论增长如何分配、由谁受益。\n\n以上均属对原文的推断性重构，原文并未明言这些条件。\n\n## 没有回答的问题\n\n- **生产率与福祉的关系**：阅读任务要求\"不把生产率等同于个人福祉\"，而原文此段确实只谈产量。分工是否改善工人的生活、重复劳动对工人的身心影响如何，在此段均无回答（斯密在 Book V 另有涉及，但不属于本段论证范围）。\n- **三机制的相对权重**：三种因素各自贡献多少、是否可分离测量，原文未提供量化或比较。\n- **机器发明的微观过程**：机器从何而来、发明者是谁、发明激励为何，均未交代。\n- **分工的限度**：分工能推进到什么程度、受什么条件约束（如市场规模），本段未涉及。\n- **三机制的穷尽性**：\"three different circumstances\" 是否穷尽了分工增效的所有来源，原文以列举方式给出，未论证其完备性。\n\n## 材料与推断的界限\n\n\"论点\"与\"三个机制\"两节直接依据原文引文，属来源内容；\"隐含条件\"与\"没有回答的问题\"两节为基于原文表述的分析性推断，标注了哪些前提未被原文明言或论证。全段未引入原文之外的实验数据、后续研究或现代例证。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。"
+            },
+            "digest": "fnv1a:882f1f04",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.309Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:09.175Z",
-        "updatedAt": "2026-09-09T11:27:09.180Z"
+        "createdAt": "2026-09-10T02:40:53.235Z",
+        "updatedAt": "2026-09-10T03:05:43.309Z",
+        "name": "重建效率论证"
+      },
+      {
+        "id": "card-58jpvzmtux84lr",
+        "contentKind": "markdown",
+        "x": 710,
+        "y": 610,
+        "width": 460,
+        "height": 490,
+        "headVersionId": "version-w1bcfmmtuy3a8f",
+        "versions": [
+          {
+            "id": "version-q1mziqmtux975f",
+            "cardId": "card-58jpvzmtux84lr",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 重复工作、能力损耗与教育的补充位置\n\n核心判断是：斯密这段论证由一条描述性机制推出一项规范性补救——分工把多数靠劳动为生者限制在“少数非常简单的操作”，又因他假设“多数人的理解力必然由日常职业形成”，于是重复工作可能带来行业灵巧，却以“intellectual, social, and martial virtues”为代价；教育的作用不是推翻分工，而是在就业前以很低公共成本补上读、写、算，形成最低限度能力底座，缓冲而非消除这种损耗。\n\n证据边界应划清。第一段是斯密的18世纪判断：分工进展中，“the far greater part of those who live by labour”的就业被收窄，常常只剩一两个操作；由此他推断，普通人的心智会被其ordinary employments塑形，故有“dexterity … acquired at the expense of … virtues”的说法。这里的强点是机制直觉：经验范围窄，判断、交往与公共/军事品格的练习机会也可能变窄。弱点是片段没有现代因果识别、测量数据或反事实比较，因此应读作作者论证中的描述性前提与历史化判断，而非已被现代研究验证的事实。\n\n第二段把教育放进补救位置，但范围有限。斯密承认，在文明社会中，common people不可能像有rank and fortune者那样受同等良好教育；这本身就是描述性分层判断。随后转为规范主张：读、写、算是“most essential parts of education”，可在很早时期获得，连将从事最低职业者也多半能在就业前学得；因此公众“for a very small expense”可以facilitate、encourage，甚至impose almost the whole body of the people去获得这些能力。可见教育承担的是补充性、底线性公共干预：它不承诺拉平全部教育差距，不主张取消分工，也不能被扩展成斯密已设计出现代学校制度；它只是防止重复劳动的窄化效应在最基本的读写算层面塌陷为不可逆劣势。\n\n局限仍在：引文未说明读写算足以恢复哪些social或martial virtues，也未给公共强制的正当边界与程度；“martial”带有民兵、共和国公民与18世纪战争组织的语境，不能直接等同现代职业技能或心理健康指标。把斯密读成“分工必然使人愚昧”或“基础教育必然完全抵消损害”，都超出材料。\n\n一条可讨论质疑是：若“理解力由日常职业形成”被说得太强，工作之外的家庭、宗教、同业交往、迁徙、市场谈判与休闲也可能塑造判断与社会能力；那么重复工作造成的能力损耗是否普遍到需要公共“impose”，以及读写算是否真是充分补偿，片段本身并未证明。这不是证伪斯密，而是指出其因果广度与补救充分性仍开放。未回答的问题包括：最低教育的阈值如何定、公共强制到何种程度仍属“very small expense”的正当补救、现代自动化与平台劳动中的重复任务是否复制同一机制，都需要另行证据。"
+            },
+            "digest": "fnv1a:ac52dcd7",
+            "origin": "ai",
+            "createdAt": "2026-09-10T02:42:19.634Z",
+            "sourceRunId": "run-yzeg5rmtux84m5"
+          },
+          {
+            "id": "version-5wcsnbmtuxuiq5",
+            "cardId": "card-58jpvzmtux84lr",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 重复工作、能力损耗与教育的补充位置\n\n核心判断是：斯密这段论证由一条描述性机制推出一项规范性补救——分工把多数靠劳动为生者限制在“少数非常简单的操作”，又因他假设“多数人的理解力必然由日常职业形成”，于是重复工作可能带来行业灵巧，却以“intellectual, social, and martial virtues”为代价；教育的作用不是推翻分工，而是在就业前以很低公共成本补上读、写、算，形成最低限度能力底座，缓冲而非消除这种损耗。\n\n证据边界应划清。第一段是斯密的18世纪判断：分工进展中，“the far greater part of those who live by labour”的就业被收窄，常常只剩一两个操作；由此他推断，普通人的心智会被其ordinary employments塑形，故有“dexterity … acquired at the expense of … virtues”的说法。这里的强点是机制直觉：经验范围窄，判断、交往与公共/军事品格的练习机会也可能变窄。弱点是片段没有现代因果识别、测量数据或反事实比较，因此应读作作者论证中的描述性前提与历史化判断，而非已被现代研究验证的事实。\n\n第二段把教育放进补救位置，但范围有限。斯密承认，在文明社会中，common people不可能像有rank and fortune者那样受同等良好教育；这本身就是描述性分层判断。随后转为规范主张：读、写、算是“most essential parts of education”，可在很早时期获得，连将从事最低职业者也多半能在就业前学得；因此公众“for a very small expense”可以facilitate、encourage，甚至impose almost the whole body of the people去获得这些能力。可见教育承担的是补充性、底线性公共干预：它不承诺拉平全部教育差距，不主张取消分工，也不能被扩展成斯密已设计出现代学校制度；它只是防止重复劳动的窄化效应在最基本的读写算层面塌陷为不可逆劣势。\n\n局限仍在：引文未说明读写算足以恢复哪些social或martial virtues，也未给公共强制的正当边界与程度；“martial”带有民兵、共和国公民与18世纪战争组织的语境，不能直接等同现代职业技能或心理健康指标。把斯密读成“分工必然使人愚昧”或“基础教育必然完全抵消损害”，都超出材料。\n\n一条可讨论质疑是：若“理解力由日常职业形成”被说得太强，工作之外的家庭、宗教、同业交往、迁徙、市场谈判与休闲也可能塑造判断与社会能力；那么重复工作造成的能力损耗是否普遍到需要公共“impose”，以及读写算是否真是充分补偿，片段本身并未证明。这不是证伪斯密，而是指出其因果广度与补救充分性仍开放。未回答的问题包括：最低教育的阈值如何定、公共强制到何种程度仍属“very small expense”的正当补救、现代自动化与平台劳动中的重复任务是否复制同一机制，都需要另行证据。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。\n\n<!-- editorial-review-2026-09-10 -->"
+            },
+            "digest": "fnv1a:5158763f",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:58:54.413Z"
+          },
+          {
+            "id": "version-w1bcfmmtuy3a8f",
+            "cardId": "card-58jpvzmtux84lr",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 重复工作、能力损耗与教育的补充位置\n\n核心判断是：斯密这段论证由一条描述性机制推出一项规范性补救——分工把多数靠劳动为生者限制在“少数非常简单的操作”，又因他假设“多数人的理解力必然由日常职业形成”，于是重复工作可能带来行业灵巧，却以“intellectual, social, and martial virtues”为代价；教育的作用不是推翻分工，而是在就业前以很低公共成本补上读、写、算，形成最低限度能力底座，缓冲而非消除这种损耗。\n\n证据边界应划清。第一段是斯密的18世纪判断：分工进展中，“the far greater part of those who live by labour”的就业被收窄，常常只剩一两个操作；由此他推断，普通人的心智会被其ordinary employments塑形，故有“dexterity … acquired at the expense of … virtues”的说法。这里的强点是机制直觉：经验范围窄，判断、交往与公共/军事品格的练习机会也可能变窄。弱点是片段没有现代因果识别、测量数据或反事实比较，因此应读作作者论证中的描述性前提与历史化判断，而非已被现代研究验证的事实。\n\n第二段把教育放进补救位置，但范围有限。斯密承认，在文明社会中，common people不可能像有rank and fortune者那样受同等良好教育；这本身就是描述性分层判断。随后转为规范主张：读、写、算是“most essential parts of education”，可在很早时期获得，连将从事最低职业者也多半能在就业前学得；因此公众“for a very small expense”可以facilitate、encourage，甚至impose almost the whole body of the people去获得这些能力。可见教育承担的是补充性、底线性公共干预：它不承诺拉平全部教育差距，不主张取消分工，也不能被扩展成斯密已设计出现代学校制度；它只是防止重复劳动的窄化效应在最基本的读写算层面塌陷为不可逆劣势。\n\n局限仍在：引文未说明读写算足以恢复哪些social或martial virtues，也未给公共强制的正当边界与程度；“martial”带有民兵、共和国公民与18世纪战争组织的语境，不能直接等同现代职业技能或心理健康指标。把斯密读成“分工必然使人愚昧”或“基础教育必然完全抵消损害”，都超出材料。\n\n一条可讨论质疑是：若“理解力由日常职业形成”被说得太强，工作之外的家庭、宗教、同业交往、迁徙、市场谈判与休闲也可能塑造判断与社会能力；那么重复工作造成的能力损耗是否普遍到需要公共“impose”，以及读写算是否真是充分补偿，片段本身并未证明。这不是证伪斯密，而是指出其因果广度与补救充分性仍开放。未回答的问题包括：最低教育的阈值如何定、公共强制到何种程度仍属“very small expense”的正当补救、现代自动化与平台劳动中的重复任务是否复制同一机制，都需要另行证据。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。"
+            },
+            "digest": "fnv1a:9dbae071",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.311Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:41:29.679Z",
+        "updatedAt": "2026-09-10T03:05:43.311Z",
+        "name": "重建能力与教育论证"
+      },
+      {
+        "id": "card-sr6ljpmtux997p",
+        "contentKind": "markdown",
+        "x": 1480,
+        "y": 390,
+        "width": 460,
+        "height": 630,
+        "headVersionId": "version-an0343mtuy3a8i",
+        "versions": [
+          {
+            "id": "version-r40bp3mtux9vag",
+            "cardId": "card-sr6ljpmtux997p",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 分工的产量逻辑与能力代价：一段札记\n\n**核心判断：** 斯密关于分工的两段论证（以下称R1、R2）并不使用同一评价尺度，这是理解其间张力的关键。R1以\"可完成的劳动量\"为唯一尺度，R2以劳动者的\"intellectual, social, and martial virtues\"为尺度；两者都是分工的后果，却不可直接通约。R3中的教育主张则表明斯密本人并不试图用R1的尺度去抵偿R2的损失，而是在另一尺度上提供底线补救。\n\n**证据一：R1只谈产量。** Book I, Chapter I的原文（card-ysslzlmtux7ch7）以\"This great increase in the quantity of work\"起句，将增长归因于三种机制：工人熟练度（dexterity）的提高、工种转换时间的节省、\"facilitate and abridge labour\"的机器发明。重建稿（card-lzck19mtux7chf）指出，此段只断言\"work\"的数量增长，并未涉及工人收入、闲暇或生活水平；且三个机制的并列归因依赖若干未论证前提——如重复操作产生熟练而非退化、机器发明的微观过程等，这些属推断性重构而非原文明言。\n\n**证据二：R2换了尺度。** Book V的原文（card-v28tdqmtux7ch8）承认分工带来\"dexterity at his own particular trade\"，但断言这种灵巧\"acquired at the expense of his intellectual, social, and martial virtues\"。其桥梁是一个强假设：\"the understandings of the greater part of men are necessarily formed by their ordinary employments\"。注意，此处的dexterity与R1的第一个机制遥相呼应，但在R1中是正面因素，在R2中成为代价的载体。分析稿（card-58jpvzmtux84lr）强调这是18世纪作者的描述性判断与机制直觉，无现代因果识别支持；\"martial\"带有民兵与共和国公民的语境，不能直接等同现代指标。\n\n**证据三：R3的教育是补充而非抵消。** R3原文（card-3u8eo4mtux7chb）承认common people不可能受与有产者同等的教育，随后主张读、写、算可在就业前习得，公众可以\"for a very small expense\"促进甚至强制之。可见教育在论证中的位置是底线性公共干预：它不推翻分工，不承诺拉平差距，也未说明读写算足以恢复social或martial virtues。把它读成\"基础教育必然完全抵消损害\"超出材料。\n\n**两段的尺度差异由此明确：** R1的评价单位是劳动量，R2的评价单位是人的能力结构。斯密没有在两者之间建立兑换率——他既不说产量增长\"值得\"能力损耗，也不说损耗使分工不可取，而是让两个命题在各自尺度上成立，再由R3在能力尺度上做有限修补。这正是张力所在，也是文本的诚实之处。\n\n**保留的未回答问题：** 其一，三机制（R1）各自贡献多少、是否穷尽分工增效来源，原文仅以列举给出，未论证完备性。其二，R2的因果广度——工作之外的家庭、宗教、同业交往是否也能塑造理解力，从而限定损耗的普遍性——片段本身未证明。\n\n**下一步需要查找的文本证据：** Book V同一Article中关于教育经费具体安排的段落，可检验R3\"very small expense\"与\"impose\"的实际制度含义；以及Book I, Chapter II、III中分工起源与市场限度的论述，可检验R1隐含条件中\"分工推进到何种程度\"的问题。"
+            },
+            "digest": "fnv1a:098f4c3b",
+            "origin": "ai",
+            "createdAt": "2026-09-10T02:42:50.918Z",
+            "sourceRunId": "run-df1ps6mtux9982"
+          },
+          {
+            "id": "version-gfystsmtuxuiq7",
+            "cardId": "card-sr6ljpmtux997p",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 分工的产量逻辑与能力代价：一段札记\n\n**核心判断：** 斯密关于分工的两段论证（以下称R1、R2）并不使用同一评价尺度，这是理解其间张力的关键。R1所选片段以\"可完成的劳动量\"为评价尺度，R2以劳动者的\"intellectual, social, and martial virtues\"为尺度；两者都是分工的后果，却不可直接通约。R3中的教育主张则表明斯密本人并不试图用R1的尺度去抵偿R2的损失，而是在另一尺度上提供底线补救。\n\n**证据一：R1只谈产量。** Book I, Chapter I的原文（card-ysslzlmtux7ch7）以\"This great increase in the quantity of work\"起句，将增长归因于三种机制：工人熟练度（dexterity）的提高、工种转换时间的节省、\"facilitate and abridge labour\"的机器发明。重建稿（card-lzck19mtux7chf）指出，此段只断言\"work\"的数量增长，并未涉及工人收入、闲暇或生活水平；且三个机制的并列归因依赖若干未论证前提——如重复操作产生熟练而非退化、机器发明的微观过程等，这些属推断性重构而非原文明言。\n\n**证据二：R2换了尺度。** Book V的原文（card-v28tdqmtux7ch8）承认分工带来\"dexterity at his own particular trade\"，但断言这种灵巧\"acquired at the expense of his intellectual, social, and martial virtues\"。其桥梁是一个强假设：\"the understandings of the greater part of men are necessarily formed by their ordinary employments\"。注意，此处的dexterity与R1的第一个机制遥相呼应，但在R1中是正面因素，在R2中成为代价的载体。分析稿（card-58jpvzmtux84lr）强调这是18世纪作者的描述性判断与机制直觉，无现代因果识别支持；\"martial\"带有民兵与共和国公民的语境，不能直接等同现代指标。\n\n**证据三：R3的教育是补充而非抵消。** R3原文（card-3u8eo4mtux7chb）承认common people不可能受与有产者同等的教育，随后主张读、写、算可在就业前习得，公众可以\"for a very small expense\"促进甚至强制之。可见教育在论证中的位置是底线性公共干预：它不推翻分工，不承诺拉平差距，也未说明读写算足以恢复social或martial virtues。把它读成\"基础教育必然完全抵消损害\"超出材料。\n\n**两段的尺度差异由此明确：** R1的评价单位是劳动量，R2的评价单位是人的能力结构。斯密没有在两者之间建立兑换率——他既不说产量增长\"值得\"能力损耗，也不说损耗使分工不可取，而是让两个命题在各自尺度上成立，再由R3在能力尺度上做有限修补。这正是张力所在，也是文本的诚实之处。\n\n**保留的未回答问题：** 其一，三机制（R1）各自贡献多少、是否穷尽分工增效来源，原文仅以列举给出，未论证完备性。其二，R2的因果广度——工作之外的家庭、宗教、同业交往是否也能塑造理解力，从而限定损耗的普遍性——片段本身未证明。\n\n**下一步需要查找的文本证据：** Book V同一Article中关于教育经费具体安排的段落，可检验R3\"very small expense\"与\"impose\"的实际制度含义；以及Book I, Chapter II、III中分工起源与市场限度的论述，可检验R1隐含条件中\"分工推进到何种程度\"的问题。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。\n\n<!-- editorial-review-2026-09-10 -->"
+            },
+            "digest": "fnv1a:368cb04d",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:58:54.415Z"
+          },
+          {
+            "id": "version-an0343mtuy3a8i",
+            "cardId": "card-sr6ljpmtux997p",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 分工的产量逻辑与能力代价：一段札记\n\n**核心判断：** 斯密关于分工的两段论证（以下称R1、R2）并不使用同一评价尺度，这是理解其间张力的关键。R1所选片段以\"可完成的劳动量\"为评价尺度，R2以劳动者的\"intellectual, social, and martial virtues\"为尺度；两者都是分工的后果，却不可直接通约。R3中的教育主张则表明斯密本人并不试图用R1的尺度去抵偿R2的损失，而是在另一尺度上提供底线补救。\n\n**证据一：R1只谈产量。** Book I, Chapter I的原文（card-ysslzlmtux7ch7）以\"This great increase in the quantity of work\"起句，将增长归因于三种机制：工人熟练度（dexterity）的提高、工种转换时间的节省、\"facilitate and abridge labour\"的机器发明。重建稿（card-lzck19mtux7chf）指出，此段只断言\"work\"的数量增长，并未涉及工人收入、闲暇或生活水平；且三个机制的并列归因依赖若干未论证前提——如重复操作产生熟练而非退化、机器发明的微观过程等，这些属推断性重构而非原文明言。\n\n**证据二：R2换了尺度。** Book V的原文（card-v28tdqmtux7ch8）承认分工带来\"dexterity at his own particular trade\"，但断言这种灵巧\"acquired at the expense of his intellectual, social, and martial virtues\"。其桥梁是一个强假设：\"the understandings of the greater part of men are necessarily formed by their ordinary employments\"。注意，此处的dexterity与R1的第一个机制遥相呼应，但在R1中是正面因素，在R2中成为代价的载体。分析稿（card-58jpvzmtux84lr）强调这是18世纪作者的描述性判断与机制直觉，无现代因果识别支持；\"martial\"带有民兵与共和国公民的语境，不能直接等同现代指标。\n\n**证据三：R3的教育是补充而非抵消。** R3原文（card-3u8eo4mtux7chb）承认common people不可能受与有产者同等的教育，随后主张读、写、算可在就业前习得，公众可以\"for a very small expense\"促进甚至强制之。可见教育在论证中的位置是底线性公共干预：它不推翻分工，不承诺拉平差距，也未说明读写算足以恢复social或martial virtues。把它读成\"基础教育必然完全抵消损害\"超出材料。\n\n**两段的尺度差异由此明确：** R1的评价单位是劳动量，R2的评价单位是人的能力结构。斯密没有在两者之间建立兑换率——他既不说产量增长\"值得\"能力损耗，也不说损耗使分工不可取，而是让两个命题在各自尺度上成立，再由R3在能力尺度上做有限修补。这正是张力所在，也是文本的诚实之处。\n\n**保留的未回答问题：** 其一，三机制（R1）各自贡献多少、是否穷尽分工增效来源，原文仅以列举给出，未论证完备性。其二，R2的因果广度——工作之外的家庭、宗教、同业交往是否也能塑造理解力，从而限定损耗的普遍性——片段本身未证明。\n\n**下一步需要查找的文本证据：** Book V同一Article中关于教育经费具体安排的段落，可检验R3\"very small expense\"与\"impose\"的实际制度含义；以及Book I, Chapter II、III中分工起源与市场限度的论述，可检验R1隐含条件中\"分工推进到何种程度\"的问题。\n\n## 人工复核与继续阅读\n\n案例编辑复核：文中的“只谈产量”“未论证”等限定仅针对提供的片段，不能外推到整章或斯密全部著作。“共和国公民”等背景未由这三段原文证明；教育的补救定位是解释性重建，不是原文已经证明效果充分。卡片 ID 是原运行的引用标记，导入后请按 R1/R2/R3 与卡片标题回查。"
+            },
+            "digest": "fnv1a:740975b3",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.314Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:42:22.309Z",
+        "updatedAt": "2026-09-10T03:36:23.757Z",
+        "name": "形成有分歧的阅读札记"
+      },
+      {
+        "id": "card-bo6aikmtux9wei",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 780,
+        "width": 370,
+        "height": 250,
+        "tags": [
+          "阅读",
+          "评价尺度"
+        ],
+        "inspirationRef": {
+          "poolId": "inspiration-pool",
+          "entryId": "inspiration-l61kr6mtux9wec",
+          "versionId": "inspiration-version-k0uli7mtux9wec"
+        },
+        "headVersionId": "version-wzkwx3mtux9wei",
+        "versions": [
+          {
+            "id": "version-wzkwx3mtux9wei",
+            "cardId": "card-bo6aikmtux9wei",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 待检验的阅读问题\n\n一种制度增加总体产出，是否足以证明它也改善了参与者的判断能力？先区分评价尺度，再讨论取舍。这是本案例编辑提出的问题，不是斯密原文，也不是实验结论。"
+            },
+            "digest": "fnv1a:e8c10c52",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:42:52.362Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:42:52.362Z",
+        "updatedAt": "2026-09-10T03:36:23.760Z"
       }
     ],
     "transformations": [
       {
-        "id": "transformation-4jjwtgmtu0k9uz",
+        "id": "transformation-rvqarumtux7chf",
         "sourceCardIds": [
-          "card-7iig8rmtu0k9uh",
-          "card-a9fbzxmtu0k9uk",
-          "card-21j6ixmtu0k9us"
+          "card-ysslzlmtux7ch7"
         ],
-        "targetCardId": "card-0tqe5amtu0k9uz",
-        "label": "对照书与生活",
-        "instruction": "按玫瑰片段、狐狸片段、生活观察的顺序阅读材料。分别写书中的线索、我的生活对照、仍需保留的边界。摘记只是读者概括，不能冒充原文；缺失页码不补造。不要把关系责任的问题硬写成确定答案。",
-        "acceptance": "区分书中线索和个人理解，保留未解问题；生活建议来自已给观察，不强行生成打卡计划。",
+        "targetCardId": "card-lzck19mtux7chf",
+        "label": "重建效率论证",
+        "instruction": "以论点、三个机制、隐含条件、没有回答的问题四部分重建这一段论证。保留 Book I / Chapter I 定位。中文解释不是原文引文，不增添现代实验数据。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
         "permissions": {
           "workspaceWrite": false
         },
-        "createdAt": "2026-09-09T11:27:09.035Z",
-        "updatedAt": "2026-09-09T11:27:09.043Z",
-        "x": 390,
-        "y": 330,
-        "lastRunId": "run-au9e2amtu0k9v4",
-        "lastAppliedRunId": "run-au9e2amtu0k9v4"
+        "createdAt": "2026-09-10T02:40:53.235Z",
+        "updatedAt": "2026-09-10T02:41:28.966Z",
+        "x": 435,
+        "y": 150,
+        "lastRunId": "run-u1g3bmmtux7chj",
+        "lastAppliedRunId": "run-u1g3bmmtux7chj"
+      },
+      {
+        "id": "transformation-g46g0omtux84lr",
+        "sourceCardIds": [
+          "card-v28tdqmtux7ch8",
+          "card-3u8eo4mtux7chb"
+        ],
+        "targetCardId": "card-58jpvzmtux84lr",
+        "label": "重建能力与教育论证",
+        "instruction": "解释重复工作怎样在作者论证中影响能力，教育承担何种补充作用。区分描述性判断与规范主张。写出一条对这段论证的可讨论质疑，但不能伪称已经证伪。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-10T02:41:29.679Z",
+        "updatedAt": "2026-09-10T02:42:19.634Z",
+        "x": 435,
+        "y": 760,
+        "lastRunId": "run-yzeg5rmtux84m5",
+        "lastAppliedRunId": "run-yzeg5rmtux84m5"
+      },
+      {
+        "id": "transformation-og04gfmtux997p",
+        "sourceCardIds": [
+          "card-lzck19mtux7chf",
+          "card-58jpvzmtux84lr",
+          "card-ysslzlmtux7ch7",
+          "card-v28tdqmtux7ch8",
+          "card-3u8eo4mtux7chb"
+        ],
+        "targetCardId": "card-sr6ljpmtux997p",
+        "label": "形成有分歧的阅读札记",
+        "instruction": "围绕分工提高产量却可能损害能力的张力，写700到900字札记。明确两段是否同一评价尺度，逐项引用 R1/R2/R3。保留两项原文尚未回答的问题，最后提出下一次需要查找的文本证据。避免生活鸡汤、当代政策处方和编造引文。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
+        "permissions": {
+          "workspaceWrite": false
+        },
+        "createdAt": "2026-09-10T02:42:22.309Z",
+        "updatedAt": "2026-09-10T02:42:50.918Z",
+        "x": 1190,
+        "y": 630,
+        "lastRunId": "run-df1ps6mtux9982",
+        "lastAppliedRunId": "run-df1ps6mtux9982"
       }
     ],
     "viewport": {
@@ -248,103 +376,212 @@
       "y": 0,
       "zoom": 1
     },
-    "createdAt": "2026-09-09T11:27:09.015Z",
-    "updatedAt": "2026-09-09T11:27:09.184Z",
-    "groups": [
-      {
-        "id": "group-board-4sf4zimtu0k9ue-0",
-        "title": "重读片段 · 自己的话",
-        "color": "yellow",
-        "cardIds": [
-          "card-7iig8rmtu0k9uh",
-          "card-a9fbzxmtu0k9uk"
-        ]
-      },
-      {
-        "id": "group-board-4sf4zimtu0k9ue-1",
-        "title": "带回生活",
-        "color": "green",
-        "cardIds": [
-          "card-21j6ixmtu0k9us",
-          "card-3hp950mtu0k9ys"
-        ]
-      },
-      {
-        "id": "group-board-4sf4zimtu0k9ue-2",
-        "title": "理解仍在变化",
-        "color": "violet",
-        "cardIds": [
-          "card-9gqasqmtu0k9um",
-          "card-0tqe5amtu0k9uz",
-          "card-3ma5b1mtu0k9yv"
-        ]
-      }
-    ]
+    "createdAt": "2026-09-10T02:40:53.225Z",
+    "updatedAt": "2026-09-10T03:36:23.760Z"
   },
   "runs": [
     {
-      "id": "run-au9e2amtu0k9v4",
-      "boardId": "board-4sf4zimtu0k9ue",
-      "transformationId": "transformation-4jjwtgmtu0k9uz",
+      "id": "run-df1ps6mtux9982",
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-og04gfmtux997p",
       "status": "succeeded",
       "sourceSnapshot": [
         {
-          "cardId": "card-7iig8rmtu0k9uh",
-          "versionId": "version-ij0yarmtu0k9uh",
+          "cardId": "card-lzck19mtux7chf",
+          "versionId": "version-gf32gqmtux841z",
           "contentKind": "markdown",
-          "resolvedContent": "# 玫瑰与误会\n\n我把注意力放在“说了什么”，忽略了对方做过什么。\n\n阅读定位：玫瑰相关片段，页码待补。\n非原文引文。",
-          "digest": "fnv1a:9f648adf"
+          "resolvedContent": "# 分工提高产量的论证重建\n\n## 核心判断\n\n亚当·斯密在《国富论》（1776）Book I, Chapter I \"Of the Division of Labour\" 中提出：同数量劳动者因分工而能完成的劳动量出现巨大增长，这一增长可归因于三个不同因素——工人熟练程度的提高、工种间转换时间的节省，以及大量简化和缩短劳动的机器的发明。这一论证的核心是一个生产率命题，而非关于个人福祉的命题。\n\n## 论点\n\n原文以 \"This great increase in the quantity of work\" 起句，论点明确：劳动分工导致相同人数可完成的劳动量大幅增加，且这一结果完全由三种机制（three different circumstances）解释。斯密在此将分工与产量之间的因果链条拆解为三个可分别考察的环节，而非把分工当作一个笼统的\"增效\"标签。需要强调，原文该段落只谈\"work\"的数量增长，并未在此断言工人收入、闲暇或生活水平的相应改善。\n\n## 三个机制\n\n**其一，熟练（dexterity）。** 分工使每个工人长期专注于单一操作，动作反复演练，灵巧程度随之提高。这是个体技能维度的解释：同样的劳动者因专业化而变得更快、更精准。\n\n**其二，节省转换时间（saving of the time lost in passing from one species of work to another）。** 若工人在不同工种之间来回切换，转换过程本身会损耗时间；分工消除了这种损耗。这是时间结构维度的解释：即使技能不变，仅减少工序切换也能释放劳动时间。\n\n**其三，机器的发明（the invention of a great number of machines）。** 分工催生大量\"facilitate and abridge labour\"的机器，使一人能完成多人的工作。这是技术维度的解释：专注于单一操作的劳动环境有利于机器的产生与应用。\n\n三种机制分别作用于技能、时间与技术三个层面，斯密将其并列为产量增长的全部归因（is owing to）。\n\n## 隐含条件\n\n原文表述隐含若干未经论证的前提：\n\n1. **专业化确实产生熟练。** 论证假定重复单一操作会带来灵巧提升，而非单调导致的退化；原文未在此处理反例。\n2. **工种转换必然损耗时间。** \"commonly lost\" 中的\"通常\"一词表明斯密将其视为经验观察而非逻辑必然，论证依赖这一观察的普遍性。\n3. **分工与机器发明之间存在因果联系。** 原文将机器发明列为分工的后果之一，但并未说明机器究竟由谁发明、为何分工环境更有利于发明，因果机制本身在此是断言而非证明。\n4. **产量增长是可欲的目标。** 整段以劳动量增长为正面结果展开，未讨论增长如何分配、由谁受益。\n\n以上均属对原文的推断性重构，原文并未明言这些条件。\n\n## 没有回答的问题\n\n- **生产率与福祉的关系**：阅读任务要求\"不把生产率等同于个人福祉\"，而原文此段确实只谈产量。分工是否改善工人的生活、重复劳动对工人的身心影响如何，在此段均无回答（斯密在 Book V 另有涉及，但不属于本段论证范围）。\n- **三机制的相对权重**：三种因素各自贡献多少、是否可分离测量，原文未提供量化或比较。\n- **机器发明的微观过程**：机器从何而来、发明者是谁、发明激励为何，均未交代。\n- **分工的限度**：分工能推进到什么程度、受什么条件约束（如市场规模），本段未涉及。\n- **三机制的穷尽性**：\"three different circumstances\" 是否穷尽了分工增效的所有来源，原文以列举方式给出，未论证其完备性。\n\n## 材料与推断的界限\n\n\"论点\"与\"三个机制\"两节直接依据原文引文，属来源内容；\"隐含条件\"与\"没有回答的问题\"两节为基于原文表述的分析性推断，标注了哪些前提未被原文明言或论证。全段未引入原文之外的实验数据、后续研究或现代例证。",
+          "digest": "fnv1a:b836d375"
         },
         {
-          "cardId": "card-a9fbzxmtu0k9uk",
-          "versionId": "version-ph1jusmtu0k9uk",
+          "cardId": "card-58jpvzmtux84lr",
+          "versionId": "version-q1mziqmtux975f",
           "contentKind": "markdown",
-          "resolvedContent": "# 关系需要时间\n\n我的理解：重要性并不来自数量，而来自共同投入的经历。\n\n阅读定位：与狐狸相遇片段，页码待补。",
-          "digest": "fnv1a:a9a9221c"
+          "resolvedContent": "# 重复工作、能力损耗与教育的补充位置\n\n核心判断是：斯密这段论证由一条描述性机制推出一项规范性补救——分工把多数靠劳动为生者限制在“少数非常简单的操作”，又因他假设“多数人的理解力必然由日常职业形成”，于是重复工作可能带来行业灵巧，却以“intellectual, social, and martial virtues”为代价；教育的作用不是推翻分工，而是在就业前以很低公共成本补上读、写、算，形成最低限度能力底座，缓冲而非消除这种损耗。\n\n证据边界应划清。第一段是斯密的18世纪判断：分工进展中，“the far greater part of those who live by labour”的就业被收窄，常常只剩一两个操作；由此他推断，普通人的心智会被其ordinary employments塑形，故有“dexterity … acquired at the expense of … virtues”的说法。这里的强点是机制直觉：经验范围窄，判断、交往与公共/军事品格的练习机会也可能变窄。弱点是片段没有现代因果识别、测量数据或反事实比较，因此应读作作者论证中的描述性前提与历史化判断，而非已被现代研究验证的事实。\n\n第二段把教育放进补救位置，但范围有限。斯密承认，在文明社会中，common people不可能像有rank and fortune者那样受同等良好教育；这本身就是描述性分层判断。随后转为规范主张：读、写、算是“most essential parts of education”，可在很早时期获得，连将从事最低职业者也多半能在就业前学得；因此公众“for a very small expense”可以facilitate、encourage，甚至impose almost the whole body of the people去获得这些能力。可见教育承担的是补充性、底线性公共干预：它不承诺拉平全部教育差距，不主张取消分工，也不能被扩展成斯密已设计出现代学校制度；它只是防止重复劳动的窄化效应在最基本的读写算层面塌陷为不可逆劣势。\n\n局限仍在：引文未说明读写算足以恢复哪些social或martial virtues，也未给公共强制的正当边界与程度；“martial”带有民兵、共和国公民与18世纪战争组织的语境，不能直接等同现代职业技能或心理健康指标。把斯密读成“分工必然使人愚昧”或“基础教育必然完全抵消损害”，都超出材料。\n\n一条可讨论质疑是：若“理解力由日常职业形成”被说得太强，工作之外的家庭、宗教、同业交往、迁徙、市场谈判与休闲也可能塑造判断与社会能力；那么重复工作造成的能力损耗是否普遍到需要公共“impose”，以及读写算是否真是充分补偿，片段本身并未证明。这不是证伪斯密，而是指出其因果广度与补救充分性仍开放。未回答的问题包括：最低教育的阈值如何定、公共强制到何种程度仍属“very small expense”的正当补救、现代自动化与平台劳动中的重复任务是否复制同一机制，都需要另行证据。",
+          "digest": "fnv1a:37c0d592"
         },
         {
-          "cardId": "card-21j6ixmtu0k9us",
-          "versionId": "version-v7ddramtu0k9us",
+          "cardId": "card-ysslzlmtux7ch7",
+          "versionId": "version-rwmqkymtux7ch7",
           "contentKind": "markdown",
-          "resolvedContent": "# 周末的一次散步\n\n放下手机后，才听到朋友真正介意的事。\n\n值得追问：注意力也是一种投入吗？",
-          "digest": "fnv1a:5ca4028c"
+          "resolvedContent": "# 分工为什么提高产量\n\n原文：Adam Smith, The Wealth of Nations (1776), Book I, Chapter I, “Of the Division of Labour”。公共领域英文原文，定位：段落起句 This great increase。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> This great increase in the quantity of work, which, in consequence of the division of labour, the same number of people are capable of performing, is owing to three different circumstances; first, to the increase of dexterity in every particular workman; secondly, to the saving of the time which is commonly lost in passing from one species of work to another; and, lastly, to the invention of a great number of machines which facilitate and abridge labour, and enable one man to do the work of many.\n\n阅读任务：分别解释熟练、转换损耗、机器发明三种机制，不把生产率等同于个人福祉。",
+          "digest": "fnv1a:cbf26938"
+        },
+        {
+          "cardId": "card-v28tdqmtux7ch8",
+          "versionId": "version-ev6hytmtux7ch8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 专门化可能损害什么\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II, “Of the Expense of the Institutions for the Education of Youth”。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> In the progress of the division of labour, the employment of the far greater part of those who live by labour, that is, of the great body of the people, comes to be confined to a few very simple operations; frequently to one or two. But the understandings of the greater part of men are necessarily formed by their ordinary employments.\n\n> His dexterity at his own particular trade seems, in this manner, to be acquired at the expense of his intellectual, social, and martial virtues.\n\n阅读任务：识别“工作塑造能力”的假设；区分18世纪作者的判断与经现代研究验证的事实。不要去掉其历史语境。",
+          "digest": "fnv1a:ed4beaf8"
+        },
+        {
+          "cardId": "card-3u8eo4mtux7chb",
+          "versionId": "version-65cruxmtux7chb",
+          "contentKind": "markdown",
+          "resolvedContent": "# 教育如何进入论证\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> But though the common people cannot, in any civilized society, be so well instructed as people of some rank and fortune; the most essential parts of education, however, to read, write, and account, can be acquired at so early a period of life, that the greater part, even of those who are to be bred to the lowest occupations, have time to acquire them before they can be employed in those occupations.\n\n> For a very small expense, the public can facilitate, can encourage and can even impose upon almost the whole body of the people, the necessity of acquiring those most essential parts of education.\n\n阅读任务：解释教育在前两段论证中的位置，不能推断斯密主张取消分工或已设计现代教育制度。",
+          "digest": "fnv1a:1bc15495"
         }
       ],
-      "targetCardId": "card-0tqe5amtu0k9uz",
+      "targetCardId": "card-sr6ljpmtux997p",
       "targetBaseVersionId": null,
       "intent": "create",
       "modelSnapshot": {
-        "provider": "local-demo",
-        "model": "authored-example"
+        "provider": "openai-compatible",
+        "model": "k3"
       },
-      "createdAt": "2026-09-09T11:27:09.040Z",
-      "startedAt": "2026-09-09T11:27:09.040Z",
+      "createdAt": "2026-09-10T02:42:22.322Z",
+      "startedAt": "2026-09-10T02:42:22.322Z",
       "progress": {
         "phase": "completed",
         "label": "生成完成",
-        "updatedAt": "2026-09-09T11:27:09.043Z"
+        "updatedAt": "2026-09-10T02:42:50.918Z"
       },
       "progressEvents": [
         {
           "sequence": 1,
           "phase": "generating",
-          "label": "正在载入人工编写的演示文本",
-          "occurredAt": "2026-09-09T11:27:09.042Z"
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:42:22.326Z"
         },
         {
           "sequence": 2,
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:42:50.916Z"
+        },
+        {
+          "sequence": 3,
           "phase": "completed",
           "label": "生成完成",
-          "occurredAt": "2026-09-09T11:27:09.043Z"
+          "occurredAt": "2026-09-10T02:42:50.918Z"
         }
       ],
       "result": {
-        "output": "# 这次读懂了什么\n\n## 书中的线索\n关系来自投入与相处，不只是给事物贴标签。\n\n## 我的生活对照\n散步时认真听完一件小事，比急着给建议更有帮助。\n\n## 仍需保留的边界\n重视关系不等于无限承担。这个问题需要继续观察。",
-        "digest": "fnv1a:1bf9b90e",
+        "output": "# 分工的产量逻辑与能力代价：一段札记\n\n**核心判断：** 斯密关于分工的两段论证（以下称R1、R2）并不使用同一评价尺度，这是理解其间张力的关键。R1以\"可完成的劳动量\"为唯一尺度，R2以劳动者的\"intellectual, social, and martial virtues\"为尺度；两者都是分工的后果，却不可直接通约。R3中的教育主张则表明斯密本人并不试图用R1的尺度去抵偿R2的损失，而是在另一尺度上提供底线补救。\n\n**证据一：R1只谈产量。** Book I, Chapter I的原文（card-ysslzlmtux7ch7）以\"This great increase in the quantity of work\"起句，将增长归因于三种机制：工人熟练度（dexterity）的提高、工种转换时间的节省、\"facilitate and abridge labour\"的机器发明。重建稿（card-lzck19mtux7chf）指出，此段只断言\"work\"的数量增长，并未涉及工人收入、闲暇或生活水平；且三个机制的并列归因依赖若干未论证前提——如重复操作产生熟练而非退化、机器发明的微观过程等，这些属推断性重构而非原文明言。\n\n**证据二：R2换了尺度。** Book V的原文（card-v28tdqmtux7ch8）承认分工带来\"dexterity at his own particular trade\"，但断言这种灵巧\"acquired at the expense of his intellectual, social, and martial virtues\"。其桥梁是一个强假设：\"the understandings of the greater part of men are necessarily formed by their ordinary employments\"。注意，此处的dexterity与R1的第一个机制遥相呼应，但在R1中是正面因素，在R2中成为代价的载体。分析稿（card-58jpvzmtux84lr）强调这是18世纪作者的描述性判断与机制直觉，无现代因果识别支持；\"martial\"带有民兵与共和国公民的语境，不能直接等同现代指标。\n\n**证据三：R3的教育是补充而非抵消。** R3原文（card-3u8eo4mtux7chb）承认common people不可能受与有产者同等的教育，随后主张读、写、算可在就业前习得，公众可以\"for a very small expense\"促进甚至强制之。可见教育在论证中的位置是底线性公共干预：它不推翻分工，不承诺拉平差距，也未说明读写算足以恢复social或martial virtues。把它读成\"基础教育必然完全抵消损害\"超出材料。\n\n**两段的尺度差异由此明确：** R1的评价单位是劳动量，R2的评价单位是人的能力结构。斯密没有在两者之间建立兑换率——他既不说产量增长\"值得\"能力损耗，也不说损耗使分工不可取，而是让两个命题在各自尺度上成立，再由R3在能力尺度上做有限修补。这正是张力所在，也是文本的诚实之处。\n\n**保留的未回答问题：** 其一，三机制（R1）各自贡献多少、是否穷尽分工增效来源，原文仅以列举给出，未论证完备性。其二，R2的因果广度——工作之外的家庭、宗教、同业交往是否也能塑造理解力，从而限定损耗的普遍性——片段本身未证明。\n\n**下一步需要查找的文本证据：** Book V同一Article中关于教育经费具体安排的段落，可检验R3\"very small expense\"与\"impose\"的实际制度含义；以及Book I, Chapter II、III中分工起源与市场限度的论述，可检验R1隐含条件中\"分工推进到何种程度\"的问题。",
+        "digest": "fnv1a:c2e86c30",
         "disposition": "applied",
-        "appliedVersionId": "version-e0x5wdmtu0k9v8"
+        "appliedVersionId": "version-r40bp3mtux9vag"
       },
-      "finishedAt": "2026-09-09T11:27:09.043Z"
+      "finishedAt": "2026-09-10T02:42:50.918Z"
+    },
+    {
+      "id": "run-u1g3bmmtux7chj",
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-rvqarumtux7chf",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-ysslzlmtux7ch7",
+          "versionId": "version-rwmqkymtux7ch7",
+          "contentKind": "markdown",
+          "resolvedContent": "# 分工为什么提高产量\n\n原文：Adam Smith, The Wealth of Nations (1776), Book I, Chapter I, “Of the Division of Labour”。公共领域英文原文，定位：段落起句 This great increase。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> This great increase in the quantity of work, which, in consequence of the division of labour, the same number of people are capable of performing, is owing to three different circumstances; first, to the increase of dexterity in every particular workman; secondly, to the saving of the time which is commonly lost in passing from one species of work to another; and, lastly, to the invention of a great number of machines which facilitate and abridge labour, and enable one man to do the work of many.\n\n阅读任务：分别解释熟练、转换损耗、机器发明三种机制，不把生产率等同于个人福祉。",
+          "digest": "fnv1a:cbf26938"
+        }
+      ],
+      "targetCardId": "card-lzck19mtux7chf",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "openai-compatible",
+        "model": "k3"
+      },
+      "createdAt": "2026-09-10T02:40:53.239Z",
+      "startedAt": "2026-09-10T02:40:53.239Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-10T02:41:28.966Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:40:53.242Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:41:28.963Z"
+        },
+        {
+          "sequence": 3,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-10T02:41:28.966Z"
+        }
+      ],
+      "result": {
+        "output": "# 分工提高产量的论证重建\n\n## 核心判断\n\n亚当·斯密在《国富论》（1776）Book I, Chapter I \"Of the Division of Labour\" 中提出：同数量劳动者因分工而能完成的劳动量出现巨大增长，这一增长可归因于三个不同因素——工人熟练程度的提高、工种间转换时间的节省，以及大量简化和缩短劳动的机器的发明。这一论证的核心是一个生产率命题，而非关于个人福祉的命题。\n\n## 论点\n\n原文以 \"This great increase in the quantity of work\" 起句，论点明确：劳动分工导致相同人数可完成的劳动量大幅增加，且这一结果完全由三种机制（three different circumstances）解释。斯密在此将分工与产量之间的因果链条拆解为三个可分别考察的环节，而非把分工当作一个笼统的\"增效\"标签。需要强调，原文该段落只谈\"work\"的数量增长，并未在此断言工人收入、闲暇或生活水平的相应改善。\n\n## 三个机制\n\n**其一，熟练（dexterity）。** 分工使每个工人长期专注于单一操作，动作反复演练，灵巧程度随之提高。这是个体技能维度的解释：同样的劳动者因专业化而变得更快、更精准。\n\n**其二，节省转换时间（saving of the time lost in passing from one species of work to another）。** 若工人在不同工种之间来回切换，转换过程本身会损耗时间；分工消除了这种损耗。这是时间结构维度的解释：即使技能不变，仅减少工序切换也能释放劳动时间。\n\n**其三，机器的发明（the invention of a great number of machines）。** 分工催生大量\"facilitate and abridge labour\"的机器，使一人能完成多人的工作。这是技术维度的解释：专注于单一操作的劳动环境有利于机器的产生与应用。\n\n三种机制分别作用于技能、时间与技术三个层面，斯密将其并列为产量增长的全部归因（is owing to）。\n\n## 隐含条件\n\n原文表述隐含若干未经论证的前提：\n\n1. **专业化确实产生熟练。** 论证假定重复单一操作会带来灵巧提升，而非单调导致的退化；原文未在此处理反例。\n2. **工种转换必然损耗时间。** \"commonly lost\" 中的\"通常\"一词表明斯密将其视为经验观察而非逻辑必然，论证依赖这一观察的普遍性。\n3. **分工与机器发明之间存在因果联系。** 原文将机器发明列为分工的后果之一，但并未说明机器究竟由谁发明、为何分工环境更有利于发明，因果机制本身在此是断言而非证明。\n4. **产量增长是可欲的目标。** 整段以劳动量增长为正面结果展开，未讨论增长如何分配、由谁受益。\n\n以上均属对原文的推断性重构，原文并未明言这些条件。\n\n## 没有回答的问题\n\n- **生产率与福祉的关系**：阅读任务要求\"不把生产率等同于个人福祉\"，而原文此段确实只谈产量。分工是否改善工人的生活、重复劳动对工人的身心影响如何，在此段均无回答（斯密在 Book V 另有涉及，但不属于本段论证范围）。\n- **三机制的相对权重**：三种因素各自贡献多少、是否可分离测量，原文未提供量化或比较。\n- **机器发明的微观过程**：机器从何而来、发明者是谁、发明激励为何，均未交代。\n- **分工的限度**：分工能推进到什么程度、受什么条件约束（如市场规模），本段未涉及。\n- **三机制的穷尽性**：\"three different circumstances\" 是否穷尽了分工增效的所有来源，原文以列举方式给出，未论证其完备性。\n\n## 材料与推断的界限\n\n\"论点\"与\"三个机制\"两节直接依据原文引文，属来源内容；\"隐含条件\"与\"没有回答的问题\"两节为基于原文表述的分析性推断，标注了哪些前提未被原文明言或论证。全段未引入原文之外的实验数据、后续研究或现代例证。",
+        "digest": "fnv1a:b836d375",
+        "disposition": "applied",
+        "appliedVersionId": "version-gf32gqmtux841z"
+      },
+      "finishedAt": "2026-09-10T02:41:28.966Z"
+    },
+    {
+      "id": "run-yzeg5rmtux84m5",
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-g46g0omtux84lr",
+      "status": "succeeded",
+      "sourceSnapshot": [
+        {
+          "cardId": "card-v28tdqmtux7ch8",
+          "versionId": "version-ev6hytmtux7ch8",
+          "contentKind": "markdown",
+          "resolvedContent": "# 专门化可能损害什么\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II, “Of the Expense of the Institutions for the Education of Youth”。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> In the progress of the division of labour, the employment of the far greater part of those who live by labour, that is, of the great body of the people, comes to be confined to a few very simple operations; frequently to one or two. But the understandings of the greater part of men are necessarily formed by their ordinary employments.\n\n> His dexterity at his own particular trade seems, in this manner, to be acquired at the expense of his intellectual, social, and martial virtues.\n\n阅读任务：识别“工作塑造能力”的假设；区分18世纪作者的判断与经现代研究验证的事实。不要去掉其历史语境。",
+          "digest": "fnv1a:ed4beaf8"
+        },
+        {
+          "cardId": "card-3u8eo4mtux7chb",
+          "versionId": "version-65cruxmtux7chb",
+          "contentKind": "markdown",
+          "resolvedContent": "# 教育如何进入论证\n\n原文：Adam Smith, The Wealth of Nations (1776), Book V, Chapter I, Part III, Article II。公共领域英文原文。来源：https://www.gutenberg.org/files/3300/3300-h/3300-h.htm\n\n> But though the common people cannot, in any civilized society, be so well instructed as people of some rank and fortune; the most essential parts of education, however, to read, write, and account, can be acquired at so early a period of life, that the greater part, even of those who are to be bred to the lowest occupations, have time to acquire them before they can be employed in those occupations.\n\n> For a very small expense, the public can facilitate, can encourage and can even impose upon almost the whole body of the people, the necessity of acquiring those most essential parts of education.\n\n阅读任务：解释教育在前两段论证中的位置，不能推断斯密主张取消分工或已设计现代教育制度。",
+          "digest": "fnv1a:1bc15495"
+        }
+      ],
+      "targetCardId": "card-58jpvzmtux84lr",
+      "targetBaseVersionId": null,
+      "intent": "create",
+      "modelSnapshot": {
+        "provider": "openai-compatible",
+        "model": "k3"
+      },
+      "createdAt": "2026-09-10T02:41:29.693Z",
+      "startedAt": "2026-09-10T02:41:29.693Z",
+      "progress": {
+        "phase": "completed",
+        "label": "生成完成",
+        "updatedAt": "2026-09-10T02:42:19.634Z"
+      },
+      "progressEvents": [
+        {
+          "sequence": 1,
+          "phase": "generating",
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:41:29.698Z"
+        },
+        {
+          "sequence": 2,
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:42:19.632Z"
+        },
+        {
+          "sequence": 3,
+          "phase": "completed",
+          "label": "生成完成",
+          "occurredAt": "2026-09-10T02:42:19.634Z"
+        }
+      ],
+      "result": {
+        "output": "# 重复工作、能力损耗与教育的补充位置\n\n核心判断是：斯密这段论证由一条描述性机制推出一项规范性补救——分工把多数靠劳动为生者限制在“少数非常简单的操作”，又因他假设“多数人的理解力必然由日常职业形成”，于是重复工作可能带来行业灵巧，却以“intellectual, social, and martial virtues”为代价；教育的作用不是推翻分工，而是在就业前以很低公共成本补上读、写、算，形成最低限度能力底座，缓冲而非消除这种损耗。\n\n证据边界应划清。第一段是斯密的18世纪判断：分工进展中，“the far greater part of those who live by labour”的就业被收窄，常常只剩一两个操作；由此他推断，普通人的心智会被其ordinary employments塑形，故有“dexterity … acquired at the expense of … virtues”的说法。这里的强点是机制直觉：经验范围窄，判断、交往与公共/军事品格的练习机会也可能变窄。弱点是片段没有现代因果识别、测量数据或反事实比较，因此应读作作者论证中的描述性前提与历史化判断，而非已被现代研究验证的事实。\n\n第二段把教育放进补救位置，但范围有限。斯密承认，在文明社会中，common people不可能像有rank and fortune者那样受同等良好教育；这本身就是描述性分层判断。随后转为规范主张：读、写、算是“most essential parts of education”，可在很早时期获得，连将从事最低职业者也多半能在就业前学得；因此公众“for a very small expense”可以facilitate、encourage，甚至impose almost the whole body of the people去获得这些能力。可见教育承担的是补充性、底线性公共干预：它不承诺拉平全部教育差距，不主张取消分工，也不能被扩展成斯密已设计出现代学校制度；它只是防止重复劳动的窄化效应在最基本的读写算层面塌陷为不可逆劣势。\n\n局限仍在：引文未说明读写算足以恢复哪些social或martial virtues，也未给公共强制的正当边界与程度；“martial”带有民兵、共和国公民与18世纪战争组织的语境，不能直接等同现代职业技能或心理健康指标。把斯密读成“分工必然使人愚昧”或“基础教育必然完全抵消损害”，都超出材料。\n\n一条可讨论质疑是：若“理解力由日常职业形成”被说得太强，工作之外的家庭、宗教、同业交往、迁徙、市场谈判与休闲也可能塑造判断与社会能力；那么重复工作造成的能力损耗是否普遍到需要公共“impose”，以及读写算是否真是充分补偿，片段本身并未证明。这不是证伪斯密，而是指出其因果广度与补救充分性仍开放。未回答的问题包括：最低教育的阈值如何定、公共强制到何种程度仍属“very small expense”的正当补救、现代自动化与平台劳动中的重复任务是否复制同一机制，都需要另行证据。",
+        "digest": "fnv1a:37c0d592",
+        "disposition": "applied",
+        "appliedVersionId": "version-q1mziqmtux975f"
+      },
+      "finishedAt": "2026-09-10T02:42:19.634Z"
     }
   ],
   "workflowProvenance": [],
@@ -353,8 +590,8 @@
     {
       "kind": "inspiration",
       "poolId": "inspiration-pool",
-      "entryId": "inspiration-i7bktcmtu0k9uo",
-      "versionId": "inspiration-version-qfy3llmtu0k9uo"
+      "entryId": "inspiration-l61kr6mtux9wec",
+      "versionId": "inspiration-version-k0uli7mtux9wec"
     }
   ]
 }

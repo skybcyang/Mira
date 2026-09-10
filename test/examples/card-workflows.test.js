@@ -13,12 +13,12 @@ import { V2BoardStore } from '../../bridge/v2-board-store.js'
 import { createV2RunStore } from '../../bridge/v2-run-store.js'
 import { WorkflowStore } from '../../bridge/workflow-store.js'
 
-const directory = new URL('../../examples/card-workflows/', import.meta.url)
-const names = ['interview', 'technical-comparison', 'writing']
+const directory = new URL('../../docs/examples/', import.meta.url)
+const names = ['software', 'reading', 'research', 'writing']
 const identities = (board) => [board.id, ...board.cards.flatMap((card) => [card.id, ...card.versions.map(({ id }) => id)]), ...board.transformations.map(({ id }) => id)]
 
-describe('portable human-authored workflow examples', () => {
-  it('ships the three explicitly named example artifacts', async () => {
+describe('portable real-model workflow examples', () => {
+  it('ships the four explicitly named example artifacts', async () => {
     const files = await readdir(directory).catch(() => [])
     expect(files.filter((name) => name.endsWith('.mira-board.json')).sort())
       .toEqual(names.map((name) => `${name}.mira-board.json`).sort())
@@ -30,30 +30,23 @@ describe('portable human-authored workflow examples', () => {
     const artifact = JSON.parse(source)
     const unchanged = structuredClone(artifact)
     expect(() => validateBoardArtifact(artifact)).not.toThrow()
-    expect(artifact.runs).toEqual([])
-    expect(artifact.workflowProvenance).toEqual([])
+    expect(artifact.runs.length).toBeGreaterThanOrEqual(3)
     expect(artifact.fileDependencies).toEqual([])
-    expect(artifact.externalReferences).toEqual([])
     expect(artifact.board.transformations).toHaveLength(3)
-    expect(artifact.board.cards).toHaveLength(4)
+    expect(artifact.board.cards.length).toBeGreaterThanOrEqual(7)
     for (const card of artifact.board.cards) {
       expect(card).not.toHaveProperty('fileBinding')
       expect(card.contentKind).toBe('markdown')
-      expect(card.versions).toHaveLength(1)
-      const head = card.versions[0]
+      const head = card.versions.find(version => version.id === card.headVersionId)
       expect(head.id).toBe(card.headVersionId)
-      expect(head.origin).toBe('human')
-      expect(head).not.toHaveProperty('sourceRunId')
-      expect(head.content.markdown).toContain('虚构')
-      expect(head.content.markdown.length).toBeGreaterThan(100)
+      expect(head.content.markdown.length).toBeGreaterThan(50)
       expect(head.digest).toBe(digestContent(head.content))
     }
-    artifact.board.transformations.forEach((step, index) => {
-      expect(step.sourceCardIds).toEqual([artifact.board.cards[index].id])
-      expect(step.targetCardId).toBe(artifact.board.cards[index + 1].id)
-      expect(step).not.toHaveProperty('lastRunId')
-      expect(step).not.toHaveProperty('lastAppliedRunId')
-      expect(step).not.toHaveProperty('workflowRef')
+    artifact.board.transformations.forEach((step) => {
+      expect(step.sourceCardIds.length).toBeGreaterThan(0)
+      expect(artifact.board.cards.some(card => card.id === step.targetCardId)).toBe(true)
+      expect(artifact.runs.some(run => run.id === step.lastRunId)).toBe(true)
+      expect(artifact.runs.some(run => run.id === step.lastAppliedRunId)).toBe(true)
       expect(step.instruction.length).toBeGreaterThan(20)
     })
     const root = await mkdtemp(join(tmpdir(), 'mira-workflow-example-'))
@@ -75,12 +68,12 @@ describe('portable human-authored workflow examples', () => {
       expect(await boardStore.load(first.boardId)).toEqual(first.board)
       expect(await boardStore.load(second.boardId)).toEqual(second.board)
       expect(await boardStore.list()).toHaveLength(2)
-      expect(await runStore.list()).toEqual([])
+      expect(await runStore.list()).toHaveLength(artifact.runs.length * 2)
       expect(await workflowStore.list()).toEqual([])
       expect(() => validateBoardArtifact(artifact)).not.toThrow()
       const exported = await service.exportBoard(first.boardId)
       expect(() => validateBoardArtifact(exported)).not.toThrow()
-      expect(exported.runs).toEqual([])
+      expect(exported.runs).toHaveLength(artifact.runs.length)
       expect(exported.board.cards.map((card) => card.versions[0].content))
         .toEqual(artifact.board.cards.map((card) => card.versions[0].content))
     } finally {

@@ -1,0 +1,357 @@
+{
+  "generatedAt": "2026-09-10T02:47:51.816Z",
+  "sourceCommit": "8e95063",
+  "endpoint": "https://api.kimi.com/coding/v1",
+  "requestedModel": "k3",
+  "receipts": [
+    {
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-ar148smtux4g7i",
+      "startedAt": "2026-09-10T02:38:38.103Z",
+      "finishedAt": "2026-09-10T02:39:18.852Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-zRW1L7wBVXY5e81fg76bTAwq",
+      "usage": {
+        "prompt_tokens": 3627,
+        "completion_tokens": 1103,
+        "total_tokens": 4730,
+        "completion_tokens_details": {
+          "reasoning_tokens": 119
+        }
+      },
+      "outputSha256": "1d45b4bc724f32afb97ed34a6b93e647285128d0c17a48f9b12f9c75d6885fbc",
+      "runId": "run-1fpkammtux4g7n"
+    },
+    {
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-lwvnxzmtux5dza",
+      "startedAt": "2026-09-10T02:39:21.879Z",
+      "finishedAt": "2026-09-10T02:40:02.670Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-RGVEi7czgNqTmKMuDeurjwcR",
+      "usage": {
+        "prompt_tokens": 2326,
+        "completion_tokens": 1211,
+        "total_tokens": 3537,
+        "completion_tokens_details": {
+          "reasoning_tokens": 64
+        }
+      },
+      "outputSha256": "7338a1cc3b5d23de4e8e5f8bf3b7f73d4fbee1e2433041971c14f5ec5419cb72",
+      "runId": "run-vgpx2imtux5dzo"
+    },
+    {
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-3ufnk0mtux6axv",
+      "startedAt": "2026-09-10T02:40:04.600Z",
+      "finishedAt": "2026-09-10T02:40:50.793Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-Gu0PFWwYqFFvE4W0GbMmPMb0",
+      "usage": {
+        "prompt_tokens": 4071,
+        "completion_tokens": 1547,
+        "total_tokens": 5618,
+        "completion_tokens_details": {
+          "reasoning_tokens": 457
+        }
+      },
+      "outputSha256": "439843158325a7f1b6677f92519bf85310adc3fa8ba5bac332e1bcc441c88e01",
+      "runId": "run-v7zm60mtux6aya"
+    },
+    {
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-rvqarumtux7chf",
+      "startedAt": "2026-09-10T02:40:53.243Z",
+      "finishedAt": "2026-09-10T02:41:28.962Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-WGRfdCxH3gmVJv2aKoPIVv53",
+      "usage": {
+        "prompt_tokens": 476,
+        "completion_tokens": 873,
+        "total_tokens": 1349,
+        "completion_tokens_details": {
+          "reasoning_tokens": 43
+        }
+      },
+      "outputSha256": "d3a023b225a5350f23bf619cc8e6e20d24019f1395368ad09130e71b744dcaac",
+      "runId": "run-u1g3bmmtux7chj"
+    },
+    {
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-g46g0omtux84lr",
+      "startedAt": "2026-09-10T02:41:29.699Z",
+      "finishedAt": "2026-09-10T02:42:19.631Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-e1i5fqTIIO7iPu2teqx7UXUq",
+      "usage": {
+        "prompt_tokens": 713,
+        "completion_tokens": 1307,
+        "total_tokens": 2020,
+        "completion_tokens_details": {
+          "reasoning_tokens": 683
+        }
+      },
+      "outputSha256": "1e59cc5865771b4fb70addca29d5023dbaa17af526b500067b51146b85dfdd70",
+      "runId": "run-yzeg5rmtux84m5"
+    },
+    {
+      "boardId": "board-pdny58mtux7ch5",
+      "transformationId": "transformation-og04gfmtux997p",
+      "startedAt": "2026-09-10T02:42:22.327Z",
+      "finishedAt": "2026-09-10T02:42:50.915Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-C6Z7hh4menGTEcv6fjgpyHJ5",
+      "usage": {
+        "prompt_tokens": 2394,
+        "completion_tokens": 999,
+        "total_tokens": 3393,
+        "completion_tokens_details": {
+          "reasoning_tokens": 233
+        }
+      },
+      "outputSha256": "53274abd1752bd08ee5750f7f7f45939d04308a86daf9629e5baa9f7ff17f6ac",
+      "runId": "run-df1ps6mtux9982"
+    },
+    {
+      "boardId": "board-xihtn3mtux9wer",
+      "transformationId": "transformation-5a3ggwmtux9wf6",
+      "startedAt": "2026-09-10T02:42:52.393Z",
+      "finishedAt": "2026-09-10T02:43:20.067Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-Vp29beUAptnLp2J31bdphoRZ",
+      "usage": {
+        "prompt_tokens": 767,
+        "completion_tokens": 1084,
+        "total_tokens": 1851,
+        "completion_tokens_details": {
+          "reasoning_tokens": 113
+        }
+      },
+      "outputSha256": "1f19dc00c7b94a978a3346aa9c314f063e2f1b17fb0081188bed34e2d6c93cc1",
+      "runId": "run-tdy16dmtux9wfa"
+    },
+    {
+      "boardId": "board-xihtn3mtux9wer",
+      "transformationId": "transformation-rnw6h6mtuxajre",
+      "startedAt": "2026-09-10T02:43:22.644Z",
+      "finishedAt": "2026-09-10T02:43:57.660Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-8jIQrlyqVM91sJTK7O6l2J4M",
+      "usage": {
+        "prompt_tokens": 1739,
+        "completion_tokens": 915,
+        "total_tokens": 2654,
+        "completion_tokens_details": {
+          "reasoning_tokens": 61
+        }
+      },
+      "outputSha256": "396a666c30f948ea0b5d4690208c1a755cd733bd1d5aa5e1062e9758062a7044",
+      "runId": "run-1zpu2emtuxajrm"
+    },
+    {
+      "boardId": "board-xihtn3mtux9wer",
+      "transformationId": "transformation-otul2mmtuxbccm",
+      "startedAt": "2026-09-10T02:43:59.704Z",
+      "finishedAt": "2026-09-10T02:44:38.130Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-9NADj6Yno38cIvxYJPCuTk3f",
+      "usage": {
+        "prompt_tokens": 1256,
+        "completion_tokens": 929,
+        "total_tokens": 2185,
+        "completion_tokens_details": {
+          "reasoning_tokens": 65
+        }
+      },
+      "outputSha256": "eef574d5fc3bc0473243884f4dd484d81abae9ea1046e1cac9fe9901d5700af9",
+      "runId": "run-u523hbmtuxbcd0"
+    },
+    {
+      "boardId": "board-fcfqxkmtuxc8c7",
+      "transformationId": "transformation-pp3c8vmtuxc8cq",
+      "startedAt": "2026-09-10T02:44:41.170Z",
+      "finishedAt": "2026-09-10T02:45:25.888Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-YCXAJHOLk5J4jA92bbMLiOEr",
+      "usage": {
+        "prompt_tokens": 3913,
+        "completion_tokens": 1231,
+        "total_tokens": 5144,
+        "completion_tokens_details": {
+          "reasoning_tokens": 313
+        }
+      },
+      "outputSha256": "ac508d9b30e00be2b4571d3308151d3df96ad082028451403839ff42b6717101",
+      "runId": "run-sren77mtuxc8cv"
+    },
+    {
+      "boardId": "board-fcfqxkmtuxc8c7",
+      "transformationId": "transformation-ky74fmmtuxd96p",
+      "startedAt": "2026-09-10T02:45:28.916Z",
+      "finishedAt": "2026-09-10T02:46:03.655Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-oripE9LjUtnkwB6uYQmVL4xX",
+      "usage": {
+        "prompt_tokens": 4847,
+        "completion_tokens": 1043,
+        "total_tokens": 5890,
+        "completion_tokens_details": {
+          "reasoning_tokens": 96
+        }
+      },
+      "outputSha256": "2305a4718b33f39c26d9a5ab32bc825952b78a14075cd41641408edaf6c8f82e",
+      "runId": "run-4noip0mtuxd972"
+    },
+    {
+      "boardId": "board-fcfqxkmtuxc8c7",
+      "transformationId": "transformation-7jj064mtuxe0s8",
+      "startedAt": "2026-09-10T02:46:04.683Z",
+      "finishedAt": "2026-09-10T02:47:09.760Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-3zSRItbcspLc6I6ssRGnJnif",
+      "usage": {
+        "prompt_tokens": 4742,
+        "completion_tokens": 2175,
+        "total_tokens": 6917,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1155
+        }
+      },
+      "outputSha256": "a4f70bd1f55d3dd522617aec48acfc9d96ea6e8a00707672c4a46d253f29d68a",
+      "runId": "run-nili5umtuxe0sm"
+    },
+    {
+      "boardId": "board-fcfqxkmtuxc8c7",
+      "transformationId": "transformation-ky74fmmtuxd96p",
+      "startedAt": "2026-09-10T02:47:12.772Z",
+      "finishedAt": "2026-09-10T02:47:50.616Z",
+      "requestedModel": "k3",
+      "responseModel": "k3",
+      "responseId": "chatcmpl-O1e9N4MFux8C90BndtZhjkxj",
+      "usage": {
+        "prompt_tokens": 4847,
+        "completion_tokens": 1274,
+        "total_tokens": 6121,
+        "cached_tokens": 4847,
+        "completion_tokens_details": {
+          "reasoning_tokens": 194
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 4847
+        }
+      },
+      "outputSha256": "6aa4378cea46254b9079fd467305a745d66c86936e8171d349ffa4f5b00dc48e",
+      "runId": "run-rx6zbumtuxfhby"
+    }
+  ],
+  "boards": [
+    {
+      "key": "software",
+      "boardId": "board-os1qnemtux4g6k",
+      "title": "软件交付｜哪些证据足以支持发布？",
+      "cards": 8,
+      "runs": 3,
+      "steps": [
+        {
+          "id": "transformation-ar148smtux4g7i",
+          "cardId": "card-veids4mtux4g7i",
+          "name": "区分三层发布证据"
+        },
+        {
+          "id": "transformation-lwvnxzmtux5dza",
+          "cardId": "card-fktbiimtux5dza",
+          "name": "提出本轮可交付范围"
+        },
+        {
+          "id": "transformation-3ufnk0mtux6axv",
+          "cardId": "card-8iogfumtux6axv",
+          "name": "生成可验收的后续清单"
+        }
+      ]
+    },
+    {
+      "key": "reading",
+      "boardId": "board-pdny58mtux7ch5",
+      "title": "原典阅读｜分工的效率与人的完整性",
+      "cards": 8,
+      "runs": 3,
+      "steps": [
+        {
+          "id": "transformation-rvqarumtux7chf",
+          "cardId": "card-lzck19mtux7chf",
+          "name": "重建效率论证"
+        },
+        {
+          "id": "transformation-g46g0omtux84lr",
+          "cardId": "card-58jpvzmtux84lr",
+          "name": "重建能力与教育论证"
+        },
+        {
+          "id": "transformation-og04gfmtux997p",
+          "cardId": "card-sr6ljpmtux997p",
+          "name": "形成有分歧的阅读札记"
+        }
+      ]
+    },
+    {
+      "key": "research",
+      "boardId": "board-xihtn3mtux9wer",
+      "title": "证据研究｜AI 编程到底节省了谁的时间？",
+      "cards": 8,
+      "runs": 3,
+      "steps": [
+        {
+          "id": "transformation-5a3ggwmtux9wf6",
+          "cardId": "card-3xvfbsmtux9wf6",
+          "name": "核对研究可比性"
+        },
+        {
+          "id": "transformation-rnw6h6mtuxajre",
+          "cardId": "card-18nr65mtuxajre",
+          "name": "解释表面冲突"
+        },
+        {
+          "id": "transformation-otul2mmtuxbccm",
+          "cardId": "card-vg2i19mtuxbccm",
+          "name": "设计一次可解释的本地试点"
+        }
+      ]
+    },
+    {
+      "key": "writing",
+      "boardId": "board-fcfqxkmtuxc8c7",
+      "title": "专题写作｜源码公开之后，谁来承担可用性？",
+      "cards": 9,
+      "runs": 4,
+      "steps": [
+        {
+          "id": "transformation-pp3c8vmtuxc8cq",
+          "cardId": "card-9fxvxxmtuxc8cq",
+          "name": "建立主张与证据提纲"
+        },
+        {
+          "id": "transformation-ky74fmmtuxd96p",
+          "cardId": "card-ejn0a7mtuxd96p",
+          "name": "写出有依据的专题初稿"
+        },
+        {
+          "id": "transformation-7jj064mtuxe0s8",
+          "cardId": "card-58bfbkmtuxe0s8",
+          "name": "逐项核查事实与主张"
+        }
+      ]
+    }
+  ]
+}
