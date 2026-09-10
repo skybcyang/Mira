@@ -4,6 +4,8 @@
 
 本次开源准备的测试、依赖审计和未发布边界见 [2026-09-10 验证记录](validation/2026-09-10-open-source-readiness.md)。
 
+当前公开案例已替换为四个 Kimi K3 实际生成的工作场景，保留 13 次运行与人工复核；最新材料质量、导入和界面证据见 [Kimi 案例验证](validation/2026-09-10-kimi-examples-validation.md)。
+
 ## 用户入口
 
 最新导航：统一画板搜索、常用与已打开、手动关闭，以及“方法与计划”的合并入口，见[2026-09-09 验证记录](validation/2026-09-09-board-navigation-plan-validation.md)。
