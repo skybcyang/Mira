@@ -152,4 +152,4 @@ macOS Desktop 当前是 Electron 44 internal Alpha，目标为 macOS 13 或更�
 当前没有原子锁适配器，仍由宿主保证单写者。同一 workspace 同一时刻只能由一个 writer 使用。
 macOS / Windows arm64/x64 未签名测试包与主干更新后 GitHub Actions 自动构建已于 2026-09-10 获用户确认；
 操作及平台验收限制见[内部桌面打包](../operations/desktop-internal-builds.md)。
-公开分发前还需要完成签名/公证/更新策略与对应发布门禁。
+正式桌面 Release 前还需要完成签名/公证/更新策略与对应发布门禁；已授权的未签名 Actions 测试包按平台契约单独验证。

@@ -7,6 +7,12 @@
 
 ## 1. 已有安全基线
 
+### 依赖升级与主干桌面构建（2026-09-10）
+
+- [x] 验证并合入 React 19、React Flow 与构建工具升级，补齐 DOM 类型和 React 分包；1531 项测试、浏览器/390px/HMR 和 macOS packed smoke 通过，见[依赖升级](../validation/2026-09-10-dependency-upgrades.md)。
+- [x] 主干每次更新自动构建 macOS/Windows arm64/x64 未签名 Actions 测试包；1532 项测试、四个平台原生 make、启动与恢复 smoke、四份产物上传通过，见[自动打包验证](../validation/2026-09-10-desktop-auto-builds.md)。
+- 原生客户端交互验收与签名/正式 Release 继续单独记录，不以四平台 CI 通过替代。
+
 ### 真实模型案例（2026-09-10）
 
 - [x] 四个公开案例与入门材料改用真实来源和 Kimi K3 推导，保留 13 次 Run、原始输出、人工修订与 Candidate。

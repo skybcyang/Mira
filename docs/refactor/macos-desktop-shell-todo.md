@@ -5,7 +5,7 @@
 - 支持范围：macOS 13+，Apple Silicon 与 Intel
 - 关联：[桌面 ADR](../architecture/adr-macos-desktop-shell.md)、[平台适配器契约](../specs/platform-adapters.md)、[当前验证报告](../validation/2026-08-31-macos-desktop-alpha-validation.md)
 
-2026-09-09：用户已确认将内部打包扩展到 Windows x64，新增 GitHub Actions 手动构建。
+2026-09-10：用户已确认 macOS/Windows arm64/x64 未签名 Actions 测试包，主干更新后自动构建；四平台原生 make/smoke 证据见[自动打包验证](../validation/2026-09-10-desktop-auto-builds.md)。
 当前跨平台范围和验收见[平台契约](../specs/platform-adapters.md)，运行方式见
 [内部桌面打包](../operations/desktop-internal-builds.md)。本文保留原 macOS Alpha 实施证据。
 
