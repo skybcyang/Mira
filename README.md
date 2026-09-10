@@ -8,9 +8,9 @@ Mira 是一块可以和 AI 一起工作的画板。把材料放上来，选中�
 
 [开始使用](docs/user/getting-started.md) · [看场景案例](docs/user/use-cases.md) · [使用手册](docs/user/user-guide.md)
 
-![Mira 真实画布：需求分出回归与发布两条支线，新反馈加入回归，旧清单提示来源已变化](docs/assets/software-iteration.png)
+![Mira 真实画布：从仓库发布规则与验证报告推导交付范围和验收清单](docs/assets/software-iteration.png)
 
-*周三新反馈来了：需求与内测说明已经更新，回归清单仍待处理。真实界面，人工演示材料；[下载画板，接着操作](docs/examples/README.md)。*
+*源码能运行，是否就能公开桌面包？Kimi K3 根据项目文档实际推导，人工复核后保留待更新的下游清单。[下载画板，追溯来源和运行](docs/examples/README.md)。*
 
 ## 从材料出发，每次推进一点
 
@@ -25,20 +25,20 @@ Mira 是一块可以和 AI 一起工作的画板。把材料放上来，选中�
 
 | 你的工作 | 具体的一刻 | 怎样继续 |
 | --- | --- | --- |
-| [软件需求迭代](docs/user/use-cases.md#软件需求迭代) | 评审后又来了中断下载的反馈 | 更新回归支线，保留上次评审版本 |
-| [读书与学习](docs/user/use-cases.md#读书与学习) | 重读《小王子》，想到周末的一次散步 | 找回灵感，写下新理解，也留下疑问 |
-| [研究整理](docs/user/use-cases.md#研究整理) | 同一行为有两种解释，还出现了反例 | 分开推理，再决定下一轮验证什么 |
-| [内容创作](docs/user/use-cases.md#内容创作) | 自己刚改好正文，另一版结果才返回 | 并排比较，保留自己的声音，再做发布核查 |
+| [软件交付](docs/user/use-cases.md#软件交付) | 源码、打包和真机验证的证据不一致 | 划清交付范围，把缺口变成验收任务 |
+| [原典阅读](docs/user/use-cases.md#原典阅读) | 斯密同时论证分工的效率与人的能力损失 | 对照原文，重建论证，保留解释分歧 |
+| [证据研究](docs/user/use-cases.md#证据研究) | AI 编程研究分别报告加速和减速 | 核对可比性，提出竞争解释与本地试点 |
+| [专题写作](docs/user/use-cases.md#专题写作) | 作者改稿时模型仍在生成 | 核对主张，并排比较，保留作者判断 |
 
-![读书场景：按主题摊开片段、灵感与未解问题，留下生活实践和改过一次的回看笔记](docs/assets/reading-notes.png)
+![原典阅读：从分工效率、能力退化与公共教育三份原文重建论证](docs/assets/reading-notes.png)
 
-*不只保存读过什么，也留下自己怎样理解、准备怎样使用。另有[研究与创作案例图](docs/user/use-cases.md)。*
+*原文、模型解释与自己的疑问分别留在画板上。四个案例均有真实 Kimi 运行记录，另有[研究与写作案例图](docs/user/use-cases.md)。*
 
 ## 开始使用
 
 目前可从源码运行。桌面版处于内部测试阶段，macOS / Windows 构建获取方式见[内部桌面打包](docs/operations/desktop-internal-builds.md)；尚未签名，也没有自动更新，不作为正式公开发布版。
 
-先克隆仓库，或下载并解压源码。全新工作区从空画板开始；想直接体验，可以导入[人工示例包](docs/examples/README.md)。
+先克隆仓库，或下载并解压源码。全新工作区从空画板开始；想直接体验，可以导入[真实模型案例包](docs/examples/README.md)。
 
 已安装 Node.js `>=22.12.0` 和 pnpm 后，在仓库根目录运行：
 

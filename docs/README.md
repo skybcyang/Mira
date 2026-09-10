@@ -8,7 +8,7 @@
 
 最新导航：统一画板搜索、常用与已打开、手动关闭，以及“方法与计划”的合并入口，见[2026-09-09 验证记录](validation/2026-09-09-board-navigation-plan-validation.md)。
 
-第一次使用从[新手教程](user/getting-started.md)开始：用可复制的反馈材料完成第一份需求说明，再推进为验收清单。[场景案例](user/use-cases.md)提供需求变更、主题阅读、竞争解释与人工改稿四种不同结构的真实界面图；[下载案例](examples/README.md)可导入画板，或恢复包含灵感池、方法和画布版本的独立练习工作区。
+第一次使用从[新手教程](user/getting-started.md)开始：用项目验证摘要推导交付边界，再推进为验收清单。[场景案例](user/use-cases.md)包含软件交付、斯密原典阅读、AI 编程证据研究与专题写作，均通过 Kimi K3 实际生成；[下载案例](examples/README.md)可导入画板，或恢复包含灵感池、方法和画布版本的独立练习工作区。
 
 查具体功能请读[用户使用手册](user/user-guide.md)。手册首节提供 macOS Desktop 与
 Standalone Quickstart，后续覆盖六套外观、模型连接、Card/版本、workspace 灵感池记录与检索、添加步骤、Run 进度与按需生成、计划/方法、Candidate、
@@ -42,6 +42,8 @@ AI 工具统一从仓库根目录的 [AGENTS.md](../AGENTS.md) 开始，其中�
 用户可以先把新想法记录到 workspace 灵感池，再从灵感池筛选并添加到当前画板；也可以在“方法与计划”填写计划名称、最终成果和至少一个有序步骤，或使用已验证模板。计划入口都先放入页面内 PlanDraft，由用户手动绑定内容，再原子添加普通 WorkflowPlan，并且零自动 Run。WorkflowTemplate 仍只从已经验证的 Transformation 路径提取：每一步目标的当前 Head 都必须存在且实际内容非空白、结构可用。Mira 始终使用同一套画板、内容与执行语义；有限撤销/重做只覆盖当前 Board 会话中的约定 Card 操作。
 
 ## 验证证据
+
+- [2026-09-10 Kimi 真实模型案例](validation/2026-09-10-kimi-examples-validation.md)：四张画板、13 次真实生成、来源快照、人工复核与待比较结果；替换旧预写案例。
 
 - [2026-09-09 真实工作场景案例](validation/2026-09-09-realistic-use-cases-validation.md)：重做四种画板与操作近景，提供可导入案例及完整练习工作区，验证来源变化、待比较结果与可移植边界。
 

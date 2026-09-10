@@ -1,287 +1,405 @@
 {
   "format": "mira-board",
   "formatVersion": 1,
-  "exportedAt": "2026-09-09T11:27:11.177Z",
+  "exportedAt": "2026-09-10T03:36:23.744Z",
   "board": {
     "schemaVersion": 2,
-    "id": "board-i7sabdmtu0k8t3",
-    "title": "离线阅读 1.1 · 周三变更评审",
-    "revision": 25,
+    "id": "board-os1qnemtux4g6k",
+    "title": "软件交付｜哪些证据足以支持发布？",
+    "revision": 61,
     "lifecycle": {
       "state": "active"
     },
     "cards": [
       {
-        "id": "card-niwck2mtu0k8t8",
-        "name": "F-12｜地铁里的失败",
+        "id": "card-ly27vkmtux4g6q",
         "contentKind": "markdown",
         "x": 0,
         "y": 0,
-        "width": 290,
-        "height": 210,
-        "color": "blue",
-        "headVersionId": "version-211eskmtu0k8t8",
-        "versions": [
-          {
-            "id": "version-211eskmtu0k8t8",
-            "cardId": "card-niwck2mtu0k8t8",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。"
-            },
-            "digest": "fnv1a:bfd44027",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:07.676Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:07.676Z",
-        "updatedAt": "2026-09-09T11:27:07.676Z"
-      },
-      {
-        "id": "card-n71xocmtu0k8t9",
-        "name": "本期承诺｜两周",
-        "contentKind": "markdown",
-        "x": 0,
-        "y": 260,
-        "width": 290,
-        "height": 210,
-        "color": "yellow",
-        "headVersionId": "version-jykc52mtu0k8t9",
-        "versions": [
-          {
-            "id": "version-jykc52mtu0k8t9",
-            "cardId": "card-n71xocmtu0k8t9",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。"
-            },
-            "digest": "fnv1a:8e95c0a3",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:07.677Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:07.677Z",
-        "updatedAt": "2026-09-09T11:27:07.677Z"
-      },
-      {
-        "id": "card-r74bm2mtu0k8tc",
-        "contentKind": "markdown",
-        "x": 610,
-        "y": 70,
-        "width": 330,
-        "height": 405,
-        "headVersionId": "version-zankxjmtu0k9lw",
-        "versions": [
-          {
-            "id": "version-ih0ag2mtu0k8tj",
-            "cardId": "card-r74bm2mtu0k8tc",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？"
-            },
-            "digest": "fnv1a:267bb620",
-            "origin": "ai",
-            "createdAt": "2026-09-09T11:27:07.686Z",
-            "sourceRunId": "run-bbgjmumtu0k8tf"
-          },
-          {
-            "id": "version-zankxjmtu0k9lw",
-            "cardId": "card-r74bm2mtu0k8tc",
-            "sequence": 2,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。"
-            },
-            "digest": "fnv1a:8d6fdbcd",
-            "origin": "human",
-            "createdAt": "2026-09-09T11:27:08.708Z"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:07.680Z",
-        "updatedAt": "2026-09-09T11:27:08.708Z"
-      },
-      {
-        "id": "card-bbmz85mtu0k92f",
-        "contentKind": "markdown",
-        "x": 1270,
-        "y": 0,
-        "width": 340,
-        "height": 245,
-        "headVersionId": "version-s1i35pmtu0k92w",
-        "versions": [
-          {
-            "id": "version-s1i35pmtu0k92w",
-            "cardId": "card-bbmz85mtu0k92f",
-            "sequence": 1,
-            "content": {
-              "kind": "markdown",
-              "markdown": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。"
-            },
-            "digest": "fnv1a:6ab09e84",
-            "origin": "ai",
-            "createdAt": "2026-09-09T11:27:08.023Z",
-            "sourceRunId": "run-hsz5t0mtu0k92p"
-          }
-        ],
-        "createdAt": "2026-09-09T11:27:08.007Z",
-        "updatedAt": "2026-09-09T11:27:08.023Z"
-      },
-      {
-        "id": "card-ttc1fdmtu0k970",
-        "contentKind": "markdown",
-        "x": 1270,
-        "y": 300,
-        "width": 340,
+        "width": 370,
         "height": 220,
-        "headVersionId": "version-da1z7nmtu0k9m1",
+        "color": "blue",
+        "headVersionId": "version-phg53nmtuz6qb2",
         "versions": [
           {
-            "id": "version-vn3aermtu0k97h",
-            "cardId": "card-ttc1fdmtu0k970",
+            "id": "version-9et3qfmtux4g6q",
+            "cardId": "card-ly27vkmtux4g6q",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。"
+              "markdown": "# S1｜源码公开与桌面分发边界\n\n来源：Mira 仓库 docs/operations/open-source-release.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 首次开源发布\n\n本次选择 MIT，范围为当前源码、文档与专门制作的演示素材。桌面安装包仍是未签名、未公证的 internal Alpha，不随首次源码开源自动公开发布。\n\n内部桌面打包 workflow 只在 private 仓库执行；公开仓库首次 push 不生成可公开下载的内部安装包。通用源码 CI 不受此限制。\n\n## 公开内容与私有数据\n\n公开入口使用一个**不继承私有开发历史的新 Git 仓库**。原私仓及真实工作区保持可用，不通过清空历史、强推或删除数据来改造日常工作目录。仅在隔离的准备分支取消跟踪以下内容，再由该分支的提交导出源码快照：\n\n- `boards-v2/`、`runs-v2/`、`workflows-v2/`、检查点、灵感池、附件、迁移备份和 workspace lock。\n- `reference/`、`archive/`、`mockups/`、`showcase-materials/` 与 `docs/superpowers/` 中的私有参考和设计过程。\n- `.env` 等秘密配置、依赖安装目录、构建产物及日志。\n\n公开案例只来自 `docs/examples/`；53 卡布局回归测试使用 `test/fixtures/coffee-layout.json` 的最小几何数据，不再读取真实工作区。历史验证报告中的个人机器路径仅作脱敏，不改写当时的验证结果。\n\n不要把准备分支的数据移除提交直接合并进仍承载真实数据的旧工作树。准备分支适用于导出，不是清理用户文件的脚本。\n\n## 发布前验证\n\n1. 在导出的新仓库冻结安装依赖，运行 `pnpm test`、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check`。\n2. 在新的临时 workspace 启动 Standalone，确认不依赖作者目录、真实模型密钥或私有数据；案例导入另用临时 workspace 验证。\n3. 用 Gitleaks 扫描待发布文件和新历史，使用 `--redact=100`，不要在日志中输出潜在秘密。旧历史的密钥扫描通过不能证明其中的个人数据可以公开。\n4. 运行 `pnpm audit --json`、`pnpm audit --prod --json` 和 `pnpm licenses list --json`，更新 `docs/licenses/` 的清单与随包许可证原文；单独记录未修复公告及其可达范围。\n5. 如改动桌面工具链，执行目标平台 make、普通 packed smoke 与备份恢复 smoke。CI 打包证据不能替代客户端真机 UI 验收。\n\n最新结果见 [2026-09-10 开源准备验证](../validation/2026-09-10-open-source-readiness.md)。\n\n## 确认目标仓库后操作\n\n仓库命名及公开发布属于最后的确认步骤。若继续使用现有 `skybcyang/Mira` 名称，先确认旧私仓的保留名称，再创建新的公开仓库；不要直接将含私有历史的旧仓改为 public。\n\n- 仅推送审阅过的新首提交，不迁入旧分支、标签、Issue 附件、Release 或 Actions 产物。\n- 设置简介、主题和 README 链接；启用 Issues 及 private vulnerability reporting。安全反馈流程见根目录 `SECURITY.md`。\n- 默认分支启用禁止强推/删除与 PR 合并保护，以 `CI required` 作为必需检查。仓库权限和 GitHub 套餐限制需在实际目标仓确认。\n- 启用可用的 Dependabot alerts、secret scanning 与 push protection。仓库已提供依赖更新配置，但文件存在不等于这些服务已开启。\n- 首次源码版本通过 CI 后再创建标记与 Release 说明，明确“源码预览”和已验证平台；不上传内部安装包。维护者核对后可从 `ROADMAP.md` 选取适合外部贡献者的任务。\n\n本文件提供操作顺序；没有把待确认的仓库设置、云端检查或发布步骤标为已完成。\n"
             },
-            "digest": "fnv1a:79df3476",
-            "origin": "ai",
-            "createdAt": "2026-09-09T11:27:08.188Z",
-            "sourceRunId": "run-go4gwymtu0k979"
+            "digest": "fnv1a:085e1862",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:38:38.066Z"
           },
           {
-            "id": "version-da1z7nmtu0k9m1",
-            "cardId": "card-ttc1fdmtu0k970",
+            "id": "version-phg53nmtuz6qb2",
+            "cardId": "card-ly27vkmtux4g6q",
             "sequence": 2,
             "content": {
               "kind": "markdown",
-              "markdown": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。"
+              "markdown": "# S1｜源码公开与桌面分发边界\n\n来源：Mira 仓库 docs/operations/open-source-release.md，源码基线 8e95063，读取日期 2026-09-10。以下保留文档内容，将相对链接展开为仓库路径供源码内查阅；原始文本见初始版本。历史报告只证明其记录时点。\n\n# 首次开源发布\n\n本次选择 MIT，范围为当前源码、文档与专门制作的演示素材。桌面安装包仍是未签名、未公证的 internal Alpha，不随首次源码开源自动公开发布。\n\n内部桌面打包 workflow 只在 private 仓库执行；公开仓库首次 push 不生成可公开下载的内部安装包。通用源码 CI 不受此限制。\n\n## 公开内容与私有数据\n\n公开入口使用一个**不继承私有开发历史的新 Git 仓库**。原私仓及真实工作区保持可用，不通过清空历史、强推或删除数据来改造日常工作目录。仅在隔离的准备分支取消跟踪以下内容，再由该分支的提交导出源码快照：\n\n- `boards-v2/`、`runs-v2/`、`workflows-v2/`、检查点、灵感池、附件、迁移备份和 workspace lock。\n- `reference/`、`archive/`、`mockups/`、`showcase-materials/` 与 `docs/superpowers/` 中的私有参考和设计过程。\n- `.env` 等秘密配置、依赖安装目录、构建产物及日志。\n\n公开案例只来自 `docs/examples/`；53 卡布局回归测试使用 `test/fixtures/coffee-layout.json` 的最小几何数据，不再读取真实工作区。历史验证报告中的个人机器路径仅作脱敏，不改写当时的验证结果。\n\n不要把准备分支的数据移除提交直接合并进仍承载真实数据的旧工作树。准备分支适用于导出，不是清理用户文件的脚本。\n\n## 发布前验证\n\n1. 在导出的新仓库冻结安装依赖，运行 `pnpm test`、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check`。\n2. 在新的临时 workspace 启动 Standalone，确认不依赖作者目录、真实模型密钥或私有数据；案例导入另用临时 workspace 验证。\n3. 用 Gitleaks 扫描待发布文件和新历史，使用 `--redact=100`，不要在日志中输出潜在秘密。旧历史的密钥扫描通过不能证明其中的个人数据可以公开。\n4. 运行 `pnpm audit --json`、`pnpm audit --prod --json` 和 `pnpm licenses list --json`，更新 `docs/licenses/` 的清单与随包许可证原文；单独记录未修复公告及其可达范围。\n5. 如改动桌面工具链，执行目标平台 make、普通 packed smoke 与备份恢复 smoke。CI 打包证据不能替代客户端真机 UI 验收。\n\n最新结果见 2026-09-10 开源准备验证（仓库路径：docs/validation/2026-09-10-open-source-readiness.md）。\n\n## 确认目标仓库后操作\n\n仓库命名及公开发布属于最后的确认步骤。若继续使用现有 `skybcyang/Mira` 名称，先确认旧私仓的保留名称，再创建新的公开仓库；不要直接将含私有历史的旧仓改为 public。\n\n- 仅推送审阅过的新首提交，不迁入旧分支、标签、Issue 附件、Release 或 Actions 产物。\n- 设置简介、主题和 README 链接；启用 Issues 及 private vulnerability reporting。安全反馈流程见根目录 `SECURITY.md`。\n- 默认分支启用禁止强推/删除与 PR 合并保护，以 `CI required` 作为必需检查。仓库权限和 GitHub 套餐限制需在实际目标仓确认。\n- 启用可用的 Dependabot alerts、secret scanning 与 push protection。仓库已提供依赖更新配置，但文件存在不等于这些服务已开启。\n- 首次源码版本通过 CI 后再创建标记与 Release 说明，明确“源码预览”和已验证平台；不上传内部安装包。维护者核对后可从 `ROADMAP.md` 选取适合外部贡献者的任务。\n\n本文件提供操作顺序；没有把待确认的仓库设置、云端检查或发布步骤标为已完成。\n"
             },
-            "digest": "fnv1a:9315eac1",
-            "origin": "ai",
-            "createdAt": "2026-09-09T11:27:08.712Z",
-            "sourceRunId": "run-wbg9dvmtu0k9ly"
+            "digest": "fnv1a:29cb8541",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:36:23.726Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:08.172Z",
-        "updatedAt": "2026-09-09T11:27:08.712Z"
+        "createdAt": "2026-09-10T02:38:38.066Z",
+        "updatedAt": "2026-09-10T03:36:23.726Z",
+        "name": "S1｜源码公开与桌面分发边界"
       },
       {
-        "id": "card-26qj27mtu0k9kw",
-        "name": "下次再讨论",
+        "id": "card-zq304vmtux4g6w",
         "contentKind": "markdown",
-        "x": 640,
-        "y": 540,
-        "width": 300,
-        "height": 210,
-        "color": "violet",
-        "headVersionId": "version-7d3cijmtu0k9kw",
+        "x": 0,
+        "y": 250,
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-p5akg7mtuz6qb7",
         "versions": [
           {
-            "id": "version-7d3cijmtu0k9kw",
-            "cardId": "card-26qj27mtu0k9kw",
+            "id": "version-elhgeemtux4g6w",
+            "cardId": "card-zq304vmtux4g6w",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 暂存需求\n\n用户希望“出门前下载整个收藏夹”。\n\n先收集使用频率和存储预算，不塞进这次迭代。"
+              "markdown": "# S2｜9 月 10 日开源准备实证\n\n来源：Mira 仓库 docs/validation/2026-09-10-open-source-readiness.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 2026-09-10 开源准备验证\n\n本报告记录首次 MIT 源码开源准备，不代表仓库已经公开或桌面版已经正式发布。产品语义和应用运行代码未改动；测试中对真实画板文件的依赖替换为最小布局夹具。\n\n## 已准备\n\n- 根目录 MIT License、两个 package manifest 的许可信息、贡献指南、安全反馈流程、Issue/PR 模板、路线图。\n- Linux/macOS CI、全历史密钥扫描、工作区数据跟踪拦截、Dependabot 更新配置及 `CI required` 汇总检查。\n- 内部桌面打包只允许 private 仓库执行，避免开源首个 push 自动暴露未签名 Actions 产物。\n- 673 条带版本的依赖许可证记录与生产依赖的原始许可证文本；清单不含本机安装路径。包内版权声明保持原文。\n- 当前运行数据、原型、第三方参考和开发归档只在隔离分支取消跟踪，原始工作区与私有 Git 历史保留。公开候选目录由 Git tree 导出，未复制旧 `.git`。\n- README 保持产品介绍，已有新手教程、四种不同结构的场景截图与可导入示例继续保留。\n\n## 实际验证\n\n本机环境：macOS arm64、Node.js 26.7.0、pnpm 9.0.0。CI 配置使用 Node 22；本报告不将配置本身视为云端执行证据。\n\n| 验证 | 结果 |\n| --- | --- |\n| 更新前基线 | 139 个测试文件、1,525 项测试通过 |\n| 更新后完整测试 | 139 个测试文件、1,525 项测试通过 |\n| 干净源码目录冻结安装 | 通过；使用本机 pnpm 缓存，不声称验证了无缓存网络下载 |\n| 干净源码目录完整测试 | 139 个测试文件、1,525 项测试通过 |\n| TypeScript、前端构建、Bridge 构建 | 准备分支与干净源码目录均通过 |\n| Git diff 空白检查 | 通过 |\n| Actions / Issue 模板 / Dependabot YAML | 语法解析通过 |\n| macOS arm64 make | DMG / ZIP 生成成功，仅保留本地产物 |\n| macOS arm64 packed smoke | 启动、API/renderer ready、正常退出与锁释放通过 |\n| macOS arm64 packed restore smoke | 备份与 Checkpoint 恢复通过 |\n| 四个公开 BoardArtifact 的真实 HTTP 导入 | 全部成功，身份重建、来源变化状态保留 |\n| Candidate 采用 | 新增版本，原人工正文版本保留 |\n| 完整示例备份恢复 | 4 Board、12 Run、1 方法、1 Checkpoint、3 灵感 |\n| 方法应用 | 创建 3 个空目标，未新增 Run；单画板导入不安装工作区方法等资源 |\n| 新工作区 Standalone | 独立临时目录启动，不读取作者的真实画板或模型密钥 |\n| 真实 Chrome 窗口 | 1440×1000 与 390×844 空画板、设置开关与键盘焦点验证通过；检查截图，无页面横向溢出，console warning/error 为 0 |\n\nNode 26 测试进程有 `localStorage` 实验功能提示；测试无失败。浏览器控制台无同类提示。未调用付费或真实网络模型；模型实际生成仍由使用者配置连接后验证。\n\n## 安全审计与工具链\n\nGitleaks 8.30.1 的官方二进制经过发布方 SHA-256 校验。旧私仓以 `--log-opts=--all --redact=100` 扫描所有本地可达引用，扫描器处理了 200 个含可扫描差异的提交，报告无命中。这不证明旧历史中的个人数据可以公开，因此仍使用新历史发布。\n\n更新 Vite 至 6.4.3、Vitest 至 4.1.11、React 插件至 4.7.0，以及 esbuild；将旧 tar/tmp 解析到有修复的版本。Electron node-gyp 保持原提交，固定为 codeload 归档 URL，解决 pnpm 9 将 GitHub 依赖解析为 SSH 后安装失败的问题。\n\n`pnpm audit` 从 24 项降至 2 项高危，未宣称全量审计通过。剩余为 DMG 开发工具链中的 `image-size@0.7.5` 两项解析拒绝服务公告，上游未提供修复版本，影响范围和约束见 [SECURITY.md](../../SECURITY.md)。`pnpm audit --prod` 为 0 项。审计只是当日数据库结果，不是无漏洞保证。\n\n## 尚未完成的发布步骤\n\n仓库公开、名称安排、默认分支保护、私密漏洞报告、GitHub 安全服务及首个公开 Release 需要在最终目标仓库上完成。私有准备分支的云端结果以对应 Actions 运行记录为准，不与本地结果混写。\n\n本轮没有新增 macOS Intel / Windows 原生机器上的本地验证，也没有重做桌面目录选择等客户端交互验收；不能用 arm64 证据替代。源码开源不依赖安装包发布，内部包不随之对外分发。发布顺序见[首次开源发布](../operations/open-source-release.md)。\n"
             },
-            "digest": "fnv1a:1d30f2a0",
+            "digest": "fnv1a:d33cf6f0",
             "origin": "human",
-            "createdAt": "2026-09-09T11:27:08.672Z"
+            "createdAt": "2026-09-10T02:38:38.072Z"
+          },
+          {
+            "id": "version-p5akg7mtuz6qb7",
+            "cardId": "card-zq304vmtux4g6w",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# S2｜9 月 10 日开源准备实证\n\n来源：Mira 仓库 docs/validation/2026-09-10-open-source-readiness.md，源码基线 8e95063，读取日期 2026-09-10。以下保留文档内容，将相对链接展开为仓库路径供源码内查阅；原始文本见初始版本。历史报告只证明其记录时点。\n\n# 2026-09-10 开源准备验证\n\n本报告记录首次 MIT 源码开源准备，不代表仓库已经公开或桌面版已经正式发布。产品语义和应用运行代码未改动；测试中对真实画板文件的依赖替换为最小布局夹具。\n\n## 已准备\n\n- 根目录 MIT License、两个 package manifest 的许可信息、贡献指南、安全反馈流程、Issue/PR 模板、路线图。\n- Linux/macOS CI、全历史密钥扫描、工作区数据跟踪拦截、Dependabot 更新配置及 `CI required` 汇总检查。\n- 内部桌面打包只允许 private 仓库执行，避免开源首个 push 自动暴露未签名 Actions 产物。\n- 673 条带版本的依赖许可证记录与生产依赖的原始许可证文本；清单不含本机安装路径。包内版权声明保持原文。\n- 当前运行数据、原型、第三方参考和开发归档只在隔离分支取消跟踪，原始工作区与私有 Git 历史保留。公开候选目录由 Git tree 导出，未复制旧 `.git`。\n- README 保持产品介绍，已有新手教程、四种不同结构的场景截图与可导入示例继续保留。\n\n## 实际验证\n\n本机环境：macOS arm64、Node.js 26.7.0、pnpm 9.0.0。CI 配置使用 Node 22；本报告不将配置本身视为云端执行证据。\n\n| 验证 | 结果 |\n| --- | --- |\n| 更新前基线 | 139 个测试文件、1,525 项测试通过 |\n| 更新后完整测试 | 139 个测试文件、1,525 项测试通过 |\n| 干净源码目录冻结安装 | 通过；使用本机 pnpm 缓存，不声称验证了无缓存网络下载 |\n| 干净源码目录完整测试 | 139 个测试文件、1,525 项测试通过 |\n| TypeScript、前端构建、Bridge 构建 | 准备分支与干净源码目录均通过 |\n| Git diff 空白检查 | 通过 |\n| Actions / Issue 模板 / Dependabot YAML | 语法解析通过 |\n| macOS arm64 make | DMG / ZIP 生成成功，仅保留本地产物 |\n| macOS arm64 packed smoke | 启动、API/renderer ready、正常退出与锁释放通过 |\n| macOS arm64 packed restore smoke | 备份与 Checkpoint 恢复通过 |\n| 四个公开 BoardArtifact 的真实 HTTP 导入 | 全部成功，身份重建、来源变化状态保留 |\n| Candidate 采用 | 新增版本，原人工正文版本保留 |\n| 完整示例备份恢复 | 4 Board、12 Run、1 方法、1 Checkpoint、3 灵感 |\n| 方法应用 | 创建 3 个空目标，未新增 Run；单画板导入不安装工作区方法等资源 |\n| 新工作区 Standalone | 独立临时目录启动，不读取作者的真实画板或模型密钥 |\n| 真实 Chrome 窗口 | 1440×1000 与 390×844 空画板、设置开关与键盘焦点验证通过；检查截图，无页面横向溢出，console warning/error 为 0 |\n\nNode 26 测试进程有 `localStorage` 实验功能提示；测试无失败。浏览器控制台无同类提示。未调用付费或真实网络模型；模型实际生成仍由使用者配置连接后验证。\n\n## 安全审计与工具链\n\nGitleaks 8.30.1 的官方二进制经过发布方 SHA-256 校验。旧私仓以 `--log-opts=--all --redact=100` 扫描所有本地可达引用，扫描器处理了 200 个含可扫描差异的提交，报告无命中。这不证明旧历史中的个人数据可以公开，因此仍使用新历史发布。\n\n更新 Vite 至 6.4.3、Vitest 至 4.1.11、React 插件至 4.7.0，以及 esbuild；将旧 tar/tmp 解析到有修复的版本。Electron node-gyp 保持原提交，固定为 codeload 归档 URL，解决 pnpm 9 将 GitHub 依赖解析为 SSH 后安装失败的问题。\n\n`pnpm audit` 从 24 项降至 2 项高危，未宣称全量审计通过。剩余为 DMG 开发工具链中的 `image-size@0.7.5` 两项解析拒绝服务公告，上游未提供修复版本，影响范围和约束见 SECURITY.md（仓库路径：SECURITY.md）。`pnpm audit --prod` 为 0 项。审计只是当日数据库结果，不是无漏洞保证。\n\n## 尚未完成的发布步骤\n\n仓库公开、名称安排、默认分支保护、私密漏洞报告、GitHub 安全服务及首个公开 Release 需要在最终目标仓库上完成。私有准备分支的云端结果以对应 Actions 运行记录为准，不与本地结果混写。\n\n本轮没有新增 macOS Intel / Windows 原生机器上的本地验证，也没有重做桌面目录选择等客户端交互验收；不能用 arm64 证据替代。源码开源不依赖安装包发布，内部包不随之对外分发。发布顺序见首次开源发布（仓库路径：docs/operations/open-source-release.md）。\n"
+            },
+            "digest": "fnv1a:d49699a7",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:36:23.731Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:08.672Z",
-        "updatedAt": "2026-09-09T11:27:08.672Z"
+        "createdAt": "2026-09-10T02:38:38.072Z",
+        "updatedAt": "2026-09-10T03:36:23.731Z",
+        "name": "S2｜9 月 10 日开源准备实证"
       },
       {
-        "id": "card-ospocjmtu0k9u4",
-        "name": "F-19｜新反馈，待回归",
+        "id": "card-y8jcxumtux4g73",
         "contentKind": "markdown",
-        "x": 650,
-        "y": -255,
-        "width": 310,
+        "x": 0,
+        "y": 500,
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-oxjvlqmtux4g73",
+        "versions": [
+          {
+            "id": "version-oxjvlqmtux4g73",
+            "cardId": "card-y8jcxumtux4g73",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# S3｜跨平台 native make 与 smoke 记录\n\n来源：Mira 仓库 docs/validation/2026-09-09-desktop-ci-validation.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 跨平台内部打包验证\n\n- 日期：2026-09-09\n- 分支：`codex/desktop-ci`，基线 `ab47573`\n- 范围：GitHub Actions、Windows x64 ZIP、macOS 双架构 DMG/ZIP、正常退出验证。\n- 产品对象、UI renderer、Store 和 API 契约保持不变；使用临时 workspace，不修改用户画板。\n\n## 本地证据\n\n环境为 macOS 26.3.1 arm64、Node 26.7.0、pnpm 9.0.0；CI 使用 Node 22。\n\n- 基线：138 个测试文件、1519 项测试通过。\n- 新增跨平台目标、ZIP 配置、Windows EXE 路径、窗口关闭及 smoke 就绪退出测试，先失败后通过。\n- 最终全仓：139 个测试文件、1525 项测试通过。\n- `pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`、`git diff --check` 通过。\n- actionlint 1.7.12 检查 `.github/workflows/desktop-build.yml` 通过。\n- `pnpm desktop:make:arm64` 和 `pnpm desktop:make:x64` 均生成 DMG 与 ZIP。\n- 两架构均通过普通 packed smoke 与 `--restore` packed smoke：真实 renderer/样式/Board API\n  ready，恢复 Board 与 Checkpoint，普通退出 code 0，workspace 锁不存在。\n\n首次 x64 恢复 smoke 发现：Host 开始 close 时仍有请求正在处理，该请求完成后仍保持\nkeep-alive，使桌面 3 秒退出上限先到，留下锁。诊断记录显示其他连接已关闭，最后连接\n在退出期间继续服务请求。新增真实 HTTP 测试通过挂起一个请求、开始 close、完成响应，\n在修复前复现 500ms 内无法结束；Host 在 response finish 时对 closing server 清理空闲\n连接后通过。该修复不强断正在处理的请求，不以等待或重试掩盖失败。\n\n## 可见检查与限制\n\n通过独立 userData 和临时 workspace，在原生 macOS 会话完成工作区选择、主窗口显示、\n焦点与关闭窗口检查。macOS 关闭窗口后保留进程，随后经 SIGINT 正常退出。\n未改变 renderer 布局，本批未重复 390px 浏览器验收。\n\n本机可见运行日志出现一次 Electron network service 重启、`fs.Stats` deprecation 和\nmacOS 输入法 mach-port 信息；界面随后正常 ready，因此不声称本机原生日志零告警。\n全仓测试仍有基线已有的 React SSR `useLayoutEffect` 和 Node 26 localStorage 告警。\n\nWindows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收。\nGitHub 原生 runner 结果见下节；本地 macOS 证据不能替代 Windows 运行证据。\n产物未签名、未公证，无安装器、自动更新或公开 Release。\n\n## GitHub 首轮反馈\n\n- `ea5736f` push 自动触发运行 `34317999003`；两项 UI 日期测试因 runner UTC 时区失败。\n  `ccb4afd` 将 CI 的 `TZ` 固定为 Asia/Shanghai，对应日期测试本地重跑通过。\n- 运行 `34318281546` 的全仓门禁与 macOS arm64/x64 全部通过，Mac 产物上传成功。\n  Windows native make 生成 ZIP，但使用标准输入 EOF 的 smoke 控制导致 GUI 提前退出。\n- smoke 改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`：真实 renderer 验证后将 ready 标记\n  写入临时 userData，再正常退出；父进程检查退出码、标记、恢复数据与锁释放，不再依赖\n  Windows GUI 的 stdio 控制。普通交互运行不启用该标记与退出行为。\n\n## GitHub 最终结果\n\n源码 commit `89b7d3991f004dca1666842fa5b9b23815ace01f` 经分支 push 自动触发\n[运行 34319081019](https://github.com/skybcyang/Mira/actions/runs/34319081019)，最终 `success`：\n\n- Repository checks：全仓测试、TypeScript、前后端构建与 diff check 全部通过。\n- `darwin-arm64`、`darwin-x64`、`win32-x64`：定向测试、native make、普通 packed smoke、\n  Board/Checkpoint restore smoke 和产物上传全部通过。\n- 三份 artifact 已确认存在且未过期，保留 14 天：\n  - Windows x64：artifact `10091235480`，157,737,763 bytes。\n  - macOS Intel：artifact `10091233356`，262,647,506 bytes。\n  - macOS Apple Silicon：artifact `10091209760`，255,120,630 bytes。\n\n本地修复后 Intel restore smoke 额外连续三次通过；最终采用 ready 文件的方式又完成\n两种 Mac 架构的 make、普通和 restore smoke。Windows runner 上的成功表明打包程序能\n加载实际 UI/API、恢复数据并释放锁，不扩大为 Windows 客户端完整交互验收。\n\nGitHub 对所用 v4 Actions 发出了 Node 20 runtime 弃用提示，并实际使用 Node 24 运行\n这些 Actions；仓库构建命令仍使用显式安装的 Node 22，全部任务成功。未宣称 CI 零告警。\n功能分支已推送到远端，未合并 main，未创建 PR 或 GitHub Release。\n"
+            },
+            "digest": "fnv1a:66e15f7b",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:38:38.079Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:38:38.079Z",
+        "updatedAt": "2026-09-10T03:36:23.734Z",
+        "name": "S3｜跨平台 native make 与 smoke 记录"
+      },
+      {
+        "id": "card-twjmtjmtux4g79",
+        "contentKind": "markdown",
+        "x": 0,
+        "y": 750,
+        "width": 370,
+        "height": 220,
+        "color": "blue",
+        "headVersionId": "version-idr64omtux4g79",
+        "versions": [
+          {
+            "id": "version-idr64omtux4g79",
+            "cardId": "card-twjmtjmtux4g79",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# 内容可靠性的产品承诺\n\n来源：docs/product/product-definition.md §5.8、§5.10、§9；8e95063 基线的人工摘述。\n\nCardVersion 追加保存，不原地改写。Run 启动冻结有序来源和目标基线，返回时目标变化则结果进入 Candidate，人工内容保留。未处理 Candidate 必须保持可达。\n\n导入画板只创建新身份副本；完整备份只恢复到新建或空工作区，不覆盖使用中的数据。备份不含 API Key、文件引用指向的实际正文和本地文件绑定。每个 Node 可写 Host 必须取得 workspace 独占写锁。\n\n这些是规格承诺；是否实现应查看对应测试和验证记录，不能只凭承诺宣称验证通过。"
+            },
+            "digest": "fnv1a:9638d28b",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:38:38.085Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:38:38.085Z",
+        "updatedAt": "2026-09-10T03:36:23.736Z",
+        "name": "S4｜内容可靠性的产品承诺"
+      },
+      {
+        "id": "card-oofig1mtux4g7e",
+        "contentKind": "markdown",
+        "x": 1480,
+        "y": 0,
+        "width": 430,
         "height": 230,
-        "color": "red",
-        "headVersionId": "version-1cmi7jmtu0k9u4",
+        "color": "yellow",
+        "headVersionId": "version-13scb8mtux4g7e",
         "versions": [
           {
-            "id": "version-1cmi7jmtu0k9u4",
-            "cardId": "card-ospocjmtu0k9u4",
+            "id": "version-13scb8mtux4g7e",
+            "cardId": "card-oofig1mtux4g7e",
             "sequence": 1,
             "content": {
               "kind": "markdown",
-              "markdown": "# 周三新增 F-19\n\n下载到一半切成飞行模式，页面一直显示“下载中”。\n\n期望：有明确失败提示，能够重试。"
+              "markdown": "# 本次要解决的问题\n\n一套源码检查、三种桌面打包记录和未完成的真机验收，应如何形成可执行的发布建议？本画板是基于仓库证据的模型分析，不授权发布。\n\n材料由案例编辑选取；成果通过 Kimi 实际生成。模型分析不等于作者、维护者或研究机构的结论。"
             },
-            "digest": "fnv1a:13c7a6c5",
+            "digest": "fnv1a:7bd8fb8e",
             "origin": "human",
-            "createdAt": "2026-09-09T11:27:09.004Z"
+            "createdAt": "2026-09-10T02:38:38.090Z"
           }
         ],
-        "createdAt": "2026-09-09T11:27:09.004Z",
-        "updatedAt": "2026-09-09T11:27:09.004Z"
+        "createdAt": "2026-09-10T02:38:38.090Z",
+        "updatedAt": "2026-09-10T03:36:23.738Z",
+        "name": "问题与边界"
+      },
+      {
+        "id": "card-veids4mtux4g7i",
+        "contentKind": "markdown",
+        "x": 710,
+        "y": 0,
+        "width": 460,
+        "height": 490,
+        "headVersionId": "version-4or74wmtuy3a83",
+        "versions": [
+          {
+            "id": "version-qz8hnymtux5bnv",
+            "cardId": "card-veids4mtux4g7i",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 桌面端验证证据分层整理\n\n**核心判断**：截至 2026-09-10，Mira 在\"源码可运行\"和\"原生打包可启动\"两层已有充分证据，但\"真实客户端可使用\"层仅覆盖 macOS arm64；Windows 仅有 CI runner 层面的打包与 smoke 成功，客户端真机交互验收明确缺失，不能用 runner 成功替代。\n\n## 第一层：源码可运行（证据充分）\n\n来源 `docs/validation/2026-09-10-open-source-readiness.md`（2026-09-10，基线 8e95063）：更新前基线与更新后完整测试均为 139 个测试文件、1,525 项测试通过；干净源码目录冻结安装、完整测试、TypeScript、前端构建、Bridge 构建、`git diff --check` 均通过。验证环境为本机 macOS arm64、Node 26.7.0、pnpm 9.0.0，冻结安装使用了本机 pnpm 缓存，原文明确不声称验证了无缓存网络下载。CI 侧（来源 `docs/validation/2026-09-09-desktop-ci-validation.md`，运行 34319081019，commit 89b7d39）全仓测试、TypeScript、前后端构建在 GitHub Actions 全部通过。\n\n## 第二层：原生打包可启动（三平台 runner 证据存在）\n\n上述 2026-09-09 报告记录：`darwin-arm64`、`darwin-x64`、`win32-x64` 的 native make、普通 packed smoke、Board/Checkpoint restore smoke 和产物上传全部通过，三份 artifact 确认存在（Windows x64 157,737,763 bytes 等，保留 14 天）。本机 macOS arm64/x64 亦各自通过 make 与两类 smoke。smoke 机制经修正：Windows GUI 下 stdin EOF 导致提前退出，改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 配合 ready 标记文件验证真实 renderer 加载后正常退出。\n\n## 第三层：真实客户端可使用（仅 macOS，Windows 缺失）\n\n2026-09-09 报告：macOS 原生会话完成工作区选择、主窗口显示、焦点与关闭窗口检查；本机日志有 Electron network service 重启等告警，不声称零告警。2026-09-10 报告补充：真实 Chrome 窗口 1440×1000 与 390×844 下空画板、设置开关、键盘焦点通过，console warning/error 为 0；新工作区 Standalone 不读取作者数据；公开示例真实 HTTP 导入成功。但两份报告一致声明：**Windows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收**，本轮也无 macOS Intel 真机交互验证。\n\n## 为什么 Windows runner 成功不能替代真机交互\n\nCI smoke 证明的是打包程序能加载实际 UI/API、恢复数据、正常退出并释放锁——即程序\"起得来、退得掉\"。它无法覆盖：真实 Windows 用户的目录选择对话框行为、窗口焦点与系统提示、显示缩放与输入法、最低系统版本兼容性，以及 GUI 会话中的 stdio/信号语义差异（本轮正是 stdin EOF 差异导致首次 smoke 失败）。原文明确\"本地 macOS 证据不能替代 Windows 运行证据\"，且\"不扩大为 Windows 客户端完整交互验收\"。\n\n## 记录冲突的时点解释\n\n- **测试数量**：2026-09-09 报告基线为 138 文件/1,519 项，新增测试后达 139/1,525；2026-09-10 报告的\"更新前基线\"即 139/1,525，并非矛盾，是两次时点不同的基线。\n- **Windows smoke 状态**：首轮运行 34318281546 中 Windows smoke 因 stdio 控制失败，修复机制后在运行 34319081019 成功——反映同一问题的修复前后，非结果冲突。\n- **产物性质**：所有安装包未签名、未公证，属 internal Alpha；源码开源（`docs/operations/open-source-release.md`）不附带安装包公开分发。\n\n## 局限与未回答问题\n\nWindows 与 macOS Intel 的真机交互验收、云端依赖下载的干净验证、仓库公开发布后的实际设置确认均未完成；`pnpm audit` 剩余 2 项高危（`image-size@0.7.5`）无上游修复；历史报告仅证明其记录时点，不保证当前状态。"
+            },
+            "digest": "fnv1a:05a85fda",
+            "origin": "ai",
+            "createdAt": "2026-09-10T02:39:18.857Z",
+            "sourceRunId": "run-1fpkammtux4g7n"
+          },
+          {
+            "id": "version-z1izk0mtuxuip8",
+            "cardId": "card-veids4mtux4g7i",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 桌面端验证证据分层整理\n\n**核心判断**：截至 2026-09-10，Mira 在\"源码可运行\"和\"原生打包可启动\"两层已有充分证据，但\"真实客户端可使用\"层仅覆盖 macOS arm64；Windows 仅有 CI runner 层面的打包与 smoke 成功，客户端真机交互验收明确缺失，不能用 runner 成功替代。\n\n## 第一层：源码可运行（证据充分）\n\n来源 `docs/validation/2026-09-10-open-source-readiness.md`（2026-09-10，基线 8e95063）：更新前基线与更新后完整测试均为 139 个测试文件、1,525 项测试通过；干净源码目录冻结安装、完整测试、TypeScript、前端构建、Bridge 构建、`git diff --check` 均通过。验证环境为本机 macOS arm64、Node 26.7.0、pnpm 9.0.0，冻结安装使用了本机 pnpm 缓存，原文明确不声称验证了无缓存网络下载。CI 侧（来源 `docs/validation/2026-09-09-desktop-ci-validation.md`，运行 34319081019，commit 89b7d39）全仓测试、TypeScript、前后端构建在 GitHub Actions 全部通过。\n\n## 第二层：原生打包可启动（三平台 runner 证据存在）\n\n上述 2026-09-09 报告记录：`darwin-arm64`、`darwin-x64`、`win32-x64` 的 native make、普通 packed smoke、Board/Checkpoint restore smoke 和产物上传全部通过，三份 artifact 确认存在（Windows x64 157,737,763 bytes 等，保留 14 天）。本机 macOS arm64/x64 亦各自通过 make 与两类 smoke。smoke 机制经修正：Windows GUI 下 stdin EOF 导致提前退出，改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 配合 ready 标记文件验证真实 renderer 加载后正常退出。\n\n## 第三层：真实客户端可使用（仅 macOS，Windows 缺失）\n\n2026-09-09 报告：macOS 原生会话完成工作区选择、主窗口显示、焦点与关闭窗口检查；本机日志有 Electron network service 重启等告警，不声称零告警。2026-09-10 报告补充：真实 Chrome 窗口 1440×1000 与 390×844 下空画板、设置开关、键盘焦点通过，console warning/error 为 0；新工作区 Standalone 不读取作者数据；公开示例真实 HTTP 导入成功。但两份报告一致声明：**Windows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收**，本轮也无 macOS Intel 真机交互验证。\n\n## 为什么 Windows runner 成功不能替代真机交互\n\nCI smoke 证明的是打包程序能加载实际 UI/API、恢复数据、正常退出并释放锁——即程序\"起得来、退得掉\"。它无法覆盖：真实 Windows 用户的目录选择对话框行为、窗口焦点与系统提示、显示缩放与输入法、最低系统版本兼容性，以及 GUI 会话中的 stdio/信号语义差异（本轮正是 stdin EOF 差异导致首次 smoke 失败）。原文明确\"本地 macOS 证据不能替代 Windows 运行证据\"，且\"不扩大为 Windows 客户端完整交互验收\"。\n\n## 记录冲突的时点解释\n\n- **测试数量**：2026-09-09 报告基线为 138 文件/1,519 项，新增测试后达 139/1,525；2026-09-10 报告的\"更新前基线\"即 139/1,525，并非矛盾，是两次时点不同的基线。\n- **Windows smoke 状态**：首轮运行 34318281546 中 Windows smoke 因 stdio 控制失败，修复机制后在运行 34319081019 成功——反映同一问题的修复前后，非结果冲突。\n- **产物性质**：所有安装包未签名、未公证，属 internal Alpha；源码开源（`docs/operations/open-source-release.md`）不附带安装包公开分发。\n\n## 局限与未回答问题\n\nWindows 与 macOS Intel 的真机交互验收、云端依赖下载的干净验证、仓库公开发布后的实际设置确认均未完成；`pnpm audit` 剩余 2 项高危（`image-size@0.7.5`）无上游修复；历史报告仅证明其记录时点，不保证当前状态。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。\n\n<!-- editorial-review-2026-09-10 -->"
+            },
+            "digest": "fnv1a:c9bb90e6",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:58:54.380Z"
+          },
+          {
+            "id": "version-4or74wmtuy3a83",
+            "cardId": "card-veids4mtux4g7i",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 桌面端验证证据分层整理\n\n**核心判断**：截至 2026-09-10，Mira 在\"源码可运行\"和\"原生打包可启动\"两层已有充分证据，但\"真实客户端可使用\"层仅覆盖 macOS arm64；Windows 仅有 CI runner 层面的打包与 smoke 成功，客户端真机交互验收明确缺失，不能用 runner 成功替代。\n\n## 第一层：源码可运行（证据充分）\n\n来源 `docs/validation/2026-09-10-open-source-readiness.md`（2026-09-10，基线 8e95063）：更新前基线与更新后完整测试均为 139 个测试文件、1,525 项测试通过；干净源码目录冻结安装、完整测试、TypeScript、前端构建、Bridge 构建、`git diff --check` 均通过。验证环境为本机 macOS arm64、Node 26.7.0、pnpm 9.0.0，冻结安装使用了本机 pnpm 缓存，原文明确不声称验证了无缓存网络下载。CI 侧（来源 `docs/validation/2026-09-09-desktop-ci-validation.md`，运行 34319081019，commit 89b7d39）全仓测试、TypeScript、前后端构建在 GitHub Actions 全部通过。\n\n## 第二层：原生打包可启动（三平台 runner 证据存在）\n\n上述 2026-09-09 报告记录：`darwin-arm64`、`darwin-x64`、`win32-x64` 的 native make、普通 packed smoke、Board/Checkpoint restore smoke 和产物上传全部通过，三份 artifact 确认存在（Windows x64 157,737,763 bytes 等，保留 14 天）。本机 macOS arm64/x64 亦各自通过 make 与两类 smoke。smoke 机制经修正：Windows GUI 下 stdin EOF 导致提前退出，改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 配合 ready 标记文件验证真实 renderer 加载后正常退出。\n\n## 第三层：真实客户端可使用（仅 macOS，Windows 缺失）\n\n2026-09-09 报告：macOS 原生会话完成工作区选择、主窗口显示、焦点与关闭窗口检查；本机日志有 Electron network service 重启等告警，不声称零告警。2026-09-10 报告补充：真实 Chrome 窗口 1440×1000 与 390×844 下空画板、设置开关、键盘焦点通过，console warning/error 为 0；新工作区 Standalone 不读取作者数据；公开示例真实 HTTP 导入成功。但两份报告一致声明：**Windows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收**，本轮也无 macOS Intel 真机交互验证。\n\n## 为什么 Windows runner 成功不能替代真机交互\n\nCI smoke 证明的是打包程序能加载实际 UI/API、恢复数据、正常退出并释放锁——即程序\"起得来、退得掉\"。它无法覆盖：真实 Windows 用户的目录选择对话框行为、窗口焦点与系统提示、显示缩放与输入法、最低系统版本兼容性，以及 GUI 会话中的 stdio/信号语义差异（本轮正是 stdin EOF 差异导致首次 smoke 失败）。原文明确\"本地 macOS 证据不能替代 Windows 运行证据\"，且\"不扩大为 Windows 客户端完整交互验收\"。\n\n## 记录冲突的时点解释\n\n- **测试数量**：2026-09-09 报告基线为 138 文件/1,519 项，新增测试后达 139/1,525；2026-09-10 报告的\"更新前基线\"即 139/1,525，并非矛盾，是两次时点不同的基线。\n- **Windows smoke 状态**：首轮运行 34318281546 中 Windows smoke 因 stdio 控制失败，修复机制后在运行 34319081019 成功——反映同一问题的修复前后，非结果冲突。\n- **产物性质**：所有安装包未签名、未公证，属 internal Alpha；源码开源（`docs/operations/open-source-release.md`）不附带安装包公开分发。\n\n## 局限与未回答问题\n\nWindows 与 macOS Intel 的真机交互验收、云端依赖下载的干净验证、仓库公开发布后的实际设置确认均未完成；`pnpm audit` 剩余 2 项高危（`image-size@0.7.5`）无上游修复；历史报告仅证明其记录时点，不保证当前状态。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。"
+            },
+            "digest": "fnv1a:9b4d91c8",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.299Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:38:38.094Z",
+        "updatedAt": "2026-09-10T03:05:43.299Z",
+        "name": "区分三层发布证据"
+      },
+      {
+        "id": "card-fktbiimtux5dza",
+        "contentKind": "markdown",
+        "x": 710,
+        "y": 610,
+        "width": 460,
+        "height": 490,
+        "headVersionId": "version-evev7hmtuy3a86",
+        "versions": [
+          {
+            "id": "version-1149axmtux69h0",
+            "cardId": "card-fktbiimtux5dza",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；测试仅依赖 `test/fixtures/coffee-layout.json` 最小几何数据。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**尚缺前提**：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- `docs/licenses/` 清单与随包许可证原文更新；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**尚缺前提**：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**尚缺前提**：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。"
+            },
+            "digest": "fnv1a:591c1806",
+            "origin": "ai",
+            "createdAt": "2026-09-10T02:40:02.674Z",
+            "sourceRunId": "run-vgpx2imtux5dzo"
+          },
+          {
+            "id": "version-gdnm1vmtux7cgy",
+            "cardId": "card-fktbiimtux5dza",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；测试仅依赖 `test/fixtures/coffee-layout.json` 最小几何数据。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**尚缺前提**：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- `docs/licenses/` 清单与随包许可证原文更新；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**尚缺前提**：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**尚缺前提**：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。\n\n## 案例编辑复核\n\nWindows 的 native make/packed smoke 与真机客户端验收必须分别记录。这里保留的发布范围是讨论稿，不能据此执行仓库公开或上传安装包。下游验收清单需据此重新核对。"
+            },
+            "digest": "fnv1a:0aa6c858",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:40:53.218Z"
+          },
+          {
+            "id": "version-tkqwj1mtuxuipc",
+            "cardId": "card-fktbiimtux5dza",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；其中 53 卡布局回归测试改用 `test/fixtures/coffee-layout.json` 最小几何数据，不能外推为全部测试的唯一依赖。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- S2 已记录 673 条依赖许可记录及原文；待发布快照变化时核对 `docs/licenses/` 是否仍匹配；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。\n\n<!-- editorial-review-2026-09-10 -->"
+            },
+            "digest": "fnv1a:cf08222f",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:58:54.384Z"
+          },
+          {
+            "id": "version-evev7hmtuy3a86",
+            "cardId": "card-fktbiimtux5dza",
+            "sequence": 4,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；其中 53 卡布局回归测试改用 `test/fixtures/coffee-layout.json` 最小几何数据，不能外推为全部测试的唯一依赖。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- S2 已记录 673 条依赖许可记录及原文；待发布快照变化时核对 `docs/licenses/` 是否仍匹配；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**需在待发布快照复核的条件**（不表示历史报告未完成这些项目）：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。"
+            },
+            "digest": "fnv1a:e7ffd8c1",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.302Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:39:21.862Z",
+        "updatedAt": "2026-09-10T03:05:43.302Z",
+        "name": "提出本轮可交付范围"
+      },
+      {
+        "id": "card-8iogfumtux6axv",
+        "contentKind": "markdown",
+        "x": 1480,
+        "y": 390,
+        "width": 460,
+        "height": 630,
+        "headVersionId": "version-loiv7bmtuy3a89",
+        "versions": [
+          {
+            "id": "version-71oojimtux7als",
+            "cardId": "card-8iogfumtux6axv",
+            "sequence": 1,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布前后续任务清单\n\n**核心判断**：以下来源中的\"尚缺前提\"可拆为 8 条可验证任务，分属两条互不解耦的轨道——源码开源（任务 1–5）与跨平台客户端体验（任务 6–8）。两条轨道证据不可互相替代：CI 与 macOS arm64 的通过记录不能冒充 Windows / macOS Intel 真机结果，历史验证报告只证明其记录时点，本轮须在各任务当前基线上重新取证。\n\n## 源码开源轨道\n\n**任务 1｜导出快照的 Gitleaks 扫描**\n- 证据：对待发布文件与全新 Git 历史执行 `gitleaks --redact=100`，留存零命中报告（参考旧私仓 `--log-opts=--all` 扫描做法）。\n- 观察位置：隔离准备分支导出的快照目录及新仓库本地历史。\n- 失败停止：任一命中即停止推送，轮换或移除涉密内容后重扫；不带着命中进入后续任务。\n\n**任务 2｜快照 Standalone 启动与导入复验**\n- 证据：在临时 workspace 上启动快照构建并导入示例案例，日志确认不读取作者目录、不加载真实密钥；对照 9 月 10 日报告中\"新工作区 Standalone\"项的方法复做。\n- 观察位置：干净机器或独立临时目录，非开发者原工作区。\n- 失败停止：出现对作者路径或密钥的访问即中止，回查快照取消跟踪清单。\n\n**任务 3｜无缓存冻结安装验证**\n- 证据：清空 pnpm 缓存后冻结安装成功，且 1,525 项测试（139 文件）通过；历史验证明确使用了本机缓存，本轮不得引用该结果。\n- 观察位置：无缓存环境（新容器或清缓存本机）。\n- 失败停止：安装失败即记录缺失/不可达依赖，不宣称可独立构建。\n\n**任务 4｜剩余高危依赖处置记录**\n- 证据：`pnpm audit` 剩余 2 项（`image-size@0.7.5`，上游无修复）的可达范围分析写入发布说明与 SECURITY.md；`pnpm audit --prod` 为 0 的记录随快照留存。\n- 观察位置：发布说明与 SECURITY.md 草稿。\n- 失败停止：若审计数据库出现新高危项，暂缓 push 直至处置。\n\n**任务 5｜许可证清单与目标仓库设置核对**\n- 证据：`docs/licenses/` 清单与随包许可证原文更新完成；目标仓库的命名、保护分支、Dependabot、secret scanning、私密漏洞报告在实际目标仓逐项确认（文件存在不等于服务已开启）；确认私仓 workflow 配置使首次 push 不生成公开下载件。\n- 观察位置：实际目标 GitHub 仓库的设置页与 Actions 配置。\n- 失败停止：任一安全服务未开启即不公开仓库。\n\n## 跨平台客户端体验轨道\n\n**任务 6｜Windows 真机交互验收**\n- 证据：真机完成目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性的交互记录；CI runner 的 smoke 成功（`MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`）只证明\"起得来、退得掉\"，不得引用为本项证据。\n- 观察位置：Windows x64 实体机 GUI 会话。\n- 失败停止：任一交互项失败即维持\"公开安装包暂缓\"，不发布任何 Windows 可用性表述。\n\n**任务 7｜macOS Intel 真机交互验收**\n- 证据：x64 真机完成工作区选择、主窗口、焦点、关闭与正常退出检查（方法对照 9 月 9 日 arm64 可见检查）；runner 与 arm64 证据不可替代。\n- 观察位置：macOS Intel 实体机原生会话。\n- 失败停止：失败则撤销对 macOS Intel 平台的可用性表述，仅保留 arm64 范围。\n\n**任务 8｜签名、公证与分发机制确认**\n- 证据：安装包签名与公证流程建立并产出签名产物；内部包的分发对象与更新机制有维护者书面明确。\n- 观察位置：打包流水线产物与维护者决定记录。\n- 失败停止：产物未签名公证前，不启动任何把内部 Alpha 转为公开下载的动作。\n\n## 证据与局限\n\n以上任务全部来自两份验证报告与开源操作文档中明示的\"尚缺前提\"，未新增来源外假设。数据安全验收门槛（不覆盖、Candidate 可达、备份边界、写锁）已在上次基线有对应测试与验证记录，但规格承诺本身不构成通过证据，发布前须在当前基线重跑确认。**未回答的问题**：任务 6、7 的真机验收时间表与执行人、2 项高危依赖的最终处置方案、无缓存验证的具体环境，均保留给维护者决定，本清单不指定负责人与日期。"
+            },
+            "digest": "fnv1a:486486e9",
+            "origin": "ai",
+            "createdAt": "2026-09-10T02:40:50.797Z",
+            "sourceRunId": "run-v7zm60mtux6aya"
+          },
+          {
+            "id": "version-26ds0kmtuxuipf",
+            "cardId": "card-8iogfumtux6axv",
+            "sequence": 2,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布前后续任务清单\n\n**核心判断**：以下来源中的\"尚缺前提\"可拆为 8 条可验证任务，分属两条分别验收的轨道——源码开源（任务 1–5）与跨平台客户端体验（任务 6–8）。两条轨道证据不可互相替代：CI 与 macOS arm64 的通过记录不能冒充 Windows / macOS Intel 真机结果，历史验证报告只证明其记录时点，本轮须在各任务当前基线上重新取证。\n\n## 源码开源轨道\n\n**任务 1｜导出快照的 Gitleaks 扫描**\n- 证据：对待发布文件与全新 Git 历史执行 `gitleaks --redact=100`，留存零命中报告（参考旧私仓 `--log-opts=--all` 扫描做法）。\n- 观察位置：隔离准备分支导出的快照目录及新仓库本地历史。\n- 失败停止：任一命中即停止推送，轮换或移除涉密内容后重扫；不带着命中进入后续任务。\n\n**任务 2｜快照 Standalone 启动与导入复验**\n- 证据：在临时 workspace 上启动快照构建并导入示例案例，日志确认不读取作者目录、不加载真实密钥；对照 9 月 10 日报告中\"新工作区 Standalone\"项的方法复做。\n- 观察位置：干净机器或独立临时目录，非开发者原工作区。\n- 失败停止：出现对作者路径或密钥的访问即中止，回查快照取消跟踪清单。\n\n**任务 3｜无缓存冻结安装验证**\n- 证据：在新容器或独立临时 pnpm store 中冻结安装成功，并运行当前基线全部测试（历史报告为 139 文件、1,525 项）；历史验证明确使用了本机缓存，本轮不得引用该结果。\n- 观察位置：无缓存的隔离环境；保留开发者现有缓存。\n- 失败停止：安装失败即记录缺失/不可达依赖，不宣称可独立构建。\n\n**任务 4｜剩余高危依赖处置记录**\n- 证据：`pnpm audit` 剩余 2 项（`image-size@0.7.5`，上游无修复）的可达范围分析写入发布说明与 SECURITY.md；`pnpm audit --prod` 为 0 的记录随快照留存。\n- 观察位置：发布说明与 SECURITY.md 草稿。\n- 失败停止：若审计数据库出现新高危项，暂缓 push 直至处置。\n\n**任务 5｜许可证清单与目标仓库设置核对**\n- 证据：`docs/licenses/` 清单与随包许可证原文更新完成；目标仓库的命名、保护分支、Dependabot、secret scanning、私密漏洞报告在实际目标仓逐项确认（文件存在不等于服务已开启）；确认私仓 workflow 配置使首次 push 不生成公开下载件。\n- 观察位置：实际目标 GitHub 仓库的设置页与 Actions 配置。\n- 失败停止：核对平台权限与可用性；无法开启时记录限制和替代措施，由维护者决定是否暂停公开。\n\n## 跨平台客户端体验轨道\n\n**任务 6｜Windows 真机交互验收**\n- 证据：真机完成目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性的交互记录；CI runner 的 smoke 成功（`MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`）只证明\"起得来、退得掉\"，不得引用为本项证据。\n- 观察位置：Windows x64 实体机 GUI 会话。\n- 失败停止：任一交互项失败即维持\"公开安装包暂缓\"，不发布任何 Windows 可用性表述。\n\n**任务 7｜macOS Intel 真机交互验收**\n- 证据：x64 真机完成工作区选择、主窗口、焦点、关闭与正常退出检查（方法对照 9 月 9 日 arm64 可见检查）；runner 与 arm64 证据不可替代。\n- 观察位置：macOS Intel 实体机原生会话。\n- 失败停止：失败则撤销对 macOS Intel 平台的可用性表述，仅保留 arm64 范围。\n\n**任务 8｜签名、公证与分发机制确认**\n- 证据：安装包签名与公证流程建立并产出签名产物；内部包的分发对象与更新机制有维护者书面明确。\n- 观察位置：打包流水线产物与维护者决定记录。\n- 失败停止：产物未签名公证前，不启动任何把内部 Alpha 转为公开下载的动作。\n\n## 证据与局限\n\n上述清单是基于来源提出的候选验收设计，部分历史通过项需要在新快照复验；具体停止门槛、平台范围和分发方案属于建议，须由维护者确认，不能当成原文规则。数据安全验收门槛（不覆盖、Candidate 可达、备份边界、写锁）已在上次基线有对应测试与验证记录，但规格承诺本身不构成通过证据，发布前须在当前基线重跑确认。**未回答的问题**：任务 6、7 的真机验收时间表与执行人、2 项高危依赖的最终处置方案、无缓存验证的具体环境，均保留给维护者决定，本清单不指定负责人与日期。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。\n\n<!-- editorial-review-2026-09-10 -->"
+            },
+            "digest": "fnv1a:502b475e",
+            "origin": "human",
+            "createdAt": "2026-09-10T02:58:54.387Z"
+          },
+          {
+            "id": "version-loiv7bmtuy3a89",
+            "cardId": "card-8iogfumtux6axv",
+            "sequence": 3,
+            "content": {
+              "kind": "markdown",
+              "markdown": "# Mira 发布前后续任务清单\n\n**核心判断**：以下来源中的\"尚缺前提\"可拆为 8 条可验证任务，分属两条分别验收的轨道——源码开源（任务 1–5）与跨平台客户端体验（任务 6–8）。两条轨道证据不可互相替代：CI 与 macOS arm64 的通过记录不能冒充 Windows / macOS Intel 真机结果，历史验证报告只证明其记录时点，本轮须在各任务当前基线上重新取证。\n\n## 源码开源轨道\n\n**任务 1｜导出快照的 Gitleaks 扫描**\n- 证据：对待发布文件与全新 Git 历史执行 `gitleaks --redact=100`，留存零命中报告（参考旧私仓 `--log-opts=--all` 扫描做法）。\n- 观察位置：隔离准备分支导出的快照目录及新仓库本地历史。\n- 失败停止：任一命中即停止推送，轮换或移除涉密内容后重扫；不带着命中进入后续任务。\n\n**任务 2｜快照 Standalone 启动与导入复验**\n- 证据：在临时 workspace 上启动快照构建并导入示例案例，日志确认不读取作者目录、不加载真实密钥；对照 9 月 10 日报告中\"新工作区 Standalone\"项的方法复做。\n- 观察位置：干净机器或独立临时目录，非开发者原工作区。\n- 失败停止：出现对作者路径或密钥的访问即中止，回查快照取消跟踪清单。\n\n**任务 3｜无缓存冻结安装验证**\n- 证据：在新容器或独立临时 pnpm store 中冻结安装成功，并运行当前基线全部测试（历史报告为 139 文件、1,525 项）；历史验证明确使用了本机缓存，本轮不得引用该结果。\n- 观察位置：无缓存的隔离环境；保留开发者现有缓存。\n- 失败停止：安装失败即记录缺失/不可达依赖，不宣称可独立构建。\n\n**任务 4｜剩余高危依赖处置记录**\n- 证据：`pnpm audit` 剩余 2 项（`image-size@0.7.5`，上游无修复）的可达范围分析写入发布说明与 SECURITY.md；`pnpm audit --prod` 为 0 的记录随快照留存。\n- 观察位置：发布说明与 SECURITY.md 草稿。\n- 失败停止：若审计数据库出现新高危项，暂缓 push 直至处置。\n\n**任务 5｜许可证清单与目标仓库设置核对**\n- 证据：`docs/licenses/` 清单与随包许可证原文更新完成；目标仓库的命名、保护分支、Dependabot、secret scanning、私密漏洞报告在实际目标仓逐项确认（文件存在不等于服务已开启）；确认私仓 workflow 配置使首次 push 不生成公开下载件。\n- 观察位置：实际目标 GitHub 仓库的设置页与 Actions 配置。\n- 失败停止：核对平台权限与可用性；无法开启时记录限制和替代措施，由维护者决定是否暂停公开。\n\n## 跨平台客户端体验轨道\n\n**任务 6｜Windows 真机交互验收**\n- 证据：真机完成目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性的交互记录；CI runner 的 smoke 成功（`MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`）只证明\"起得来、退得掉\"，不得引用为本项证据。\n- 观察位置：Windows x64 实体机 GUI 会话。\n- 失败停止：任一交互项失败即维持\"公开安装包暂缓\"，不发布任何 Windows 可用性表述。\n\n**任务 7｜macOS Intel 真机交互验收**\n- 证据：x64 真机完成工作区选择、主窗口、焦点、关闭与正常退出检查（方法对照 9 月 9 日 arm64 可见检查）；runner 与 arm64 证据不可替代。\n- 观察位置：macOS Intel 实体机原生会话。\n- 失败停止：失败则撤销对 macOS Intel 平台的可用性表述，仅保留 arm64 范围。\n\n**任务 8｜签名、公证与分发机制确认**\n- 证据：安装包签名与公证流程建立并产出签名产物；内部包的分发对象与更新机制有维护者书面明确。\n- 观察位置：打包流水线产物与维护者决定记录。\n- 失败停止：产物未签名公证前，不启动任何把内部 Alpha 转为公开下载的动作。\n\n## 证据与局限\n\n上述清单是基于来源提出的候选验收设计，部分历史通过项需要在新快照复验；具体停止门槛、平台范围和分发方案属于建议，须由维护者确认，不能当成原文规则。数据安全验收门槛（不覆盖、Candidate 可达、备份边界、写锁）已在上次基线有对应测试与验证记录，但规格承诺本身不构成通过证据，发布前须在当前基线重跑确认。**未回答的问题**：任务 6、7 的真机验收时间表与执行人、2 项高危依赖的最终处置方案、无缓存验证的具体环境，均保留给维护者决定，本清单不指定负责人与日期。\n\n## 人工复核与继续阅读\n\n案例编辑复核：本页为分析建议。报告时点、当前待发布快照与真正发布动作需分别核对；CI smoke 不等于 Windows/Intel 真机交互验收。原模型正文保存在历史版本与 Run 中。"
+            },
+            "digest": "fnv1a:0f5c85a0",
+            "origin": "human",
+            "createdAt": "2026-09-10T03:05:43.305Z"
+          }
+        ],
+        "createdAt": "2026-09-10T02:40:04.579Z",
+        "updatedAt": "2026-09-10T03:36:23.741Z",
+        "name": "生成可验收的后续清单"
       }
     ],
     "transformations": [
       {
-        "id": "transformation-r6ctkzmtu0k8tc",
+        "id": "transformation-ar148smtux4g7i",
         "sourceCardIds": [
-          "card-niwck2mtu0k8t8",
-          "card-n71xocmtu0k8t9"
+          "card-ly27vkmtux4g6q",
+          "card-zq304vmtux4g6w",
+          "card-y8jcxumtux4g73"
         ],
-        "targetCardId": "card-r74bm2mtu0k8tc",
-        "label": "限定本期范围",
-        "instruction": "把用户反馈与一名开发者、两周的约束整理为离线阅读 1.1 的范围。区分本期交付、不做、评审决定和待确认；只做单篇手动下载，不承诺批量、同步或新管理页。",
-        "acceptance": "每个范围项有反馈或约束依据；下载失败与清理不能删除收藏；未定义的更新提示保持待确认。",
+        "targetCardId": "card-veids4mtux4g7i",
+        "label": "区分三层发布证据",
+        "instruction": "按源码可运行、原生打包可启动、真实客户端可使用三层整理证据。标注报告日期与原文路径。解释为什么 Windows runner 成功不能替代 Windows 真机交互。对记录冲突按时点解释，不能虚构新执行结果。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
         "permissions": {
           "workspaceWrite": false
         },
-        "createdAt": "2026-09-09T11:27:07.680Z",
-        "updatedAt": "2026-09-09T11:27:07.686Z",
-        "x": 330,
-        "y": 160,
-        "lastRunId": "run-bbgjmumtu0k8tf",
-        "lastAppliedRunId": "run-bbgjmumtu0k8tf"
+        "createdAt": "2026-09-10T02:38:38.094Z",
+        "updatedAt": "2026-09-10T02:39:18.857Z",
+        "x": 435,
+        "y": 150,
+        "lastRunId": "run-1fpkammtux4g7n",
+        "lastAppliedRunId": "run-1fpkammtux4g7n"
       },
       {
-        "id": "transformation-f18pnemtu0k92f",
+        "id": "transformation-lwvnxzmtux5dza",
         "sourceCardIds": [
-          "card-r74bm2mtu0k8tc",
-          "card-ospocjmtu0k9u4"
+          "card-veids4mtux4g7i",
+          "card-ly27vkmtux4g6q",
+          "card-twjmtjmtux4g79"
         ],
-        "targetCardId": "card-bbmz85mtu0k92f",
-        "label": "推导回归用例",
-        "instruction": "以确认的需求为准编写前置条件、操作、可观察结果。若来源包含新反馈，单列补充回归：下载中切换飞行模式、失败提示与重试。保留旧验收覆盖，未实际执行的用例不要勾选通过。",
-        "acceptance": "覆盖在线下载、离线打开、失败重试与清理；新反馈能追溯编号；没有编造测试通过记录。",
+        "targetCardId": "card-fktbiimtux5dza",
+        "label": "提出本轮可交付范围",
+        "instruction": "给维护者写一页发布范围建议。区分源码候选、内部安装包、公开安装包，分别写可交付项、尚缺前提和暂缓项。给出与数据安全承诺相关的验收门槛。所有建议明确为待维护者决定，不能宣布已发布或给未验证平台背书。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
         "permissions": {
           "workspaceWrite": false
         },
-        "createdAt": "2026-09-09T11:27:08.007Z",
-        "updatedAt": "2026-09-09T11:27:09.011Z",
-        "x": 980,
-        "y": 95,
-        "lastRunId": "run-hsz5t0mtu0k92p",
-        "lastAppliedRunId": "run-hsz5t0mtu0k92p"
+        "createdAt": "2026-09-10T02:39:21.862Z",
+        "updatedAt": "2026-09-10T02:40:02.674Z",
+        "x": 435,
+        "y": 760,
+        "lastRunId": "run-vgpx2imtux5dzo",
+        "lastAppliedRunId": "run-vgpx2imtux5dzo"
       },
       {
-        "id": "transformation-t16176mtu0k970",
+        "id": "transformation-3ufnk0mtux6axv",
         "sourceCardIds": [
-          "card-r74bm2mtu0k8tc"
+          "card-fktbiimtux5dza",
+          "card-zq304vmtux4g6w",
+          "card-y8jcxumtux4g73",
+          "card-twjmtjmtux4g79"
         ],
-        "targetCardId": "card-ttc1fdmtu0k970",
-        "label": "写给试用用户",
-        "instruction": "把当前已确认范围写成简短内测说明，讲清从哪里下载、离线怎样使用、从哪里清理。明确不含批量下载和跨设备同步，不把待确认问题写成已交付功能。",
-        "acceptance": "清理入口与当前人工决定一致；文字面向试用用户；没有新增产品承诺。",
+        "targetCardId": "card-8iogfumtux6axv",
+        "label": "生成可验收的后续清单",
+        "instruction": "把建议转为6到8条可验证的后续任务，每条说明要取得什么证据、在哪里观察、失败时如何停止。不要把历史通过项冒充本轮执行结果，不编造负责人和日期。区分跨平台客户端体验与源码开源工作。\n\n输出中文Markdown正文，通常600到900字（任务另有字数要求时以任务为准）。开头直接给核心判断，随后给证据与局限。不要执行交付说明，不要虚构引文、事实或验证结果。只使用提供的来源。",
+        "acceptance": "明确来源与推断的界限；结论有材料支持；输出能供人继续修改；未回答的问题明确保留。",
         "permissions": {
           "workspaceWrite": false
         },
-        "createdAt": "2026-09-09T11:27:08.172Z",
-        "updatedAt": "2026-09-09T11:27:08.712Z",
-        "x": 980,
-        "y": 360,
-        "lastRunId": "run-wbg9dvmtu0k9ly",
-        "lastAppliedRunId": "run-wbg9dvmtu0k9ly"
+        "createdAt": "2026-09-10T02:40:04.579Z",
+        "updatedAt": "2026-09-10T02:40:50.797Z",
+        "x": 1190,
+        "y": 630,
+        "lastRunId": "run-v7zm60mtux6aya",
+        "lastAppliedRunId": "run-v7zm60mtux6aya"
       }
     ],
     "viewport": {
@@ -289,245 +407,226 @@
       "y": 0,
       "zoom": 1
     },
-    "createdAt": "2026-09-09T11:27:07.671Z",
-    "updatedAt": "2026-09-09T11:27:09.011Z",
-    "groups": [
-      {
-        "id": "group-board-i7sabdmtu0k8t3-0",
-        "title": "输入与约束",
-        "color": "blue",
-        "cardIds": [
-          "card-niwck2mtu0k8t8",
-          "card-n71xocmtu0k8t9"
-        ]
-      },
-      {
-        "id": "group-board-i7sabdmtu0k8t3-1",
-        "title": "已确认的交付范围",
-        "color": "green",
-        "cardIds": [
-          "card-r74bm2mtu0k8tc",
-          "card-26qj27mtu0k9kw"
-        ]
-      },
-      {
-        "id": "group-board-i7sabdmtu0k8t3-2",
-        "title": "两条交付支线",
-        "color": "orange",
-        "cardIds": [
-          "card-bbmz85mtu0k92f",
-          "card-ttc1fdmtu0k970"
-        ]
-      }
-    ]
+    "createdAt": "2026-09-10T02:38:38.060Z",
+    "updatedAt": "2026-09-10T03:36:23.741Z"
   },
   "runs": [
     {
-      "id": "run-bbgjmumtu0k8tf",
-      "boardId": "board-i7sabdmtu0k8t3",
-      "transformationId": "transformation-r6ctkzmtu0k8tc",
+      "id": "run-1fpkammtux4g7n",
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-ar148smtux4g7i",
       "status": "succeeded",
       "sourceSnapshot": [
         {
-          "cardId": "card-niwck2mtu0k8t8",
-          "versionId": "version-211eskmtu0k8t8",
+          "cardId": "card-ly27vkmtux4g6q",
+          "versionId": "version-9et3qfmtux4g6q",
           "contentKind": "markdown",
-          "resolvedContent": "# 用户反馈 F-12\n\n收藏过的文章，进地铁后还是打不开。\n\n希望看到哪些已下载；失败时不要丢掉收藏。",
-          "digest": "fnv1a:1866f106"
+          "resolvedContent": "# S1｜源码公开与桌面分发边界\n\n来源：Mira 仓库 docs/operations/open-source-release.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 首次开源发布\n\n本次选择 MIT，范围为当前源码、文档与专门制作的演示素材。桌面安装包仍是未签名、未公证的 internal Alpha，不随首次源码开源自动公开发布。\n\n内部桌面打包 workflow 只在 private 仓库执行；公开仓库首次 push 不生成可公开下载的内部安装包。通用源码 CI 不受此限制。\n\n## 公开内容与私有数据\n\n公开入口使用一个**不继承私有开发历史的新 Git 仓库**。原私仓及真实工作区保持可用，不通过清空历史、强推或删除数据来改造日常工作目录。仅在隔离的准备分支取消跟踪以下内容，再由该分支的提交导出源码快照：\n\n- `boards-v2/`、`runs-v2/`、`workflows-v2/`、检查点、灵感池、附件、迁移备份和 workspace lock。\n- `reference/`、`archive/`、`mockups/`、`showcase-materials/` 与 `docs/superpowers/` 中的私有参考和设计过程。\n- `.env` 等秘密配置、依赖安装目录、构建产物及日志。\n\n公开案例只来自 `docs/examples/`；53 卡布局回归测试使用 `test/fixtures/coffee-layout.json` 的最小几何数据，不再读取真实工作区。历史验证报告中的个人机器路径仅作脱敏，不改写当时的验证结果。\n\n不要把准备分支的数据移除提交直接合并进仍承载真实数据的旧工作树。准备分支适用于导出，不是清理用户文件的脚本。\n\n## 发布前验证\n\n1. 在导出的新仓库冻结安装依赖，运行 `pnpm test`、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check`。\n2. 在新的临时 workspace 启动 Standalone，确认不依赖作者目录、真实模型密钥或私有数据；案例导入另用临时 workspace 验证。\n3. 用 Gitleaks 扫描待发布文件和新历史，使用 `--redact=100`，不要在日志中输出潜在秘密。旧历史的密钥扫描通过不能证明其中的个人数据可以公开。\n4. 运行 `pnpm audit --json`、`pnpm audit --prod --json` 和 `pnpm licenses list --json`，更新 `docs/licenses/` 的清单与随包许可证原文；单独记录未修复公告及其可达范围。\n5. 如改动桌面工具链，执行目标平台 make、普通 packed smoke 与备份恢复 smoke。CI 打包证据不能替代客户端真机 UI 验收。\n\n最新结果见 [2026-09-10 开源准备验证](../validation/2026-09-10-open-source-readiness.md)。\n\n## 确认目标仓库后操作\n\n仓库命名及公开发布属于最后的确认步骤。若继续使用现有 `skybcyang/Mira` 名称，先确认旧私仓的保留名称，再创建新的公开仓库；不要直接将含私有历史的旧仓改为 public。\n\n- 仅推送审阅过的新首提交，不迁入旧分支、标签、Issue 附件、Release 或 Actions 产物。\n- 设置简介、主题和 README 链接；启用 Issues 及 private vulnerability reporting。安全反馈流程见根目录 `SECURITY.md`。\n- 默认分支启用禁止强推/删除与 PR 合并保护，以 `CI required` 作为必需检查。仓库权限和 GitHub 套餐限制需在实际目标仓确认。\n- 启用可用的 Dependabot alerts、secret scanning 与 push protection。仓库已提供依赖更新配置，但文件存在不等于这些服务已开启。\n- 首次源码版本通过 CI 后再创建标记与 Release 说明，明确“源码预览”和已验证平台；不上传内部安装包。维护者核对后可从 `ROADMAP.md` 选取适合外部贡献者的任务。\n\n本文件提供操作顺序；没有把待确认的仓库设置、云端检查或发布步骤标为已完成。\n",
+          "digest": "fnv1a:ea758ee5"
         },
         {
-          "cardId": "card-n71xocmtu0k8t9",
-          "versionId": "version-jykc52mtu0k8t9",
+          "cardId": "card-zq304vmtux4g6w",
+          "versionId": "version-elhgeemtux4g6w",
           "contentKind": "markdown",
-          "resolvedContent": "# 范围约束\n\n一名开发者，两周。只做手动下载单篇文章。\n\n不做批量下载、跨设备同步和新管理页。",
-          "digest": "fnv1a:1b52181e"
+          "resolvedContent": "# S2｜9 月 10 日开源准备实证\n\n来源：Mira 仓库 docs/validation/2026-09-10-open-source-readiness.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 2026-09-10 开源准备验证\n\n本报告记录首次 MIT 源码开源准备，不代表仓库已经公开或桌面版已经正式发布。产品语义和应用运行代码未改动；测试中对真实画板文件的依赖替换为最小布局夹具。\n\n## 已准备\n\n- 根目录 MIT License、两个 package manifest 的许可信息、贡献指南、安全反馈流程、Issue/PR 模板、路线图。\n- Linux/macOS CI、全历史密钥扫描、工作区数据跟踪拦截、Dependabot 更新配置及 `CI required` 汇总检查。\n- 内部桌面打包只允许 private 仓库执行，避免开源首个 push 自动暴露未签名 Actions 产物。\n- 673 条带版本的依赖许可证记录与生产依赖的原始许可证文本；清单不含本机安装路径。包内版权声明保持原文。\n- 当前运行数据、原型、第三方参考和开发归档只在隔离分支取消跟踪，原始工作区与私有 Git 历史保留。公开候选目录由 Git tree 导出，未复制旧 `.git`。\n- README 保持产品介绍，已有新手教程、四种不同结构的场景截图与可导入示例继续保留。\n\n## 实际验证\n\n本机环境：macOS arm64、Node.js 26.7.0、pnpm 9.0.0。CI 配置使用 Node 22；本报告不将配置本身视为云端执行证据。\n\n| 验证 | 结果 |\n| --- | --- |\n| 更新前基线 | 139 个测试文件、1,525 项测试通过 |\n| 更新后完整测试 | 139 个测试文件、1,525 项测试通过 |\n| 干净源码目录冻结安装 | 通过；使用本机 pnpm 缓存，不声称验证了无缓存网络下载 |\n| 干净源码目录完整测试 | 139 个测试文件、1,525 项测试通过 |\n| TypeScript、前端构建、Bridge 构建 | 准备分支与干净源码目录均通过 |\n| Git diff 空白检查 | 通过 |\n| Actions / Issue 模板 / Dependabot YAML | 语法解析通过 |\n| macOS arm64 make | DMG / ZIP 生成成功，仅保留本地产物 |\n| macOS arm64 packed smoke | 启动、API/renderer ready、正常退出与锁释放通过 |\n| macOS arm64 packed restore smoke | 备份与 Checkpoint 恢复通过 |\n| 四个公开 BoardArtifact 的真实 HTTP 导入 | 全部成功，身份重建、来源变化状态保留 |\n| Candidate 采用 | 新增版本，原人工正文版本保留 |\n| 完整示例备份恢复 | 4 Board、12 Run、1 方法、1 Checkpoint、3 灵感 |\n| 方法应用 | 创建 3 个空目标，未新增 Run；单画板导入不安装工作区方法等资源 |\n| 新工作区 Standalone | 独立临时目录启动，不读取作者的真实画板或模型密钥 |\n| 真实 Chrome 窗口 | 1440×1000 与 390×844 空画板、设置开关与键盘焦点验证通过；检查截图，无页面横向溢出，console warning/error 为 0 |\n\nNode 26 测试进程有 `localStorage` 实验功能提示；测试无失败。浏览器控制台无同类提示。未调用付费或真实网络模型；模型实际生成仍由使用者配置连接后验证。\n\n## 安全审计与工具链\n\nGitleaks 8.30.1 的官方二进制经过发布方 SHA-256 校验。旧私仓以 `--log-opts=--all --redact=100` 扫描所有本地可达引用，扫描器处理了 200 个含可扫描差异的提交，报告无命中。这不证明旧历史中的个人数据可以公开，因此仍使用新历史发布。\n\n更新 Vite 至 6.4.3、Vitest 至 4.1.11、React 插件至 4.7.0，以及 esbuild；将旧 tar/tmp 解析到有修复的版本。Electron node-gyp 保持原提交，固定为 codeload 归档 URL，解决 pnpm 9 将 GitHub 依赖解析为 SSH 后安装失败的问题。\n\n`pnpm audit` 从 24 项降至 2 项高危，未宣称全量审计通过。剩余为 DMG 开发工具链中的 `image-size@0.7.5` 两项解析拒绝服务公告，上游未提供修复版本，影响范围和约束见 [SECURITY.md](../../SECURITY.md)。`pnpm audit --prod` 为 0 项。审计只是当日数据库结果，不是无漏洞保证。\n\n## 尚未完成的发布步骤\n\n仓库公开、名称安排、默认分支保护、私密漏洞报告、GitHub 安全服务及首个公开 Release 需要在最终目标仓库上完成。私有准备分支的云端结果以对应 Actions 运行记录为准，不与本地结果混写。\n\n本轮没有新增 macOS Intel / Windows 原生机器上的本地验证，也没有重做桌面目录选择等客户端交互验收；不能用 arm64 证据替代。源码开源不依赖安装包发布，内部包不随之对外分发。发布顺序见[首次开源发布](../operations/open-source-release.md)。\n",
+          "digest": "fnv1a:7210f271"
+        },
+        {
+          "cardId": "card-y8jcxumtux4g73",
+          "versionId": "version-oxjvlqmtux4g73",
+          "contentKind": "markdown",
+          "resolvedContent": "# S3｜跨平台 native make 与 smoke 记录\n\n来源：Mira 仓库 docs/validation/2026-09-09-desktop-ci-validation.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 跨平台内部打包验证\n\n- 日期：2026-09-09\n- 分支：`codex/desktop-ci`，基线 `ab47573`\n- 范围：GitHub Actions、Windows x64 ZIP、macOS 双架构 DMG/ZIP、正常退出验证。\n- 产品对象、UI renderer、Store 和 API 契约保持不变；使用临时 workspace，不修改用户画板。\n\n## 本地证据\n\n环境为 macOS 26.3.1 arm64、Node 26.7.0、pnpm 9.0.0；CI 使用 Node 22。\n\n- 基线：138 个测试文件、1519 项测试通过。\n- 新增跨平台目标、ZIP 配置、Windows EXE 路径、窗口关闭及 smoke 就绪退出测试，先失败后通过。\n- 最终全仓：139 个测试文件、1525 项测试通过。\n- `pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`、`git diff --check` 通过。\n- actionlint 1.7.12 检查 `.github/workflows/desktop-build.yml` 通过。\n- `pnpm desktop:make:arm64` 和 `pnpm desktop:make:x64` 均生成 DMG 与 ZIP。\n- 两架构均通过普通 packed smoke 与 `--restore` packed smoke：真实 renderer/样式/Board API\n  ready，恢复 Board 与 Checkpoint，普通退出 code 0，workspace 锁不存在。\n\n首次 x64 恢复 smoke 发现：Host 开始 close 时仍有请求正在处理，该请求完成后仍保持\nkeep-alive，使桌面 3 秒退出上限先到，留下锁。诊断记录显示其他连接已关闭，最后连接\n在退出期间继续服务请求。新增真实 HTTP 测试通过挂起一个请求、开始 close、完成响应，\n在修复前复现 500ms 内无法结束；Host 在 response finish 时对 closing server 清理空闲\n连接后通过。该修复不强断正在处理的请求，不以等待或重试掩盖失败。\n\n## 可见检查与限制\n\n通过独立 userData 和临时 workspace，在原生 macOS 会话完成工作区选择、主窗口显示、\n焦点与关闭窗口检查。macOS 关闭窗口后保留进程，随后经 SIGINT 正常退出。\n未改变 renderer 布局，本批未重复 390px 浏览器验收。\n\n本机可见运行日志出现一次 Electron network service 重启、`fs.Stats` deprecation 和\nmacOS 输入法 mach-port 信息；界面随后正常 ready，因此不声称本机原生日志零告警。\n全仓测试仍有基线已有的 React SSR `useLayoutEffect` 和 Node 26 localStorage 告警。\n\nWindows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收。\nGitHub 原生 runner 结果见下节；本地 macOS 证据不能替代 Windows 运行证据。\n产物未签名、未公证，无安装器、自动更新或公开 Release。\n\n## GitHub 首轮反馈\n\n- `ea5736f` push 自动触发运行 `34317999003`；两项 UI 日期测试因 runner UTC 时区失败。\n  `ccb4afd` 将 CI 的 `TZ` 固定为 Asia/Shanghai，对应日期测试本地重跑通过。\n- 运行 `34318281546` 的全仓门禁与 macOS arm64/x64 全部通过，Mac 产物上传成功。\n  Windows native make 生成 ZIP，但使用标准输入 EOF 的 smoke 控制导致 GUI 提前退出。\n- smoke 改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`：真实 renderer 验证后将 ready 标记\n  写入临时 userData，再正常退出；父进程检查退出码、标记、恢复数据与锁释放，不再依赖\n  Windows GUI 的 stdio 控制。普通交互运行不启用该标记与退出行为。\n\n## GitHub 最终结果\n\n源码 commit `89b7d3991f004dca1666842fa5b9b23815ace01f` 经分支 push 自动触发\n[运行 34319081019](https://github.com/skybcyang/Mira/actions/runs/34319081019)，最终 `success`：\n\n- Repository checks：全仓测试、TypeScript、前后端构建与 diff check 全部通过。\n- `darwin-arm64`、`darwin-x64`、`win32-x64`：定向测试、native make、普通 packed smoke、\n  Board/Checkpoint restore smoke 和产物上传全部通过。\n- 三份 artifact 已确认存在且未过期，保留 14 天：\n  - Windows x64：artifact `10091235480`，157,737,763 bytes。\n  - macOS Intel：artifact `10091233356`，262,647,506 bytes。\n  - macOS Apple Silicon：artifact `10091209760`，255,120,630 bytes。\n\n本地修复后 Intel restore smoke 额外连续三次通过；最终采用 ready 文件的方式又完成\n两种 Mac 架构的 make、普通和 restore smoke。Windows runner 上的成功表明打包程序能\n加载实际 UI/API、恢复数据并释放锁，不扩大为 Windows 客户端完整交互验收。\n\nGitHub 对所用 v4 Actions 发出了 Node 20 runtime 弃用提示，并实际使用 Node 24 运行\n这些 Actions；仓库构建命令仍使用显式安装的 Node 22，全部任务成功。未宣称 CI 零告警。\n功能分支已推送到远端，未合并 main，未创建 PR 或 GitHub Release。\n",
+          "digest": "fnv1a:1edca366"
         }
       ],
-      "targetCardId": "card-r74bm2mtu0k8tc",
+      "targetCardId": "card-veids4mtux4g7i",
       "targetBaseVersionId": null,
       "intent": "create",
       "modelSnapshot": {
-        "provider": "local-demo",
-        "model": "authored-example"
+        "provider": "openai-compatible",
+        "model": "k3"
       },
-      "createdAt": "2026-09-09T11:27:07.683Z",
-      "startedAt": "2026-09-09T11:27:07.683Z",
+      "createdAt": "2026-09-10T02:38:38.099Z",
+      "startedAt": "2026-09-10T02:38:38.099Z",
       "progress": {
         "phase": "completed",
         "label": "生成完成",
-        "updatedAt": "2026-09-09T11:27:07.686Z"
+        "updatedAt": "2026-09-10T02:39:18.857Z"
       },
       "progressEvents": [
         {
           "sequence": 1,
           "phase": "generating",
-          "label": "正在载入人工编写的演示文本",
-          "occurredAt": "2026-09-09T11:27:07.685Z"
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:38:38.102Z"
         },
         {
           "sequence": 2,
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:39:18.854Z"
+        },
+        {
+          "sequence": 3,
           "phase": "completed",
           "label": "生成完成",
-          "occurredAt": "2026-09-09T11:27:07.686Z"
+          "occurredAt": "2026-09-10T02:39:18.857Z"
         }
       ],
       "result": {
-        "output": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
-        "digest": "fnv1a:93852635",
+        "output": "# Mira 桌面端验证证据分层整理\n\n**核心判断**：截至 2026-09-10，Mira 在\"源码可运行\"和\"原生打包可启动\"两层已有充分证据，但\"真实客户端可使用\"层仅覆盖 macOS arm64；Windows 仅有 CI runner 层面的打包与 smoke 成功，客户端真机交互验收明确缺失，不能用 runner 成功替代。\n\n## 第一层：源码可运行（证据充分）\n\n来源 `docs/validation/2026-09-10-open-source-readiness.md`（2026-09-10，基线 8e95063）：更新前基线与更新后完整测试均为 139 个测试文件、1,525 项测试通过；干净源码目录冻结安装、完整测试、TypeScript、前端构建、Bridge 构建、`git diff --check` 均通过。验证环境为本机 macOS arm64、Node 26.7.0、pnpm 9.0.0，冻结安装使用了本机 pnpm 缓存，原文明确不声称验证了无缓存网络下载。CI 侧（来源 `docs/validation/2026-09-09-desktop-ci-validation.md`，运行 34319081019，commit 89b7d39）全仓测试、TypeScript、前后端构建在 GitHub Actions 全部通过。\n\n## 第二层：原生打包可启动（三平台 runner 证据存在）\n\n上述 2026-09-09 报告记录：`darwin-arm64`、`darwin-x64`、`win32-x64` 的 native make、普通 packed smoke、Board/Checkpoint restore smoke 和产物上传全部通过，三份 artifact 确认存在（Windows x64 157,737,763 bytes 等，保留 14 天）。本机 macOS arm64/x64 亦各自通过 make 与两类 smoke。smoke 机制经修正：Windows GUI 下 stdin EOF 导致提前退出，改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 配合 ready 标记文件验证真实 renderer 加载后正常退出。\n\n## 第三层：真实客户端可使用（仅 macOS，Windows 缺失）\n\n2026-09-09 报告：macOS 原生会话完成工作区选择、主窗口显示、焦点与关闭窗口检查；本机日志有 Electron network service 重启等告警，不声称零告警。2026-09-10 报告补充：真实 Chrome 窗口 1440×1000 与 390×844 下空画板、设置开关、键盘焦点通过，console warning/error 为 0；新工作区 Standalone 不读取作者数据；公开示例真实 HTTP 导入成功。但两份报告一致声明：**Windows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收**，本轮也无 macOS Intel 真机交互验证。\n\n## 为什么 Windows runner 成功不能替代真机交互\n\nCI smoke 证明的是打包程序能加载实际 UI/API、恢复数据、正常退出并释放锁——即程序\"起得来、退得掉\"。它无法覆盖：真实 Windows 用户的目录选择对话框行为、窗口焦点与系统提示、显示缩放与输入法、最低系统版本兼容性，以及 GUI 会话中的 stdio/信号语义差异（本轮正是 stdin EOF 差异导致首次 smoke 失败）。原文明确\"本地 macOS 证据不能替代 Windows 运行证据\"，且\"不扩大为 Windows 客户端完整交互验收\"。\n\n## 记录冲突的时点解释\n\n- **测试数量**：2026-09-09 报告基线为 138 文件/1,519 项，新增测试后达 139/1,525；2026-09-10 报告的\"更新前基线\"即 139/1,525，并非矛盾，是两次时点不同的基线。\n- **Windows smoke 状态**：首轮运行 34318281546 中 Windows smoke 因 stdio 控制失败，修复机制后在运行 34319081019 成功——反映同一问题的修复前后，非结果冲突。\n- **产物性质**：所有安装包未签名、未公证，属 internal Alpha；源码开源（`docs/operations/open-source-release.md`）不附带安装包公开分发。\n\n## 局限与未回答问题\n\nWindows 与 macOS Intel 的真机交互验收、云端依赖下载的干净验证、仓库公开发布后的实际设置确认均未完成；`pnpm audit` 剩余 2 项高危（`image-size@0.7.5`）无上游修复；历史报告仅证明其记录时点，不保证当前状态。",
+        "digest": "fnv1a:95545e8f",
         "disposition": "applied",
-        "appliedVersionId": "version-ih0ag2mtu0k8tj"
+        "appliedVersionId": "version-qz8hnymtux5bnv"
       },
-      "finishedAt": "2026-09-09T11:27:07.686Z"
+      "finishedAt": "2026-09-10T02:39:18.857Z"
     },
     {
-      "id": "run-go4gwymtu0k979",
-      "boardId": "board-i7sabdmtu0k8t3",
-      "transformationId": "transformation-t16176mtu0k970",
+      "id": "run-v7zm60mtux6aya",
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-3ufnk0mtux6axv",
       "status": "succeeded",
       "sourceSnapshot": [
         {
-          "cardId": "card-r74bm2mtu0k8tc",
-          "versionId": "version-ih0ag2mtu0k8tj",
+          "cardId": "card-fktbiimtux5dza",
+          "versionId": "version-1149axmtux69h0",
           "contentKind": "markdown",
-          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
-          "digest": "fnv1a:93852635"
+          "resolvedContent": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；测试仅依赖 `test/fixtures/coffee-layout.json` 最小几何数据。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**尚缺前提**：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- `docs/licenses/` 清单与随包许可证原文更新；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**尚缺前提**：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**尚缺前提**：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。",
+          "digest": "fnv1a:f3c4a7c9"
+        },
+        {
+          "cardId": "card-zq304vmtux4g6w",
+          "versionId": "version-elhgeemtux4g6w",
+          "contentKind": "markdown",
+          "resolvedContent": "# S2｜9 月 10 日开源准备实证\n\n来源：Mira 仓库 docs/validation/2026-09-10-open-source-readiness.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 2026-09-10 开源准备验证\n\n本报告记录首次 MIT 源码开源准备，不代表仓库已经公开或桌面版已经正式发布。产品语义和应用运行代码未改动；测试中对真实画板文件的依赖替换为最小布局夹具。\n\n## 已准备\n\n- 根目录 MIT License、两个 package manifest 的许可信息、贡献指南、安全反馈流程、Issue/PR 模板、路线图。\n- Linux/macOS CI、全历史密钥扫描、工作区数据跟踪拦截、Dependabot 更新配置及 `CI required` 汇总检查。\n- 内部桌面打包只允许 private 仓库执行，避免开源首个 push 自动暴露未签名 Actions 产物。\n- 673 条带版本的依赖许可证记录与生产依赖的原始许可证文本；清单不含本机安装路径。包内版权声明保持原文。\n- 当前运行数据、原型、第三方参考和开发归档只在隔离分支取消跟踪，原始工作区与私有 Git 历史保留。公开候选目录由 Git tree 导出，未复制旧 `.git`。\n- README 保持产品介绍，已有新手教程、四种不同结构的场景截图与可导入示例继续保留。\n\n## 实际验证\n\n本机环境：macOS arm64、Node.js 26.7.0、pnpm 9.0.0。CI 配置使用 Node 22；本报告不将配置本身视为云端执行证据。\n\n| 验证 | 结果 |\n| --- | --- |\n| 更新前基线 | 139 个测试文件、1,525 项测试通过 |\n| 更新后完整测试 | 139 个测试文件、1,525 项测试通过 |\n| 干净源码目录冻结安装 | 通过；使用本机 pnpm 缓存，不声称验证了无缓存网络下载 |\n| 干净源码目录完整测试 | 139 个测试文件、1,525 项测试通过 |\n| TypeScript、前端构建、Bridge 构建 | 准备分支与干净源码目录均通过 |\n| Git diff 空白检查 | 通过 |\n| Actions / Issue 模板 / Dependabot YAML | 语法解析通过 |\n| macOS arm64 make | DMG / ZIP 生成成功，仅保留本地产物 |\n| macOS arm64 packed smoke | 启动、API/renderer ready、正常退出与锁释放通过 |\n| macOS arm64 packed restore smoke | 备份与 Checkpoint 恢复通过 |\n| 四个公开 BoardArtifact 的真实 HTTP 导入 | 全部成功，身份重建、来源变化状态保留 |\n| Candidate 采用 | 新增版本，原人工正文版本保留 |\n| 完整示例备份恢复 | 4 Board、12 Run、1 方法、1 Checkpoint、3 灵感 |\n| 方法应用 | 创建 3 个空目标，未新增 Run；单画板导入不安装工作区方法等资源 |\n| 新工作区 Standalone | 独立临时目录启动，不读取作者的真实画板或模型密钥 |\n| 真实 Chrome 窗口 | 1440×1000 与 390×844 空画板、设置开关与键盘焦点验证通过；检查截图，无页面横向溢出，console warning/error 为 0 |\n\nNode 26 测试进程有 `localStorage` 实验功能提示；测试无失败。浏览器控制台无同类提示。未调用付费或真实网络模型；模型实际生成仍由使用者配置连接后验证。\n\n## 安全审计与工具链\n\nGitleaks 8.30.1 的官方二进制经过发布方 SHA-256 校验。旧私仓以 `--log-opts=--all --redact=100` 扫描所有本地可达引用，扫描器处理了 200 个含可扫描差异的提交，报告无命中。这不证明旧历史中的个人数据可以公开，因此仍使用新历史发布。\n\n更新 Vite 至 6.4.3、Vitest 至 4.1.11、React 插件至 4.7.0，以及 esbuild；将旧 tar/tmp 解析到有修复的版本。Electron node-gyp 保持原提交，固定为 codeload 归档 URL，解决 pnpm 9 将 GitHub 依赖解析为 SSH 后安装失败的问题。\n\n`pnpm audit` 从 24 项降至 2 项高危，未宣称全量审计通过。剩余为 DMG 开发工具链中的 `image-size@0.7.5` 两项解析拒绝服务公告，上游未提供修复版本，影响范围和约束见 [SECURITY.md](../../SECURITY.md)。`pnpm audit --prod` 为 0 项。审计只是当日数据库结果，不是无漏洞保证。\n\n## 尚未完成的发布步骤\n\n仓库公开、名称安排、默认分支保护、私密漏洞报告、GitHub 安全服务及首个公开 Release 需要在最终目标仓库上完成。私有准备分支的云端结果以对应 Actions 运行记录为准，不与本地结果混写。\n\n本轮没有新增 macOS Intel / Windows 原生机器上的本地验证，也没有重做桌面目录选择等客户端交互验收；不能用 arm64 证据替代。源码开源不依赖安装包发布，内部包不随之对外分发。发布顺序见[首次开源发布](../operations/open-source-release.md)。\n",
+          "digest": "fnv1a:7210f271"
+        },
+        {
+          "cardId": "card-y8jcxumtux4g73",
+          "versionId": "version-oxjvlqmtux4g73",
+          "contentKind": "markdown",
+          "resolvedContent": "# S3｜跨平台 native make 与 smoke 记录\n\n来源：Mira 仓库 docs/validation/2026-09-09-desktop-ci-validation.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 跨平台内部打包验证\n\n- 日期：2026-09-09\n- 分支：`codex/desktop-ci`，基线 `ab47573`\n- 范围：GitHub Actions、Windows x64 ZIP、macOS 双架构 DMG/ZIP、正常退出验证。\n- 产品对象、UI renderer、Store 和 API 契约保持不变；使用临时 workspace，不修改用户画板。\n\n## 本地证据\n\n环境为 macOS 26.3.1 arm64、Node 26.7.0、pnpm 9.0.0；CI 使用 Node 22。\n\n- 基线：138 个测试文件、1519 项测试通过。\n- 新增跨平台目标、ZIP 配置、Windows EXE 路径、窗口关闭及 smoke 就绪退出测试，先失败后通过。\n- 最终全仓：139 个测试文件、1525 项测试通过。\n- `pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`、`git diff --check` 通过。\n- actionlint 1.7.12 检查 `.github/workflows/desktop-build.yml` 通过。\n- `pnpm desktop:make:arm64` 和 `pnpm desktop:make:x64` 均生成 DMG 与 ZIP。\n- 两架构均通过普通 packed smoke 与 `--restore` packed smoke：真实 renderer/样式/Board API\n  ready，恢复 Board 与 Checkpoint，普通退出 code 0，workspace 锁不存在。\n\n首次 x64 恢复 smoke 发现：Host 开始 close 时仍有请求正在处理，该请求完成后仍保持\nkeep-alive，使桌面 3 秒退出上限先到，留下锁。诊断记录显示其他连接已关闭，最后连接\n在退出期间继续服务请求。新增真实 HTTP 测试通过挂起一个请求、开始 close、完成响应，\n在修复前复现 500ms 内无法结束；Host 在 response finish 时对 closing server 清理空闲\n连接后通过。该修复不强断正在处理的请求，不以等待或重试掩盖失败。\n\n## 可见检查与限制\n\n通过独立 userData 和临时 workspace，在原生 macOS 会话完成工作区选择、主窗口显示、\n焦点与关闭窗口检查。macOS 关闭窗口后保留进程，随后经 SIGINT 正常退出。\n未改变 renderer 布局，本批未重复 390px 浏览器验收。\n\n本机可见运行日志出现一次 Electron network service 重启、`fs.Stats` deprecation 和\nmacOS 输入法 mach-port 信息；界面随后正常 ready，因此不声称本机原生日志零告警。\n全仓测试仍有基线已有的 React SSR `useLayoutEffect` 和 Node 26 localStorage 告警。\n\nWindows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收。\nGitHub 原生 runner 结果见下节；本地 macOS 证据不能替代 Windows 运行证据。\n产物未签名、未公证，无安装器、自动更新或公开 Release。\n\n## GitHub 首轮反馈\n\n- `ea5736f` push 自动触发运行 `34317999003`；两项 UI 日期测试因 runner UTC 时区失败。\n  `ccb4afd` 将 CI 的 `TZ` 固定为 Asia/Shanghai，对应日期测试本地重跑通过。\n- 运行 `34318281546` 的全仓门禁与 macOS arm64/x64 全部通过，Mac 产物上传成功。\n  Windows native make 生成 ZIP，但使用标准输入 EOF 的 smoke 控制导致 GUI 提前退出。\n- smoke 改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`：真实 renderer 验证后将 ready 标记\n  写入临时 userData，再正常退出；父进程检查退出码、标记、恢复数据与锁释放，不再依赖\n  Windows GUI 的 stdio 控制。普通交互运行不启用该标记与退出行为。\n\n## GitHub 最终结果\n\n源码 commit `89b7d3991f004dca1666842fa5b9b23815ace01f` 经分支 push 自动触发\n[运行 34319081019](https://github.com/skybcyang/Mira/actions/runs/34319081019)，最终 `success`：\n\n- Repository checks：全仓测试、TypeScript、前后端构建与 diff check 全部通过。\n- `darwin-arm64`、`darwin-x64`、`win32-x64`：定向测试、native make、普通 packed smoke、\n  Board/Checkpoint restore smoke 和产物上传全部通过。\n- 三份 artifact 已确认存在且未过期，保留 14 天：\n  - Windows x64：artifact `10091235480`，157,737,763 bytes。\n  - macOS Intel：artifact `10091233356`，262,647,506 bytes。\n  - macOS Apple Silicon：artifact `10091209760`，255,120,630 bytes。\n\n本地修复后 Intel restore smoke 额外连续三次通过；最终采用 ready 文件的方式又完成\n两种 Mac 架构的 make、普通和 restore smoke。Windows runner 上的成功表明打包程序能\n加载实际 UI/API、恢复数据并释放锁，不扩大为 Windows 客户端完整交互验收。\n\nGitHub 对所用 v4 Actions 发出了 Node 20 runtime 弃用提示，并实际使用 Node 24 运行\n这些 Actions；仓库构建命令仍使用显式安装的 Node 22，全部任务成功。未宣称 CI 零告警。\n功能分支已推送到远端，未合并 main，未创建 PR 或 GitHub Release。\n",
+          "digest": "fnv1a:1edca366"
+        },
+        {
+          "cardId": "card-twjmtjmtux4g79",
+          "versionId": "version-idr64omtux4g79",
+          "contentKind": "markdown",
+          "resolvedContent": "# 内容可靠性的产品承诺\n\n来源：docs/product/product-definition.md §5.8、§5.10、§9；8e95063 基线的人工摘述。\n\nCardVersion 追加保存，不原地改写。Run 启动冻结有序来源和目标基线，返回时目标变化则结果进入 Candidate，人工内容保留。未处理 Candidate 必须保持可达。\n\n导入画板只创建新身份副本；完整备份只恢复到新建或空工作区，不覆盖使用中的数据。备份不含 API Key、文件引用指向的实际正文和本地文件绑定。每个 Node 可写 Host 必须取得 workspace 独占写锁。\n\n这些是规格承诺；是否实现应查看对应测试和验证记录，不能只凭承诺宣称验证通过。",
+          "digest": "fnv1a:e2451f5a"
         }
       ],
-      "targetCardId": "card-ttc1fdmtu0k970",
+      "targetCardId": "card-8iogfumtux6axv",
       "targetBaseVersionId": null,
       "intent": "create",
       "modelSnapshot": {
-        "provider": "local-demo",
-        "model": "authored-example"
+        "provider": "openai-compatible",
+        "model": "k3"
       },
-      "createdAt": "2026-09-09T11:27:08.181Z",
-      "startedAt": "2026-09-09T11:27:08.182Z",
+      "createdAt": "2026-09-10T02:40:04.594Z",
+      "startedAt": "2026-09-10T02:40:04.594Z",
       "progress": {
         "phase": "completed",
         "label": "生成完成",
-        "updatedAt": "2026-09-09T11:27:08.188Z"
+        "updatedAt": "2026-09-10T02:40:50.797Z"
       },
       "progressEvents": [
         {
           "sequence": 1,
           "phase": "generating",
-          "label": "正在载入人工编写的演示文本",
-          "occurredAt": "2026-09-09T11:27:08.186Z"
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:40:04.599Z"
         },
         {
           "sequence": 2,
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:40:50.795Z"
+        },
+        {
+          "sequence": 3,
           "phase": "completed",
           "label": "生成完成",
-          "occurredAt": "2026-09-09T11:27:08.188Z"
+          "occurredAt": "2026-09-10T02:40:50.797Z"
         }
       ],
       "result": {
-        "output": "# 1.1 内测说明\n\n打开文章，先下载，再离线阅读。\n\n可在详情页清理下载；原收藏保留。\n\n这次不含批量下载与跨设备同步。",
-        "digest": "fnv1a:be0f4807",
+        "output": "# Mira 发布前后续任务清单\n\n**核心判断**：以下来源中的\"尚缺前提\"可拆为 8 条可验证任务，分属两条互不解耦的轨道——源码开源（任务 1–5）与跨平台客户端体验（任务 6–8）。两条轨道证据不可互相替代：CI 与 macOS arm64 的通过记录不能冒充 Windows / macOS Intel 真机结果，历史验证报告只证明其记录时点，本轮须在各任务当前基线上重新取证。\n\n## 源码开源轨道\n\n**任务 1｜导出快照的 Gitleaks 扫描**\n- 证据：对待发布文件与全新 Git 历史执行 `gitleaks --redact=100`，留存零命中报告（参考旧私仓 `--log-opts=--all` 扫描做法）。\n- 观察位置：隔离准备分支导出的快照目录及新仓库本地历史。\n- 失败停止：任一命中即停止推送，轮换或移除涉密内容后重扫；不带着命中进入后续任务。\n\n**任务 2｜快照 Standalone 启动与导入复验**\n- 证据：在临时 workspace 上启动快照构建并导入示例案例，日志确认不读取作者目录、不加载真实密钥；对照 9 月 10 日报告中\"新工作区 Standalone\"项的方法复做。\n- 观察位置：干净机器或独立临时目录，非开发者原工作区。\n- 失败停止：出现对作者路径或密钥的访问即中止，回查快照取消跟踪清单。\n\n**任务 3｜无缓存冻结安装验证**\n- 证据：清空 pnpm 缓存后冻结安装成功，且 1,525 项测试（139 文件）通过；历史验证明确使用了本机缓存，本轮不得引用该结果。\n- 观察位置：无缓存环境（新容器或清缓存本机）。\n- 失败停止：安装失败即记录缺失/不可达依赖，不宣称可独立构建。\n\n**任务 4｜剩余高危依赖处置记录**\n- 证据：`pnpm audit` 剩余 2 项（`image-size@0.7.5`，上游无修复）的可达范围分析写入发布说明与 SECURITY.md；`pnpm audit --prod` 为 0 的记录随快照留存。\n- 观察位置：发布说明与 SECURITY.md 草稿。\n- 失败停止：若审计数据库出现新高危项，暂缓 push 直至处置。\n\n**任务 5｜许可证清单与目标仓库设置核对**\n- 证据：`docs/licenses/` 清单与随包许可证原文更新完成；目标仓库的命名、保护分支、Dependabot、secret scanning、私密漏洞报告在实际目标仓逐项确认（文件存在不等于服务已开启）；确认私仓 workflow 配置使首次 push 不生成公开下载件。\n- 观察位置：实际目标 GitHub 仓库的设置页与 Actions 配置。\n- 失败停止：任一安全服务未开启即不公开仓库。\n\n## 跨平台客户端体验轨道\n\n**任务 6｜Windows 真机交互验收**\n- 证据：真机完成目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性的交互记录；CI runner 的 smoke 成功（`MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1`）只证明\"起得来、退得掉\"，不得引用为本项证据。\n- 观察位置：Windows x64 实体机 GUI 会话。\n- 失败停止：任一交互项失败即维持\"公开安装包暂缓\"，不发布任何 Windows 可用性表述。\n\n**任务 7｜macOS Intel 真机交互验收**\n- 证据：x64 真机完成工作区选择、主窗口、焦点、关闭与正常退出检查（方法对照 9 月 9 日 arm64 可见检查）；runner 与 arm64 证据不可替代。\n- 观察位置：macOS Intel 实体机原生会话。\n- 失败停止：失败则撤销对 macOS Intel 平台的可用性表述，仅保留 arm64 范围。\n\n**任务 8｜签名、公证与分发机制确认**\n- 证据：安装包签名与公证流程建立并产出签名产物；内部包的分发对象与更新机制有维护者书面明确。\n- 观察位置：打包流水线产物与维护者决定记录。\n- 失败停止：产物未签名公证前，不启动任何把内部 Alpha 转为公开下载的动作。\n\n## 证据与局限\n\n以上任务全部来自两份验证报告与开源操作文档中明示的\"尚缺前提\"，未新增来源外假设。数据安全验收门槛（不覆盖、Candidate 可达、备份边界、写锁）已在上次基线有对应测试与验证记录，但规格承诺本身不构成通过证据，发布前须在当前基线重跑确认。**未回答的问题**：任务 6、7 的真机验收时间表与执行人、2 项高危依赖的最终处置方案、无缓存验证的具体环境，均保留给维护者决定，本清单不指定负责人与日期。",
+        "digest": "fnv1a:a2765adc",
         "disposition": "applied",
-        "appliedVersionId": "version-vn3aermtu0k97h"
+        "appliedVersionId": "version-71oojimtux7als"
       },
-      "finishedAt": "2026-09-09T11:27:08.188Z"
+      "finishedAt": "2026-09-10T02:40:50.797Z"
     },
     {
-      "id": "run-hsz5t0mtu0k92p",
-      "boardId": "board-i7sabdmtu0k8t3",
-      "transformationId": "transformation-f18pnemtu0k92f",
+      "id": "run-vgpx2imtux5dzo",
+      "boardId": "board-os1qnemtux4g6k",
+      "transformationId": "transformation-lwvnxzmtux5dza",
       "status": "succeeded",
       "sourceSnapshot": [
         {
-          "cardId": "card-r74bm2mtu0k8tc",
-          "versionId": "version-ih0ag2mtu0k8tj",
+          "cardId": "card-veids4mtux4g7i",
+          "versionId": "version-qz8hnymtux5bnv",
           "contentKind": "markdown",
-          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？",
-          "digest": "fnv1a:93852635"
+          "resolvedContent": "# Mira 桌面端验证证据分层整理\n\n**核心判断**：截至 2026-09-10，Mira 在\"源码可运行\"和\"原生打包可启动\"两层已有充分证据，但\"真实客户端可使用\"层仅覆盖 macOS arm64；Windows 仅有 CI runner 层面的打包与 smoke 成功，客户端真机交互验收明确缺失，不能用 runner 成功替代。\n\n## 第一层：源码可运行（证据充分）\n\n来源 `docs/validation/2026-09-10-open-source-readiness.md`（2026-09-10，基线 8e95063）：更新前基线与更新后完整测试均为 139 个测试文件、1,525 项测试通过；干净源码目录冻结安装、完整测试、TypeScript、前端构建、Bridge 构建、`git diff --check` 均通过。验证环境为本机 macOS arm64、Node 26.7.0、pnpm 9.0.0，冻结安装使用了本机 pnpm 缓存，原文明确不声称验证了无缓存网络下载。CI 侧（来源 `docs/validation/2026-09-09-desktop-ci-validation.md`，运行 34319081019，commit 89b7d39）全仓测试、TypeScript、前后端构建在 GitHub Actions 全部通过。\n\n## 第二层：原生打包可启动（三平台 runner 证据存在）\n\n上述 2026-09-09 报告记录：`darwin-arm64`、`darwin-x64`、`win32-x64` 的 native make、普通 packed smoke、Board/Checkpoint restore smoke 和产物上传全部通过，三份 artifact 确认存在（Windows x64 157,737,763 bytes 等，保留 14 天）。本机 macOS arm64/x64 亦各自通过 make 与两类 smoke。smoke 机制经修正：Windows GUI 下 stdin EOF 导致提前退出，改为显式 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 配合 ready 标记文件验证真实 renderer 加载后正常退出。\n\n## 第三层：真实客户端可使用（仅 macOS，Windows 缺失）\n\n2026-09-09 报告：macOS 原生会话完成工作区选择、主窗口显示、焦点与关闭窗口检查；本机日志有 Electron network service 重启等告警，不声称零告警。2026-09-10 报告补充：真实 Chrome 窗口 1440×1000 与 390×844 下空画板、设置开关、键盘焦点通过，console warning/error 为 0；新工作区 Standalone 不读取作者数据；公开示例真实 HTTP 导入成功。但两份报告一致声明：**Windows 客户端的目录选择、焦点、显示、系统提示与最低系统兼容性尚未真机验收**，本轮也无 macOS Intel 真机交互验证。\n\n## 为什么 Windows runner 成功不能替代真机交互\n\nCI smoke 证明的是打包程序能加载实际 UI/API、恢复数据、正常退出并释放锁——即程序\"起得来、退得掉\"。它无法覆盖：真实 Windows 用户的目录选择对话框行为、窗口焦点与系统提示、显示缩放与输入法、最低系统版本兼容性，以及 GUI 会话中的 stdio/信号语义差异（本轮正是 stdin EOF 差异导致首次 smoke 失败）。原文明确\"本地 macOS 证据不能替代 Windows 运行证据\"，且\"不扩大为 Windows 客户端完整交互验收\"。\n\n## 记录冲突的时点解释\n\n- **测试数量**：2026-09-09 报告基线为 138 文件/1,519 项，新增测试后达 139/1,525；2026-09-10 报告的\"更新前基线\"即 139/1,525，并非矛盾，是两次时点不同的基线。\n- **Windows smoke 状态**：首轮运行 34318281546 中 Windows smoke 因 stdio 控制失败，修复机制后在运行 34319081019 成功——反映同一问题的修复前后，非结果冲突。\n- **产物性质**：所有安装包未签名、未公证，属 internal Alpha；源码开源（`docs/operations/open-source-release.md`）不附带安装包公开分发。\n\n## 局限与未回答问题\n\nWindows 与 macOS Intel 的真机交互验收、云端依赖下载的干净验证、仓库公开发布后的实际设置确认均未完成；`pnpm audit` 剩余 2 项高危（`image-size@0.7.5`）无上游修复；历史报告仅证明其记录时点，不保证当前状态。",
+          "digest": "fnv1a:95545e8f"
+        },
+        {
+          "cardId": "card-ly27vkmtux4g6q",
+          "versionId": "version-9et3qfmtux4g6q",
+          "contentKind": "markdown",
+          "resolvedContent": "# S1｜源码公开与桌面分发边界\n\n来源：Mira 仓库 docs/operations/open-source-release.md，源码基线 8e95063，读取日期 2026-09-10。以下是该文档的原始内容；历史报告只证明其记录时点。\n\n# 首次开源发布\n\n本次选择 MIT，范围为当前源码、文档与专门制作的演示素材。桌面安装包仍是未签名、未公证的 internal Alpha，不随首次源码开源自动公开发布。\n\n内部桌面打包 workflow 只在 private 仓库执行；公开仓库首次 push 不生成可公开下载的内部安装包。通用源码 CI 不受此限制。\n\n## 公开内容与私有数据\n\n公开入口使用一个**不继承私有开发历史的新 Git 仓库**。原私仓及真实工作区保持可用，不通过清空历史、强推或删除数据来改造日常工作目录。仅在隔离的准备分支取消跟踪以下内容，再由该分支的提交导出源码快照：\n\n- `boards-v2/`、`runs-v2/`、`workflows-v2/`、检查点、灵感池、附件、迁移备份和 workspace lock。\n- `reference/`、`archive/`、`mockups/`、`showcase-materials/` 与 `docs/superpowers/` 中的私有参考和设计过程。\n- `.env` 等秘密配置、依赖安装目录、构建产物及日志。\n\n公开案例只来自 `docs/examples/`；53 卡布局回归测试使用 `test/fixtures/coffee-layout.json` 的最小几何数据，不再读取真实工作区。历史验证报告中的个人机器路径仅作脱敏，不改写当时的验证结果。\n\n不要把准备分支的数据移除提交直接合并进仍承载真实数据的旧工作树。准备分支适用于导出，不是清理用户文件的脚本。\n\n## 发布前验证\n\n1. 在导出的新仓库冻结安装依赖，运行 `pnpm test`、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check`。\n2. 在新的临时 workspace 启动 Standalone，确认不依赖作者目录、真实模型密钥或私有数据；案例导入另用临时 workspace 验证。\n3. 用 Gitleaks 扫描待发布文件和新历史，使用 `--redact=100`，不要在日志中输出潜在秘密。旧历史的密钥扫描通过不能证明其中的个人数据可以公开。\n4. 运行 `pnpm audit --json`、`pnpm audit --prod --json` 和 `pnpm licenses list --json`，更新 `docs/licenses/` 的清单与随包许可证原文；单独记录未修复公告及其可达范围。\n5. 如改动桌面工具链，执行目标平台 make、普通 packed smoke 与备份恢复 smoke。CI 打包证据不能替代客户端真机 UI 验收。\n\n最新结果见 [2026-09-10 开源准备验证](../validation/2026-09-10-open-source-readiness.md)。\n\n## 确认目标仓库后操作\n\n仓库命名及公开发布属于最后的确认步骤。若继续使用现有 `skybcyang/Mira` 名称，先确认旧私仓的保留名称，再创建新的公开仓库；不要直接将含私有历史的旧仓改为 public。\n\n- 仅推送审阅过的新首提交，不迁入旧分支、标签、Issue 附件、Release 或 Actions 产物。\n- 设置简介、主题和 README 链接；启用 Issues 及 private vulnerability reporting。安全反馈流程见根目录 `SECURITY.md`。\n- 默认分支启用禁止强推/删除与 PR 合并保护，以 `CI required` 作为必需检查。仓库权限和 GitHub 套餐限制需在实际目标仓确认。\n- 启用可用的 Dependabot alerts、secret scanning 与 push protection。仓库已提供依赖更新配置，但文件存在不等于这些服务已开启。\n- 首次源码版本通过 CI 后再创建标记与 Release 说明，明确“源码预览”和已验证平台；不上传内部安装包。维护者核对后可从 `ROADMAP.md` 选取适合外部贡献者的任务。\n\n本文件提供操作顺序；没有把待确认的仓库设置、云端检查或发布步骤标为已完成。\n",
+          "digest": "fnv1a:ea758ee5"
+        },
+        {
+          "cardId": "card-twjmtjmtux4g79",
+          "versionId": "version-idr64omtux4g79",
+          "contentKind": "markdown",
+          "resolvedContent": "# 内容可靠性的产品承诺\n\n来源：docs/product/product-definition.md §5.8、§5.10、§9；8e95063 基线的人工摘述。\n\nCardVersion 追加保存，不原地改写。Run 启动冻结有序来源和目标基线，返回时目标变化则结果进入 Candidate，人工内容保留。未处理 Candidate 必须保持可达。\n\n导入画板只创建新身份副本；完整备份只恢复到新建或空工作区，不覆盖使用中的数据。备份不含 API Key、文件引用指向的实际正文和本地文件绑定。每个 Node 可写 Host 必须取得 workspace 独占写锁。\n\n这些是规格承诺；是否实现应查看对应测试和验证记录，不能只凭承诺宣称验证通过。",
+          "digest": "fnv1a:e2451f5a"
         }
       ],
-      "targetCardId": "card-bbmz85mtu0k92f",
+      "targetCardId": "card-fktbiimtux5dza",
       "targetBaseVersionId": null,
       "intent": "create",
       "modelSnapshot": {
-        "provider": "local-demo",
-        "model": "authored-example"
+        "provider": "openai-compatible",
+        "model": "k3"
       },
-      "createdAt": "2026-09-09T11:27:08.017Z",
-      "startedAt": "2026-09-09T11:27:08.017Z",
+      "createdAt": "2026-09-10T02:39:21.876Z",
+      "startedAt": "2026-09-10T02:39:21.876Z",
       "progress": {
         "phase": "completed",
         "label": "生成完成",
-        "updatedAt": "2026-09-09T11:27:08.023Z"
+        "updatedAt": "2026-09-10T02:40:02.674Z"
       },
       "progressEvents": [
         {
           "sequence": 1,
           "phase": "generating",
-          "label": "正在载入人工编写的演示文本",
-          "occurredAt": "2026-09-09T11:27:08.021Z"
+          "label": "正在请求模型",
+          "occurredAt": "2026-09-10T02:39:21.878Z"
         },
         {
           "sequence": 2,
-          "phase": "completed",
-          "label": "生成完成",
-          "occurredAt": "2026-09-09T11:27:08.023Z"
-        }
-      ],
-      "result": {
-        "output": "# 回归检查 v1\n\n- [x] 在线下载后可离线阅读\n- [x] 下载失败后收藏仍在\n- [x] 清理下载不删除收藏\n- [ ] 内容更新后的提示行为待定义\n\n本清单为演示，勾选不代表真实测试结果。",
-        "digest": "fnv1a:dcca5af9",
-        "disposition": "applied",
-        "appliedVersionId": "version-s1i35pmtu0k92w"
-      },
-      "finishedAt": "2026-09-09T11:27:08.023Z"
-    },
-    {
-      "id": "run-wbg9dvmtu0k9ly",
-      "boardId": "board-i7sabdmtu0k8t3",
-      "transformationId": "transformation-t16176mtu0k970",
-      "status": "succeeded",
-      "sourceSnapshot": [
-        {
-          "cardId": "card-r74bm2mtu0k8tc",
-          "versionId": "version-zankxjmtu0k9lw",
-          "contentKind": "markdown",
-          "resolvedContent": "# 离线阅读 1.1\n\n## 本期交付\n- 详情页提供下载入口\n- 已下载文章可离线打开\n- 失败后可重试，收藏保留\n- 清理只删下载副本\n\n## 评审决定\n暂不新增独立管理页。\n\n## 待确认\n内容更新时怎样提示用户？\n\n人工补充：清理按钮统一放在文章详情页。",
-          "digest": "fnv1a:a7e182e6"
-        }
-      ],
-      "targetCardId": "card-ttc1fdmtu0k970",
-      "targetBaseVersionId": "version-vn3aermtu0k97h",
-      "intent": "update",
-      "modelSnapshot": {
-        "provider": "local-demo",
-        "model": "authored-example"
-      },
-      "createdAt": "2026-09-09T11:27:08.710Z",
-      "startedAt": "2026-09-09T11:27:08.710Z",
-      "progress": {
-        "phase": "completed",
-        "label": "生成完成",
-        "updatedAt": "2026-09-09T11:27:08.712Z"
-      },
-      "progressEvents": [
-        {
-          "sequence": 1,
-          "phase": "generating",
-          "label": "正在载入人工编写的演示文本",
-          "occurredAt": "2026-09-09T11:27:08.712Z"
+          "phase": "reviewing",
+          "label": "模型响应完成",
+          "occurredAt": "2026-09-10T02:40:02.671Z"
         },
         {
-          "sequence": 2,
+          "sequence": 3,
           "phase": "completed",
           "label": "生成完成",
-          "occurredAt": "2026-09-09T11:27:08.712Z"
+          "occurredAt": "2026-09-10T02:40:02.674Z"
         }
       ],
       "result": {
-        "output": "# 1.1 内测说明\n\n先在文章详情页下载，再离线阅读。\n\n清理入口也在详情页，清理后收藏仍保留。\n\n不含批量下载和跨设备同步。",
-        "digest": "fnv1a:bbc376d8",
+        "output": "# Mira 发布范围建议（待维护者决定）\n\n**核心判断**：当前证据支持以\"源码公开\"作为首个对外交付；内部安装包可继续以 Alpha 形式在私仓分发；公开安装包因 Windows 真机验收缺失与产物未签名、未公证，建议暂缓。以下全部为建议，最终决定权在维护者，本页不代表任何已完成的发布动作。\n\n## 一、源码候选（建议可推进，仍有前置门槛）\n\n**可交付项**（基于 2026-09-10 验证，基线 8e95063）：\n- 经隔离准备分支导出的源码快照：取消跟踪真实工作区数据、私有参考、秘密配置后，从不继承私有历史的新 Git 仓库导出。\n- 公开文档与 `docs/examples/` 演示素材；测试仅依赖 `test/fixtures/coffee-layout.json` 最小几何数据。\n- 验证证据：导出目录冻结安装、1,525 项测试（139 文件）、TypeScript、前后端构建、`git diff --check` 均通过；CI（运行 34319081019）同步通过。\n\n**尚缺前提**：\n- Gitleaks 对待发布文件与新历史的扫描（`--redact=100`）须在该快照上实际执行并留档。\n- 临时 workspace 的 Standalone 启动与案例导入复验，确认不依赖作者目录与真实密钥。\n- `pnpm audit` 剩余 2 项高危（`image-size@0.7.5`，无上游修复）需单独记录可达范围并纳入发布说明。\n- `docs/licenses/` 清单与随包许可证原文更新；目标仓库的命名、保护分支、Dependabot/secret scanning 等设置需在实际目标仓确认，文件存在不等于服务已开启。\n- 冻结安装使用了本机 pnpm 缓存，无缓存网络下载的干净验证未做。\n\n**推断说明**：\"公开不附带安装包\"是 `docs/operations/open-source-release.md` 的既定设计，非本轮推断；但首次 push 不生成公开下载件这一点依赖私仓 workflow 配置，需维护者确认。\n\n## 二、内部安装包（建议维持 internal Alpha 现状）\n\n**可交付项**：`darwin-arm64`、`darwin-x64`、`win32-x64` 三个 packed 产物已在私仓 CI 生成（artifact 保留 14 天），普通 packed smoke 与 Board/Checkpoint restore smoke 通过；macOS 双架构本机亦通过 make 与 smoke。\n\n**尚缺前提**：\n- 产物未签名、未公证，分发对象与更新机制需维护者明确。\n- Windows smoke 的成功基于修正后的 `MIRA_DESKTOP_SMOKE_EXIT_ON_READY=1` 机制，证明的是\"起得来、退得掉\"，不覆盖真机交互。\n\n**暂缓项**：任何把内部包转为公开下载的动作；对 macOS Intel 平台的可用性表述（本轮无该真机交互验证）。\n\n## 三、公开安装包（建议暂缓）\n\n**可交付项**：暂无可公开交付项。\n\n**尚缺前提**：\n- Windows 客户端真机验收：目录选择对话框、窗口焦点、系统提示、显示缩放与输入法、最低系统版本兼容性均未验证。CI runner 成功不能替代——本轮 stdin EOF 差异导致首轮 smoke 失败即为例证，GUI 会话的 stdio/信号语义在 runner 与真机间存在差异。\n- macOS Intel 真机交互验证。\n- 签名与公证流程建立。\n\n**暂缓项**：对 Windows 与 macOS Intel 客户端可用性的任何对外表述；公开渠道分发任何安装包。\n\n## 四、与数据安全承诺相关的验收门槛\n\n产品规格承诺（`docs/product/product-definition.md`）属于规格声明，发布验收须以测试与验证记录为准，不能凭承诺宣称通过。建议将以下门槛设为发布前的硬性核对项：\n\n1. **不覆盖原则**：导入画板只创建新身份副本、完整备份只恢复到新建或空工作区、CardVersion 追加不原地改写——对应测试须在当前基线通过，源码导出快照须确认不含真实工作区数据。\n2. **Candidate 可达**：Run 返回时目标变化则结果进入 Candidate 且未处理项保持可达——须有测试证据支撑。\n3. **备份边界**：备份不含 API Key、文件引用正文与本地绑定——发布说明应如实描述该边界，避免用户对备份内容产生错误预期。\n4. **写锁**：每个 Node 可写 Host 取得 workspace 独占写锁——Stand­alone 新工作区不读取作者数据这一点已有验证记录，其余写锁行为以测试为准。\n5. **秘密泄露**：Gitleaks 扫描通过且不输出潜在秘密后方可推送；旧历史密钥扫描通过不能证明其中个人数据可公开，故采用全新仓库而非改造旧仓。\n\n## 证据与局限\n\n本页依据两份验证报告（2026-09-09、2026-09-10）与开源操作文档、产品定义文档；历史报告只证明其记录时点，不保证当前状态。未回答的问题：Windows 与 macOS Intel 真机验收时间表、无缓存依赖下载验证、目标公开仓库的实际设置、2 项高危依赖的处置方案、安装包签名公证的路线图。这些均保留给维护者决策。",
+        "digest": "fnv1a:f3c4a7c9",
         "disposition": "applied",
-        "appliedVersionId": "version-da1z7nmtu0k9m1"
+        "appliedVersionId": "version-1149axmtux69h0"
       },
-      "finishedAt": "2026-09-09T11:27:08.712Z"
+      "finishedAt": "2026-09-10T02:40:02.674Z"
     }
   ],
   "workflowProvenance": [],
