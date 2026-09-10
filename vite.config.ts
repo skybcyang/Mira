@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks(id) {
             if (id.includes('/node_modules/@xyflow/')) return 'canvas-vendor'
+            if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react-vendor'
           },
         },
       },

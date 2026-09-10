@@ -144,14 +144,14 @@
       "homepage": "https://github.com/electron/forge#readme"
     },
     {
-      "name": "@electron-forge/core",
+      "name": "@electron-forge/core-utils",
       "version": "7.11.2",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/electron/forge#readme"
     },
     {
-      "name": "@electron-forge/core-utils",
+      "name": "@electron-forge/core",
       "version": "7.11.2",
       "license": "MIT",
       "scope": "development",
@@ -214,13 +214,6 @@
       "homepage": "https://github.com/electron/forge#readme"
     },
     {
-      "name": "@electron-forge/template-vite",
-      "version": "7.11.2",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/electron/forge#readme"
-    },
-    {
       "name": "@electron-forge/template-vite-typescript",
       "version": "7.11.2",
       "license": "MIT",
@@ -228,7 +221,7 @@
       "homepage": "https://github.com/electron/forge#readme"
     },
     {
-      "name": "@electron-forge/template-webpack",
+      "name": "@electron-forge/template-vite",
       "version": "7.11.2",
       "license": "MIT",
       "scope": "development",
@@ -236,6 +229,13 @@
     },
     {
       "name": "@electron-forge/template-webpack-typescript",
+      "version": "7.11.2",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/electron/forge#readme"
+    },
+    {
+      "name": "@electron-forge/template-webpack",
       "version": "7.11.2",
       "license": "MIT",
       "scope": "development",
@@ -494,6 +494,13 @@
       "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/sourcemap-codec"
     },
     {
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/jridgewell/sourcemaps/tree/main/packages/sourcemap-codec"
+    },
+    {
       "name": "@jridgewell/trace-mapping",
       "version": "0.3.31",
       "license": "MIT",
@@ -551,10 +558,10 @@
     },
     {
       "name": "@rolldown/pluginutils",
-      "version": "1.0.0-beta.27",
+      "version": "1.0.0-rc.3",
       "license": "MIT",
       "scope": "development",
-      "homepage": "https://github.com/rolldown/rolldown#readme"
+      "homepage": "https://rolldown.rs/"
     },
     {
       "name": "@rollup/rollup-darwin-arm64",
@@ -697,18 +704,18 @@
       "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/deep-eql"
     },
     {
-      "name": "@types/estree",
-      "version": "1.0.9",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree"
-    },
-    {
       "name": "@types/estree-jsx",
       "version": "1.0.5",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree-jsx"
+    },
+    {
+      "name": "@types/estree",
+      "version": "1.0.9",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree"
     },
     {
       "name": "@types/hast",
@@ -781,25 +788,18 @@
       "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node"
     },
     {
-      "name": "@types/prop-types",
-      "version": "15.7.15",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/prop-types"
-    },
-    {
-      "name": "@types/react",
-      "version": "18.3.31",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react"
-    },
-    {
       "name": "@types/react-dom",
-      "version": "18.3.7",
+      "version": "19.2.7",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom"
+    },
+    {
+      "name": "@types/react",
+      "version": "19.2.18",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react"
     },
     {
       "name": "@types/responselike",
@@ -838,7 +838,7 @@
     },
     {
       "name": "@vitejs/plugin-react",
-      "version": "4.7.0",
+      "version": "5.2.0",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#readme"
@@ -1027,14 +1027,14 @@
     },
     {
       "name": "@xyflow/react",
-      "version": "12.11.3",
+      "version": "12.11.6",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://reactflow.dev"
     },
     {
       "name": "@xyflow/system",
-      "version": "0.0.80",
+      "version": "0.0.82",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/xyflow/xyflow#readme"
@@ -1075,13 +1075,6 @@
       "homepage": "https://github.com/sindresorhus/aggregate-error#readme"
     },
     {
-      "name": "ajv",
-      "version": "8.20.0",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://ajv.js.org"
-    },
-    {
       "name": "ajv-formats",
       "version": "2.1.1",
       "license": "MIT",
@@ -1094,6 +1087,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/epoberezkin/ajv-keywords#readme"
+    },
+    {
+      "name": "ajv",
+      "version": "8.20.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://ajv.js.org"
     },
     {
       "name": "ansi-escapes",
@@ -1208,6 +1208,13 @@
       "homepage": "https://github.com/web-platform-dx/baseline-browser-mapping#readme"
     },
     {
+      "name": "baseline-browser-mapping",
+      "version": "2.11.21",
+      "license": "Apache-2.0",
+      "scope": "development",
+      "homepage": "https://github.com/web-platform-dx/baseline-browser-mapping#readme"
+    },
+    {
       "name": "bl",
       "version": "4.1.0",
       "license": "MIT",
@@ -1264,11 +1271,11 @@
       "homepage": "https://github.com/browserslist/browserslist#readme"
     },
     {
-      "name": "buffer",
-      "version": "5.7.1",
+      "name": "browserslist",
+      "version": "4.28.9",
       "license": "MIT",
       "scope": "development",
-      "homepage": "https://github.com/feross/buffer"
+      "homepage": "https://github.com/browserslist/browserslist#readme"
     },
     {
       "name": "buffer-from",
@@ -1276,6 +1283,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/LinusU/buffer-from#readme"
+    },
+    {
+      "name": "buffer",
+      "version": "5.7.1",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/feross/buffer"
     },
     {
       "name": "cacache",
@@ -1306,6 +1320,13 @@
       "homepage": "https://github.com/browserslist/caniuse-lite#readme"
     },
     {
+      "name": "caniuse-lite",
+      "version": "1.0.30001810",
+      "license": "CC-BY-4.0",
+      "scope": "development",
+      "homepage": "https://github.com/browserslist/caniuse-lite#readme"
+    },
+    {
       "name": "ccount",
       "version": "2.0.1",
       "license": "MIT",
@@ -1327,13 +1348,6 @@
       "homepage": "https://github.com/chalk/chalk#readme"
     },
     {
-      "name": "character-entities",
-      "version": "2.0.2",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/wooorm/character-entities#readme"
-    },
-    {
       "name": "character-entities-html4",
       "version": "2.1.0",
       "license": "MIT",
@@ -1346,6 +1360,13 @@
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/wooorm/character-entities-legacy#readme"
+    },
+    {
+      "name": "character-entities",
+      "version": "2.0.2",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/wooorm/character-entities#readme"
     },
     {
       "name": "character-reference-invalid",
@@ -1439,13 +1460,6 @@
       "homepage": "https://github.com/yargs/cliui#readme"
     },
     {
-      "name": "clone",
-      "version": "1.0.4",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/pvorb/node-clone#readme"
-    },
-    {
       "name": "clone-response",
       "version": "1.0.3",
       "license": "MIT",
@@ -1453,9 +1467,16 @@
       "homepage": "https://github.com/sindresorhus/clone-response#readme"
     },
     {
+      "name": "clone",
+      "version": "1.0.4",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/pvorb/node-clone#readme"
+    },
+    {
       "name": "color-convert",
       "version": "0.5.3",
-      "license": "MIT (verified from package LICENSE)",
+      "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/harthur/color-convert#readme"
     },
@@ -1740,13 +1761,6 @@
       "homepage": "https://github.com/komagata/eastasianwidth#readme"
     },
     {
-      "name": "electron",
-      "version": "44.0.0",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/electron/electron#readme"
-    },
-    {
       "name": "electron-installer-dmg",
       "version": "5.0.1",
       "license": "Apache-2.0",
@@ -1759,6 +1773,20 @@
       "license": "ISC",
       "scope": "development",
       "homepage": "https://github.com/Kilian/electron-to-chromium#readme"
+    },
+    {
+      "name": "electron-to-chromium",
+      "version": "1.5.425",
+      "license": "ISC",
+      "scope": "development",
+      "homepage": "https://github.com/Kilian/electron-to-chromium#readme"
+    },
+    {
+      "name": "electron",
+      "version": "44.0.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/electron/electron#readme"
     },
     {
       "name": "emoji-regex",
@@ -2174,6 +2202,13 @@
       "homepage": "https://github.com/sindresorhus/get-stream#readme"
     },
     {
+      "name": "glob-parent",
+      "version": "5.1.2",
+      "license": "ISC",
+      "scope": "development",
+      "homepage": "https://github.com/gulpjs/glob-parent#readme"
+    },
+    {
       "name": "glob",
       "version": "7.2.3",
       "license": "ISC",
@@ -2186,13 +2221,6 @@
       "license": "ISC",
       "scope": "development",
       "homepage": "https://github.com/isaacs/node-glob#readme"
-    },
-    {
-      "name": "glob-parent",
-      "version": "5.1.2",
-      "license": "ISC",
-      "scope": "development",
-      "homepage": "https://github.com/gulpjs/glob-parent#readme"
     },
     {
       "name": "global-agent",
@@ -2583,7 +2611,7 @@
       "name": "js-tokens",
       "version": "4.0.0",
       "license": "MIT",
-      "scope": "production",
+      "scope": "development",
       "homepage": "https://github.com/lydell/js-tokens#readme"
     },
     {
@@ -2713,13 +2741,6 @@
       "homepage": "https://github.com/wooorm/longest-streak#readme"
     },
     {
-      "name": "loose-envify",
-      "version": "1.4.0",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/zertosh/loose-envify"
-    },
-    {
       "name": "lowercase-keys",
       "version": "2.0.0",
       "license": "MIT",
@@ -2804,13 +2825,6 @@
       "homepage": "https://github.com/syntax-tree/mdast-util-from-markdown#readme"
     },
     {
-      "name": "mdast-util-gfm",
-      "version": "3.1.0",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/syntax-tree/mdast-util-gfm#readme"
-    },
-    {
       "name": "mdast-util-gfm-autolink-literal",
       "version": "2.0.1",
       "license": "MIT",
@@ -2844,6 +2858,13 @@
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/syntax-tree/mdast-util-gfm-task-list-item#readme"
+    },
+    {
+      "name": "mdast-util-gfm",
+      "version": "3.1.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/syntax-tree/mdast-util-gfm#readme"
     },
     {
       "name": "mdast-util-mdx-expression",
@@ -2916,25 +2937,11 @@
       "homepage": "https://github.com/teambition/merge2"
     },
     {
-      "name": "micromark",
-      "version": "4.0.2",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/micromark/micromark/tree/main#readme"
-    },
-    {
       "name": "micromark-core-commonmark",
       "version": "2.0.3",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/micromark/micromark/tree/main#readme"
-    },
-    {
-      "name": "micromark-extension-gfm",
-      "version": "3.0.0",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/micromark/micromark-extension-gfm#readme"
     },
     {
       "name": "micromark-extension-gfm-autolink-literal",
@@ -2977,6 +2984,13 @@
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/micromark/micromark-extension-gfm-task-list-item#readme"
+    },
+    {
+      "name": "micromark-extension-gfm",
+      "version": "3.0.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/micromark/micromark-extension-gfm#readme"
     },
     {
       "name": "micromark-factory-destination",
@@ -3112,6 +3126,13 @@
       "homepage": "https://github.com/micromark/micromark/tree/main#readme"
     },
     {
+      "name": "micromark",
+      "version": "4.0.2",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/micromark/micromark/tree/main#readme"
+    },
+    {
       "name": "micromatch",
       "version": "4.0.8",
       "license": "MIT",
@@ -3182,20 +3203,6 @@
       "homepage": "https://github.com/webpack/minimizer-webpack-plugin"
     },
     {
-      "name": "minipass",
-      "version": "3.3.6",
-      "license": "ISC",
-      "scope": "development",
-      "homepage": "https://github.com/isaacs/minipass#readme"
-    },
-    {
-      "name": "minipass",
-      "version": "7.1.3",
-      "license": "BlueOak-1.0.0",
-      "scope": "development",
-      "homepage": "https://github.com/isaacs/minipass#readme"
-    },
-    {
       "name": "minipass-collect",
       "version": "1.0.2",
       "license": "ISC",
@@ -3227,6 +3234,20 @@
       "license": "ISC",
       "scope": "development",
       "homepage": "https://github.com/isaacs/minipass-sized#readme"
+    },
+    {
+      "name": "minipass",
+      "version": "3.3.6",
+      "license": "ISC",
+      "scope": "development",
+      "homepage": "https://github.com/isaacs/minipass#readme"
+    },
+    {
+      "name": "minipass",
+      "version": "7.1.3",
+      "license": "BlueOak-1.0.0",
+      "scope": "development",
+      "homepage": "https://github.com/isaacs/minipass#readme"
     },
     {
       "name": "minizlib",
@@ -3336,6 +3357,13 @@
     {
       "name": "node-releases",
       "version": "2.0.53",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/chicoxyzzy/node-releases#readme"
+    },
+    {
+      "name": "node-releases",
+      "version": "2.0.55",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/chicoxyzzy/node-releases#readme"
@@ -3684,18 +3712,11 @@
       "homepage": "https://github.com/LinusU/node-random-path#readme"
     },
     {
-      "name": "react",
-      "version": "18.3.1",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://reactjs.org/"
-    },
-    {
       "name": "react-dom",
-      "version": "18.3.1",
+      "version": "19.2.8",
       "license": "MIT",
       "scope": "production",
-      "homepage": "https://reactjs.org/"
+      "homepage": "https://react.dev/"
     },
     {
       "name": "react-markdown",
@@ -3706,9 +3727,16 @@
     },
     {
       "name": "react-refresh",
-      "version": "0.17.0",
+      "version": "0.18.0",
       "license": "MIT",
       "scope": "development",
+      "homepage": "https://react.dev/"
+    },
+    {
+      "name": "react",
+      "version": "19.2.8",
+      "license": "MIT",
+      "scope": "production",
       "homepage": "https://react.dev/"
     },
     {
@@ -3719,18 +3747,18 @@
       "homepage": "https://github.com/samuelmaddock/read-binary-file-arch#readme"
     },
     {
-      "name": "read-pkg",
-      "version": "2.0.0",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/sindresorhus/read-pkg#readme"
-    },
-    {
       "name": "read-pkg-up",
       "version": "2.0.0",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/sindresorhus/read-pkg-up#readme"
+    },
+    {
+      "name": "read-pkg",
+      "version": "2.0.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/sindresorhus/read-pkg#readme"
     },
     {
       "name": "readable-stream",
@@ -3803,18 +3831,18 @@
       "homepage": "https://github.com/jet2jet/resedit-js"
     },
     {
-      "name": "resolve",
-      "version": "1.22.12",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/browserify/resolve#readme"
-    },
-    {
       "name": "resolve-alpn",
       "version": "1.2.1",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/szmarczak/resolve-alpn#readme"
+    },
+    {
+      "name": "resolve",
+      "version": "1.22.12",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/browserify/resolve#readme"
     },
     {
       "name": "responselike",
@@ -3902,10 +3930,10 @@
     },
     {
       "name": "scheduler",
-      "version": "0.23.2",
+      "version": "0.27.0",
       "license": "MIT",
       "scope": "production",
-      "homepage": "https://reactjs.org/"
+      "homepage": "https://react.dev/"
     },
     {
       "name": "schema-utils",
@@ -3913,6 +3941,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/webpack/schema-utils"
+    },
+    {
+      "name": "semver-compare",
+      "version": "1.0.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/substack/semver-compare"
     },
     {
       "name": "semver",
@@ -3934,13 +3969,6 @@
       "license": "ISC",
       "scope": "development",
       "homepage": "https://github.com/npm/node-semver#readme"
-    },
-    {
-      "name": "semver-compare",
-      "version": "1.0.0",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/substack/semver-compare"
     },
     {
       "name": "serialize-error",
@@ -4013,13 +4041,6 @@
       "homepage": "https://github.com/JoshGlazebrook/smart-buffer/"
     },
     {
-      "name": "socks",
-      "version": "2.8.10",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/JoshGlazebrook/socks/"
-    },
-    {
       "name": "socks-proxy-agent",
       "version": "7.0.0",
       "license": "MIT",
@@ -4027,11 +4048,11 @@
       "homepage": "https://github.com/TooTallNate/node-socks-proxy-agent#readme"
     },
     {
-      "name": "source-map",
-      "version": "0.6.1",
-      "license": "BSD-3-Clause",
+      "name": "socks",
+      "version": "2.8.10",
+      "license": "MIT",
       "scope": "development",
-      "homepage": "https://github.com/mozilla/source-map"
+      "homepage": "https://github.com/JoshGlazebrook/socks/"
     },
     {
       "name": "source-map-js",
@@ -4046,6 +4067,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/evanw/node-source-map-support#readme"
+    },
+    {
+      "name": "source-map",
+      "version": "0.6.1",
+      "license": "BSD-3-Clause",
+      "scope": "development",
+      "homepage": "https://github.com/mozilla/source-map"
     },
     {
       "name": "space-separated-tokens",
@@ -4363,13 +4391,6 @@
       "homepage": "https://www.typescriptlang.org/"
     },
     {
-      "name": "undici",
-      "version": "7.29.0",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://undici.nodejs.org"
-    },
-    {
       "name": "undici-types",
       "version": "6.21.0",
       "license": "MIT",
@@ -4386,6 +4407,13 @@
     {
       "name": "undici-types",
       "version": "8.3.0",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://undici.nodejs.org"
+    },
+    {
+      "name": "undici",
+      "version": "7.29.0",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://undici.nodejs.org"
@@ -4433,18 +4461,18 @@
       "homepage": "https://github.com/syntax-tree/unist-util-stringify-position#readme"
     },
     {
-      "name": "unist-util-visit",
-      "version": "5.1.0",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/syntax-tree/unist-util-visit#readme"
-    },
-    {
       "name": "unist-util-visit-parents",
       "version": "6.0.2",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/syntax-tree/unist-util-visit-parents#readme"
+    },
+    {
+      "name": "unist-util-visit",
+      "version": "5.1.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/syntax-tree/unist-util-visit#readme"
     },
     {
       "name": "universalify",
@@ -4465,8 +4493,7 @@
       "version": "1.6.0",
       "license": "MIT or GPL-2.0",
       "scope": "development",
-      "homepage": "https://github.com/walling/unorm#readme",
-      "selectedLicense": "MIT"
+      "homepage": "https://github.com/walling/unorm#readme"
     },
     {
       "name": "update-browserslist-db",
@@ -4476,11 +4503,18 @@
       "homepage": "https://github.com/browserslist/update-db#readme"
     },
     {
+      "name": "update-browserslist-db",
+      "version": "1.3.2",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/browserslist/update-db#readme"
+    },
+    {
       "name": "use-sync-external-store",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "license": "MIT",
       "scope": "production",
-      "homepage": "https://github.com/facebook/react#readme"
+      "homepage": "https://github.com/react/react#readme"
     },
     {
       "name": "username",
@@ -4504,18 +4538,18 @@
       "homepage": "https://github.com/kemitchell/validate-npm-package-license.js#readme"
     },
     {
-      "name": "vfile",
-      "version": "6.0.3",
-      "license": "MIT",
-      "scope": "production",
-      "homepage": "https://github.com/vfile/vfile#readme"
-    },
-    {
       "name": "vfile-message",
       "version": "4.0.3",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/vfile/vfile-message#readme"
+    },
+    {
+      "name": "vfile",
+      "version": "6.0.3",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/vfile/vfile#readme"
     },
     {
       "name": "vite",
@@ -4553,18 +4587,18 @@
       "homepage": "https://github.com/jsdom/webidl-conversions#readme"
     },
     {
-      "name": "webpack",
-      "version": "5.110.2",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://github.com/webpack/webpack"
-    },
-    {
       "name": "webpack-sources",
       "version": "3.5.1",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/webpack/webpack-sources#readme"
+    },
+    {
+      "name": "webpack",
+      "version": "5.110.2",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/webpack/webpack"
     },
     {
       "name": "whatwg-url",
@@ -4665,18 +4699,18 @@
       "homepage": "https://github.com/isaacs/yallist#readme"
     },
     {
-      "name": "yargs",
-      "version": "17.7.3",
-      "license": "MIT",
-      "scope": "development",
-      "homepage": "https://yargs.js.org/"
-    },
-    {
       "name": "yargs-parser",
       "version": "21.1.1",
       "license": "ISC",
       "scope": "development",
       "homepage": "https://github.com/yargs/yargs-parser#readme"
+    },
+    {
+      "name": "yargs",
+      "version": "17.7.3",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://yargs.js.org/"
     },
     {
       "name": "yocto-queue",
