@@ -23,8 +23,9 @@ macOS 桌面薄壳已进入 Electron 44 internal Alpha，见
 领域、Store、route 或 UI。当前产物未签名、未公证且没有自动更新，只用于内部验证，
 不得按公开发布版本处理。
 
-2026-09-09 已确认扩展 Windows x64 内部打包；macOS arm64/x64 与 Windows x64 使用
-`.github/workflows/desktop-build.yml` 手动或打包相关变更 push 构建，见 `docs/operations/desktop-internal-builds.md`。
+2026-09-10 已确认 macOS 与 Windows 均提供 arm64/x64 未签名 Actions 测试包；
+`.github/workflows/desktop-build.yml` 在每次 `main` push 后自动构建（无路径过滤），并支持手动与打包相关 PR 验证。
+公开仓库允许上传这些测试产物；每个目标必须在原生 runner 上通过 make 和两种 packed smoke，见 `docs/operations/desktop-internal-builds.md`。
 Windows native make/packed smoke 与客户端 UI 验收必须分别记录，不以 macOS 证据替代。
 
 ## 核心不变量

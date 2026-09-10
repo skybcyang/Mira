@@ -1,8 +1,11 @@
-name: Internal desktop builds
+name: Desktop builds
 
 on:
   workflow_dispatch:
   push:
+    branches: [main]
+  pull_request:
+    branches: [main]
     paths:
       - '.github/workflows/desktop-build.yml'
       - 'desktop/**'
@@ -29,8 +32,6 @@ concurrency:
 jobs:
   verify:
     name: Repository checks
-    # Unsigned artifacts remain private until desktop distribution is approved.
-    if: github.event.repository.private == true
     runs-on: macos-15
     timeout-minutes: 20
     steps:
@@ -69,6 +70,9 @@ jobs:
           - runner: windows-2022
             platform: win32
             arch: x64
+          - runner: windows-11-arm
+            platform: win32
+            arch: arm64
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -80,6 +84,8 @@ jobs:
         with:
           node-version: '22'
           cache: pnpm
+      - name: Verify native target
+        run: node -e "if (process.platform !== '${{ matrix.platform }}' || process.arch !== '${{ matrix.arch }}') throw new Error('Runner does not match the native desktop target'); console.log(process.platform, process.arch, process.version)"
       - run: pnpm install --frozen-lockfile
       - name: Desktop and packaging tests
         run: pnpm test test/desktop test/scripts/desktop-package.test.js test/scripts/desktop-cross-platform.test.js test/architecture/desktop-boundary.test.js test/bridge/standalone-host.test.js test/bridge/node-runtime.test.js
@@ -89,7 +95,7 @@ jobs:
         run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }}
       - name: Packed backup and checkpoint restore
         run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }} --restore
-      - name: Upload internal packages
+      - name: Upload unsigned test packages
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: Mira-${{ matrix.platform }}-${{ matrix.arch }}-unsigned-${{ github.sha }}

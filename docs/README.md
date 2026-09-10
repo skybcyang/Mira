@@ -45,6 +45,8 @@ AI 工具统一从仓库根目录的 [AGENTS.md](../AGENTS.md) 开始，其中�
 
 ## 验证证据
 
+- [2026-09-10 主干自动桌面构建](validation/2026-09-10-desktop-auto-builds.md)：macOS/Windows 双架构、原生 make/smoke、主干自动触发与测试包下载。
+
 - [2026-09-10 依赖升级](validation/2026-09-10-dependency-upgrades.md)：React 19 类型配套、构建分包、画布与热更新回归、许可清单和 macOS packed smoke。
 
 - [2026-09-10 Kimi 真实模型案例](validation/2026-09-10-kimi-examples-validation.md)：四张画板、13 次真实生成、来源快照、人工复核与待比较结果；替换旧预写案例。

@@ -128,13 +128,15 @@ Electron main
 - 单实例锁只约束同一个桌面应用，不能替代 workspace 跨进程锁。同一 workspace 同一时刻
   仍只能有一个 Desktop、Standalone 或 DSH/Cordis writer。
 
-2026-09-09 用户确认将内部打包扩展至 Windows x64。macOS 13+ 继续输出 arm64/x64
-unsigned `.app`、`.dmg` 与 `.zip`；Windows 首批输出包含 `Mira.exe` 的免安装 ZIP。
+2026-09-10 用户确认主干更新后自动生成 macOS 与 Windows 的 arm64/x64 测试包。
+macOS 13+ 输出 unsigned `.app`、`.dmg` 与 `.zip`；Windows 两架构输出包含 `Mira.exe` 的免安装 ZIP。
 开发/构建环境要求 Node.js `>=22.12.0`，packed 应用自带运行时；两平台复用相同的
-renderer、Node Host、workspace 锁与领域实现。Linux、Windows ARM、安装器、签名、公证、
-自动更新和公开发布不属于本批范围。
+renderer、Node Host、workspace 锁与领域实现。Linux、安装器、签名、公证、
+应用内自动更新和正式 Release 不属于本批范围。
 
-内部 CI 支持手动触发与打包相关文件变更的 push 触发，在各目标原生 runner 上打包，测试和 packed smoke 成功后上传明确的
+桌面 CI 在 `main` 的每次 push 后自动执行，不按文件路径过滤；支持手动触发，打包相关 PR 也执行预合并验证。
+公开仓库允许生成明确标注未签名的 Actions 测试产物，不再受首次源码发布的 private-only 限制。
+每个任务先核对 runner 的操作系统和 CPU 架构，在四个目标原生 runner 上打包，测试和 packed smoke 成功后上传明确的
 DMG/ZIP 构建产物，不创建 Release。每个目标必须使用临时 workspace/userData 验证真实
 renderer、Board API、完整备份恢复（含 Checkpoint）、正常退出及锁释放；不能仅以编译
 成功声称可运行。Windows 原生目录选择、窗口交互与最低系统兼容性仍需真实客户端验收。

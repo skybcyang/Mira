@@ -7,6 +7,10 @@
 
 ## 背景
 
+2026-09-10 扩展决策：用户确认 macOS 与 Windows 都提供 arm64/x64 Actions 测试包，主干每次更新后自动构建。
+允许公开仓库上传未签名测试产物，增加 Windows ARM 原生 runner；正式 Release、签名、公证和应用内更新仍单独验收。
+当前规则见[平台适配器契约](../specs/platform-adapters.md)，下列早期范围保留为决策历史。
+
 2026-09-09 扩展决策：用户确认增加 Windows x64 与 GitHub Actions 手动内部打包。
 两平台继续复用本文的 thin shell 和数据边界；新增范围及验收见
 [平台适配器契约](../specs/platform-adapters.md)，操作见
