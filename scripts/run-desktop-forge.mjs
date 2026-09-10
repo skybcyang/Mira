@@ -9,7 +9,7 @@ const supportedArchitectures = new Set(['arm64', 'x64'])
 export function validateDesktopTarget(platform, architecture) {
   if (
     !(platform === 'darwin' && supportedArchitectures.has(architecture))
-    && !(platform === 'win32' && architecture === 'x64')
+    && !(platform === 'win32' && supportedArchitectures.has(architecture))
   ) {
     throw new Error(`Unsupported desktop target: ${platform}-${architecture}`)
   }

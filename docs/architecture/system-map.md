@@ -47,7 +47,7 @@ Platform
 Desktop packaging
   forge.config.mjs
     -> explicit .desktop-stage payload
-    -> macOS unsigned arm64/x64 app + DMG + ZIP; Windows x64 EXE directory + ZIP
+    -> macOS unsigned arm64/x64 app + DMG + ZIP; Windows arm64/x64 EXE directory + ZIP
     -> .github/workflows/desktop-build.yml native make + packed smoke + internal artifacts
 ```
 
@@ -150,6 +150,6 @@ CSS 已按连续语义段拆分并固定导入顺序。现有重复 selector 是
 macOS Desktop 当前是 Electron 44 internal Alpha，目标为 macOS 13 或更新版本。Node-backed Desktop
 与 Standalone 在恢复前取得 workspace 级 `.mira-workspace.lock`，第二写者 fail-closed；DSH/Cordis
 当前没有原子锁适配器，仍由宿主保证单写者。同一 workspace 同一时刻只能由一个 writer 使用。
-Windows x64 内部打包与 GitHub Actions 手动构建范围已于 2026-09-09 获用户确认；
+macOS / Windows arm64/x64 未签名测试包与主干更新后 GitHub Actions 自动构建已于 2026-09-10 获用户确认；
 操作及平台验收限制见[内部桌面打包](../operations/desktop-internal-builds.md)。
 公开分发前还需要完成签名/公证/更新策略与对应发布门禁。

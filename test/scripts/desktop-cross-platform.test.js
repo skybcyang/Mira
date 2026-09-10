@@ -4,12 +4,12 @@ import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 
 describe('internal desktop targets', () => {
-  it('accepts native Mac architectures and Windows x64, rejecting unsupported targets', async () => {
+  it('accepts both native architectures on Mac and Windows, rejecting unsupported targets', async () => {
     const { validateDesktopTarget } = await import('../../scripts/run-desktop-forge.mjs')
-    for (const [platform, architecture] of [['darwin', 'arm64'], ['darwin', 'x64'], ['win32', 'x64']]) {
+    for (const [platform, architecture] of [['darwin', 'arm64'], ['darwin', 'x64'], ['win32', 'x64'], ['win32', 'arm64']]) {
       expect(() => validateDesktopTarget(platform, architecture)).not.toThrow()
     }
-    for (const [platform, architecture] of [['linux', 'x64'], ['win32', 'arm64'], ['darwin', '../outside']]) {
+    for (const [platform, architecture] of [['linux', 'x64'], ['win32', 'ia32'], ['darwin', '../outside']]) {
       expect(() => validateDesktopTarget(platform, architecture)).toThrow('Unsupported desktop target')
     }
   })
@@ -25,11 +25,13 @@ describe('internal desktop targets', () => {
     expect(config.plugins).toHaveLength(1)
     expect(config.packagerConfig.download.checksums['electron-v44.0.0-win32-x64.zip'])
       .toMatch(/^[a-f0-9]{64}$/)
+    expect(config.packagerConfig.download.checksums['electron-v44.0.0-win32-arm64.zip'])
+      .toMatch(/^[a-f0-9]{64}$/)
   })
 
-  it('starts the Windows packed exe with the same isolated smoke environment', async () => {
+  it.each(['x64', 'arm64'])('starts the Windows %s packed exe with the same isolated smoke environment', async (architecture) => {
     const { createPackedSmokeCommand } = await import('../../scripts/packed-desktop-smoke.mjs')
-    const appPath = join('out', 'desktop', 'Mira-win32-x64')
+    const appPath = join('out', 'desktop', `Mira-win32-${architecture}`)
     const command = createPackedSmokeCommand({
       platform: 'win32', appPath, workspaceRoot: 'isolated-workspace',
       userDataRoot: 'isolated-user-data', inheritedEnv: {},

@@ -36,7 +36,7 @@ Mira 是一块可以和 AI 一起工作的画板。把材料放上来，选中�
 
 ## 开始使用
 
-目前可从源码运行。桌面版处于内部测试阶段，macOS / Windows 构建获取方式见[内部桌面打包](docs/operations/desktop-internal-builds.md)；尚未签名，也没有自动更新，不作为正式公开发布版。
+桌面测试包会在每次主干更新后自动构建，支持 macOS / Windows 的 ARM64 和 Intel/AMD x64。[下载最新通过验证的主干构建](https://github.com/skybcyang/Mira/actions/workflows/desktop-build.yml?query=branch%3Amain+is%3Asuccess)，在运行页底部 Artifacts 选择架构（需登录 GitHub）。使用方法见[桌面打包说明](docs/operations/desktop-internal-builds.md)；测试包尚未签名，没有应用内自动更新，不作为正式发布版。也可继续从源码运行。
 
 先克隆仓库，或下载并解压源码。全新工作区从空画板开始；想直接体验，可以导入[真实模型案例包](docs/examples/README.md)。
 
