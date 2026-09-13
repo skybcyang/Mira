@@ -3,6 +3,7 @@ import { normalizeCardName } from './card-name.js'
 import { validExtractionRef, validExtractionSources } from '../../src/domain/extraction.js'
 import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
 import { validateGuidance } from '../../src/domain/guidance.js'
+import { validateOutputPolicy } from '../../src/domain/outputPolicy.js'
 
 const CONTENT_KINDS = new Set(['markdown', 'file-reference'])
 const VERSION_ORIGINS = new Set(['human', 'ai', 'restore', 'import'])
@@ -215,6 +216,7 @@ export function validateBoardV2(board) {
     }
     transformationIds.add(transformation.id)
     try { validateGuidance(transformation.guidance) } catch { errors.push(`transformation ${transformation.id} has invalid guidance`) }
+    try { validateOutputPolicy(transformation.outputPolicy, transformation.instruction) } catch { errors.push(`transformation ${transformation.id} has invalid output policy`) }
     if (
       !Array.isArray(transformation.sourceCardIds) ||
       transformation.sourceCardIds.length === 0

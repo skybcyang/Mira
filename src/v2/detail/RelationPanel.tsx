@@ -32,7 +32,8 @@ function appliedRunForRelation(
     : undefined
 }
 
-export function RelationPanel({ transformationId, initialEditing = false, initialPreview = false, onDirtyChange }: { transformationId: string; initialEditing?: boolean; initialPreview?: boolean; onDirtyChange?: (dirty: boolean) => void }) {
+export function RelationPanel({ transformationId, initialEditing = false, initialPreview = false, focusOutput = false, onDirtyChange }: { transformationId: string; initialEditing?: boolean; initialPreview?: boolean; focusOutput?: boolean; onDirtyChange?: (dirty: boolean) => void }) {
+  useEffect(() => { if (focusOutput) document.getElementById('v2-output-policy-entry')?.focus() }, [focusOutput])
   const runDrawerAction = useDrawerAction()
   const board = useV2Canvas((state) => state.board)
   const runs = useV2Canvas((state) => state.runs)
@@ -121,6 +122,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
             : '与最近结果一致'
       return { cardId, title: card ? cardSummary(card).title : '来源已移除', status: sourceState }
     })} />
+    <section aria-label="输出要求"><button id="v2-output-policy-entry" type="button" className="v2-secondary-button" onClick={() => runDrawerAction(() => open({ tab: 'relation', transformationId, output: true }))}>输出要求 · {transformation.outputPolicy?.title || '原有表达'}{transformation.outputPolicy?.maxCharacters ? ` · ${transformation.outputPolicy.maxCharacters} 字符` : ''}</button></section>
     <section aria-label="本步指导"><button type="button" className="v2-secondary-button" disabled={candidatePending} onClick={() => runDrawerAction(() => open({ tab: 'relation', transformationId, guidance: true }))}>本步指导 · {transformation.guidance?.title || '不使用'}</button>
       {transformation.guidance && <details className="v2-guidance-read"><summary>查看已保存指导 · {transformation.guidance.version}{transformation.guidance.customized ? ' · 已调整' : ''}</summary><p>{transformation.guidance.text}</p></details>}
     </section>

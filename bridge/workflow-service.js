@@ -2,6 +2,7 @@ import { isUsableContent } from './domain/content.js'
 import { assertBoardWritable } from './domain/board-lifecycle.js'
 import { typed } from './domain/errors.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
+import { resolveOutputPolicy, validateOutputPolicy } from '../src/domain/outputPolicy.js'
 import { cardById, transformationById, validateSourceRefs } from './v2-http-policy.js'
 
 const TARGET_CARD_WIDTH = 360
@@ -261,6 +262,8 @@ function validateDirectPlan(body) {
     assertGuidanceCriteria(guidance, step?.acceptance)
     const label = typeof step?.label === 'string' ? step.label.trim() : ''
     const instruction = typeof step?.instruction === 'string' ? step.instruction.trim() : ''
+    const outputPolicy = resolveOutputPolicy(step?.outputPolicy)
+    validateOutputPolicy(outputPolicy, instruction)
     if (!label || !instruction || typeof step?.acceptance !== 'string') {
       throw typed('PLAN_INVALID', 'Every plan step requires a label, instruction, and acceptance')
     }
@@ -274,6 +277,7 @@ function validateDirectPlan(body) {
       instruction,
       acceptance: step.acceptance.trim(),
       ...(guidance ? { guidance } : {}),
+      ...(outputPolicy ? { outputPolicy } : {}),
       ...(modelId ? { modelId } : {}),
     }
   })
@@ -334,6 +338,7 @@ function materializeLinearPlan({
       instruction: step.instruction,
       acceptance: step.acceptance,
       ...(step.guidance ? { guidance: structuredClone(step.guidance) } : {}),
+      ...(step.outputPolicy ? { outputPolicy: structuredClone(step.outputPolicy) } : {}),
       ...(step.modelId ? { modelId: step.modelId } : {}),
       permissions: { workspaceWrite: false },
       planRef: {
@@ -415,6 +420,7 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
             acceptance: transformation.acceptance,
             ...(transformation.modelId ? { modelId: transformation.modelId } : {}),
             ...(transformation.guidance ? { guidance: structuredClone(transformation.guidance) } : {}),
+            ...(transformation.outputPolicy ? { outputPolicy: structuredClone(transformation.outputPolicy) } : {}),
             ...(workflowInputs ? { sources: transformation.sourceCardIds.map((cardId) => ({
               ...(index > 0 && cardId === transformations[index - 1].targetCardId
                 ? { kind: 'previous-output' }

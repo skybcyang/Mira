@@ -11,6 +11,38 @@ import { validateBoardCheckpoint } from '../../bridge/domain/board-checkpoint.js
 const NOW = '2026-09-02T08:00:00.000Z'
 const IMPORTED_AT = '2026-09-02T09:00:00.000Z'
 
+it('retains output rules and truthful checks through portable objects, backup and checkpoints', async () => {
+  const { resolveOutputPolicy, checkOutput } = await import('../../src/domain/outputPolicy.js')
+  const policy = resolveOutputPolicy({ id: 'balanced', version: '1.0.0', maxCharacters: 3 })
+  const input = board()
+  input.transformations[0].outputPolicy = policy
+  const run = terminalRun({ outputPolicySnapshot: policy })
+  run.outputCheck = checkOutput(run.result.output, policy)
+  const workflow = provenance()
+  workflow.steps[0].outputPolicy = policy
+  const exported = artifact({ board: input, runs: [run, historicalRun()], workflowProvenance: [workflow] })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('output'), now: () => IMPORTED_AT })
+  expect(imported.board.transformations[0].outputPolicy).toEqual(policy)
+  expect(imported.runs[0].outputPolicySnapshot).toEqual(policy)
+  expect(imported.runs[0].outputCheck).toEqual(run.outputCheck)
+  expect(imported.workflowProvenance[0].steps[0].outputPolicy).toEqual(policy)
+  for (const item of [exported.board.transformations[0].outputPolicy, exported.runs[0].outputPolicySnapshot, exported.workflowProvenance[0].steps[0].outputPolicy]) {
+    const original = item.text
+    item.text = '被改写'
+    expect(() => validateBoardArtifact(exported)).toThrow()
+    item.text = original
+  }
+  const originalCount = exported.runs[0].outputCheck.characters
+  exported.runs[0].outputCheck.characters = 0
+  expect(() => validateBoardArtifact(exported)).toThrow()
+  exported.runs[0].outputCheck.characters = originalCount
+  const backup = projectWorkspaceBackup({ boards: [input], runs: [run, historicalRun()], workflows: [], exportedAt: NOW, checkpoints: [] })
+  expect(backup.runs[0].outputCheck).toEqual(run.outputCheck)
+  expect(() => validateWorkspaceBackup(backup)).not.toThrow()
+  const checkpoint = { schemaVersion: 1, id: 'output-checkpoint', boardId: input.id, title: '规则', baseBoardRevision: input.revision || 0, artifact: exported, createdAt: NOW, metadataUpdatedAt: NOW }
+  expect(() => validateBoardCheckpoint(checkpoint)).not.toThrow()
+})
+
 function version(id, cardId, content, overrides = {}) {
   return {
     id,

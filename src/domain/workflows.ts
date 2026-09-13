@@ -18,6 +18,7 @@ export type WorkflowStepSource =
 
 export interface WorkflowStepTemplate {
   guidance?: import('./guidance.js').GuidanceSnapshot
+  outputPolicy?: import('./outputPolicy.js').OutputPolicy
   id: string
   label: string
   instruction: string
@@ -63,6 +64,7 @@ export interface PlanStepInput {
   instruction: string
   acceptance: string
   modelId?: string
+  outputPolicy?: import('./outputPolicy.js').OutputPolicyInput | null
 }
 
 export interface CreatePlanRequest {

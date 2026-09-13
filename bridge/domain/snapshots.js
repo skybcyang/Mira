@@ -2,6 +2,7 @@ import { digestText, isUsableContent } from './content.js'
 import { typed } from './errors.js'
 import { resolveSourceScope, sameScope, validateSourceScopes } from '../../src/domain/sourceScopes.js'
 import { validateGuidance, assertGuidanceCriteria } from '../../src/domain/guidance.js'
+import { validateOutputPolicy } from '../../src/domain/outputPolicy.js'
 
 export async function createSourceSnapshots(cards, sourceRefs, options = {}) {
   if (sourceRefs.length === 0) {
@@ -92,6 +93,7 @@ export async function createTransformationRun(input, options = {}) {
 
   const targetBaseVersionId = target.headVersionId
   validateGuidance(input.transformation.guidance)
+  validateOutputPolicy(input.transformation.outputPolicy, input.transformation.instruction)
   assertGuidanceCriteria(input.transformation.guidance, input.transformation.acceptance)
   const scopes = validateSourceScopes(input.transformation.sourceScopes, sourceCardIds)
   const refs = input.sourceRefs.map(ref => {
@@ -118,6 +120,7 @@ export async function createTransformationRun(input, options = {}) {
     targetBaseVersionId,
     intent: input.intent,
     ...(input.transformation.guidance ? { guidanceSnapshot: structuredClone(input.transformation.guidance) } : {}),
+    ...(input.transformation.outputPolicy ? { outputPolicySnapshot: structuredClone(input.transformation.outputPolicy) } : {}),
     ...(input.modelSnapshot ? { modelSnapshot: input.modelSnapshot } : {}),
     createdAt: input.createdAt,
   }

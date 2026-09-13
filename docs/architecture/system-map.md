@@ -114,6 +114,8 @@ Desktop packaging
 
 改请求校验或 prompt 格式：在 `bridge/v2-http-policy.js` 做纯函数，并由 `v2-http.js` 调用。涉及写入原子性或 CAS 时才进入 handler/domain。
 
+步骤输出要求由 `src/domain/outputPolicy.js` 共享目录、快照校验、prompt 片段与确定性检查，`OutputPolicyPanel` / `OutputPolicyView` 承载编辑和 Run 读态。创建、配置、冻结、普通写回及方法复用继续使用既有 handler/domain/service，不增加执行器。Markdown 结构解析在无 DOM 的 Bridge 也需可用；`scripts/build-bridge.mjs` 使用 neutral 依赖解析条件，避免选择浏览器专用实体解码实现。
+
 改工作台导航与本机密度偏好：`WorkbenchNavigation.tsx` 与 `workbenchPreferences.ts`；AppBar 接入既有工具，不建立新路由。`useTaskViewport.ts` 只投影视口高度，`useMobilePanelModal.ts` 处理 Compact/Mobile 焦点边界；NoticeRegion 在这些边界内投递通知。
 
 改详情：`DetailDrawer.tsx` 只保留 shell、页签、四个 panel 的路由和既有命名导出。Candidate 比较位于 `detail/CandidateComparison.tsx`，冻结已读基线并复用 `cardVersions.ts` 的有界差异；Run slice 的采用调用必须显式传基线，重新核对只读取事实。

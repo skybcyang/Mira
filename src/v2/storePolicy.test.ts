@@ -19,6 +19,14 @@ describe('canvas history error policy', () => {
 })
 
 describe('v2 store policy', () => {
+  it('returns from output settings and protects that navigation from late results', () => {
+    const editor = detailSurfaceSnapshot(2, { tab: 'relation', transformationId: 'step', output: true }, null)
+    const returned = transitionDetailSurface(editor, { tab: 'relation', transformationId: 'step', focusOutput: true }, null)
+    expect(returned.detailSurfaceRevision).toBe(3)
+    expect(returned.drawer).toEqual({ tab: 'relation', transformationId: 'step', focusOutput: true })
+    expect(resolveAsyncDetailSurface(editor, returned, { tab: 'run', runId: 'late' }, 'replace-origin')).toBe(returned)
+    expect(transitionDetailSurface(returned, editor.drawer, null).detailSurfaceRevision).toBe(4)
+  })
   it('recognizes input scope navigation as a new detail intent', () => {
     const origin = detailSurfaceSnapshot(1, { tab: 'relation', transformationId: 'step' }, null)
     const next = transitionDetailSurface(origin, { tab: 'relation', transformationId: 'step', scopeCardId: 'source' }, null)

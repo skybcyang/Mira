@@ -38,6 +38,8 @@ export interface RunProgressEvent {
 
 export interface TransformationRun {
   guidanceSnapshot?: import('./guidance.js').GuidanceSnapshot
+  outputPolicySnapshot?: import('./outputPolicy.js').OutputPolicy
+  outputCheck?: import('./outputPolicy.js').OutputCheck
   id: string
   boardId: string
   transformationId: string

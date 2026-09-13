@@ -8,6 +8,7 @@ import { createFileBindingService } from './domain/file-binding.js'
 import { createSourceSnapshots, createTransformationRun } from './domain/snapshots.js'
 import { contentDigest } from '../src/domain/sourceScopes.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
+import { resolveOutputPolicy, validateOutputPolicy, checkOutput } from '../src/domain/outputPolicy.js'
 import { reviseExtractionCard } from './domain/extraction-revisions.js'
 import { confirmSourceScopes, scopesFromRefs, updateSourceScopes } from './domain/source-scopes.js'
 import { validateBoardV2 } from './domain/validation.js'
@@ -308,6 +309,7 @@ export function createV2Handlers({
       latest.instruction !== frozenTransformation.instruction ||
       latest.acceptance !== frozenTransformation.acceptance ||
       JSON.stringify(latest.guidance) !== JSON.stringify(frozenTransformation.guidance) ||
+      JSON.stringify(latest.outputPolicy) !== JSON.stringify(frozenTransformation.outputPolicy) ||
       latest.modelId !== frozenTransformation.modelId ||
       JSON.stringify(latest.sourceScopes || []) !== JSON.stringify(frozenTransformation.sourceScopes || [])
     ) {
@@ -341,7 +343,7 @@ export function createV2Handlers({
         boardId: run.boardId,
         transformation,
         sourceSnapshot: run.sourceSnapshot,
-        prompt: buildModelPrompt(transformation, run.sourceSnapshot, run.guidanceSnapshot),
+        prompt: buildModelPrompt(transformation, run.sourceSnapshot, run.guidanceSnapshot, run.outputPolicySnapshot),
         signal: controller.signal,
         onProgress,
         ...(run.modelSnapshot ? { modelSnapshot: run.modelSnapshot } : {}),
@@ -356,6 +358,7 @@ export function createV2Handlers({
         const candidateRun = appendTerminalRunProgress({
           ...currentRun,
           status: 'succeeded',
+          ...(currentRun.outputPolicySnapshot ? { outputCheck: checkOutput(output, currentRun.outputPolicySnapshot) } : {}),
           result: {
             output,
             digest: digestText(output),
@@ -892,6 +895,8 @@ export function createV2Handlers({
         const timestamp = now()
         const guidance = resolveGuidance(body.guidance)
         assertGuidanceCriteria(guidance, body.acceptance)
+        const outputPolicy = resolveOutputPolicy(body.outputPolicy)
+        validateOutputPolicy(outputPolicy, body.instruction)
         const targetCard = {
           id: newId('card'),
           contentKind: 'markdown',
@@ -911,6 +916,7 @@ export function createV2Handlers({
           targetCardId: targetCard.id,
           label: String(body.label || '').trim(),
           ...(guidance ? { guidance } : {}),
+          ...(outputPolicy ? { outputPolicy } : {}),
           instruction: String(body.instruction || '').trim(),
           acceptance: String(body.acceptance || '').trim(),
           ...(modelId ? { modelId } : {}),
@@ -947,6 +953,8 @@ export function createV2Handlers({
           const instruction = String(entry?.instruction || '').trim()
           const guidance = resolveGuidance(entry?.guidance)
           assertGuidanceCriteria(guidance, entry?.acceptance)
+          const outputPolicy = resolveOutputPolicy(entry?.outputPolicy)
+          validateOutputPolicy(outputPolicy, instruction)
           if (!label || !instruction) {
             throw typed('TRANSFORMATION_INVALID', '成果名称和目标不能为空')
           }
@@ -974,6 +982,7 @@ export function createV2Handlers({
             instruction,
             acceptance: String(entry?.acceptance || '').trim(),
             ...(guidance ? { guidance } : {}),
+            ...(outputPolicy ? { outputPolicy } : {}),
             ...(modelId ? { modelId } : {}),
             permissions: { workspaceWrite: false },
             createdAt: timestamp,
@@ -1034,6 +1043,8 @@ export function createV2Handlers({
         const sourceScopes = await updateSourceScopes(board, current, body, sourceCardIds, readFileContent)
         const guidance = has('guidance') ? resolveGuidance(body.guidance) : current.guidance
         assertGuidanceCriteria(guidance, acceptance)
+        const outputPolicy = has('outputPolicy') ? resolveOutputPolicy(body.outputPolicy) : current.outputPolicy
+        validateOutputPolicy(outputPolicy, instruction)
 
         const transformation = {
           ...current,
@@ -1045,6 +1056,7 @@ export function createV2Handlers({
           ...(modelId ? { modelId } : {}),
           updatedAt: nextUpdatedAt(current.updatedAt, now()),
           ...(guidance ? { guidance } : {}),
+          ...(outputPolicy ? { outputPolicy } : {}),
         }
         const semanticsChanged =
           label !== current.label ||
@@ -1052,6 +1064,7 @@ export function createV2Handlers({
           acceptance !== current.acceptance ||
           modelId !== current.modelId ||
           JSON.stringify(guidance) !== JSON.stringify(current.guidance) ||
+          JSON.stringify(outputPolicy) !== JSON.stringify(current.outputPolicy) ||
           JSON.stringify(sourceScopes) !== JSON.stringify(current.sourceScopes || []) ||
           sourceCardIds.length !== current.sourceCardIds.length ||
           sourceCardIds.some((cardId, index) => cardId !== current.sourceCardIds[index])
@@ -1060,6 +1073,7 @@ export function createV2Handlers({
         }
         if (!modelId) delete transformation.modelId
         if (!guidance) delete transformation.guidance
+        if (!outputPolicy) delete transformation.outputPolicy
         if (!sourceScopes.length) delete transformation.sourceScopes
         board.transformations = board.transformations.map((item) =>
           item.id === transformationId ? transformation : item,

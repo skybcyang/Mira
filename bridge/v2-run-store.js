@@ -2,6 +2,7 @@ import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
 import { appendTerminalRunProgress, runProgressErrors } from './domain/run-progress.js'
 import { validateGuidance } from '../src/domain/guidance.js'
+import { validateOutputPolicy, validateOutputCheck } from '../src/domain/outputPolicy.js'
 
 const TERMINAL = new Set(['succeeded', 'failed', 'interrupted'])
 const ACTIVE = new Set(['queued', 'running'])
@@ -21,6 +22,12 @@ export function validatePersistedRun(run, expectedId) {
     if (!STATUSES.has(run.status)) errors.push('Run status is invalid')
     errors.push(...runProgressErrors(run))
     try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
+    try {
+      validateOutputPolicy(run.outputPolicySnapshot)
+      validateOutputCheck(run.outputCheck, run.result?.output, run.outputPolicySnapshot)
+      if (run.outputCheck && run.status !== 'succeeded') errors.push('Only a succeeded Run may have an output check')
+      if (run.outputPolicySnapshot && run.status === 'succeeded' && !run.outputCheck) errors.push('Output check is missing')
+    } catch { errors.push('Run output policy or check is invalid') }
     if (
       run.modelSnapshot !== undefined
       && (

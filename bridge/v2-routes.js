@@ -1,4 +1,5 @@
 import { listGuidance } from '../src/domain/guidance.js'
+import { listOutputPolicies } from '../src/domain/outputPolicy.js'
 
 function notFound(method, segments) {
   return {
@@ -12,6 +13,7 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
   const seg = segments.slice(1)
   if (method === 'GET' && seg.length === 1 && seg[0] === 'application-info') return { status: 200, body: { desktop: false } }
   if (method === 'GET' && seg.length === 1 && seg[0] === 'guidance') return { status: 200, body: { guidance: listGuidance() } }
+  if (method === 'GET' && seg.length === 1 && seg[0] === 'output-policies') return { status: 200, body: { policies: listOutputPolicies() } }
   const {
     store,
     handlers,

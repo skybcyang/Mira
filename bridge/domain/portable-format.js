@@ -2,6 +2,7 @@ import { validateBoardV2 } from './validation.js'
 import { runProgressErrors } from './run-progress.js'
 import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
 import { validateGuidance } from '../../src/domain/guidance.js'
+import { validateOutputPolicy, validateOutputCheck } from '../../src/domain/outputPolicy.js'
 import {
   isObject,
   nonEmptyString,
@@ -290,6 +291,12 @@ export function validatePortableRun(run, { terminalOnly = false } = {}) {
   }
   if (!ALL_RUN_STATUSES.has(run.status)) errors.push('Run status is invalid')
   try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
+  try {
+    validateOutputPolicy(run.outputPolicySnapshot)
+    validateOutputCheck(run.outputCheck, run.result?.output, run.outputPolicySnapshot)
+    if (run.outputCheck && run.status !== 'succeeded') errors.push('Only a succeeded Run may have an output check')
+    if (run.outputPolicySnapshot && run.status === 'succeeded' && !run.outputCheck) errors.push('Output check is missing')
+  } catch { errors.push('Run output policy or check is invalid') }
   if (terminalOnly && !TERMINAL_RUN_STATUSES.has(run.status)) errors.push('Run must be terminal')
   if (!Array.isArray(run.sourceSnapshot)) {
     errors.push('Run sourceSnapshot must be an array')
@@ -502,6 +509,7 @@ export function validatePortableWorkflow(workflow, { provenance = false } = {}) 
       }
       stepIds.add(step.id)
       try { validateGuidance(step.guidance) } catch { errors.push(`Workflow step ${step.id} guidance is invalid`) }
+      try { validateOutputPolicy(step.outputPolicy, step.instruction) } catch { errors.push(`Workflow step ${step.id} output policy is invalid`) }
       if (!nonEmptyString(step.label)) errors.push(`Workflow step ${step.id} label is invalid`)
       if (!nonEmptyString(step.instruction)) {
         errors.push(`Workflow step ${step.id} instruction is invalid`)

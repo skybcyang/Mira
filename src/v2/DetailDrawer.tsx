@@ -9,6 +9,7 @@ import { VersionPanel } from './detail/VersionPanel'
 import { RelationPanel } from './detail/RelationPanel'
 import { SourceScopePanel } from './detail/SourceScopePanel'
 import { GuidancePanel } from './detail/GuidancePanel'
+import { OutputPolicyPanel } from './detail/OutputPolicyPanel'
 import { RunPanel } from './detail/RunPanel'
 import { SourcePreviewPanel } from './SourcePreview'
 import type { SourcePreviewRequest } from './sourcePreviewContext'
@@ -109,11 +110,13 @@ export default function DetailDrawer({
       : drawer.tab === 'versions'
         ? <VersionPanel cardId={drawer.cardId} />
       : drawer.tab === 'relation'
-         ? drawer.guidance
+         ? drawer.output
+           ? <OutputPolicyPanel key={drawer.transformationId} transformationId={drawer.transformationId} onDirtyChange={onDirtyChange} />
+           : drawer.guidance
            ? <GuidancePanel key={drawer.transformationId} transformationId={drawer.transformationId} onDirtyChange={onDirtyChange} />
            : drawer.scopeCardId
            ? <SourceScopePanel key={`${drawer.transformationId}:${drawer.scopeCardId}`} transformationId={drawer.transformationId} cardId={drawer.scopeCardId} onDirtyChange={onDirtyChange} />
-           : <RelationPanel key={drawer.transformationId} transformationId={drawer.transformationId} initialEditing={drawer.edit} initialPreview={drawer.preview} onDirtyChange={onDirtyChange} />
+           : <RelationPanel key={drawer.transformationId} transformationId={drawer.transformationId} initialEditing={drawer.edit} initialPreview={drawer.preview} focusOutput={drawer.focusOutput} onDirtyChange={onDirtyChange} />
          : <RunPanel key={drawer.runId} runId={drawer.runId} />}</div>}
     {sourcePreview && <div ref={sourceRef} className="v2-source-companion"><SourcePreviewPanel request={sourcePreview} onClose={onCloseSource} returnLabel={drawer?.tab === 'content' ? '返回正文' : '返回原任务'} /></div>}
     </div>

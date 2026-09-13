@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+2026-09-14 步骤执行设置：[整体需求与进度](refactor/generation-controls-requirements.md)、[完整交互方案](design/step-execution-design-proposal.md)、[独立输出要求第一批验证](validation/2026-09-14-output-policy.md)。整体方案已确认；本批仅完成输出规则/约束及已有 Skill 并存，工具、MCP 与 Python 尚未实现。
+
 项目工作区已合入本地 main，并完成本机迁移与安装：[权威规格](specs/project-workspace.md)、[实施进度](refactor/project-workspace-plan.md)、[功能验证](validation/2026-09-13-project-workspace.md)、[迁移、安装与回退记录](validation/2026-09-13-project-workspace-install.md)。
 
 2026-09-13 增量：[本地安装、恢复与补充验收](validation/2026-09-13-local-install-acceptance.md)、[A3–B8 实施验证](validation/2026-09-13-a3-b8-validation.md)、[真实模型质量复核](validation/2026-09-13-model-quality-review.md)、[正式桌面发行准备](operations/desktop-release.md)。当前完成范围及设备阻挡见[统一 TODO](refactor/evolution-todo.md)。

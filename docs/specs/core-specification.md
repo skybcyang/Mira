@@ -879,6 +879,23 @@ interface MiraBackupV2 {
 
 ## 8. HTTP 契约
 
+### 步骤输出要求增量（2026-09-14，第一实施批）
+
+`Transformation.outputPolicy?`、`WorkflowStepTemplate.outputPolicy?` 与 `TransformationRun.outputPolicySnapshot?` 保存独立输出快照：
+`{ id, version, title, text, digest, customized, format, maxCharacters? }`。id/version/title 为非空有界文本（128/64/120），text 非空且最多 20,000 UTF-16 单位，不含 NUL/替代字符，digest 为 SHA-256(text)，customized 为布尔。format 为 auto/paragraphs/list/table，maxCharacters 为 1..100000 的安全整数；未知字段拒绝。
+
+GET /output-policies 返回当前三种发行规则（concise/balanced/detailed，1.0.0）。创建/批量创建/直接计划与 PATCH 接受 `outputPolicy: { id, version, text?, format?, maxCharacters? } | null`；保存时解析目录、冻结实际文本。缺省新步骤取 concise；PATCH 缺字段保留，null 明确使用原有表达。旧对象/旧方法缺字段保持缺失，应用方法不补默认。提取步骤只允许 auto，由必要提取协议决定结构；修改 instruction 与输出要求一起预检，不可绕过。
+
+更新复用 baseUpdatedAt、Board 可写与活动 Run/Candidate 门禁；配置变更只标计划 adjusted，不改 stale 定义、不改 CardVersion、不自动 Run。启动前比较完整快照，Run 使用冻结规则组装 prompt。必要协议及应用边界优先，用户具体任务/显式约束优先于方法和默认风格。
+
+成功返回正文后按实际持久正文进行字符和结构检查，结果保存为 Run.outputCheck：`{ version: '1', characters, maxCharacters?, lengthPassed?, format, formatPassed? }`。字符按 Unicode 码点计数，含标题、标点、空白；未配置的检查不记通过。结构检查只验证 Markdown 结构，不证明内容质量。失败同样保存完整结果和检查，普通两阶段 Candidate/CAS 不变。停止/失败不伪造检查；持久化与导入严格验证检查与实际正文、冻结设置一致。
+
+格式边界：paragraphs 至少一段正文且顶层只允许段落/标题；list 至少一份列表、每份至少一项有正文且顶层只允许标题/列表；table 至少一份 GFM 表格、每份包含表头及数据行且顶层只允许标题/表格。auto 不作结构检查。纯空白不构成合格成果。
+
+新增 OUTPUT_POLICY_INVALID (422) 与 OUTPUT_POLICY_UNAVAILABLE (409)，分别表示输入/快照无效与目录版本不可用。损坏快照在 Board、Run、Workflow、Artifact/备份/Checkpoint 的既有严格入口拒绝，不静默删字段。快照指纹用于一致性，不构成作者身份认证。
+
+第一批默认值为随应用发行的 concise；workspace 自定义默认、指导目录扩展与工具执行按后续批次接入，不能先显示为可用。第一批验收：全创建入口零 Run 且冻结默认；旧对象/方法无漂移；用户显式配置进入真实 adapter 入参；约束失败保留全文；并发 Head 进入 Candidate；畸形输入与存储失败零半写；方法和可移植往返保留快照；Desktop/390px 草稿、焦点和保存恢复正确。
+
 外部基础路径：`/graphmind/api/v2`。下表的 Path 省略该前缀。
 
 ```ts
