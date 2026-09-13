@@ -27,6 +27,7 @@ const MIME_BY_EXTENSION = {
 const STATUS_BY_CODE = {
   BAD_PATH: 403,
   BAD_REQUEST: 400,
+  EXTRACTION_INVALID: 422,
   BACKUP_INVALID: 422,
   BACKUP_TOO_LARGE: 413,
   BOARD_EXPORT_INVALID: 422,
@@ -104,6 +105,19 @@ const STATUS_BY_CODE = {
   SOURCE_READ_FAILED: 400,
   SOURCE_REQUIRED: 400,
   SOURCE_VERSION_CHANGED: 409,
+  SOURCE_SCOPE_INVALID: 422,
+  SOURCE_SCOPE_REQUIRED: 409,
+  SOURCE_SCOPE_CHANGED: 409,
+  GUIDANCE_INVALID: 422,
+  MATERIAL_INVALID: 422,
+  MATERIAL_SOURCE_BLOCKED: 422,
+  MATERIAL_READ_FAILED: 422,
+  MATERIAL_UNAVAILABLE: 503,
+  MATERIAL_PREVIEW_EXPIRED: 409,
+  MATERIAL_PREVIEW_CONFLICT: 409,
+  MATERIAL_LIMIT: 413,
+  GUIDANCE_UNAVAILABLE: 409,
+  EXTRACTION_REVISION_INVALID: 422,
   STORAGE_LEASE_INVALID: 500,
   TARGET_BUSY: 409,
   TRANSFORMATION_CONFLICT: 409,
@@ -210,6 +224,9 @@ export function createMiraApiHandler(application, {
   maxImportBodyBytes = BOARD_ARTIFACT_LIMITS.maxBytes,
 } = {}) {
   return async function handleApi(req, res) {
+    const controller = new AbortController()
+    const disconnected = () => { if (!res.writableEnded) controller.abort() }
+    res.on?.('close', disconnected)
     try {
       const url = String(req.url || '')
       const path = url.split('?')[0].slice(apiPrefix.length)
@@ -223,7 +240,9 @@ export function createMiraApiHandler(application, {
       const body = requestMethodHasJsonBody(method)
         ? await readJsonBody(req, isBoardImport ? { maxBytes: maxImportBodyBytes } : undefined)
         : undefined
-      const response = await application.dispatch(method, segments, body)
+      const response = segments[1] === 'materials' && segments[2] === 'previews'
+        ? await application.dispatch(method, segments, body, { signal: controller.signal })
+        : await application.dispatch(method, segments, body)
       sendJson(res, response.status, response.body)
     } catch (error) {
       sendJson(res, httpStatusForCode(error?.code), {
@@ -231,6 +250,6 @@ export function createMiraApiHandler(application, {
         message: error?.message || String(error),
         details: error?.details,
       })
-    }
+    } finally { res.removeListener?.('close', disconnected) }
   }
 }

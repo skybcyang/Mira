@@ -19,7 +19,7 @@ export function WorkbenchNavigation({ active, collapsed, unavailable, onCanvas, 
     { id: 'canvas', label: '画布', Icon: Columns2, action: onCanvas },
     { id: 'inspiration', label: '灵感池', Icon: Lightbulb, action: onInspiration },
     { id: 'workflow', label: '方法与计划', Icon: Workflow, action: onWorkflow },
-    { id: 'file', label: '文件', Icon: FilePlus2, action: onFile },
+    { id: 'file', label: '材料', Icon: FilePlus2, action: onFile },
     { id: 'history', label: '画布版本', Icon: History, action: onHistory },
   ] as const
   return <nav className="v2-workbench-navigation" aria-label="工作导航">
@@ -27,7 +27,7 @@ export function WorkbenchNavigation({ active, collapsed, unavailable, onCanvas, 
     <button className="v2-navigation-select" type="button" aria-label={multiSelectMode ? '结束多选' : '多选卡片'} title={multiSelectMode ? '结束多选' : '多选卡片'} aria-pressed={multiSelectMode} disabled={unavailable} onClick={onMultiSelect}><MousePointer2 size={19} /><span>{multiSelectMode ? '结束多选' : '多选'}</span></button>
     {items.map(({ id, label, Icon, action }) => <button key={id} type="button"
       aria-label={label} title={label} aria-pressed={active === id}
-      disabled={unavailable && id !== 'canvas' && id !== 'inspiration'}
+      disabled={unavailable && id !== 'canvas' && id !== 'inspiration' && id !== 'file'}
       aria-haspopup={id === 'inspiration' || id === 'file' ? 'dialog' : undefined}
       aria-expanded={id !== 'canvas' ? active === id : undefined}
       onClick={action}><Icon size={19} /><span>{label}</span></button>)}

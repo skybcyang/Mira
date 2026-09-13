@@ -18,7 +18,7 @@ function sameDrawer(left: DrawerState, right: DrawerState): boolean {
   if (left === right) return true
   if (!left || !right || left.tab !== right.tab) return false
   if (left.tab === 'content') {
-    return right.tab === 'content' && left.cardId === right.cardId && left.mode === right.mode
+    return right.tab === 'content' && left.cardId === right.cardId && left.mode === right.mode && left.batchId === right.batchId
   }
   if (left.tab === 'versions') {
     return right.tab === 'versions' && left.cardId === right.cardId
@@ -26,6 +26,8 @@ function sameDrawer(left: DrawerState, right: DrawerState): boolean {
   if (left.tab === 'relation') {
     return right.tab === 'relation' && left.transformationId === right.transformationId
       && left.edit === right.edit && left.preview === right.preview
+      && left.scopeCardId === right.scopeCardId
+      && left.guidance === right.guidance
   }
   return right.tab === 'run' && left.runId === right.runId
 }
@@ -67,6 +69,19 @@ export function resolveAsyncDetailSurface(
 export function userFacingStoreError(error: unknown): string {
   const code = (error as { code?: string })?.code
   if (code === 'SOURCE_VERSION_CHANGED') return '来源已变化，请重新绑定最新内容后重试。'
+  if (code === 'SOURCE_SCOPE_REQUIRED') return '请先选择输入范围，或明确改用全文。'
+  if (code === 'SOURCE_SCOPE_CHANGED') return '原文或范围已变化，请重新读取原文并选择范围。'
+  if (code === 'SOURCE_SCOPE_INVALID') return '无法使用这个范围，请重新选择不重叠的文字片段。'
+  if (code === 'GUIDANCE_INVALID') return '指导或完成标准不完整，请核对后再保存。'
+  if (code === 'MATERIAL_PREVIEW_EXPIRED') return '阅读预览已过期，请重新读取并核对。'
+  if (code === 'MATERIAL_PREVIEW_CONFLICT') return '这份预览已保存或结果待核对，请检查目的地。'
+  if (code === 'MATERIAL_INVALID') return '材料或所选范围无效，请重新核对选择。'
+  if (code === 'MATERIAL_SOURCE_BLOCKED') return '地址或文件路径不可读取，请使用公开网页或工作区内 PDF。'
+  if (code === 'MATERIAL_READ_FAILED') return '材料读取失败，请核对地址、文件和读取限制。'
+  if (code === 'MATERIAL_LIMIT') return '材料或打开的预览超过上限，请减少后再试。'
+  if (code === 'MATERIAL_UNAVAILABLE') return '当前宿主不支持这种材料读取。'
+  if (code === 'GUIDANCE_UNAVAILABLE') return '这个内置指导版本不可用，请重新查看可用版本。'
+  if (code === 'EXTRACTION_REVISION_INVALID') return '旧卡与清单对应无效，请核对条目和拟采用的正文。'
   if (code === 'CARD_VERSION_CONFLICT') return '这张卡刚刚有了新版本，请比较后重新提交。'
   if (code === 'CARD_NAME_CONFLICT') return '卡片名称已被修改，草稿已保留。请核对最新名称后再保存。'
   if (code === 'TARGET_BUSY') return '这个成果正在生成中。'

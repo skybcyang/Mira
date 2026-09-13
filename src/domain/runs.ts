@@ -1,4 +1,5 @@
 import type { ContentKind } from './cards'
+import type { RangeScope } from './sourceScopes.js'
 
 export type RunStatus =
   | 'queued'
@@ -15,6 +16,9 @@ export interface SourceSnapshot {
   contentKind: ContentKind
   resolvedContent: string
   digest: string
+  scope?: RangeScope
+  lines?: Array<{ startLine: number; endLine: number }>
+  fullContentDigest?: string
 }
 
 export interface RunProgress {
@@ -33,6 +37,7 @@ export interface RunProgressEvent {
 }
 
 export interface TransformationRun {
+  guidanceSnapshot?: import('./guidance.js').GuidanceSnapshot
   id: string
   boardId: string
   transformationId: string

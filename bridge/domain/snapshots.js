@@ -1,10 +1,16 @@
 import { digestText, isUsableContent } from './content.js'
 import { typed } from './errors.js'
+import { resolveSourceScope, sameScope, validateSourceScopes } from '../../src/domain/sourceScopes.js'
+import { validateGuidance, assertGuidanceCriteria } from '../../src/domain/guidance.js'
 
 export async function createSourceSnapshots(cards, sourceRefs, options = {}) {
   if (sourceRefs.length === 0) {
     throw typed('SOURCE_REQUIRED', 'At least one source card is required')
   }
+  validateSourceScopes(sourceRefs.filter(ref => ref.scope !== undefined).map(ref => {
+    if (!ref.scope || 'cardId' in Object(ref.scope)) throw typed('SOURCE_SCOPE_INVALID', '来源范围无效。')
+    return { ...ref.scope, cardId: ref.cardId }
+  }), sourceRefs.map(ref => ref.cardId))
 
   const cardsById = new Map(cards.map((card) => [card.id, card]))
   const resolvedRefs = sourceRefs.map((sourceRef) => {
@@ -28,12 +34,12 @@ export async function createSourceSnapshots(cards, sourceRefs, options = {}) {
         `Source version ${sourceRef.versionId} is missing or unusable`,
       )
     }
-    return { card, version }
+    return { card, version, scope: sourceRef.scope }
   })
 
   try {
     return await Promise.all(
-      resolvedRefs.map(async ({ card, version }) => {
+      resolvedRefs.map(async ({ card, version, scope }) => {
         const resolvedContent =
           version.content.kind === 'markdown'
             ? version.content.markdown
@@ -43,12 +49,14 @@ export async function createSourceSnapshots(cards, sourceRefs, options = {}) {
           throw new TypeError(`Source card ${card.id} did not resolve to text`)
         }
 
+        const selection = scope ? await resolveSourceScope(resolvedContent, scope, version.id, version.content.path) : undefined
         return {
           cardId: card.id,
           versionId: version.id,
           contentKind: version.content.kind,
-          resolvedContent,
-          digest: digestText(resolvedContent),
+          resolvedContent: selection?.resolvedContent ?? resolvedContent,
+          digest: digestText(selection?.resolvedContent ?? resolvedContent),
+          ...(selection ? { scope: structuredClone(scope), lines: selection.lines, fullContentDigest: digestText(resolvedContent) } : {}),
         }
       }),
     )
@@ -83,9 +91,20 @@ export async function createTransformationRun(input, options = {}) {
   }
 
   const targetBaseVersionId = target.headVersionId
+  validateGuidance(input.transformation.guidance)
+  assertGuidanceCriteria(input.transformation.guidance, input.transformation.acceptance)
+  const scopes = validateSourceScopes(input.transformation.sourceScopes, sourceCardIds)
+  const refs = input.sourceRefs.map(ref => {
+    const stored = scopes.find(scope => scope.cardId === ref.cardId)
+    if (stored?.mode === 'required') throw typed('SOURCE_SCOPE_REQUIRED', '请先选择输入范围，或明确改用全文。')
+    if (ref.scope !== undefined && !sameScope(ref.scope, stored)) throw typed('SOURCE_SCOPE_CHANGED', '运行请求与已保存范围不一致。')
+    if (!stored) return ref
+    const { cardId: _cardId, ...scope } = stored
+    return { ...ref, scope }
+  })
   const sourceSnapshot = await createSourceSnapshots(
     input.cards,
-    input.sourceRefs,
+    refs,
     options,
   )
 
@@ -98,6 +117,7 @@ export async function createTransformationRun(input, options = {}) {
     targetCardId: target.id,
     targetBaseVersionId,
     intent: input.intent,
+    ...(input.transformation.guidance ? { guidanceSnapshot: structuredClone(input.transformation.guidance) } : {}),
     ...(input.modelSnapshot ? { modelSnapshot: input.modelSnapshot } : {}),
     createdAt: input.createdAt,
   }
@@ -140,6 +160,9 @@ export function isStale(
     ) {
       return true
     }
+    if (latestAppliedRun.sourceSnapshot.some(snapshot => !sameScope(
+      currentTransformation.sourceScopes?.find(scope => scope.cardId === snapshot.cardId), snapshot.scope,
+    ))) return true
   }
 
   const cardsById = new Map(cards.map((card) => [card.id, card]))
@@ -149,6 +172,6 @@ export function isStale(
     if (snapshot.contentKind !== 'file-reference') return false
 
     const currentDigest = currentFileDigests[snapshot.cardId]
-    return currentDigest !== undefined && currentDigest !== snapshot.digest
+    return currentDigest !== undefined && currentDigest !== (snapshot.fullContentDigest ?? snapshot.digest)
   })
 }

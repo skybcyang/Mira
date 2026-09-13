@@ -17,9 +17,10 @@ import type {
   BoardCheckpointV1,
 } from './domain'
 import type { OrganizationRequest, OrganizationResult } from './v2/canvasOrganization'
+import type { ExtractionItem } from './domain/extraction.js'
 
 const API = '/graphmind/api/v2'
-export interface V2Suggestion {
+export interface StepIntent {
   id: string
   label: string
   instruction: string
@@ -105,6 +106,7 @@ export interface CardContentResponse {
   contentKind: ContentCard['contentKind']
   path?: string
   content: string
+  contentDigest?: string
 }
 
 export type FileSyncStatus = 'unbound' | 'synced' | 'unsynced' | 'conflict' | 'missing' | 'error'
@@ -163,9 +165,10 @@ export interface ModelConnectionResult {
   latencyMs: number
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(method: string, path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`${API}${path}`, {
     method,
+    ...(signal ? { signal } : {}),
     headers: body === undefined ? undefined : { 'content-type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
   })
@@ -181,6 +184,17 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 }
 
 export const v2Api = {
+  previewMaterial: (input: { kind: 'web'; url: string } | { kind: 'pdf'; path: string }, signal?: AbortSignal) => request<{ preview: import('./domain/materials.js').MaterialPreview }>('POST', '/materials/previews', input, signal),
+  releaseMaterial: (id: string) => request('DELETE', `/materials/previews/${encodeURIComponent(id)}`),
+  materialPage: (id: string, page: number, signal?: AbortSignal) => request<{ image: string }>('GET', `/materials/previews/${encodeURIComponent(id)}/pages/${page}`, undefined, signal),
+  saveMaterial: (boardId: string, previewId: string, spans: import('./domain/sourceScopes.js').TextSpan[]) => request<{ card: ContentCard }>('POST', `/boards/${boardId}/materials`, { previewId, spans }),
+  captureMaterial: (input: { previewId: string; spans: import('./domain/sourceScopes.js').TextSpan[]; note?: string; tags?: string[] }) => request<{ entry: InspirationEntry }>('POST', '/inspiration-pool/captures', input),
+  reviseExtractionCard: (boardId: string, cardId: string, body: {
+    baseVersionId: string; source: { cardId: string; versionId: string; itemIds: string[] }; markdown: string
+  }) => request<{ card: ContentCard; noop: boolean; fileSync?: FileSyncResult }>('POST', `/boards/${boardId}/cards/${cardId}/extraction-revisions`, body),
+  getGuidance: () => request<{ guidance: import('./domain/guidance.js').GuidanceSnapshot[] }>('GET', '/guidance'),
+  extractCards: (boardId: string, cardId: string, body: { baseVersionId: string; items: ExtractionItem[] }) =>
+    request<{ cards: ContentCard[] }>('POST', `/boards/${boardId}/cards/${cardId}/extractions`, body),
   getInspirationPool: () => request<{ pool: InspirationPool }>('GET', '/inspiration-pool'),
   createInspirationEntry: (body: { markdown: string; tags: string[] }) =>
     request<{ entry: InspirationEntry }>('POST', '/inspiration-pool/entries', body),
@@ -360,10 +374,6 @@ export const v2Api = {
       ...(expectedFileDigest ? { expectedFileDigest } : {}),
     },
   ),
-  suggest: (
-    boardId: string,
-    sourceRefs: Array<{ cardId: string; versionId: string }>,
-  ) => request<{ suggestions: V2Suggestion[] }>('POST', `/boards/${boardId}/suggestions`, { sourceRefs }),
   createTransformation: (
     boardId: string,
     body: {
@@ -407,6 +417,8 @@ export const v2Api = {
       acceptance?: string
       modelId?: string | null
       sourceRefs?: Array<{ cardId: string; versionId: string }>
+      sourceScopes?: import('./domain/sourceScopes.js').SourceScope[]
+      guidance?: import('./domain/guidance.js').GuidanceInput | null
     },
   ) => request<{ transformation: Transformation }>(
     'PATCH',

@@ -1,4 +1,5 @@
 import { digestContent, isUsableContent } from './domain/content.js'
+import { validateMaterialOrigin } from '../src/domain/materials.js'
 import { typed } from './domain/errors.js'
 import { nextUpdatedAt, normalizeTags } from './v2-http-policy.js'
 
@@ -59,6 +60,9 @@ export function validateInspirationPool(pool) {
       }
       if (!['human', 'restore', 'import'].includes(version.origin)) {
         errors.push(`entry ${entry.id} version origin is invalid`)
+      }
+      if (version.materialOrigin !== undefined) {
+        try { validateMaterialOrigin(version.materialOrigin) } catch { errors.push(`entry ${entry.id} has invalid material origin`) }
       }
     })
     if (typeof entry.createdAt !== 'string' || !entry.createdAt || typeof entry.updatedAt !== 'string' || !entry.updatedAt) {
@@ -160,7 +164,8 @@ export class InspirationPoolStore {
     return updated
   }
 
-  async createEntry({ markdown, tags = [] } = {}) {
+  async createEntry({ markdown, tags = [] } = {}, materialOrigin) {
+    if (materialOrigin !== undefined) validateMaterialOrigin(materialOrigin)
     const content = { kind: 'markdown', markdown: String(markdown || '').trim() }
     if (!content.markdown) throw typed('INSPIRATION_INVALID', '灵感内容不能为空')
     const normalizedTags = normalizeTags(tags)
@@ -180,6 +185,7 @@ export class InspirationPoolStore {
           content,
           digest: digestContent(content),
           origin: 'human',
+          ...(materialOrigin ? { materialOrigin: structuredClone(materialOrigin) } : {}),
           createdAt: timestamp,
         }],
         createdAt: timestamp,

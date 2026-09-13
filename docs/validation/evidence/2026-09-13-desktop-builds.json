@@ -1,0 +1,42 @@
+{
+  "format": "mira-local-desktop-validation-v1",
+  "verifiedAt": "2026-09-12T19:14:07.331Z",
+  "version": "0.1.0-beta.2",
+  "baseCommit": "c1f82ed791f986c194583a3436122256c9beb6ae",
+  "workingTree": "uncommitted local changes; not a release commit",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "x64Execution": "Rosetta"
+  },
+  "assets": [
+    {
+      "path": "out/desktop/make/Mira-0.1.0-beta.2-arm64.dmg",
+      "architecture": "arm64",
+      "bytes": 140215278,
+      "sha256": "4032eef38af71907cae7529c82204495c3e8359fbb625f638db9ae0ddc76c1f9",
+      "signing": "unsigned"
+    },
+    {
+      "path": "out/desktop/make/zip/darwin/arm64/Mira-darwin-arm64-0.1.0-beta.2.zip",
+      "architecture": "arm64",
+      "bytes": 141100536,
+      "sha256": "8d40154a5784982faa56185449375761920179602afb82b8f332bf8f190bade3",
+      "signing": "unsigned"
+    },
+    {
+      "path": "out/desktop/make/Mira-0.1.0-beta.2-x64.dmg",
+      "architecture": "x64",
+      "bytes": 146208678,
+      "sha256": "a35c9ee2a60b7bbfa3e2271d0bc229ec8024240d728c88a48722cd66ef125b45",
+      "signing": "unsigned"
+    },
+    {
+      "path": "out/desktop/make/zip/darwin/x64/Mira-darwin-x64-0.1.0-beta.2.zip",
+      "architecture": "x64",
+      "bytes": 147404676,
+      "sha256": "4d930cd68421a5d809432c7a0715b168e0897789dd2f330fe294f0bb5753e50d",
+      "signing": "unsigned"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { extractionRequirement, extractionInstruction } from '../../domain/extraction.js'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Trash2 } from 'lucide-react'
 import type { Transformation } from '../../domain'
@@ -26,12 +27,12 @@ export function TransformationEditForm({
   }) => Promise<boolean>
 }) {
   const [label, setLabel] = useState(transformation.label)
-  const [instruction, setInstruction] = useState(transformation.instruction)
+  const [instruction, setInstruction] = useState(extractionRequirement(transformation.instruction) ?? transformation.instruction)
   const [acceptance, setAcceptance] = useState(transformation.acceptance)
   const [modelMode, setModelMode] = useState<'inherit' | 'fixed'>(transformation.modelId ? 'fixed' : 'inherit')
   const [modelId, setModelId] = useState(transformation.modelId || '')
   const [saving, setSaving] = useState(false)
-  const dirty = label !== transformation.label || instruction !== transformation.instruction
+  const dirty = label !== transformation.label || instruction !== (extractionRequirement(transformation.instruction) ?? transformation.instruction)
     || acceptance !== transformation.acceptance
     || (modelOverrideSupported && (modelMode !== (transformation.modelId ? 'fixed' : 'inherit')
       || (modelMode === 'fixed' && modelId !== (transformation.modelId || ''))))
@@ -44,7 +45,7 @@ export function TransformationEditForm({
     setSaving(true)
     void onSave({
       label: label.trim(),
-      instruction: instruction.trim(),
+      instruction: extractionRequirement(transformation.instruction) === null ? instruction.trim() : extractionInstruction(instruction),
       acceptance: acceptance.trim(),
       ...(modelOverrideSupported
         ? { modelId: modelMode === 'fixed' ? modelId.trim() : null }

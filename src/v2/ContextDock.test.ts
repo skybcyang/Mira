@@ -1,10 +1,10 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
-import type { V2Suggestion } from '../v2Api'
+import type { StepIntent } from '../v2Api'
 import * as contextDock from './ContextDock'
 
-const suggestion: V2Suggestion = {
+const suggestion: StepIntent = {
   id: 'summarize',
   label: '提炼问题',
   instruction: '提炼问题',
@@ -15,17 +15,15 @@ type CreateStepPendingRef = { current: boolean }
 type SubmitCreateStep = (
   pending: CreateStepPendingRef,
   setPending: (value: boolean) => void,
-  value: V2Suggestion,
-  generate: (value: V2Suggestion) => Promise<void>,
+  value: StepIntent,
+  generate: (value: StepIntent) => Promise<void>,
 ) => Promise<void>
 
 type SingleStepControlsProps = {
-  suggestions: V2Suggestion[]
-  suggestionState: 'idle' | 'loading' | 'ready' | 'error'
   custom: string
   pending: boolean
   onCustomChange: (value: string) => void
-  onCreate: (value: V2Suggestion) => void
+  onCreate: (value: StepIntent) => void
   onStartBranch: () => void
 }
 
@@ -66,7 +64,7 @@ describe('context dock single-step creation', () => {
     expect(generate).toHaveBeenCalledTimes(2)
   })
 
-  it('disables every single-step input and names suggestion actions while creating', () => {
+  it('keeps custom creation available without rendering preset suggestions', () => {
     const SingleStepControls = (contextDock as unknown as {
       SingleStepControls?: (props: SingleStepControlsProps) => ReturnType<typeof createElement>
     }).SingleStepControls
@@ -74,8 +72,6 @@ describe('context dock single-step creation', () => {
     if (!SingleStepControls) return
 
     const html = renderToStaticMarkup(createElement(SingleStepControls, {
-      suggestions: [suggestion],
-      suggestionState: 'ready',
       custom: '整理结论',
       pending: true,
       onCustomChange: () => undefined,
@@ -86,7 +82,8 @@ describe('context dock single-step creation', () => {
     const customInput = html.match(/<input[^>]*aria-label="自定义成果"[^>]*>/)?.[0]
 
     expect(html).toContain('aria-busy="true"')
-    expect(suggestionButton).toContain('disabled')
+    expect(suggestionButton).toBeUndefined()
+    expect(html).not.toContain('提炼问题')
     expect(customInput).toContain('disabled')
     expect(html).toContain('添加中…')
   })

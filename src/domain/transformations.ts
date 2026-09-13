@@ -1,3 +1,5 @@
+import type { SourceScope } from './sourceScopes.js'
+
 export interface PlanRef {
   planId: string
   source: 'ad-hoc' | 'template'
@@ -8,8 +10,10 @@ export interface PlanRef {
 }
 
 export interface Transformation {
+  guidance?: import('./guidance.js').GuidanceSnapshot
   id: string
   sourceCardIds: string[]
+  sourceScopes?: SourceScope[]
   targetCardId: string
   x?: number
   y?: number

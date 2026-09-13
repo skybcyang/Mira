@@ -3,7 +3,7 @@ import type { ContentCard } from './domain'
 import {
   cardSummary,
   canvasCardTags,
-  createCustomSuggestion,
+  createStepIntent,
   diffLines,
   sourceCardPresentations,
   versionTimeline,
@@ -58,10 +58,10 @@ describe('v2 view model', () => {
   })
 
   it('keeps custom generation available independently of suggestions', () => {
-    expect(createCustomSuggestion('  一页试点决策  ')).toEqual({
+    expect(createStepIntent('  一页试点决策  ')).toEqual({
       id: 'custom', label: '一页试点决策', instruction: '一页试点决策', acceptance: '',
     })
-    expect(createCustomSuggestion('   ')).toBeNull()
+    expect(createStepIntent('   ')).toBeNull()
   })
 
   it('names file sources by basename and disambiguates duplicates with the shortest parent suffix', () => {

@@ -26,6 +26,14 @@ export const DESKTOP_STAGE_ENTRIES = Object.freeze([
     format: 'iife',
   }),
   Object.freeze({
+    role: 'pdf-reader',
+    kind: 'file',
+    source: 'bridge/pdf-runtime/pdf-reader-worker.mjs',
+    target: 'pdf-runtime/pdf-reader-worker.mjs',
+    bundled: true,
+    format: 'esm',
+  }),
+  Object.freeze({
     role: 'renderer',
     kind: 'directory',
     source: 'dist',
@@ -81,14 +89,34 @@ async function bundleDesktopEntry({ projectRoot, stageRoot, entry }) {
     platform: 'node',
     format: entry.format,
     target: 'node22',
-    external: ['electron'],
+    external: ['electron', 'pdfjs-dist/*'],
+    ...(entry.format === 'esm' ? { banner: { js: 'import { createRequire as __miraCreateRequire } from "node:module"; const require = __miraCreateRequire(import.meta.url);' } } : {}),
     legalComments: 'none',
     logLevel: 'silent',
     sourcemap: false,
   })
 }
 
-export async function stageDesktopApp({ projectRoot, stageRoot }) {
+export async function stagePdfRuntime({ projectRoot, stageRoot, architecture = process.arch, platform = process.platform }) {
+  const projectRequire = createRequire(join(projectRoot, 'package.json'))
+  const pdfPackage = projectRequire.resolve('pdfjs-dist/package.json')
+  const canvasPackage = createRequire(pdfPackage).resolve('@napi-rs/canvas/package.json')
+  const nativeName = `@napi-rs/canvas-${platform}-${architecture}${platform === 'win32' ? '-msvc' : platform === 'linux' ? '-gnu' : ''}`
+  let nativePackage
+  try { nativePackage = createRequire(canvasPackage).resolve(`${nativeName}/package.json`) } catch { throw new Error(`PDF rendering requires the installed target dependency ${nativeName}; install with pnpm supportedArchitectures before packaging.`) }
+  const pdfTarget = join(stageRoot, 'pdf-runtime', 'node_modules', 'pdfjs-dist')
+  await cp(join(projectRoot, 'docs', 'licenses', 'production-notices.txt'), join(stageRoot, 'THIRD_PARTY_NOTICES.txt'))
+  for (const asset of ['package.json', 'LICENSE', 'legacy/build/pdf.mjs', 'legacy/build/pdf.worker.mjs', 'cmaps', 'standard_fonts']) {
+    await mkdir(dirname(join(pdfTarget, asset)), { recursive: true })
+    await cp(join(dirname(pdfPackage), asset), join(pdfTarget, asset), { recursive: true, dereference: true })
+  }
+  for (const [name, packagePath] of [['@napi-rs/canvas', canvasPackage], [nativeName, nativePackage]]) {
+    await cp(dirname(packagePath), join(stageRoot, 'pdf-runtime', 'node_modules', name), { recursive: true, dereference: true })
+  }
+  return { 'pdfjs-dist': JSON.parse(await readFile(pdfPackage, 'utf8')).version, '@napi-rs/canvas': JSON.parse(await readFile(canvasPackage, 'utf8')).version, [nativeName]: JSON.parse(await readFile(nativePackage, 'utf8')).version }
+}
+
+export async function stageDesktopApp({ projectRoot, stageRoot, architecture = process.arch }) {
   assertSafeStageRoot(projectRoot, stageRoot)
   const projectPackage = JSON.parse(
     await readFile(join(projectRoot, 'package.json'), 'utf8'),
@@ -108,6 +136,7 @@ export async function stageDesktopApp({ projectRoot, stageRoot }) {
       recursive: true,
     })
   }
+  if (projectPackage.dependencies?.['pdfjs-dist']) await stagePdfRuntime({ projectRoot, stageRoot, architecture })
 
   await writeFile(
     join(stageRoot, 'package.json'),

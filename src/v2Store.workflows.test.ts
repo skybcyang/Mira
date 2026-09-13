@@ -111,8 +111,6 @@ beforeEach(() => {
     runningToTransformationId: null,
     workflowDraft: null,
     selectedCardIds: [],
-    suggestions: [],
-    suggestionState: 'idle',
     branchDraft: null,
     drawer: null,
     message: null,

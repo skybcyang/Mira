@@ -11,6 +11,10 @@ Mira 原创代码、文档及专门制作的演示素材采用根目录 [MIT Lic
 | Zustand | 浏览器状态 | MIT |
 | react-markdown / remark-gfm | Markdown 渲染 | MIT |
 | Lucide | 界面图标 | ISC；包内亦保留部分图标的原始 MIT 署名 |
+| @mozilla/readability / PDF.js | 静态网页正文、文本 PDF 与原页阅读 | Apache-2.0；PDF.js 本地字体的独立许可随资产保留 |
+| linkedom / ipaddr.js | 无脚本 DOM、公开网络地址校验 | ISC / MIT |
+| @napi-rs/canvas | PDF 原页本地渲染 | MIT；目标架构包沿用同项目许可 |
+| @noble/hashes / mdast-util-from-markdown | 可移植 SHA-256、真实章节边界 | MIT |
 
 锁文件对应的完整依赖清单、包括传递依赖，见[许可证清单](docs/licenses/dependencies.json)。生产依赖的随包许可证原文见[生产依赖许可证](docs/licenses/production-notices.txt)。这些是当前源码分发的核查记录，不是永久不变的依赖声明；更新依赖后重新生成并检查。
 

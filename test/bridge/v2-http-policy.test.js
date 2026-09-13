@@ -3,7 +3,7 @@ import * as httpPolicy from '../../bridge/v2-http-policy.js'
 import { runProgressErrors } from '../../bridge/domain/run-progress.js'
 import { httpStatusForCode } from '../../bridge/mira-http.js'
 
-const { cardIsRelated, nextUpdatedAt, parseSuggestions, safeRunProgress } = httpPolicy
+const { cardIsRelated, nextUpdatedAt, safeRunProgress } = httpPolicy
 
 function normalizeTags(value) {
   if (typeof httpPolicy.normalizeTags !== 'function') {
@@ -39,23 +39,6 @@ describe('v2 HTTP policy', () => {
     expect(cardIsRelated(board, 'free-card')).toBe(false)
   })
 
-  it('normalizes model suggestions at the transport boundary', () => {
-    const suggestions = parseSuggestions(JSON.stringify([
-      { label: '  综合 ', goal: ' 合并来源 ', accept: ' 可执行 ' },
-      { label: '', instruction: 'ignored' },
-      { label: '比较', instruction: '列出差异' },
-      { label: '计划', instruction: '形成计划' },
-      { label: 'extra', instruction: 'must be capped' },
-    ]))
-
-    expect(suggestions).toHaveLength(3)
-    expect(suggestions[0]).toEqual({
-      id: 'suggestion-1',
-      label: '综合',
-      instruction: '合并来源',
-      acceptance: '可执行',
-    })
-  })
 
   it('keeps timestamps monotonic and progress payloads bounded', () => {
     expect(nextUpdatedAt('2026-08-25T00:00:00.000Z', '2026-08-24T00:00:00.000Z'))

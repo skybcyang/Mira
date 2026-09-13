@@ -1,0 +1,136 @@
+name: Prepare signed desktop release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Exact source commit or existing ref to verify (does not create a tag)
+        type: string
+        required: true
+      version:
+        description: Exact package.json version
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  verify:
+    runs-on: macos-15
+    timeout-minutes: 20
+    outputs:
+      sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: 9.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+          cache: pnpm
+      - id: source
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          node --input-type=module -e 'import {readFileSync} from "node:fs"; if(JSON.parse(readFileSync("package.json")).version!==process.env.REQUESTED_VERSION) throw Error("Version mismatch")'
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm build
+      - run: pnpm build:bridge
+      - run: git diff --check
+
+  package:
+    needs: verify
+    environment: desktop-release
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: macos-15, platform: darwin, arch: arm64 }
+          - { runner: macos-15-intel, platform: darwin, arch: x64 }
+          - { runner: windows-2022, platform: win32, arch: x64 }
+          - { runner: windows-11-arm, platform: win32, arch: arm64 }
+    env:
+      MIRA_DESKTOP_BUILD_PROFILE: release
+      MIRA_RELEASE_SOURCE_SHA: ${{ needs.verify.outputs.sha }}
+      MIRA_MAC_SIGN_IDENTITY: ${{ vars.MIRA_MAC_SIGN_IDENTITY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.verify.outputs.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: 9.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Verify native target and exact source
+        env:
+          TARGET_PLATFORM: ${{ matrix.platform }}
+          TARGET_ARCH: ${{ matrix.arch }}
+        run: node --input-type=module -e 'import {execFileSync} from "node:child_process"; if(process.platform!==process.env.TARGET_PLATFORM || process.arch!==process.env.TARGET_ARCH || execFileSync("git",["rev-parse","HEAD"],{encoding:"utf8"}).trim()!==process.env.MIRA_RELEASE_SOURCE_SHA) throw Error("Build target or source mismatch")'
+      - run: pnpm install --frozen-lockfile
+      - name: Import platform credentials (no unsigned fallback)
+        env:
+          MIRA_SIGNING_P12_BASE64: ${{ matrix.platform == 'darwin' && secrets.MIRA_MAC_P12_BASE64 || secrets.MIRA_WINDOWS_P12_BASE64 }}
+          MIRA_SIGNING_P12_PASSWORD: ${{ matrix.platform == 'darwin' && secrets.MIRA_MAC_P12_PASSWORD || secrets.MIRA_WINDOWS_P12_PASSWORD }}
+          MIRA_KEYCHAIN_PASSWORD: ${{ secrets.MIRA_KEYCHAIN_PASSWORD }}
+          MIRA_APPLE_ID: ${{ secrets.MIRA_APPLE_ID }}
+          MIRA_APPLE_TEAM_ID: ${{ secrets.MIRA_APPLE_TEAM_ID }}
+          MIRA_APPLE_APP_PASSWORD: ${{ secrets.MIRA_APPLE_APP_PASSWORD }}
+        run: node scripts/import-release-credentials.mjs
+      - run: node scripts/run-desktop-forge.mjs --arch=${{ matrix.arch }}
+      - run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }}
+      - run: node scripts/packed-desktop-smoke.mjs --arch=${{ matrix.arch }} --restore
+      - run: node scripts/release-manifest.mjs target out/desktop/make ${{ matrix.platform }}-${{ matrix.arch }}
+      - name: Retain reviewable signed assets only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: signed-${{ matrix.platform }}-${{ matrix.arch }}
+          path: out/desktop/make/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Remove ephemeral signing credentials
+        if: always()
+        run: node scripts/remove-release-credentials.mjs
+
+  manifest:
+    needs: [verify, package]
+    runs-on: ubuntu-latest
+    env:
+      MIRA_RELEASE_SOURCE_SHA: ${{ needs.verify.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.verify.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: signed-*
+          path: release-review
+      - run: node scripts/release-manifest.mjs assemble release-review
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: complete-signed-release-review
+          path: release-review/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7

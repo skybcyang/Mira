@@ -63,8 +63,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Unified board navigation and plan form; adaptive owners remain unchanged.
-    expect(digest).toBe('33b065b66e03181ef9e6cdf9ef5d5206b848b5ea87b2916f7bb6b04eb6dd9216')
+    // Materials, reconciliation, scopes, guidance and version info: desktop/1024/390px reviewed on 2026-09-13.
+    expect(digest).toBe('c2fcf17e8610c0ab7bc2ad87a8ebbf4284db3f8c25ec1265a716c81318ef6991')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {

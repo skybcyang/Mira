@@ -12,6 +12,7 @@ import { InspirationPoolStore } from './inspiration-pool-store.js'
 import { createInspirationPoolHandlers } from './inspiration-pool-http.js'
 import { BoardCheckpointStore } from './board-checkpoint-store.js'
 import { createBoardCheckpointService } from './board-checkpoint-service.js'
+import { createMaterialService } from './material-service.js'
 
 function defaultNewId(prefix = 'id') {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36)}`
@@ -89,6 +90,7 @@ export function createMiraApplication({
   resolveModel,
   onRecovery,
   fileLibrary,
+  materialReaders,
 } = {}) {
   const resolvedStores = stores || createMiraStores({ fs, newId, now, directories })
   const { boardStore, runStore, workflowStore, inspirationPoolStore } = resolvedStores
@@ -136,6 +138,11 @@ export function createMiraApplication({
     now,
   })
   const inspirationPoolHandlers = createInspirationPoolHandlers({ poolStore: inspirationPoolStore })
+  const materialService = createMaterialService({
+    readers: materialReaders, newId,
+    createCard: (boardId, input) => handlers.createMaterialCard(boardId, input),
+    capture: async ({ materialOrigin, ...input }) => ({ entry: await inspirationPoolStore.createEntry(input, materialOrigin) }),
+  })
   const importCommitter = createBoardImportCommitter({
     fs: storageFs,
     coordinator,
@@ -204,7 +211,7 @@ export function createMiraApplication({
     return result
   })()
 
-  async function dispatch(method, segments, body) {
+  async function dispatch(method, segments, body, options) {
     await ready
     return (
       (await dispatchV2Route(method, segments, body, {
@@ -216,6 +223,8 @@ export function createMiraApplication({
         checkpointService,
         backupService,
         fileLibrary,
+        materialService,
+        signal: options?.signal,
       })) || {
         status: 404,
         body: { code: 'NOT_FOUND', message: `${method} /${segments.join('/')}` },
@@ -236,5 +245,6 @@ export function createMiraApplication({
     backupService,
     ready,
     dispatch,
+    materialService,
   }
 }

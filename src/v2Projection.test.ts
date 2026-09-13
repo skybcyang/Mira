@@ -226,6 +226,10 @@ describe('v2 canvas projection', () => {
     expect(reordered.nodes.find((node) => node.id === 'target')?.data)
       .toMatchObject({ stale: true })
 
+    canvas.transformations[0].sourceCardIds = ['a', 'b']
+    canvas.transformations[0].sourceScopes = [{ cardId: 'a', mode: 'required' }]
+    expect(projectV2Board(canvas, { [applied.id]: applied }).nodes.find(node => node.id === 'target')?.data).toMatchObject({ stale: true })
+
     canvas.transformations = [{ ...canvas.transformations[0], sourceCardIds: ['b'] }]
     const replaced = projectV2Board(canvas, { [applied.id]: applied })
     expect(replaced.nodes.find((node) => node.id === 'target')?.data)

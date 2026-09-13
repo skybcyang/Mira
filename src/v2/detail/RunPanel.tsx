@@ -106,6 +106,7 @@ export function RunPanelView({
     </div>
     {active && onStop && <RunStopButton onStop={onStop} />}
     {run.modelSnapshot && <div className="v2-run-model"><span>实际模型</span><code>{run.modelSnapshot.provider} / {run.modelSnapshot.model}</code></div>}
+    {run.guidanceSnapshot && <details className="v2-guidance-read"><summary>本次指导 · {run.guidanceSnapshot.title} · {run.guidanceSnapshot.version}</summary><p>{run.guidanceSnapshot.text}</p></details>}
     {candidate && <><div className="v2-candidate-head"><GitCompareArrows size={16} />当前内容与生成结果</div>
       <p className="v2-candidate-excerpt">{candidate}</p>
       <button className="v2-primary-button" type="button" onClick={onCompare}><GitCompareArrows size={16} />查看待比较结果</button>

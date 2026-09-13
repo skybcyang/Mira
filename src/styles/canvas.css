@@ -396,8 +396,7 @@
 }
 
 .v2-running i,
-.v2-canvas-loading i,
-.v2-suggestions > i {
+.v2-canvas-loading i {
   display: block;
   height: 10px;
   border-radius: 3px;

@@ -7,10 +7,14 @@ import type { DrawerState } from './storeTypes'
 import { ContentPanel } from './detail/ContentPanel'
 import { VersionPanel } from './detail/VersionPanel'
 import { RelationPanel } from './detail/RelationPanel'
+import { SourceScopePanel } from './detail/SourceScopePanel'
+import { GuidancePanel } from './detail/GuidancePanel'
 import { RunPanel } from './detail/RunPanel'
 import { SourcePreviewPanel } from './SourcePreview'
 import type { SourcePreviewRequest } from './sourcePreviewContext'
 import { cardSummary } from '../v2View'
+import { ExtractionPanel } from './detail/ExtractionPanel'
+import { ExtractionComparisonPanel } from './detail/ExtractionComparisonPanel'
 
 export { ContentReaderView, ContentEditorView, CardTagEditor } from './detail/ContentViews'
 export { SaveWorkflowForm, SaveWorkflowControl, WorkflowProvenancePanel } from './detail/WorkflowPanels'
@@ -54,14 +58,14 @@ export default function DetailDrawer({
   const title = !drawer ? '来源预览' : drawer.tab === 'versions'
     ? '版本历史'
     : drawer.tab === 'content'
-      ? card ? cardSummary(card).title : '完整内容'
+      ? drawer.mode === 'compare' ? '与旧卡对照' : drawer.mode === 'extract' ? '提取为多张卡片' : drawer.mode === 'split' ? '拆成卡片' : card ? cardSummary(card).title : '完整内容'
     : drawer.tab === 'relation'
       ? '转化设置'
       : '运行详情'
   const tabs = drawerTabTargets(drawer, board, runs).filter(entry => entry.target || entry.active)
   const isExpanded = sourcePreview && drawer ? sourceExpanded ?? true : expanded
   return <aside className={`v2-detail-drawer${isExpanded ? ' is-expanded' : ''}${sourcePreview ? ' has-source-preview' : ''}`} aria-label={title}>
-    <header><div className="v2-inspector-title" ref={setNameTarget}>{(drawer?.tab !== 'content' || !card) && <h2 tabIndex={-1} title={title}>{title}</h2>}</div><div className="v2-drawer-heading-actions">
+    <header><div className="v2-inspector-title" ref={setNameTarget}>{(drawer?.tab !== 'content' || !card || drawer.mode === 'extract' || drawer.mode === 'split' || drawer.mode === 'compare') && <h2 tabIndex={-1} title={title}>{title}</h2>}</div><div className="v2-drawer-heading-actions">
       <button className="v2-icon-button v2-drawer-expand" type="button" aria-label={isExpanded ? '收起阅读区' : '展开阅读区'} title={isExpanded ? '收起阅读区' : '展开阅读区'} onClick={() => { setExpanded(!isExpanded); if (sourcePreview) setSourceExpanded(!isExpanded) }}>{isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}</button>
       <button className="v2-icon-button" type="button" aria-label="关闭详情" title="关闭详情" onClick={() => drawer ? requestDrawerChange(null) : onCloseSource()}><X size={18} /></button>
     </div></header>
@@ -97,11 +101,19 @@ export default function DetailDrawer({
       tabIndex={0}
       aria-labelledby={`v2-drawer-tab-${drawer.tab}`}
     >{drawer.tab === 'content'
-      ? <ContentPanel key={drawer.cardId} cardId={drawer.cardId} initialMode={drawer.mode} nameTarget={nameTarget} onOpenFileBindingPicker={onOpenFileBindingPicker} onDirtyChange={onDirtyChange} />
+      ? drawer.mode === 'compare'
+        ? <ExtractionComparisonPanel key={`${drawer.cardId}:${drawer.batchId}`} cardId={drawer.cardId} initialBatchId={drawer.batchId} onDirtyChange={onDirtyChange} />
+        : drawer.mode === 'extract' || drawer.mode === 'split'
+        ? <ExtractionPanel key={`${drawer.cardId}:${drawer.mode}`} cardId={drawer.cardId} mode={drawer.mode} onDirtyChange={onDirtyChange} />
+        : <ContentPanel key={drawer.cardId} cardId={drawer.cardId} initialMode={drawer.mode} nameTarget={nameTarget} onOpenFileBindingPicker={onOpenFileBindingPicker} onDirtyChange={onDirtyChange} />
       : drawer.tab === 'versions'
         ? <VersionPanel cardId={drawer.cardId} />
       : drawer.tab === 'relation'
-         ? <RelationPanel key={drawer.transformationId} transformationId={drawer.transformationId} initialEditing={drawer.edit} initialPreview={drawer.preview} onDirtyChange={onDirtyChange} />
+         ? drawer.guidance
+           ? <GuidancePanel key={drawer.transformationId} transformationId={drawer.transformationId} onDirtyChange={onDirtyChange} />
+           : drawer.scopeCardId
+           ? <SourceScopePanel key={`${drawer.transformationId}:${drawer.scopeCardId}`} transformationId={drawer.transformationId} cardId={drawer.scopeCardId} onDirtyChange={onDirtyChange} />
+           : <RelationPanel key={drawer.transformationId} transformationId={drawer.transformationId} initialEditing={drawer.edit} initialPreview={drawer.preview} onDirtyChange={onDirtyChange} />
          : <RunPanel key={drawer.runId} runId={drawer.runId} />}</div>}
     {sourcePreview && <div ref={sourceRef} className="v2-source-companion"><SourcePreviewPanel request={sourcePreview} onClose={onCloseSource} returnLabel={drawer?.tab === 'content' ? '返回正文' : '返回原任务'} /></div>}
     </div>

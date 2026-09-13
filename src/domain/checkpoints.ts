@@ -22,6 +22,7 @@ export interface BoardArtifactV1 {
     | { kind: 'inspiration'; poolId?: string; entryId?: string; boardId?: string; cardId?: string; versionId: string }
     | { kind: 'workflow'; workflowId: string; stepId?: string }
     | { kind: 'historical'; objectKind: 'card' | 'version' | 'transformation' | 'run'; objectId: string }
+    | { kind: 'extraction'; boardId: string; cardId: string; versionId: string }
   >
 }
 

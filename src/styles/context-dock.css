@@ -84,47 +84,6 @@
   font-size: 11px;
 }
 
-.v2-suggestions {
-  min-height: 34px;
-  display: flex;
-  overflow-x: auto;
-  padding: 5px 8px 0;
-}
-
-.v2-suggestions button {
-  min-width: 120px;
-  min-height: 29px;
-  flex: 1 1 0;
-  padding: 5px 8px;
-  border: 0;
-  border-right: 1px solid var(--mira-border);
-  background: transparent;
-  color: var(--mira-ink);
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.v2-suggestions button:last-child {
-  border-right: 0;
-}
-
-.v2-suggestions button:hover {
-  background: var(--mira-accent-soft);
-  color: var(--mira-accent);
-}
-
-.v2-suggestions > span {
-  padding: 6px;
-  color: var(--mira-muted);
-  font-size: 11px;
-}
-
-.v2-suggestions > i {
-  height: 24px;
-  flex: 1;
-  margin: 2px 4px;
-}
-
 .v2-custom-target {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

@@ -51,6 +51,7 @@ const IDENTITY_FIELDS = new Set([
   'stepId',
   'inputId',
   'headVersionId',
+  'batchId',
 ])
 
 function assertUnique(items, getId, label, operation) {
@@ -91,8 +92,8 @@ function collectFileDependencies(board, operation) {
 }
 
 function canonicalExternalReference(reference) {
-  if (reference.kind === 'inspiration') {
-    return `inspiration:${JSON.stringify([
+  if (reference.kind === 'inspiration' || reference.kind === 'extraction') {
+    return `${reference.kind}:${JSON.stringify([
       reference.poolId || reference.boardId,
       reference.entryId || reference.cardId,
       reference.versionId,
@@ -106,7 +107,7 @@ function canonicalExternalReference(reference) {
 
 function validateExternalReference(reference, operation) {
   if (!isObject(reference)) fail(operation, 'External reference must be an object')
-  if (reference.kind === 'inspiration') {
+  if (reference.kind === 'inspiration' || reference.kind === 'extraction') {
     const fields = reference.poolId || reference.entryId
       ? ['poolId', 'entryId', 'versionId']
       : ['boardId', 'cardId', 'versionId']
@@ -157,6 +158,12 @@ function deriveExternalReferences({ board, runs, workflowProvenance }) {
   }
 
   for (const card of board.cards) {
+    if (card.extractionRef) {
+      const { boardId, cardId, versionId } = card.extractionRef
+      if (boardId !== board.id || !cardIds.has(cardId) || versionCardIds.get(versionId) !== cardId) {
+        add({ kind: 'extraction', boardId, cardId, versionId })
+      }
+    }
     if (card.inspirationRef) {
       const ref = card.inspirationRef
       const isInternal = ref.boardId === board.id
@@ -169,6 +176,11 @@ function deriveExternalReferences({ board, runs, workflowProvenance }) {
       if (version.sourceRunId && !runIds.has(version.sourceRunId)) {
         historical('run', version.sourceRunId)
       }
+      for (const ref of version.extractionSources || []) {
+        if (ref.boardId !== board.id || versionCardIds.get(ref.versionId) !== ref.cardId) {
+          add({ kind: 'extraction', boardId: ref.boardId, cardId: ref.cardId, versionId: ref.versionId })
+        }
+      }
       if (version.restoredFromVersionId && !versionsById.has(version.restoredFromVersionId)) {
         historical('version', version.restoredFromVersionId)
       }
@@ -176,6 +188,9 @@ function deriveExternalReferences({ board, runs, workflowProvenance }) {
   }
 
   for (const transformation of board.transformations) {
+    for (const scope of transformation.sourceScopes || []) {
+      if (scope.mode === 'ranges' && !versionsById.has(scope.versionId)) historical('version', scope.versionId)
+    }
     if (transformation.workflowRef) {
       const workflowSteps = provenance.get(transformation.workflowRef.workflowId)
       if (!workflowSteps) {
@@ -465,6 +480,7 @@ export function remapBoardArtifact(artifact, { generateId, now = () => new Date(
   }
 
   const externalHistorical = new Map()
+  const extractionBatches = new Map()
   const externalBoards = new Map()
   const externalCards = new Map()
   const externalVersions = new Map()
@@ -563,10 +579,17 @@ export function remapBoardArtifact(artifact, { generateId, now = () => new Date(
       id: cardIds.get(card.id),
       headVersionId: card.headVersionId === null ? null : versionIds.get(card.headVersionId),
       ...(card.inspirationRef ? { inspirationRef: mapInspiration(card.inspirationRef) } : {}),
+      ...(card.extractionRef ? { extractionRef: (() => {
+        const ref = card.extractionRef
+        const batchKey = JSON.stringify([artifact.board.id, ref.batchId])
+        if (!extractionBatches.has(batchKey)) extractionBatches.set(batchKey, allocate('extraction-batch', ref.batchId))
+        return { ...mapInspiration(ref), itemId: ref.itemId, batchId: extractionBatches.get(batchKey) }
+      })() } : {}),
       versions: card.versions.map((version) => ({
         ...cleanPortableValue(version),
         id: versionIds.get(version.id),
         cardId: cardIds.get(card.id),
+        ...(version.extractionSources ? { extractionSources: version.extractionSources.map(ref => ({ ...mapInspiration(ref), itemId: ref.itemId })) } : {}),
         ...(version.sourceRunId
           ? { sourceRunId: mapMissing('run', version.sourceRunId) }
           : {}),
@@ -582,6 +605,10 @@ export function remapBoardArtifact(artifact, { generateId, now = () => new Date(
     ...cleanPortableValue(transformation),
     id: transformationIds.get(transformation.id),
     sourceCardIds: transformation.sourceCardIds.map((id) => cardIds.get(id)),
+    ...(transformation.sourceScopes ? { sourceScopes: transformation.sourceScopes.map(scope => ({
+      ...scope, cardId: cardIds.get(scope.cardId),
+      ...(scope.mode === 'ranges' ? { versionId: mapMissing('version', scope.versionId) } : {}),
+    })) } : {}),
     targetCardId: cardIds.get(transformation.targetCardId),
     ...(transformation.planRef ? {
       planRef: {
@@ -605,6 +632,7 @@ export function remapBoardArtifact(artifact, { generateId, now = () => new Date(
       ...cleanPortableValue(snapshot),
       cardId: mapMissing('card', snapshot.cardId),
       versionId: mapMissing('version', snapshot.versionId),
+      ...(snapshot.scope ? { scope: { ...snapshot.scope, versionId: mapMissing('version', snapshot.scope.versionId) } } : {}),
     })),
     targetCardId: mapMissing('card', run.targetCardId),
     targetBaseVersionId: run.targetBaseVersionId === null

@@ -12,6 +12,8 @@ import {
 import { createNodeWorkspaceAdapter, resolveInside } from './node-workspace-adapter.js'
 import { acquireNodeWorkspaceWriteLock } from './node-workspace-lock.js'
 import { createFileLibrary } from './file-library.js'
+import { createNodeWebReader } from './node-web-reader.js'
+import { createNodePdfReader } from './node-pdf-reader.js'
 
 const MAX_STATIC_BYTES = 8 * 1024 * 1024
 const DESKTOP_TOKEN_HEADER = 'x-mira-desktop-token'
@@ -141,6 +143,7 @@ export function createStandaloneMiraHost({
   executeModel,
   executeSuggestion,
   modelSettings,
+  applicationInfo,
   accessToken,
   logger = console,
 } = {}) {
@@ -159,6 +162,7 @@ export function createStandaloneMiraHost({
       executeSuggestion: modelSettings?.executeSuggestion || executeSuggestion,
       resolveModel: modelSettings?.resolveModel,
       fileLibrary: createFileLibrary({ workspaceRoot: resolvedWorkspaceRoot }),
+      materialReaders: { web: createNodeWebReader(), pdf: createNodePdfReader({ workspaceRoot: resolvedWorkspaceRoot }) },
       onRecovery({ reconciled, interrupted }) {
         if (reconciled.length > 0) {
           logger.log('[mira] reconciled applied runs:', reconciled.map((run) => run.id).join(', '))
@@ -174,11 +178,14 @@ export function createStandaloneMiraHost({
   }
   const application = {
     ...coreApplication,
-    async dispatch(method, segments, body) {
+    async dispatch(method, segments, body, options) {
       await coreApplication.ready
+      if (method === 'GET' && segments.join('/') === 'v2/application-info') return {
+        status: 200, body: applicationInfo ? { desktop: true, version: applicationInfo.version, platform: applicationInfo.platform, architecture: applicationInfo.architecture } : { desktop: false },
+      }
       return (
         (await modelSettingsRoute(modelSettings, method, segments, body)) ||
-        coreApplication.dispatch(method, segments, body)
+        coreApplication.dispatch(method, segments, body, options)
       )
     },
   }
@@ -264,6 +271,7 @@ export function createStandaloneMiraHost({
     async close() {
       if (closed) return
       closed = true
+      application.materialService.close()
       try {
         if (server.listening) {
           await new Promise((resolveClose, rejectClose) => {

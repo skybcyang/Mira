@@ -15,6 +15,16 @@ function markdown(markdown) {
   return { kind: 'markdown', markdown }
 }
 
+it('marks scope edits stale and compares full file digests separately from selected input digests', () => {
+  const scope = { mode: 'ranges', versionId: 's-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 2 }] }
+  const run = { status: 'succeeded', result: { disposition: 'applied' }, sourceSnapshot: [{ cardId: 's', versionId: 's-v1', contentKind: 'file-reference', digest: 'selected', fullContentDigest: 'full', scope }] }
+  const cards = [{ id: 's', headVersionId: 's-v1' }]
+  const transformation = { sourceCardIds: ['s'], sourceScopes: [{ cardId: 's', ...scope }] }
+  expect(isStale(cards, transformation, run, { s: 'full' })).toBe(false)
+  expect(isStale(cards, { sourceCardIds: ['s'] }, run, { s: 'full' })).toBe(true)
+  expect(isStale(cards, transformation, run, { s: 'changed' })).toBe(true)
+})
+
 function versionedCard(id, text, versionId = `${id}-v1`) {
   return {
     id,
@@ -72,6 +82,24 @@ function runningRun(overrides = {}) {
 }
 
 describe('v2 run snapshots', () => {
+  it('enforces persisted ranges even when the run request omits them', async () => {
+    const source = versionedCard('source', 'outside\nselected\noutside')
+    const contentDigest = 'sha256:' + Buffer.from(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source.versions[0].content.markdown))).toString('hex')
+    const scope = { cardId: 'source', mode: 'ranges', versionId: 'source-v1', contentDigest, spans: [{ start: 8, end: 16 }] }
+    const run = await createTransformationRun({ id: 'r', boardId: 'b', cards: [source, emptyCard()],
+      transformation: { id: 't', sourceCardIds: ['source'], sourceScopes: [scope], targetCardId: 'target' },
+      sourceRefs: [{ cardId: 'source', versionId: 'source-v1' }], intent: 'create', createdAt: '2026-09-13T00:00:00Z' })
+    expect(run.sourceSnapshot[0].resolvedContent).toContain('selected')
+    expect(run.sourceSnapshot[0].resolvedContent).not.toContain('outside')
+    expect(run.sourceSnapshot[0].scope.spans).toEqual(scope.spans)
+  })
+
+  it('refuses required ranges before reading or freezing a run', async () => {
+    await expect(createTransformationRun({ cards: [versionedCard('source', 'text'), emptyCard()],
+      transformation: { sourceCardIds: ['source'], targetCardId: 'target', sourceScopes: [{ cardId: 'source', mode: 'required' }] },
+      sourceRefs: [{ cardId: 'source', versionId: 'source-v1' }] })).rejects.toMatchObject({ code: 'SOURCE_SCOPE_REQUIRED' })
+  })
+
   it('creates a run by freezing source versions and the target head together', async () => {
     const source = versionedCard('source', '输入')
     const target = versionedCard('target', '当前产物', 'target-v3')

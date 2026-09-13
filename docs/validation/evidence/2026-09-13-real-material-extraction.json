@@ -1,0 +1,293 @@
+{
+  "format": "mira-extraction-quality-v1",
+  "startedAt": "2026-09-12T18:54:12.601Z",
+  "cases": [
+    {
+      "id": "article-gds",
+      "sourceDescription": {
+        "kind": "public-article",
+        "url": "https://gds.blog.gov.uk/2025/02/10/launching-the-artificial-intelligence-playbook-for-the-uk-government/",
+        "capturedAt": "2026-09-12T18:22:42.040Z",
+        "sourceDigest": "4365610d8a280985f552095e000b877e3e8efe9ccad8fb9bace19cf499fac59b",
+        "nature": "英国 GDS 原文，保留开头两段用于有限引文对照；不收录整篇"
+      },
+      "material": "Today, Technology Secretary Peter Kyle has launched the Artificial Intelligence (AI) Playbook for the UK Government (https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government) to provide departments and public sector organisations with accessible technical guidance on the safe and effective use of AI. \n\nAI is at the heart of the UK Government's strategy to drive economic growth and enhance public service delivery - it offers significant opportunities to reduce costs and enhance public service delivery across government, as highlighted in the State of Digital Government Review 2025 (https://www.gov.uk/government/publications/state-of-digital-government-review/state-of-digital-government-review#data-and-ai). However, we must remain mindful of both the technology's constraints and potential risks.",
+      "runId": "run-p0nh3qmtyqur3l",
+      "run": {
+        "id": "run-p0nh3qmtyqur3l",
+        "boardId": "board-mybrx1mtypp0ez",
+        "transformationId": "transformation-3bqz1lmtyqur3h",
+        "status": "succeeded",
+        "sourceSnapshot": [
+          {
+            "cardId": "card-ji4wj4mtypwydt",
+            "versionId": "version-4m61d5mtypwydt",
+            "contentKind": "markdown",
+            "resolvedContent": "【片段 1 · 原文第 1–3 行】\nToday, Technology Secretary Peter Kyle has launched the Artificial Intelligence (AI) Playbook for the UK Government (https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government) to provide departments and public sector organisations with accessible technical guidance on the safe and effective use of AI. \n\nAI is at the heart of the UK Government's strategy to drive economic growth and enhance public service delivery - it offers significant opportunities to reduce costs and enhance public service delivery across government, as highlighted in the State of Digital Government Review 2025 (https://www.gov.uk/government/publications/state-of-digital-government-review/state-of-digital-government-review#data-and-ai). However, we must remain mindful of both the technology's constraints and potential risks.",
+            "digest": "fnv1a:df8886bd",
+            "scope": {
+              "mode": "ranges",
+              "versionId": "version-4m61d5mtypwydt",
+              "contentDigest": "sha256:b68d323f6cd8af5d4fda7194fe22734f35a099b1a6d35a3f24c5ae528368fb49",
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 824
+                }
+              ]
+            },
+            "lines": [
+              {
+                "startLine": 1,
+                "endLine": 3
+              }
+            ],
+            "fullContentDigest": "fnv1a:0cd8f043"
+          }
+        ],
+        "targetCardId": "card-f3ixrqmtyqur3h",
+        "targetBaseVersionId": null,
+        "intent": "create",
+        "guidanceSnapshot": {
+          "id": "mira-evidence-review",
+          "version": "1.0.1",
+          "title": "证据对照",
+          "text": "按照用户填写的完成标准核对来源材料。逐条区分：材料中能直接找到的证据、由证据作出的推断，以及目前无法核实的部分。引用原句时保持原意，保留否定、范围、时间和其他限定条件；只使用输入中真实存在的页码、行号或章节名，不补造定位。证据不足时写明不足，不把未提到当作否定。材料有冲突时呈现冲突与出处，不擅自裁决。检查范围由用户的问题和标准决定，不额外推荐分析方向。\n输出前逐项检查用户明确的范围、格式和长度限制。用户有字数上限时，按包含标点、引文和标题的全部字符保守计算，先压缩到上限的约七成；优先保留回答和关键限定，不为展示依据堆积长引文或附加说明。标题同样必须得到原文支持，不能新增正文没有的能力。不得扩大原文判断的强度：自愿使用不能推出所有法律情境均无强制性，不要求某项能力不等于反对它。无法确定的结论保持未确定。",
+          "digest": "sha256:b711deb77bb45a114503d6946fc1c88ad9604de1997d00a2acea6f9434ae3aff",
+          "customized": false
+        },
+        "modelSnapshot": {
+          "provider": "openai-compatible",
+          "model": "k3"
+        },
+        "createdAt": "2026-09-12T18:54:12.657Z",
+        "startedAt": "2026-09-12T18:54:12.657Z",
+        "progress": {
+          "phase": "completed",
+          "label": "生成完成",
+          "updatedAt": "2026-09-12T18:54:40.139Z"
+        },
+        "progressEvents": [
+          {
+            "sequence": 1,
+            "phase": "generating",
+            "label": "正在请求模型",
+            "occurredAt": "2026-09-12T18:54:12.663Z"
+          },
+          {
+            "sequence": 2,
+            "phase": "reviewing",
+            "label": "模型响应完成",
+            "occurredAt": "2026-09-12T18:54:40.139Z"
+          },
+          {
+            "sequence": 3,
+            "phase": "completed",
+            "label": "生成完成",
+            "occurredAt": "2026-09-12T18:54:40.139Z"
+          }
+        ],
+        "result": {
+          "output": "<!-- mira:extraction:v1 -->\n<!-- mira:item:launch-playbook -->\n## 技术大臣 Peter Kyle 发布英国政府《AI Playbook》，为部门及公共机构提供安全有效使用 AI 的技术指引\n**主张**：英国技术大臣 Peter Kyle 发布了面向英国政府的《人工智能（AI）Playbook》，旨在为各部门和公共部门组织提供关于安全、有效使用 AI 的易懂技术指引。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 1 行）：\n> \"Today, Technology Secretary Peter Kyle has launched the Artificial Intelligence (AI) Playbook for the UK Government … to provide departments and public sector organisations with accessible technical guidance on the safe and effective use of AI.\"\n\n**限制与说明**：原文给出的 Playbook 链接为 gov.uk 出版物页面（ai-playbook-for-the-uk-government）；\"Today\" 为相对时间，材料未提供具体发布日期，无法核对确切日期。Playbook 的实际内容与效果未在所给片段中描述，无法核实。\n<!-- mira:end -->\n<!-- mira:item:ai-strategy-growth -->\n## 材料称 AI 处于英国政府推动经济增长与改进公共服务战略的核心位置\n**主张**：AI 是英国政府推动经济增长和加强公共服务交付战略的核心。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"AI is at the heart of the UK Government's strategy to drive economic growth and enhance public service delivery\"\n\n**限制与说明**：这是材料的定性陈述，片段未提供衡量\"核心地位\"的具体指标或证据，无法进一步核实其程度。\n<!-- mira:end -->\n<!-- mira:item:ai-cost-opportunities -->\n## 材料称 AI 为降低政府成本和改进公共服务提供重大机遇（援引 2025 年数字政府状况评估）\n**主张**：AI 为在整个政府范围内降低成本、加强公共服务交付提供了重大机遇；该判断被归于《State of Digital Government Review 2025》。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"it offers significant opportunities to reduce costs and enhance public service delivery across government, as highlighted in the State of Digital Government Review 2025\"\n\n**限制与说明**：原文表述为\"offers significant opportunities\"（提供机遇），属于潜在收益，并非已经实现的效果；不应改写为已发生的成本下降或服务改善。所援引评估的链接指向 gov.uk 出版物的 \"data-and-ai\" 章节，但片段未包含该评估原文，其具体结论无法在本材料内核对。\n<!-- mira:end -->\n<!-- mira:item:ai-constraints-risks -->\n## 材料提醒须注意 AI 技术的局限与潜在风险\n**主张**：在肯定 AI 机遇的同时，材料指出必须留意该技术的局限（constraints）和潜在风险（potential risks）。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"However, we must remain mindful of both the technology's constraints and potential risks.\"\n\n**限制与说明**：片段未列举具体是哪些局限与风险，无法核实其范围与严重程度。\n<!-- mira:end -->",
+          "digest": "fnv1a:c61fc07c",
+          "disposition": "applied",
+          "appliedVersionId": "version-v00kammtyqvcb0"
+        },
+        "finishedAt": "2026-09-12T18:54:40.139Z"
+      },
+      "output": "<!-- mira:extraction:v1 -->\n<!-- mira:item:launch-playbook -->\n## 技术大臣 Peter Kyle 发布英国政府《AI Playbook》，为部门及公共机构提供安全有效使用 AI 的技术指引\n**主张**：英国技术大臣 Peter Kyle 发布了面向英国政府的《人工智能（AI）Playbook》，旨在为各部门和公共部门组织提供关于安全、有效使用 AI 的易懂技术指引。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 1 行）：\n> \"Today, Technology Secretary Peter Kyle has launched the Artificial Intelligence (AI) Playbook for the UK Government … to provide departments and public sector organisations with accessible technical guidance on the safe and effective use of AI.\"\n\n**限制与说明**：原文给出的 Playbook 链接为 gov.uk 出版物页面（ai-playbook-for-the-uk-government）；\"Today\" 为相对时间，材料未提供具体发布日期，无法核对确切日期。Playbook 的实际内容与效果未在所给片段中描述，无法核实。\n<!-- mira:end -->\n<!-- mira:item:ai-strategy-growth -->\n## 材料称 AI 处于英国政府推动经济增长与改进公共服务战略的核心位置\n**主张**：AI 是英国政府推动经济增长和加强公共服务交付战略的核心。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"AI is at the heart of the UK Government's strategy to drive economic growth and enhance public service delivery\"\n\n**限制与说明**：这是材料的定性陈述，片段未提供衡量\"核心地位\"的具体指标或证据，无法进一步核实其程度。\n<!-- mira:end -->\n<!-- mira:item:ai-cost-opportunities -->\n## 材料称 AI 为降低政府成本和改进公共服务提供重大机遇（援引 2025 年数字政府状况评估）\n**主张**：AI 为在整个政府范围内降低成本、加强公共服务交付提供了重大机遇；该判断被归于《State of Digital Government Review 2025》。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"it offers significant opportunities to reduce costs and enhance public service delivery across government, as highlighted in the State of Digital Government Review 2025\"\n\n**限制与说明**：原文表述为\"offers significant opportunities\"（提供机遇），属于潜在收益，并非已经实现的效果；不应改写为已发生的成本下降或服务改善。所援引评估的链接指向 gov.uk 出版物的 \"data-and-ai\" 章节，但片段未包含该评估原文，其具体结论无法在本材料内核对。\n<!-- mira:end -->\n<!-- mira:item:ai-constraints-risks -->\n## 材料提醒须注意 AI 技术的局限与潜在风险\n**主张**：在肯定 AI 机遇的同时，材料指出必须留意该技术的局限（constraints）和潜在风险（potential risks）。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"However, we must remain mindful of both the technology's constraints and potential risks.\"\n\n**限制与说明**：片段未列举具体是哪些局限与风险，无法核实其范围与严重程度。\n<!-- mira:end -->",
+      "items": [
+        {
+          "itemId": "launch-playbook",
+          "title": "技术大臣 Peter Kyle 发布英国政府《AI Playbook》，为部门及公共机构提供安全有效使用 AI 的技术指引",
+          "markdown": "**主张**：英国技术大臣 Peter Kyle 发布了面向英国政府的《人工智能（AI）Playbook》，旨在为各部门和公共部门组织提供关于安全、有效使用 AI 的易懂技术指引。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 1 行）：\n> \"Today, Technology Secretary Peter Kyle has launched the Artificial Intelligence (AI) Playbook for the UK Government … to provide departments and public sector organisations with accessible technical guidance on the safe and effective use of AI.\"\n\n**限制与说明**：原文给出的 Playbook 链接为 gov.uk 出版物页面（ai-playbook-for-the-uk-government）；\"Today\" 为相对时间，材料未提供具体发布日期，无法核对确切日期。Playbook 的实际内容与效果未在所给片段中描述，无法核实。"
+        },
+        {
+          "itemId": "ai-strategy-growth",
+          "title": "材料称 AI 处于英国政府推动经济增长与改进公共服务战略的核心位置",
+          "markdown": "**主张**：AI 是英国政府推动经济增长和加强公共服务交付战略的核心。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"AI is at the heart of the UK Government's strategy to drive economic growth and enhance public service delivery\"\n\n**限制与说明**：这是材料的定性陈述，片段未提供衡量\"核心地位\"的具体指标或证据，无法进一步核实其程度。"
+        },
+        {
+          "itemId": "ai-cost-opportunities",
+          "title": "材料称 AI 为降低政府成本和改进公共服务提供重大机遇（援引 2025 年数字政府状况评估）",
+          "markdown": "**主张**：AI 为在整个政府范围内降低成本、加强公共服务交付提供了重大机遇；该判断被归于《State of Digital Government Review 2025》。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"it offers significant opportunities to reduce costs and enhance public service delivery across government, as highlighted in the State of Digital Government Review 2025\"\n\n**限制与说明**：原文表述为\"offers significant opportunities\"（提供机遇），属于潜在收益，并非已经实现的效果；不应改写为已发生的成本下降或服务改善。所援引评估的链接指向 gov.uk 出版物的 \"data-and-ai\" 章节，但片段未包含该评估原文，其具体结论无法在本材料内核对。"
+        },
+        {
+          "itemId": "ai-constraints-risks",
+          "title": "材料提醒须注意 AI 技术的局限与潜在风险",
+          "markdown": "**主张**：在肯定 AI 机遇的同时，材料指出必须留意该技术的局限（constraints）和潜在风险（potential risks）。\n\n**原文依据**（来源 card-ji4wj4mtypwydt，片段 1 · 原文第 3 行）：\n> \"However, we must remain mindful of both the technology's constraints and potential risks.\"\n\n**限制与说明**：片段未列举具体是哪些局限与风险，无法核实其范围与严重程度。"
+        }
+      ]
+    },
+    {
+      "id": "pdf-nist",
+      "sourceDescription": {
+        "kind": "public-pdf",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "sourceDigest": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+        "physicalPages": [
+          6
+        ],
+        "nature": "NIST AI RMF 1.0；PDF.js 实际提取物理第 6 页，印刷页号 1 不混用"
+      },
+      "material": "【物理页 6】\nNIST AI 100-1   AI RMF 1.0 \nExecutive Summary \nArtificial intelligence (AI) technologies have significant potential to transform society and\npeople’s lives – from commerce and health to transportation and cybersecurity to the envi-\nronment and our planet. AI technologies can drive inclusive economic growth and support\nscientific advancements that improve the conditions of our world. AI technologies, how-\never, also pose risks that can negatively impact individuals, groups, organizations, commu-\nnities, society, the environment, and the planet. Like risks for other types of technology, AI\nrisks can emerge in a variety of ways and can be characterized as long- or short-term, high-\nor low-probability, systemic or localized, and high- or low-impact.\nThe AI RMF refers to an   AI system   as an engineered or machine-based system that\ncan, for a given set of objectives, generate outputs such as predictions, recommenda-\ntions, or decisions influencing real or virtual environments. AI systems are designed\nto operate with varying levels of autonomy (Adapted from: OECD Recommendation\non AI:2019;   ISO / IEC   22989:2022).\nWhile there are myriad standards and best practices to help organizations mitigate the risks\nof traditional software or information-based systems, the risks posed by AI systems are in\nmany ways unique (See Appendix B). AI systems, for example, may be trained on data that\ncan change over time, sometimes significantly and unexpectedly, affecting system function-\nality and trustworthiness in ways that are hard to understand. AI systems and the contexts\nin which they are deployed are frequently complex, making it difficult to detect and respond\nto failures when they occur. AI systems are inherently socio-technical in nature, meaning\nthey are influenced by societal dynamics and human behavior. AI risks – and benefits –\ncan emerge from the interplay of technical aspects combined with societal factors related\nto how a system is used, its interactions with other AI systems, who operates it, and the\nsocial context in which it is deployed.\nThese risks make AI a uniquely challenging technology to deploy and utilize both for orga-\nnizations and within society. Without proper controls, AI systems can amplify, perpetuate,\nor exacerbate inequitable or undesirable outcomes for individuals and communities. With\nproper controls, AI systems can mitigate and manage inequitable outcomes.\nAI risk management is a key component of responsible development and use of AI sys-\ntems. Responsible AI practices can help align the decisions about AI system design, de-\nvelopment, and uses with intended aim and values. Core concepts in responsible AI em-\nphasize human centricity, social responsibility, and sustainability. AI risk management can\ndrive responsible uses and practices by prompting organizations and their internal teams\nwho design, develop, and deploy AI to think more critically about context and potential\nor unexpected negative and positive impacts. Understanding and managing the risks of AI\nsystems will help to enhance trustworthiness, and in turn, cultivate public trust. \nPage 1",
+      "runId": "run-xgn71imtyqur3z",
+      "run": {
+        "id": "run-xgn71imtyqur3z",
+        "boardId": "board-mybrx1mtypp0ez",
+        "transformationId": "transformation-za7pe9mtyqur3w",
+        "status": "succeeded",
+        "sourceSnapshot": [
+          {
+            "cardId": "card-xhel25mtypxdxm",
+            "versionId": "version-dp8bjrmtypxdxm",
+            "contentKind": "markdown",
+            "resolvedContent": "【片段 1 · 原文第 1–40 行】\n【物理页 6】\nNIST AI 100-1   AI RMF 1.0 \nExecutive Summary \nArtificial intelligence (AI) technologies have significant potential to transform society and\npeople’s lives – from commerce and health to transportation and cybersecurity to the envi-\nronment and our planet. AI technologies can drive inclusive economic growth and support\nscientific advancements that improve the conditions of our world. AI technologies, how-\never, also pose risks that can negatively impact individuals, groups, organizations, commu-\nnities, society, the environment, and the planet. Like risks for other types of technology, AI\nrisks can emerge in a variety of ways and can be characterized as long- or short-term, high-\nor low-probability, systemic or localized, and high- or low-impact.\nThe AI RMF refers to an   AI system   as an engineered or machine-based system that\ncan, for a given set of objectives, generate outputs such as predictions, recommenda-\ntions, or decisions influencing real or virtual environments. AI systems are designed\nto operate with varying levels of autonomy (Adapted from: OECD Recommendation\non AI:2019;   ISO / IEC   22989:2022).\nWhile there are myriad standards and best practices to help organizations mitigate the risks\nof traditional software or information-based systems, the risks posed by AI systems are in\nmany ways unique (See Appendix B). AI systems, for example, may be trained on data that\ncan change over time, sometimes significantly and unexpectedly, affecting system function-\nality and trustworthiness in ways that are hard to understand. AI systems and the contexts\nin which they are deployed are frequently complex, making it difficult to detect and respond\nto failures when they occur. AI systems are inherently socio-technical in nature, meaning\nthey are influenced by societal dynamics and human behavior. AI risks – and benefits –\ncan emerge from the interplay of technical aspects combined with societal factors related\nto how a system is used, its interactions with other AI systems, who operates it, and the\nsocial context in which it is deployed.\nThese risks make AI a uniquely challenging technology to deploy and utilize both for orga-\nnizations and within society. Without proper controls, AI systems can amplify, perpetuate,\nor exacerbate inequitable or undesirable outcomes for individuals and communities. With\nproper controls, AI systems can mitigate and manage inequitable outcomes.\nAI risk management is a key component of responsible development and use of AI sys-\ntems. Responsible AI practices can help align the decisions about AI system design, de-\nvelopment, and uses with intended aim and values. Core concepts in responsible AI em-\nphasize human centricity, social responsibility, and sustainability. AI risk management can\ndrive responsible uses and practices by prompting organizations and their internal teams\nwho design, develop, and deploy AI to think more critically about context and potential\nor unexpected negative and positive impacts. Understanding and managing the risks of AI\nsystems will help to enhance trustworthiness, and in turn, cultivate public trust. \nPage 1",
+            "digest": "fnv1a:2e181490",
+            "scope": {
+              "mode": "ranges",
+              "versionId": "version-dp8bjrmtypxdxm",
+              "contentDigest": "sha256:854a2e48b2321404bed3e1a5ccdef0e2a1648edae4f595b1ae6f8e2c5ce37d21",
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 3130
+                }
+              ]
+            },
+            "lines": [
+              {
+                "startLine": 1,
+                "endLine": 40
+              }
+            ],
+            "fullContentDigest": "fnv1a:2ce942a3"
+          }
+        ],
+        "targetCardId": "card-3nu208mtyqur3w",
+        "targetBaseVersionId": null,
+        "intent": "create",
+        "guidanceSnapshot": {
+          "id": "mira-evidence-review",
+          "version": "1.0.1",
+          "title": "证据对照",
+          "text": "按照用户填写的完成标准核对来源材料。逐条区分：材料中能直接找到的证据、由证据作出的推断，以及目前无法核实的部分。引用原句时保持原意，保留否定、范围、时间和其他限定条件；只使用输入中真实存在的页码、行号或章节名，不补造定位。证据不足时写明不足，不把未提到当作否定。材料有冲突时呈现冲突与出处，不擅自裁决。检查范围由用户的问题和标准决定，不额外推荐分析方向。\n输出前逐项检查用户明确的范围、格式和长度限制。用户有字数上限时，按包含标点、引文和标题的全部字符保守计算，先压缩到上限的约七成；优先保留回答和关键限定，不为展示依据堆积长引文或附加说明。标题同样必须得到原文支持，不能新增正文没有的能力。不得扩大原文判断的强度：自愿使用不能推出所有法律情境均无强制性，不要求某项能力不等于反对它。无法确定的结论保持未确定。",
+          "digest": "sha256:b711deb77bb45a114503d6946fc1c88ad9604de1997d00a2acea6f9434ae3aff",
+          "customized": false
+        },
+        "modelSnapshot": {
+          "provider": "openai-compatible",
+          "model": "k3"
+        },
+        "createdAt": "2026-09-12T18:54:12.671Z",
+        "startedAt": "2026-09-12T18:54:12.671Z",
+        "progress": {
+          "phase": "completed",
+          "label": "生成完成",
+          "updatedAt": "2026-09-12T18:55:47.035Z"
+        },
+        "progressEvents": [
+          {
+            "sequence": 1,
+            "phase": "generating",
+            "label": "正在请求模型",
+            "occurredAt": "2026-09-12T18:54:12.674Z"
+          },
+          {
+            "sequence": 2,
+            "phase": "reviewing",
+            "label": "模型响应完成",
+            "occurredAt": "2026-09-12T18:55:47.032Z"
+          },
+          {
+            "sequence": 3,
+            "phase": "completed",
+            "label": "生成完成",
+            "occurredAt": "2026-09-12T18:55:47.035Z"
+          }
+        ],
+        "result": {
+          "output": "<!-- mira:extraction:v1 -->\n<!-- mira:item:item-1 -->\n## AI 具有改变社会与多领域的潜力（潜力表述，非已然效果）\n直接证据：原文称 “Artificial intelligence (AI) technologies have significant potential to transform society and people’s lives – from commerce and health to transportation and cybersecurity to the environment and our planet.” 并续称 “AI technologies can drive inclusive economic growth and support scientific advancements that improve the conditions of our world.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为潜力/能力表述（“potential”“can”），列举领域为 commerce、health、transportation、cybersecurity、environment、planet；不能据此断言这些收益已经发生。\n<!-- mira:end -->\n\n<!-- mira:item:item-2 -->\n## AI 也带来可负面影响个人到地球多层级对象的风险\n直接证据：原文称 “AI technologies, however, also pose risks that can negatively impact individuals, groups, organizations, communities, society, the environment, and the planet.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “can negatively impact”，是可能性而非必然；受影响对象列举为 individuals、groups、organizations、communities、society、environment、planet；与上一条“potential/can”的收益并置，材料未裁决净效果。\n<!-- mira:end -->\n\n<!-- mira:item:item-3 -->\n## AI 风险可沿时长、概率、范围、影响四个维度表征\n直接证据：原文称 “Like risks for other types of technology, AI risks can emerge in a variety of ways and can be characterized as long- or short-term, high- or low-probability, systemic or localized, and high- or low-impact.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：材料说 AI 风险“像其他技术风险一样”可用这些维度刻画，未据此声称这些维度为 AI 独有。\n<!-- mira:end -->\n\n<!-- mira:item:item-4 -->\n## AI RMF 对“AI 系统”的定义、输出示例与自主性，及改写出处\n直接证据：原文称 “The AI RMF refers to an AI system as an engineered or machine-based system that can, for a given set of objectives, generate outputs such as predictions, recommendations, or decisions influencing real or virtual environments. AI systems are designed to operate with varying levels of autonomy (Adapted from: OECD Recommendation on AI:2019; ISO/IEC 22989:2022).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；括注明确该定义改写自 OECD Recommendation on AI:2019 与 ISO/IEC 22989:2022。限制：输出仅示例（“such as”）；“varying levels of autonomy”未给出分级；引用标准年份以原文为准，未额外核对标准文本。\n<!-- mira:end -->\n\n<!-- mira:item:item-5 -->\n## 材料称 AI 系统风险“在许多方面独特”并指向附录 B\n直接证据：原文称 “While there are myriad standards and best practices to help organizations mitigate the risks of traditional software or information-based systems, the risks posed by AI systems are in many ways unique (See Appendix B).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：限定为 “in many ways unique”，并非全称“完全独特”；具体独特性论证指向 Appendix B，本片段未包含附录内容，无法据此核实附录论据。\n<!-- mira:end -->\n\n<!-- mira:item:item-6 -->\n## 训练数据可随时间显著且意外变化，进而难以理解地影响功能与可信性\n直接证据：原文称 “AI systems, for example, may be trained on data that can change over time, sometimes significantly and unexpectedly, affecting system functionality and trustworthiness in ways that are hard to understand.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “may”“can”，并以 “for example” 引出，属可能性举例；未给出发生率或普遍程度。\n<!-- mira:end -->\n\n<!-- mira:item:item-7 -->\n## AI 系统及其部署环境常复杂，使故障发生时难以及时发现与响应\n直接证据：原文称 “AI systems and the contexts in which they are deployed are frequently complex, making it difficult to detect and respond to failures when they occur.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：频率限定为 “frequently”，非“总是”；困难对象是 “when they occur” 的检测与响应，材料未量化难度。\n<!-- mira:end -->\n\n<!-- mira:item:item-8 -->\n## 材料称 AI 系统本质上是社会技术性的，受社会动态与人类行为影响\n直接证据：原文称 “AI systems are inherently socio-technical in nature, meaning they are influenced by societal dynamics and human behavior.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：这是材料的定性判断（“inherently”），本片段未提供证明该本质属性的独立实证；按原文强度保留为框架性主张。\n<!-- mira:end -->\n\n<!-- mira:item:item-9 -->\n## AI 的风险与收益可源自技术方面与社会因素的交互\n直接证据：原文称 “AI risks – and benefits – can emerge from the interplay of technical aspects combined with societal factors related to how a system is used, its interactions with other AI systems, who operates it, and the social context in which it is deployed.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：明确同时涵盖 “risks – and benefits”，且用 “can emerge”；社会因素限定为使用方式、与其他 AI 系统的交互、操作者、部署社会语境四类，未扩展列举。\n<!-- mira:end -->\n\n<!-- mira:item:item-10 -->\n## 上述风险使 AI 对组织与社会而言成为部署使用上独特挑战的技术\n直接证据：原文称 “These risks make AI a uniquely challenging technology to deploy and utilize both for organizations and within society.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；其中“these risks”回指前文所述风险，属对前文的归纳性接续。限制：结论依赖前文风险论述成立；未与其他技术作系统比较数据，\"uniquely challenging\" 按原文措辞保留。\n<!-- mira:end -->\n\n<!-- mira:item:item-11 -->\n## 有无适当控制对应相反方向的条件性结果（须保留条件）\n直接证据：原文称 “Without proper controls, AI systems can amplify, perpetuate, or exacerbate inequitable or undesirable outcomes for individuals and communities. With proper controls, AI systems can mitigate and manage inequitable outcomes.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为以 “Without/With proper controls” 为条件、以 “can” 表可能的对照；不能去掉条件读成 AI 必然放大或必然缓解不公平结果；“proper controls” 的具体内容本片段未定义。\n<!-- mira:end -->\n\n<!-- mira:item:item-12 -->\n## AI 风险管理是负责任开发与使用 AI 系统的关键组成部分\n直接证据：原文称 “AI risk management is a key component of responsible development and use of AI systems.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：“key component” 为地位判断，本片段未给出衡量“关键”的指标；不等同于说风险管理是充分条件或唯一组成。\n<!-- mira:end -->\n\n<!-- mira:item:item-13 -->\n## 负责任 AI 实践可对齐设计开发使用决策与既定目标和价值，核心概念为人本、社会责任、可持续\n直接证据：原文称 “Responsible AI practices can help align the decisions about AI system design, development, and uses with intended aim and values. Core concepts in responsible AI emphasize human centricity, social responsibility, and sustainability.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：对齐用 “can help”，非必然达成；“intended aim and values” 的具体内容随组织而定，本片段未界定；核心概念仅列三项，未展开定义。\n<!-- mira:end -->\n\n<!-- mira:item:item-14 -->\n## 风险管理促使相关团队更批判思考语境与正负影响，并称理解管理风险有助增强可信性进而培育公众信任\n直接证据：原文称 “AI risk management can drive responsible uses and practices by prompting organizations and their internal teams who design, develop, and deploy AI to think more critically about context and potential or unexpected negative and positive impacts.” 以及 “Understanding and managing the risks of AI systems will help to enhance trustworthiness, and in turn, cultivate public trust.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：机制限定为促使“design, develop, and deploy”的组织及内部团队更批判思考；思考对象含 “potential or unexpected” 的负正影响，须保留“潜在/意外”。后句 “will help to enhance ... cultivate” 是材料的方向性断言，本片段未提供已发生提升信任的证据，不能写成既成效果。\n<!-- mira:end -->",
+          "digest": "fnv1a:5cf1f1a2",
+          "disposition": "applied",
+          "appliedVersionId": "version-gkzd4qmtyqwrxc"
+        },
+        "finishedAt": "2026-09-12T18:55:47.035Z"
+      },
+      "output": "<!-- mira:extraction:v1 -->\n<!-- mira:item:item-1 -->\n## AI 具有改变社会与多领域的潜力（潜力表述，非已然效果）\n直接证据：原文称 “Artificial intelligence (AI) technologies have significant potential to transform society and people’s lives – from commerce and health to transportation and cybersecurity to the environment and our planet.” 并续称 “AI technologies can drive inclusive economic growth and support scientific advancements that improve the conditions of our world.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为潜力/能力表述（“potential”“can”），列举领域为 commerce、health、transportation、cybersecurity、environment、planet；不能据此断言这些收益已经发生。\n<!-- mira:end -->\n\n<!-- mira:item:item-2 -->\n## AI 也带来可负面影响个人到地球多层级对象的风险\n直接证据：原文称 “AI technologies, however, also pose risks that can negatively impact individuals, groups, organizations, communities, society, the environment, and the planet.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “can negatively impact”，是可能性而非必然；受影响对象列举为 individuals、groups、organizations、communities、society、environment、planet；与上一条“potential/can”的收益并置，材料未裁决净效果。\n<!-- mira:end -->\n\n<!-- mira:item:item-3 -->\n## AI 风险可沿时长、概率、范围、影响四个维度表征\n直接证据：原文称 “Like risks for other types of technology, AI risks can emerge in a variety of ways and can be characterized as long- or short-term, high- or low-probability, systemic or localized, and high- or low-impact.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：材料说 AI 风险“像其他技术风险一样”可用这些维度刻画，未据此声称这些维度为 AI 独有。\n<!-- mira:end -->\n\n<!-- mira:item:item-4 -->\n## AI RMF 对“AI 系统”的定义、输出示例与自主性，及改写出处\n直接证据：原文称 “The AI RMF refers to an AI system as an engineered or machine-based system that can, for a given set of objectives, generate outputs such as predictions, recommendations, or decisions influencing real or virtual environments. AI systems are designed to operate with varying levels of autonomy (Adapted from: OECD Recommendation on AI:2019; ISO/IEC 22989:2022).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；括注明确该定义改写自 OECD Recommendation on AI:2019 与 ISO/IEC 22989:2022。限制：输出仅示例（“such as”）；“varying levels of autonomy”未给出分级；引用标准年份以原文为准，未额外核对标准文本。\n<!-- mira:end -->\n\n<!-- mira:item:item-5 -->\n## 材料称 AI 系统风险“在许多方面独特”并指向附录 B\n直接证据：原文称 “While there are myriad standards and best practices to help organizations mitigate the risks of traditional software or information-based systems, the risks posed by AI systems are in many ways unique (See Appendix B).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：限定为 “in many ways unique”，并非全称“完全独特”；具体独特性论证指向 Appendix B，本片段未包含附录内容，无法据此核实附录论据。\n<!-- mira:end -->\n\n<!-- mira:item:item-6 -->\n## 训练数据可随时间显著且意外变化，进而难以理解地影响功能与可信性\n直接证据：原文称 “AI systems, for example, may be trained on data that can change over time, sometimes significantly and unexpectedly, affecting system functionality and trustworthiness in ways that are hard to understand.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “may”“can”，并以 “for example” 引出，属可能性举例；未给出发生率或普遍程度。\n<!-- mira:end -->\n\n<!-- mira:item:item-7 -->\n## AI 系统及其部署环境常复杂，使故障发生时难以及时发现与响应\n直接证据：原文称 “AI systems and the contexts in which they are deployed are frequently complex, making it difficult to detect and respond to failures when they occur.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：频率限定为 “frequently”，非“总是”；困难对象是 “when they occur” 的检测与响应，材料未量化难度。\n<!-- mira:end -->\n\n<!-- mira:item:item-8 -->\n## 材料称 AI 系统本质上是社会技术性的，受社会动态与人类行为影响\n直接证据：原文称 “AI systems are inherently socio-technical in nature, meaning they are influenced by societal dynamics and human behavior.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：这是材料的定性判断（“inherently”），本片段未提供证明该本质属性的独立实证；按原文强度保留为框架性主张。\n<!-- mira:end -->\n\n<!-- mira:item:item-9 -->\n## AI 的风险与收益可源自技术方面与社会因素的交互\n直接证据：原文称 “AI risks – and benefits – can emerge from the interplay of technical aspects combined with societal factors related to how a system is used, its interactions with other AI systems, who operates it, and the social context in which it is deployed.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：明确同时涵盖 “risks – and benefits”，且用 “can emerge”；社会因素限定为使用方式、与其他 AI 系统的交互、操作者、部署社会语境四类，未扩展列举。\n<!-- mira:end -->\n\n<!-- mira:item:item-10 -->\n## 上述风险使 AI 对组织与社会而言成为部署使用上独特挑战的技术\n直接证据：原文称 “These risks make AI a uniquely challenging technology to deploy and utilize both for organizations and within society.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；其中“these risks”回指前文所述风险，属对前文的归纳性接续。限制：结论依赖前文风险论述成立；未与其他技术作系统比较数据，\"uniquely challenging\" 按原文措辞保留。\n<!-- mira:end -->\n\n<!-- mira:item:item-11 -->\n## 有无适当控制对应相反方向的条件性结果（须保留条件）\n直接证据：原文称 “Without proper controls, AI systems can amplify, perpetuate, or exacerbate inequitable or undesirable outcomes for individuals and communities. With proper controls, AI systems can mitigate and manage inequitable outcomes.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为以 “Without/With proper controls” 为条件、以 “can” 表可能的对照；不能去掉条件读成 AI 必然放大或必然缓解不公平结果；“proper controls” 的具体内容本片段未定义。\n<!-- mira:end -->\n\n<!-- mira:item:item-12 -->\n## AI 风险管理是负责任开发与使用 AI 系统的关键组成部分\n直接证据：原文称 “AI risk management is a key component of responsible development and use of AI systems.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：“key component” 为地位判断，本片段未给出衡量“关键”的指标；不等同于说风险管理是充分条件或唯一组成。\n<!-- mira:end -->\n\n<!-- mira:item:item-13 -->\n## 负责任 AI 实践可对齐设计开发使用决策与既定目标和价值，核心概念为人本、社会责任、可持续\n直接证据：原文称 “Responsible AI practices can help align the decisions about AI system design, development, and uses with intended aim and values. Core concepts in responsible AI emphasize human centricity, social responsibility, and sustainability.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：对齐用 “can help”，非必然达成；“intended aim and values” 的具体内容随组织而定，本片段未界定；核心概念仅列三项，未展开定义。\n<!-- mira:end -->\n\n<!-- mira:item:item-14 -->\n## 风险管理促使相关团队更批判思考语境与正负影响，并称理解管理风险有助增强可信性进而培育公众信任\n直接证据：原文称 “AI risk management can drive responsible uses and practices by prompting organizations and their internal teams who design, develop, and deploy AI to think more critically about context and potential or unexpected negative and positive impacts.” 以及 “Understanding and managing the risks of AI systems will help to enhance trustworthiness, and in turn, cultivate public trust.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：机制限定为促使“design, develop, and deploy”的组织及内部团队更批判思考；思考对象含 “potential or unexpected” 的负正影响，须保留“潜在/意外”。后句 “will help to enhance ... cultivate” 是材料的方向性断言，本片段未提供已发生提升信任的证据，不能写成既成效果。\n<!-- mira:end -->",
+      "items": [
+        {
+          "itemId": "item-1",
+          "title": "AI 具有改变社会与多领域的潜力（潜力表述，非已然效果）",
+          "markdown": "直接证据：原文称 “Artificial intelligence (AI) technologies have significant potential to transform society and people’s lives – from commerce and health to transportation and cybersecurity to the environment and our planet.” 并续称 “AI technologies can drive inclusive economic growth and support scientific advancements that improve the conditions of our world.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为潜力/能力表述（“potential”“can”），列举领域为 commerce、health、transportation、cybersecurity、environment、planet；不能据此断言这些收益已经发生。"
+        },
+        {
+          "itemId": "item-2",
+          "title": "AI 也带来可负面影响个人到地球多层级对象的风险",
+          "markdown": "直接证据：原文称 “AI technologies, however, also pose risks that can negatively impact individuals, groups, organizations, communities, society, the environment, and the planet.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “can negatively impact”，是可能性而非必然；受影响对象列举为 individuals、groups、organizations、communities、society、environment、planet；与上一条“potential/can”的收益并置，材料未裁决净效果。"
+        },
+        {
+          "itemId": "item-3",
+          "title": "AI 风险可沿时长、概率、范围、影响四个维度表征",
+          "markdown": "直接证据：原文称 “Like risks for other types of technology, AI risks can emerge in a variety of ways and can be characterized as long- or short-term, high- or low-probability, systemic or localized, and high- or low-impact.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：材料说 AI 风险“像其他技术风险一样”可用这些维度刻画，未据此声称这些维度为 AI 独有。"
+        },
+        {
+          "itemId": "item-4",
+          "title": "AI RMF 对“AI 系统”的定义、输出示例与自主性，及改写出处",
+          "markdown": "直接证据：原文称 “The AI RMF refers to an AI system as an engineered or machine-based system that can, for a given set of objectives, generate outputs such as predictions, recommendations, or decisions influencing real or virtual environments. AI systems are designed to operate with varying levels of autonomy (Adapted from: OECD Recommendation on AI:2019; ISO/IEC 22989:2022).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；括注明确该定义改写自 OECD Recommendation on AI:2019 与 ISO/IEC 22989:2022。限制：输出仅示例（“such as”）；“varying levels of autonomy”未给出分级；引用标准年份以原文为准，未额外核对标准文本。"
+        },
+        {
+          "itemId": "item-5",
+          "title": "材料称 AI 系统风险“在许多方面独特”并指向附录 B",
+          "markdown": "直接证据：原文称 “While there are myriad standards and best practices to help organizations mitigate the risks of traditional software or information-based systems, the risks posed by AI systems are in many ways unique (See Appendix B).” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：限定为 “in many ways unique”，并非全称“完全独特”；具体独特性论证指向 Appendix B，本片段未包含附录内容，无法据此核实附录论据。"
+        },
+        {
+          "itemId": "item-6",
+          "title": "训练数据可随时间显著且意外变化，进而难以理解地影响功能与可信性",
+          "markdown": "直接证据：原文称 “AI systems, for example, may be trained on data that can change over time, sometimes significantly and unexpectedly, affecting system functionality and trustworthiness in ways that are hard to understand.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：原文用 “may”“can”，并以 “for example” 引出，属可能性举例；未给出发生率或普遍程度。"
+        },
+        {
+          "itemId": "item-7",
+          "title": "AI 系统及其部署环境常复杂，使故障发生时难以及时发现与响应",
+          "markdown": "直接证据：原文称 “AI systems and the contexts in which they are deployed are frequently complex, making it difficult to detect and respond to failures when they occur.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：频率限定为 “frequently”，非“总是”；困难对象是 “when they occur” 的检测与响应，材料未量化难度。"
+        },
+        {
+          "itemId": "item-8",
+          "title": "材料称 AI 系统本质上是社会技术性的，受社会动态与人类行为影响",
+          "markdown": "直接证据：原文称 “AI systems are inherently socio-technical in nature, meaning they are influenced by societal dynamics and human behavior.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：这是材料的定性判断（“inherently”），本片段未提供证明该本质属性的独立实证；按原文强度保留为框架性主张。"
+        },
+        {
+          "itemId": "item-9",
+          "title": "AI 的风险与收益可源自技术方面与社会因素的交互",
+          "markdown": "直接证据：原文称 “AI risks – and benefits – can emerge from the interplay of technical aspects combined with societal factors related to how a system is used, its interactions with other AI systems, who operates it, and the social context in which it is deployed.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：明确同时涵盖 “risks – and benefits”，且用 “can emerge”；社会因素限定为使用方式、与其他 AI 系统的交互、操作者、部署社会语境四类，未扩展列举。"
+        },
+        {
+          "itemId": "item-10",
+          "title": "上述风险使 AI 对组织与社会而言成为部署使用上独特挑战的技术",
+          "markdown": "直接证据：原文称 “These risks make AI a uniquely challenging technology to deploy and utilize both for organizations and within society.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述；其中“these risks”回指前文所述风险，属对前文的归纳性接续。限制：结论依赖前文风险论述成立；未与其他技术作系统比较数据，\"uniquely challenging\" 按原文措辞保留。"
+        },
+        {
+          "itemId": "item-11",
+          "title": "有无适当控制对应相反方向的条件性结果（须保留条件）",
+          "markdown": "直接证据：原文称 “Without proper controls, AI systems can amplify, perpetuate, or exacerbate inequitable or undesirable outcomes for individuals and communities. With proper controls, AI systems can mitigate and manage inequitable outcomes.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：两句均为以 “Without/With proper controls” 为条件、以 “can” 表可能的对照；不能去掉条件读成 AI 必然放大或必然缓解不公平结果；“proper controls” 的具体内容本片段未定义。"
+        },
+        {
+          "itemId": "item-12",
+          "title": "AI 风险管理是负责任开发与使用 AI 系统的关键组成部分",
+          "markdown": "直接证据：原文称 “AI risk management is a key component of responsible development and use of AI systems.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：“key component” 为地位判断，本片段未给出衡量“关键”的指标；不等同于说风险管理是充分条件或唯一组成。"
+        },
+        {
+          "itemId": "item-13",
+          "title": "负责任 AI 实践可对齐设计开发使用决策与既定目标和价值，核心概念为人本、社会责任、可持续",
+          "markdown": "直接证据：原文称 “Responsible AI practices can help align the decisions about AI system design, development, and uses with intended aim and values. Core concepts in responsible AI emphasize human centricity, social responsibility, and sustainability.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：对齐用 “can help”，非必然达成；“intended aim and values” 的具体内容随组织而定，本片段未界定；核心概念仅列三项，未展开定义。"
+        },
+        {
+          "itemId": "item-14",
+          "title": "风险管理促使相关团队更批判思考语境与正负影响，并称理解管理风险有助增强可信性进而培育公众信任",
+          "markdown": "直接证据：原文称 “AI risk management can drive responsible uses and practices by prompting organizations and their internal teams who design, develop, and deploy AI to think more critically about context and potential or unexpected negative and positive impacts.” 以及 “Understanding and managing the risks of AI systems will help to enhance trustworthiness, and in turn, cultivate public trust.” 定位：片段1（原文第1–40行，物理页6，页脚标 Page 1）。证据性质：材料直接陈述。限制：机制限定为促使“design, develop, and deploy”的组织及内部团队更批判思考；思考对象含 “potential or unexpected” 的负正影响，须保留“潜在/意外”。后句 “will help to enhance ... cultivate” 是材料的方向性断言，本片段未提供已发生提升信任的证据，不能写成既成效果。"
+        }
+      ]
+    }
+  ],
+  "finishedAt": "2026-09-12T18:56:55.654Z"
+}

@@ -785,7 +785,7 @@ function V2Canvas({ appearance, setAppearance }: {
     {pendingDrawerIntent && <DrawerLeaveConfirmation
       plan={planDirty}
       switching={switchingCard}
-      onSave={drawer?.tab === 'content' ? async () => {
+      onSave={drawer?.tab === 'content' && drawer.mode !== 'extract' && drawer.mode !== 'split' ? async () => {
         const origin = useV2Canvas.getState()
         const saved = await saveInspectorDrafts(inspectorDrafts.current, () => {
           const current = useV2Canvas.getState()

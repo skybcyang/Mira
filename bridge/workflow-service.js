@@ -1,6 +1,7 @@
 import { isUsableContent } from './domain/content.js'
 import { assertBoardWritable } from './domain/board-lifecycle.js'
 import { typed } from './domain/errors.js'
+import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
 import { cardById, transformationById, validateSourceRefs } from './v2-http-policy.js'
 
 const TARGET_CARD_WIDTH = 360
@@ -161,6 +162,7 @@ function validateInputBindings(board, workflow, body) {
       throw typed('WORKFLOW_BINDING_INVALID', 'Workflow input binding is invalid')
     }
     bindings.set(binding.inputId, binding.sourceRefs)
+    if (binding.sourceRefs.some(ref => ref?.scope !== undefined)) throw typed('SOURCE_SCOPE_INVALID', '请先铺好计划，再逐步确认输入范围。')
   }
   if (contract.legacy) validateSourceRefs(board, bindings.get(contract.inputId) || [])
   for (const slot of contract.inputs) {
@@ -255,6 +257,8 @@ function validateDirectPlan(body) {
     throw typed('PLAN_INVALID', 'Plan requires at least one step')
   }
   const steps = body.steps.map((step) => {
+    const guidance = resolveGuidance(step?.guidance)
+    assertGuidanceCriteria(guidance, step?.acceptance)
     const label = typeof step?.label === 'string' ? step.label.trim() : ''
     const instruction = typeof step?.instruction === 'string' ? step.instruction.trim() : ''
     if (!label || !instruction || typeof step?.acceptance !== 'string') {
@@ -269,6 +273,7 @@ function validateDirectPlan(body) {
       label,
       instruction,
       acceptance: step.acceptance.trim(),
+      ...(guidance ? { guidance } : {}),
       ...(modelId ? { modelId } : {}),
     }
   })
@@ -291,6 +296,7 @@ function materializeLinearPlan({
   planSource,
   targetPosition,
   sourceCardIdsForStep,
+  sourceScopesForStep,
   workflowRefForStep,
   invalidSourceCode,
   newId,
@@ -322,10 +328,12 @@ function materializeLinearPlan({
     const transformation = {
       id: newId('transformation'),
       sourceCardIds,
+      ...(sourceScopesForStep ? { sourceScopes: sourceScopesForStep(index, targetCards) } : {}),
       targetCardId: targetCard.id,
       label: step.label,
       instruction: step.instruction,
       acceptance: step.acceptance,
+      ...(step.guidance ? { guidance: structuredClone(step.guidance) } : {}),
       ...(step.modelId ? { modelId: step.modelId } : {}),
       permissions: { workspaceWrite: false },
       planRef: {
@@ -374,6 +382,9 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
         assertVerifiedTargets(board, transformations)
 
         const externalIds = externalSourceIds(transformations)
+        if (!input.inputs && transformations.some(step => step.sourceScopes?.length)) {
+          throw typed('WORKFLOW_INPUT_INVALID', '限定输入的方法需要明确来源角色。')
+        }
         if (input.inputs) {
           const configuredIds = input.inputs.map((item) => item.sourceCardId)
           if (configuredIds.length !== externalIds.length
@@ -403,10 +414,13 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
             instruction: transformation.instruction,
             acceptance: transformation.acceptance,
             ...(transformation.modelId ? { modelId: transformation.modelId } : {}),
-            ...(workflowInputs ? { sources: transformation.sourceCardIds.map((cardId) =>
-              index > 0 && cardId === transformations[index - 1].targetCardId
+            ...(transformation.guidance ? { guidance: structuredClone(transformation.guidance) } : {}),
+            ...(workflowInputs ? { sources: transformation.sourceCardIds.map((cardId) => ({
+              ...(index > 0 && cardId === transformations[index - 1].targetCardId
                 ? { kind: 'previous-output' }
-                : { kind: 'input', inputId: inputIdByCard.get(cardId) }) } : {}),
+                : { kind: 'input', inputId: inputIdByCard.get(cardId) }),
+              ...(transformation.sourceScopes?.some(scope => scope.cardId === cardId) ? { scope: 'select-before-run' } : {}),
+            })) } : {}),
           })),
           createdAt: timestamp,
           updatedAt: timestamp,
@@ -422,6 +436,7 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
       let created
       await boardStore.update(boardId, async (board) => {
         validateSourceRefs(board, input.sourceRefs)
+        if (input.sourceRefs.some(ref => ref?.scope !== undefined)) throw typed('SOURCE_SCOPE_INVALID', '请先铺好计划，再逐步确认输入范围。')
         created = materializeLinearPlan({
           board,
           steps: input.steps,
@@ -473,6 +488,10 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
                 stepId: step.id,
                 applicationId,
               }),
+              sourceScopesForStep: (index, targetCards) =>
+                stepSources(workflow, contract, index).filter(source => source.scope === 'select-before-run').flatMap(source =>
+                  (source.kind === 'previous-output' ? [targetCards[index - 1].id]
+                    : (bindings.get(source.inputId) || []).map(ref => ref.cardId)).map(cardId => ({ cardId, mode: 'required' }))),
               invalidSourceCode: 'WORKFLOW_BINDING_INVALID',
               newId,
               now,

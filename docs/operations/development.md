@@ -85,11 +85,11 @@ LaunchAgent 启动一个轻量 Supervisor；Mira 子进程意外退出后由 Sup
     MIRA_LLM_API_KEY=your-key \
     pnpm start:llm
 
-`MIRA_LLM_API_KEY` 对无需鉴权的本地服务（例如暴露 OpenAI-compatible API 的 Ollama 或 vLLM）可省略。适配器调用 `${MIRA_LLM_BASE_URL}/chat/completions`，不使用 Agent、工具或持久模型会话。选中 Card 后的模型建议与显式生成都会把来源实际文本发送到该服务：Markdown 使用完整正文，file-reference 使用当时读取到的文件全文；不要把密钥写入仓库。
+`MIRA_LLM_API_KEY` 对无需鉴权的本地服务（例如暴露 OpenAI-compatible API 的 Ollama 或 vLLM）可省略。适配器调用 `${MIRA_LLM_BASE_URL}/chat/completions`，不使用 Agent、工具或持久模型会话。选中 Card 不调用模型；显式生成会把来源实际文本发送到该服务：Markdown 使用完整正文，file-reference 使用当时读取到的文件全文；不要把密钥写入仓库。
 
 Standalone 模式也可从网页的“系统设置 → 模型设置”配置 Kimi K3 或其他 OpenAI-compatible 服务，并在保存前测试连接。网页读取接口只返回 `hasApiKey`，不会返回密钥；保存后的密钥仅存在于当前服务进程，重启后重新使用环境变量或再次设置。显式指定其他 `MIRA_MODEL_ADAPTER` 时，仍由该自定义模块管理配置，网页设置接口不接管它。
 
-没有模型适配器时，画板、版本、步骤和 Workflow 仍可用，下一步建议使用内置回退；显式 Run 会以 `MODEL_UNAVAILABLE` 失败且不会覆盖内容。模型模块接口见 [平台适配器契约](../specs/platform-adapters.md)。
+没有模型适配器时，画板、版本、步骤和 Workflow 仍可用；显式 Run 会以 `MODEL_UNAVAILABLE` 失败且不会覆盖内容。模型模块接口见 [平台适配器契约](../specs/platform-adapters.md)。
 
 前端开发：
 

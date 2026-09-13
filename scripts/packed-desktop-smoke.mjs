@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { validateDesktopTarget } from './run-desktop-forge.mjs'
+import { smokePdf } from './smoke-pdf-fixture.mjs'
 
 const DATA_DIRECTORIES = ['boards-v2', 'runs-v2', 'workflows-v2']
 const PACKED_RESTORE_TIMESTAMP = '2026-09-02T08:00:00.000Z'
@@ -32,6 +33,7 @@ export function createPackedSmokeCommand({
     'MIRA_DESKTOP_SMOKE_BACKUP',
     'MIRA_DESKTOP_SMOKE_RESTORE_WORKSPACE',
     'MIRA_DESKTOP_SMOKE_EXIT_ON_READY',
+    'MIRA_DESKTOP_SMOKE_PDF',
   ]) {
     delete env[name]
   }
@@ -192,12 +194,14 @@ export async function runPackedDesktopSmoke({
       ? [writeFile(backupPath, JSON.stringify(createPackedRestoreBackup()), 'utf8')]
       : []),
   ])
+  if (!restore) await writeFile(join(workspaceRoot, 'packed-reader-smoke.pdf'), smokePdf())
   const command = createPackedSmokeCommand({
     appPath,
     workspaceRoot,
     userDataRoot,
     backupPath,
   })
+  if (!restore) command.env.MIRA_DESKTOP_SMOKE_PDF = '1'
   await access(command.executable, constants.X_OK)
   const child = spawn(command.executable, command.args, {
     env: command.env,

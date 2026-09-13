@@ -37,8 +37,14 @@
     "node": ">=22.12.0"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@noble/hashes": "2.4.0",
     "@xyflow/react": "^12.11.6",
+    "ipaddr.js": "^2.5.0",
+    "linkedom": "^0.18.13",
     "lucide-react": "^1.33.0",
+    "mdast-util-from-markdown": "2.0.3",
+    "pdfjs-dist": "^5.4.624",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-markdown": "^9.0.1",
@@ -61,6 +67,7 @@
     "vitest": "^4.1.11"
   },
   "pnpm": {
+    "supportedArchitectures": { "os": ["current"], "cpu": ["arm64", "x64"] },
     "overrides": {
       "@electron/packager>extract-zip": "npm:@electron-internal/extract-zip@1.0.5",
       "@electron/rebuild>@electron/node-gyp": "https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2",

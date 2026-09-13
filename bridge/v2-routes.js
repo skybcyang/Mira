@@ -1,3 +1,5 @@
+import { listGuidance } from '../src/domain/guidance.js'
+
 function notFound(method, segments) {
   return {
     status: 404,
@@ -8,6 +10,8 @@ function notFound(method, segments) {
 export async function dispatchV2Route(method, segments, body, dependencies) {
   if (segments[0] !== 'v2') return null
   const seg = segments.slice(1)
+  if (method === 'GET' && seg.length === 1 && seg[0] === 'application-info') return { status: 200, body: { desktop: false } }
+  if (method === 'GET' && seg.length === 1 && seg[0] === 'guidance') return { status: 200, body: { guidance: listGuidance() } }
   const {
     store,
     handlers,
@@ -17,7 +21,22 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
     checkpointService,
     backupService,
     fileLibrary,
+    materialService,
   } = dependencies
+  if (seg[0] === 'materials' && seg[1] === 'previews') {
+    if (method === 'POST' && seg.length === 2) return { status: 200, body: await materialService.preview(body, { signal: dependencies.signal }) }
+    if (method === 'DELETE' && seg.length === 3) return { status: 200, body: materialService.release(seg[2]) }
+    if (method === 'GET' && seg.length === 5 && seg[3] === 'pages') return { status: 200, body: await materialService.page(seg[2], Number(seg[4])) }
+  }
+  if (method === 'POST' && seg.length === 3 && seg[0] === 'boards' && seg[2] === 'materials') return { status: 201, body: await materialService.saveCard(seg[1], body) }
+  if (method === 'POST' && seg.length === 2 && seg[0] === 'inspiration-pool' && seg[1] === 'captures') return { status: 201, body: await materialService.saveCapture(body) }
+
+  if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'extraction-revisions') {
+    return { status: 200, body: await handlers.reviseExtractionCard(seg[1], seg[3], body || {}) }
+  }
+  if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'extractions') {
+    return { status: 201, body: await handlers.extractCards(seg[1], seg[3], body || {}) }
+  }
 
   if (method === 'GET' && seg.length === 1 && seg[0] === 'inspiration-pool') {
     return { status: 200, body: await inspirationPoolHandlers.getPool() }
@@ -228,9 +247,6 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
     seg[5] === 'sync'
   ) {
     return { status: 200, body: await handlers.syncCardFile(seg[1], seg[3], body || {}) }
-  }
-  if (method === 'POST' && seg.length === 3 && seg[0] === 'boards' && seg[2] === 'suggestions') {
-    return { status: 200, body: await handlers.suggest(seg[1], body || {}) }
   }
   if (
     method === 'POST' &&

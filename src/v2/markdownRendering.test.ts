@@ -11,6 +11,12 @@ const read = (content: string, path?: string) => renderToStaticMarkup(createElem
 }))
 
 describe('shared Markdown preview', () => {
+  it('hides extraction metadata while rendering the full readable content', () => {
+    const html = read('<!-- mira:extraction:v1 -->\n<!-- mira:item:one -->\n## 观点\n依据\n<!-- mira:end -->')
+    expect(html).toContain('<h2>观点</h2>')
+    expect(html).toContain('依据')
+    expect(html).not.toContain('mira:item')
+  })
   it.each([undefined, 'notes.md'])('renders aligned GFM tables in %s with a bounded scroll region', (path) => {
     const html = read(table, path)
     expect(html).toContain('<table>')

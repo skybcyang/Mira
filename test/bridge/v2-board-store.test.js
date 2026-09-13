@@ -33,6 +33,51 @@ function memoryFs() {
 }
 
 describe('v2 board store', () => {
+  it('atomically revises one extraction card, refuses active sources and preserves no-op board identity', async () => {
+    const fs = memoryFs()
+    const store = new V2BoardStore(fs)
+    await store.save('revision', emptyBoardV2('revision', '对照'))
+    const list = vi.fn(async () => [])
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore: { list }, newId: prefix => `${prefix}-${++serial}` })
+    const { card: source } = await handlers.createCard('revision', { markdown: '<!-- mira:extraction:v1 -->\n<!-- mira:item:a -->\n## 观点\n原证据\n<!-- mira:end -->' })
+    const { cards: [old] } = await handlers.extractCards('revision', source.id, { baseVersionId: source.headVersionId, items: [{ itemId: 'a', title: '观点', markdown: '原证据' }] })
+    const body = { baseVersionId: old.headVersionId, source: { cardId: source.id, versionId: source.headVersionId, itemIds: ['a'] }, markdown: '原证据\n人工补充' }
+    const before = await store.load('revision')
+    const replace = vi.spyOn(fs, 'replace').mockRejectedValueOnce(new Error('disk full'))
+    await expect(handlers.reviseExtractionCard('revision', old.id, body)).rejects.toThrow()
+    expect(await store.load('revision')).toEqual(before)
+    replace.mockRestore()
+    for (const targetCardId of [old.id, source.id]) {
+      list.mockResolvedValueOnce([{ boardId: 'revision', targetCardId, status: 'running' }])
+      await expect(handlers.reviseExtractionCard('revision', old.id, body)).rejects.toMatchObject({ code: 'TARGET_BUSY' })
+    }
+    const result = await handlers.reviseExtractionCard('revision', old.id, body)
+    expect(result.card.versions.at(-1).extractionSources).toHaveLength(1)
+    const after = await store.load('revision')
+    expect(after.cards.find(card => card.id === source.id)).toEqual(source)
+    expect((await handlers.reviseExtractionCard('revision', old.id, { ...body, baseVersionId: result.card.headVersionId })).noop).toBe(true)
+    expect(await store.load('revision')).toEqual(after)
+  })
+  it('leaves zero partial extraction cards after a failed atomic replace and serializes concurrent batches', async () => {
+    const fs = memoryFs()
+    const store = new V2BoardStore(fs)
+    await store.save('extract', emptyBoardV2('extract', '提取', '2026-09-12T00:00:00Z'))
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore: { list: async () => [] }, newId: prefix => `${prefix}-${++serial}`, now: () => '2026-09-12T00:00:00Z' })
+    const { card } = await handlers.createCard('extract', { markdown: '<!-- mira:extraction:v1 -->\n<!-- mira:item:a -->\n## 标题\n依据\n<!-- mira:end -->' })
+    const body = { baseVersionId: card.headVersionId, items: [{ itemId: 'a', title: '标题', markdown: '依据' }] }
+    const before = await store.load('extract')
+    const replace = vi.spyOn(fs, 'replace').mockRejectedValueOnce(new Error('disk full'))
+    await expect(handlers.extractCards('extract', card.id, body)).rejects.toThrow()
+    expect(await store.load('extract')).toEqual(before)
+    replace.mockRestore()
+    const results = await Promise.all([handlers.extractCards('extract', card.id, body), handlers.extractCards('extract', card.id, body)])
+    const after = await store.load('extract')
+    expect(after.cards).toHaveLength(3)
+    expect(new Set(results.map(result => result.cards[0].extractionRef.batchId)).size).toBe(2)
+    expect(results[0].cards[0].y).not.toBe(results[1].cards[0].y)
+  })
   it('rejects creating a board id that has been permanently deleted', async () => {
     const fs = memoryFs()
     fs.files.set('purged-boards-v2/board-1.json', '{"boardId":"board-1"}')

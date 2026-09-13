@@ -13,6 +13,7 @@ import {
 import { createModelSettingsService } from '../bridge/model-settings.js'
 import { restoreWorkspaceBackup } from '../bridge/node-backup-restore.js'
 import { startNodeRuntime } from '../bridge/node-runtime.js'
+import { verifyPackedMaterialReader } from './material-smoke.mjs'
 import {
   closeDesktopResources,
   createShutdownController,
@@ -295,6 +296,7 @@ async function createMainWindow() {
   }
 
   console.log('[mira-desktop] ready')
+  if (process.env.MIRA_DESKTOP_SMOKE === '1' && process.env.MIRA_DESKTOP_SMOKE_PDF === '1') await verifyPackedMaterialReader(nodeRuntime.host.application)
   await completeDesktopSmoke({ environment: process.env, userDataRoot, quit: () => app.quit() })
   return window
 }
@@ -490,6 +492,7 @@ async function bootstrap() {
     hostOptions: {
       accessToken: launchToken,
       modelSettings,
+      applicationInfo: { version: app.getVersion(), platform: process.platform, architecture: process.arch },
     },
   })
   nodeRuntimeStartup = startup

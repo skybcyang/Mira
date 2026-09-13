@@ -125,8 +125,6 @@ function currentCanvasSnapshot() {
     clipboard: state.clipboard,
     deleteConfirmationIds: state.deleteConfirmationIds,
     multiSelectMode: state.multiSelectMode,
-    suggestions: state.suggestions,
-    suggestionState: state.suggestionState,
     message: state.message,
     editingCardId: state.editingCardId,
     drawer: state.drawer,
@@ -152,8 +150,6 @@ function resetStore() {
     clipboard: null,
     deleteConfirmationIds: ['before'],
     multiSelectMode: true,
-    suggestions: [{ id: 'old', label: '旧建议', instruction: '旧建议', acceptance: '' }],
-    suggestionState: 'ready',
     message: null,
     editingCardId: 'before',
     drawer: null,
@@ -224,7 +220,7 @@ describe('inspiration store orchestration', () => {
     })
     expect(result).toEqual(['pool-copy'])
     const next = useV2Canvas.getState()
-    for (const key of ['selectedCardIds', 'editingCardId', 'drawer', 'branchDraft', 'multiSelectMode', 'suggestions'] as const) {
+    for (const key of ['selectedCardIds', 'editingCardId', 'drawer', 'branchDraft', 'multiSelectMode'] as const) {
       expect(next[key], key).toEqual(previous[key])
     }
     expect(next.historyPast).toEqual([{ kind: 'create', boardId: 'current', cardIds: ['pool-copy'] }])
@@ -399,8 +395,6 @@ describe('inspiration store orchestration', () => {
       branchDraft: null,
       deleteConfirmationIds: null,
       editingCardId: null,
-      suggestions: [],
-      suggestionState: 'idle',
       saveState: 'saved',
     })
     const history = useV2Canvas.getState().historyPast
@@ -471,8 +465,6 @@ describe('inspiration store orchestration', () => {
       branchDraft: useV2Canvas.getState().branchDraft,
       deleteConfirmationIds: useV2Canvas.getState().deleteConfirmationIds,
       editingCardId: useV2Canvas.getState().editingCardId,
-      suggestions: useV2Canvas.getState().suggestions,
-      suggestionState: useV2Canvas.getState().suggestionState,
     })
     const action = addAction()
     expect(action).toBeTypeOf('function')
@@ -492,8 +484,6 @@ describe('inspiration store orchestration', () => {
       branchDraft: useV2Canvas.getState().branchDraft,
       deleteConfirmationIds: useV2Canvas.getState().deleteConfirmationIds,
       editingCardId: useV2Canvas.getState().editingCardId,
-      suggestions: useV2Canvas.getState().suggestions,
-      suggestionState: useV2Canvas.getState().suggestionState,
     }).toEqual(before)
     expect(useV2Canvas.getState().saveState).toBe('error')
     expect(useV2Canvas.getState().message).toContain('disk unavailable')

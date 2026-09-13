@@ -1,10 +1,15 @@
 import { appendVersion, restoreVersion } from './domain/versioning.js'
 import { normalizeCardName } from './domain/card-name.js'
+import { parseExtractionList, validateExtractionItems, assertExtractionSources } from '../src/domain/extraction.js'
 import { summarizeBoardActivity } from './domain/board-activity.js'
 import { poolSnapshotInput } from './inspiration-pool-http.js'
 import { digestText } from './domain/content.js'
 import { createFileBindingService } from './domain/file-binding.js'
 import { createSourceSnapshots, createTransformationRun } from './domain/snapshots.js'
+import { contentDigest } from '../src/domain/sourceScopes.js'
+import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
+import { reviseExtractionCard } from './domain/extraction-revisions.js'
+import { confirmSourceScopes, scopesFromRefs, updateSourceScopes } from './domain/source-scopes.js'
 import { validateBoardV2 } from './domain/validation.js'
 import { assertSourcesDoNotCloseCycle } from './domain/transformation-sources.js'
 import { applyOrganization, normalizeNewGroup, removeGroupMembers, requireCardColor, restoreGroupMembers, validateGroups } from './domain/organization.js'
@@ -23,8 +28,6 @@ import {
 } from './domain/board-lifecycle.js'
 import {
   ACTIVE_RUN_STATUSES,
-  FALLBACK_MULTI,
-  FALLBACK_SINGLE,
   appendRunProgress,
   appendTerminalRunProgress,
   buildModelPrompt,
@@ -34,7 +37,6 @@ import {
   normalizeCardPlacement,
   normalizeInspirationRef,
   normalizeTags,
-  parseSuggestions,
   requireNonEmptyBatch,
   requireUniqueIds,
   resolveCreateCardPlacement,
@@ -57,7 +59,6 @@ export function createV2Handlers({
   readFileContent = async () => {
     throw typed('SOURCE_READ_FAILED', 'File content reader is unavailable')
   },
-  executeSuggestion,
   executeModel,
   resolveModel,
   fs,
@@ -125,6 +126,8 @@ export function createV2Handlers({
   }
 
   function normalizeCreateCardInput(body) {
+    if (Object.prototype.hasOwnProperty.call(body, 'materialOrigin')) throw typed('BAD_REQUEST', '材料出处只能由确认保存的读取预览生成。')
+    if (Object.prototype.hasOwnProperty.call(body, 'extractionRef')) throw typed('BAD_REQUEST', '拆分出处必须由清单拆卡命令创建')
     const name = Object.prototype.hasOwnProperty.call(body, 'name') ? { name: normalizeCardName(body.name) } : {}
     if (Object.prototype.hasOwnProperty.call(body, 'poolSource')) {
       throw typed('BAD_REQUEST', 'Pool snapshots use the verified card batch endpoint')
@@ -198,6 +201,7 @@ export function createV2Handlers({
         content,
         origin: 'human',
         createdAt: timestamp,
+        ...(body.materialOrigin ? { materialOrigin: body.materialOrigin } : {}),
       })
     }
     return card
@@ -246,8 +250,8 @@ export function createV2Handlers({
     throw lastError
   }
 
-  async function assertTargetIdle(boardId, targetCardId) {
-    const runs = await runStore.list()
+  async function assertTargetIdle(boardId, targetCardId, strict = false) {
+    const runs = await (strict && runStore.listStrict ? runStore.listStrict() : runStore.list())
     const busy = runs.some(
       (run) =>
         run.boardId === boardId &&
@@ -303,7 +307,9 @@ export function createV2Handlers({
       latest.label !== frozenTransformation.label ||
       latest.instruction !== frozenTransformation.instruction ||
       latest.acceptance !== frozenTransformation.acceptance ||
-      latest.modelId !== frozenTransformation.modelId
+      JSON.stringify(latest.guidance) !== JSON.stringify(frozenTransformation.guidance) ||
+      latest.modelId !== frozenTransformation.modelId ||
+      JSON.stringify(latest.sourceScopes || []) !== JSON.stringify(frozenTransformation.sourceScopes || [])
     ) {
       throw typed('RUN_SOURCE_MISMATCH', 'Transformation changed before the run started')
     }
@@ -335,7 +341,7 @@ export function createV2Handlers({
         boardId: run.boardId,
         transformation,
         sourceSnapshot: run.sourceSnapshot,
-        prompt: buildModelPrompt(transformation, run.sourceSnapshot),
+        prompt: buildModelPrompt(transformation, run.sourceSnapshot, run.guidanceSnapshot),
         signal: controller.signal,
         onProgress,
         ...(run.modelSnapshot ? { modelSnapshot: run.modelSnapshot } : {}),
@@ -449,6 +455,50 @@ export function createV2Handlers({
   }
 
   return {
+    async reviseExtractionCard(boardId, cardId, body) {
+      return store.withLockedBoard(boardId, async (board, lease) => {
+        if (board.lifecycle && board.lifecycle.state !== 'active') throw typed('BOARD_READ_ONLY', '当前画板只读。')
+        const runs = await (runStore.listStrict ? runStore.listStrict() : runStore.list())
+        const affected = runs.filter(run => run.boardId === boardId && [cardId, body?.source?.cardId].includes(run.targetCardId))
+        if (affected.some(run => ACTIVE_RUN_STATUSES.has(run.status))) throw typed('TARGET_BUSY', '来源或旧卡正在生成，请等待后再核对。')
+        if (affected.some(run => run.status === 'succeeded' && run.result?.disposition === 'candidate')) throw typed('CANDIDATE_PENDING', '请先处理来源或旧卡上的待比较结果。')
+        const result = reviseExtractionCard(board, cardId, body, { versionId: newId('version'), now: now() })
+        if (result.noop) return result
+        let saved
+        await changeBoard(boardId, async current => {
+          const synced = await syncBoundCard(result.card)
+          saved = { ...result, ...synced }
+          current.cards = current.cards.map(card => card.id === cardId ? synced.card : card)
+        }, lease)
+        return saved
+      })
+    },
+    async extractCards(boardId, cardId, body) {
+      if (!body || typeof body.baseVersionId !== 'string' || !body.baseVersionId.trim()
+        || Object.keys(body).some(key => !['baseVersionId', 'items'].includes(key))) {
+        throw typed('EXTRACTION_INVALID', '请提交明确的清单版本与条目。')
+      }
+      return changeBoard(boardId, async board => {
+        if (board.lifecycle && board.lifecycle.state !== 'active') throw typed('BOARD_READ_ONLY', '当前画板只读。')
+        await assertTargetIdle(boardId, cardId, true)
+        const sourceCard = cardById(board, cardId)
+        if (sourceCard.headVersionId !== body.baseVersionId) throw typed('SOURCE_VERSION_CHANGED', '清单已有新版本，请保留草稿并重新核对。')
+        const version = sourceCard.versions.find(item => item.id === body.baseVersionId)
+        const source = version?.content.kind === 'markdown' ? parseExtractionList(version.content.markdown) : null
+        if (!source) throw typed('EXTRACTION_INVALID', '当前内容不是可拆分清单。')
+        const items = validateExtractionItems(body.items, source)
+        const batchId = newId('extraction-batch')
+        const cards = items.map(item => {
+          const card = createCardRecord(resolveCreateCardPlacement(board, {
+            placement: 'board-bottom', name: item.title, markdown: item.markdown,
+          }))
+          card.extractionRef = { boardId, cardId, versionId: version.id, itemId: item.itemId, batchId }
+          board.cards.push(card)
+          return card
+        })
+        return { cards }
+      })
+    },
     async getBoardActivity() {
       const runs = await (runStore.listStrict ? runStore.listStrict() : runStore.list())
       return { activity: summarizeBoardActivity(runs) }
@@ -504,6 +554,15 @@ export function createV2Handlers({
         }
       })
       return result
+    },
+
+    async createMaterialCard(boardId, body) {
+      let created
+      await changeBoard(boardId, board => {
+        created = createCardRecord(resolveCreateCardPlacement(board, { ...body, placement: 'board-bottom' }))
+        board.cards.push(created)
+      })
+      return { card: created }
     },
 
     async createCard(boardId, body) {
@@ -584,15 +643,18 @@ export function createV2Handlers({
           versionId: version.id,
           contentKind: card.contentKind,
           content: version.content.markdown,
+          contentDigest: await contentDigest(version.content.markdown),
         }
       }
       try {
+        const content = await readFileContent(version.content.path)
         return {
           cardId,
           versionId: version.id,
           contentKind: card.contentKind,
           path: version.content.path,
-          content: await readFileContent(version.content.path),
+          content,
+          contentDigest: await contentDigest(content),
         }
       } catch (error) {
         if (error?.code === 'SOURCE_READ_FAILED') throw error
@@ -817,40 +879,19 @@ export function createV2Handlers({
       return { deletedCardIds: [...cardIds], restoreReceiptId, groups }
     },
 
-    async suggest(boardId, body) {
-      const board = await store.load(boardId)
-      validateSourceRefs(board, body.sourceRefs)
-      const snapshots = await createSourceSnapshots(board.cards, body.sourceRefs, {
-        resolveFileContent: readFileContent,
-      })
-      const fallback = snapshots.length > 1 ? FALLBACK_MULTI : FALLBACK_SINGLE
-      if (!executeSuggestion) return { suggestions: structuredClone(fallback) }
-      try {
-        const prompt = [
-          '只返回 JSON 数组，最多三项。每项包含 label、instruction、acceptance。',
-          '使用成果语言，不使用 Action、Agent、input、output 或 workflow。',
-          ...snapshots.map(
-            (snapshot, index) =>
-              `# 来源 ${index + 1}\n${snapshot.resolvedContent}`,
-          ),
-        ].join('\n\n')
-        const output = await executeSuggestion({ boardId, prompt, sourceSnapshot: snapshots })
-        const suggestions = parseSuggestions(output)
-        return { suggestions: suggestions.length > 0 ? suggestions : structuredClone(fallback) }
-      } catch {
-        return { suggestions: structuredClone(fallback) }
-      }
-    },
-
     async createTransformation(boardId, body) {
       let created
       await changeBoard(boardId, async (board) => {
         validateSourceRefs(board, body.sourceRefs)
+        if ('sourceScopes' in body) throw typed('SOURCE_SCOPE_INVALID', '创建步骤时请在来源引用中提供范围。')
         const modelId = Object.prototype.hasOwnProperty.call(body, 'modelId')
           ? modelOverride(body.modelId)
           : undefined
         const sourceCardIds = body.sourceRefs.map((sourceRef) => sourceRef.cardId)
+        const sourceScopes = await confirmSourceScopes(board, scopesFromRefs(body.sourceRefs), sourceCardIds, readFileContent)
         const timestamp = now()
+        const guidance = resolveGuidance(body.guidance)
+        assertGuidanceCriteria(guidance, body.acceptance)
         const targetCard = {
           id: newId('card'),
           contentKind: 'markdown',
@@ -866,8 +907,10 @@ export function createV2Handlers({
         const transformation = {
           id: newId('transformation'),
           sourceCardIds,
+          ...(sourceScopes.length ? { sourceScopes } : {}),
           targetCardId: targetCard.id,
           label: String(body.label || '').trim(),
+          ...(guidance ? { guidance } : {}),
           instruction: String(body.instruction || '').trim(),
           acceptance: String(body.acceptance || '').trim(),
           ...(modelId ? { modelId } : {}),
@@ -893,13 +936,17 @@ export function createV2Handlers({
           throw typed('BAD_REQUEST', '并行分支必须包含 2 到 16 个方向')
         }
         validateSourceRefs(board, body.sourceRefs)
+        if ('sourceScopes' in body) throw typed('SOURCE_SCOPE_INVALID', '创建步骤时请在来源引用中提供范围。')
         const sourceCardIds = body.sourceRefs.map((sourceRef) => sourceRef.cardId)
+        const sourceScopes = await confirmSourceScopes(board, scopesFromRefs(body.sourceRefs), sourceCardIds, readFileContent)
         const timestamp = now()
         const targetCards = []
         const transformations = []
         for (const entry of entries) {
           const label = String(entry?.label || '').trim()
           const instruction = String(entry?.instruction || '').trim()
+          const guidance = resolveGuidance(entry?.guidance)
+          assertGuidanceCriteria(guidance, entry?.acceptance)
           if (!label || !instruction) {
             throw typed('TRANSFORMATION_INVALID', '成果名称和目标不能为空')
           }
@@ -921,10 +968,12 @@ export function createV2Handlers({
           const transformation = {
             id: newId('transformation'),
             sourceCardIds,
+            ...(sourceScopes.length ? { sourceScopes: structuredClone(sourceScopes) } : {}),
             targetCardId: targetCard.id,
             label,
             instruction,
             acceptance: String(entry?.acceptance || '').trim(),
+            ...(guidance ? { guidance } : {}),
             ...(modelId ? { modelId } : {}),
             permissions: { workspaceWrite: false },
             createdAt: timestamp,
@@ -982,27 +1031,36 @@ export function createV2Handlers({
           sourceCardIds = body.sourceRefs.map((sourceRef) => sourceRef.cardId)
           assertSourcesDoNotCloseCycle(board, current, sourceCardIds)
         }
+        const sourceScopes = await updateSourceScopes(board, current, body, sourceCardIds, readFileContent)
+        const guidance = has('guidance') ? resolveGuidance(body.guidance) : current.guidance
+        assertGuidanceCriteria(guidance, acceptance)
 
         const transformation = {
           ...current,
           sourceCardIds,
+          ...(sourceScopes.length ? { sourceScopes } : {}),
           label,
           instruction,
           acceptance,
           ...(modelId ? { modelId } : {}),
           updatedAt: nextUpdatedAt(current.updatedAt, now()),
+          ...(guidance ? { guidance } : {}),
         }
         const semanticsChanged =
           label !== current.label ||
           instruction !== current.instruction ||
           acceptance !== current.acceptance ||
           modelId !== current.modelId ||
+          JSON.stringify(guidance) !== JSON.stringify(current.guidance) ||
+          JSON.stringify(sourceScopes) !== JSON.stringify(current.sourceScopes || []) ||
           sourceCardIds.length !== current.sourceCardIds.length ||
           sourceCardIds.some((cardId, index) => cardId !== current.sourceCardIds[index])
         if (current.planRef && semanticsChanged) {
           transformation.planRef = { ...current.planRef, adjusted: true }
         }
         if (!modelId) delete transformation.modelId
+        if (!guidance) delete transformation.guidance
+        if (!sourceScopes.length) delete transformation.sourceScopes
         board.transformations = board.transformations.map((item) =>
           item.id === transformationId ? transformation : item,
         )
@@ -1067,6 +1125,10 @@ export function createV2Handlers({
             },
             { resolveFileContent: readFileContent },
           )
+          assertExtractionSources(transformation.instruction, run.sourceSnapshot.map(snapshot => ({
+            ...snapshot,
+            path: cardById(board, snapshot.cardId).versions.find(version => version.id === snapshot.versionId)?.content.path,
+          })))
           run = { ...run, status: 'running', startedAt: now() }
           await runStore.start(run, boardLease)
           runStarted = true

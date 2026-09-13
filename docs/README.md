@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+2026-09-13 增量：[本地安装、恢复与补充验收](validation/2026-09-13-local-install-acceptance.md)、[A3–B8 实施验证](validation/2026-09-13-a3-b8-validation.md)、[真实模型质量复核](validation/2026-09-13-model-quality-review.md)、[正式桌面发行准备](operations/desktop-release.md)。当前完成范围及设备阻挡见[统一 TODO](refactor/evolution-todo.md)。
+
 开源协作入口：[贡献指南](../CONTRIBUTING.md) · [安全说明](../SECURITY.md) · [短期路线图](../ROADMAP.md) · [发布准备](operations/open-source-release.md)。
 
 本次开源准备的测试、依赖审计和未发布边界见 [2026-09-10 验证记录](validation/2026-09-10-open-source-readiness.md)。
@@ -96,9 +98,9 @@ AI 工具统一从仓库根目录的 [AGENTS.md](../AGENTS.md) 开始，其中�
 
 ## 平台实施
 
-- [GitHub Actions 内部桌面打包](operations/desktop-internal-builds.md)：手动或打包相关变更 push 触发，生成 macOS arm64/x64 DMG/ZIP 与 Windows x64 免安装 ZIP，先检查与 packed smoke，再上传内部产物，不自动发布 Release。
+- [GitHub Actions 桌面测试包](operations/desktop-internal-builds.md)：每次 main push、手动运行或打包相关 PR 触发，生成 macOS/Windows arm64/x64 未签名包；检查与 packed smoke 通过后上传，不自动发布 Release。
 
-- [macOS 桌面薄壳实施记录](refactor/macos-desktop-shell-todo.md)：Electron 44 internal Alpha 已实现，复用同一 React UI、HTTP API 和 Node Host。当前只用于内部验证，未签名、未公证、没有自动更新或公开分发。
+- [macOS 桌面薄壳实施记录](refactor/macos-desktop-shell-todo.md)：Electron 44 internal Alpha 已实现，复用同一 React UI、HTTP API 和 Node Host。已允许公开 Actions 未签名测试包；签名、公证、应用内自动更新与正式 Release 另行验收。
 - Web/Standalone 仍是产品与日常开发主线；Desktop 是发布验证目标，不得演化成第二套领域、Store、API 或 UI。
 
 ## 画布版本管理
@@ -121,7 +123,17 @@ AI 工具统一从仓库根目录的 [AGENTS.md](../AGENTS.md) 开始，其中�
 - [竞品参考与体验改进 TODO](refactor/competitor-reference-todo.md)：本轮 B1-B5、R1-R3、R5-R6 已实现，R8-R9 暂缓；不增加语义卡片类型或普通关系线。
 - [2026-09-07 卡片交互验证](validation/2026-09-07-card-interaction-validation.md)：独立集成分支、1440 项测试、三档浏览器、六套外观和方法复用证据；真实模型及触屏设备未验收。
 
-## 暂缓与待讨论
+## 当前演进与待讨论
+
+本地最新增量：[2026-09-13 A3–B8 实施与验证](validation/2026-09-13-a3-b8-validation.md)，逐项记录本批真实进度和验证边界。
+
+前序证据：[2026-09-12 自动建议删除与文本提取验证](validation/2026-09-12-content-extraction-validation.md)，含真实 Kimi 8/2 项输出、可导入证据画板、桌面/390px 截图和 1556 项测试结果；原生设备与扩展材料质量边界单列。
+
+B7 限定输入范围的[产品 §5.4](product/product-definition.md)、[核心契约 §6.1.1](specs/core-specification.md)和[交互 §4.3.1](design/experience-design.md)已获确认，暂缓后又纳入 A3–B8；尚未实施，不替代当前全文输入行为。
+
+- [A3–B8 整批交付计划](refactor/a3-b8-delivery-plan.md)：2026-09-13 登记用户要求的完整范围、依赖顺序、真实模型质量计划、触屏和发行条件。新增产品语义见[产品定义 §5.11](product/product-definition.md)、[核心规格 §11](specs/core-specification.md)、[体验设计 §11](design/experience-design.md)、[UI 系统 §10](design/ui-system.md)和[平台适配与发行草案](specs/platform-adapters.md)，均明确区分待确认/未实现状态。
+
+- [当前演进 TODO](refactor/evolution-todo.md)：2026-09-12 汇总首次使用/设备验收、删除自动建议、动态提取/拆卡/重跑、限定输入范围、局部改写、带出处剪藏、多卡合成体验、主动交付检查、文档导出及读取/skill/互通候选；记录哲学边界与开发验收，区分已确认方向、已有能力、候选设计和原有暂缓项，不作为产品规格。
 
 - [保留首尾的推导链折叠 TODO](refactor/chain-collapse-design-todo.md)：2026-09-06 用户确认暂缓，不实现、不排期。先使用颜色与分组验证真实痛点；重启条件和分组兼容未决项保留在 TODO，不属于当前产品规则。
 

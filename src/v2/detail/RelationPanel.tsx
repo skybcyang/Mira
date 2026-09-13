@@ -1,3 +1,4 @@
+import { extractionRequirement } from '../../domain/extraction.js'
 import { useEffect, useState } from 'react'
 import { Pencil } from 'lucide-react'
 import type { Transformation, TransformationRun } from '../../domain'
@@ -105,7 +106,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
         onSave={(changes) => updateTransformation(transformation.id, changes)}
       />
       : <><div className="v2-structure-toolbar"><button className="v2-secondary-button" type="button" disabled={candidatePending} onClick={() => setEditing(true)}><Pencil size={14} />{transformationEditCommandLabel(transformation)}</button></div>
-    <dl><dt>成果</dt><dd>{transformation.label}</dd><dt>目标</dt><dd>{transformation.instruction}</dd><dt>模型</dt><dd>{transformation.modelId || '继承默认模型'}</dd>
+    <dl><dt>成果</dt><dd>{transformation.label}</dd><dt>目标</dt><dd>{extractionRequirement(transformation.instruction) ?? transformation.instruction}</dd><dt>模型</dt><dd>{transformation.modelId || '继承默认模型'}</dd>
       {transformation.acceptance && <><dt>完成标准</dt><dd>{transformation.acceptance}</dd></>}</dl>
     <SourceManager transformation={transformation} blocked={sourceEditBlock(board, transformation, runs)} sources={transformation.sourceCardIds.map((cardId) => {
       const card = board.cards.find((item) => item.id === cardId)
@@ -120,6 +121,9 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
             : '与最近结果一致'
       return { cardId, title: card ? cardSummary(card).title : '来源已移除', status: sourceState }
     })} />
+    <section aria-label="本步指导"><button type="button" className="v2-secondary-button" disabled={candidatePending} onClick={() => runDrawerAction(() => open({ tab: 'relation', transformationId, guidance: true }))}>本步指导 · {transformation.guidance?.title || '不使用'}</button>
+      {transformation.guidance && <details className="v2-guidance-read"><summary>查看已保存指导 · {transformation.guidance.version}{transformation.guidance.customized ? ' · 已调整' : ''}</summary><p>{transformation.guidance.text}</p></details>}
+    </section>
     <details className="v2-source-state-summary"><summary>来源状态摘要</summary>
     <ul className="v2-source-comparison">{sourceComparisonRows(board, transformation, appliedRun).map((row) => <li key={row.cardId}>
       <button type="button" disabled={!sourcePreview} onClick={() => sourcePreview?.({ boardId: board.id, cardId: row.cardId, snapshot: row.snapshot, runId: appliedRun?.id })}>

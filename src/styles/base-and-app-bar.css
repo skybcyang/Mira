@@ -264,3 +264,6 @@ textarea:focus-visible,
 .v2-board-menu-create > div { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
 .v2-board-menu-create button { min-height: 38px; }
 .v2-board-menu-error { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px; font-size: 12px; color: var(--mira-danger); }
+.v2-application-info { padding: 12px; border-top: 1px solid var(--mira-border); font-size: 12px; line-height: 1.7; color: var(--mira-muted); }
+.v2-application-info p { margin: 0; overflow-wrap: anywhere; }
+.v2-application-info a { display: inline-flex; min-height: 44px; align-items: center; color: var(--mira-ink); }

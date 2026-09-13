@@ -54,6 +54,13 @@ function backup(artifactValue = artifact()) {
 }
 
 describe('MiraBackup checkpoint portable-data policy', () => {
+  it('rejects hidden material body in pool provenance before restore staging', () => {
+    const value = backup()
+    value.inspirationPool = { schemaVersion: 1, id: 'inspiration-pool', createdAt: NOW, updatedAt: NOW, entries: [{ id: 'entry-1', headVersionId: 'version-1', createdAt: NOW, updatedAt: NOW, versions: [{ id: 'version-1', entryId: 'entry-1', sequence: 1, content: { kind: 'markdown', markdown: 'selected only' }, digest: 'digest', createdAt: NOW, origin: 'human', materialOrigin: { kind: 'web', title: 'Source', url: 'https://example.com/', capturedAt: NOW, sourceDigest: 'a'.repeat(64), textDigest: 'b'.repeat(64), reader: { id: 'reader', version: '1' }, locators: [{ start: 0, end: 4 }] } }] }] }
+    expect(() => validateWorkspaceBackup(value)).not.toThrow()
+    value.inspirationPool.entries[0].versions[0].materialOrigin.rawBody = 'unselected content'
+    expect(() => validateWorkspaceBackup(value)).toThrowError(expect.objectContaining({ code: 'BACKUP_INVALID' }))
+  })
   it('accepts a valid checkpoint artifact', () => {
     expect(() => validateWorkspaceBackup(backup())).not.toThrow()
   })

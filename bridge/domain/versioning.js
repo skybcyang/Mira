@@ -40,6 +40,8 @@ export function appendVersion(card, input) {
     digest: digestContent(content),
     origin: input.origin,
     createdAt: input.createdAt,
+    ...(input.materialOrigin ? { materialOrigin: structuredClone(input.materialOrigin) } : {}),
+    ...(input.extractionSources ? { extractionSources: structuredClone(input.extractionSources) } : {}),
     ...(input.sourceRunId ? { sourceRunId: input.sourceRunId } : {}),
     ...(input.restoredFromVersionId
       ? { restoredFromVersionId: input.restoredFromVersionId }
@@ -66,5 +68,7 @@ export function restoreVersion(card, sourceVersionId, input) {
     content: source.content,
     origin: 'restore',
     restoredFromVersionId: sourceVersionId,
+    ...(source.materialOrigin ? { materialOrigin: source.materialOrigin } : {}),
+    ...(source.extractionSources ? { extractionSources: source.extractionSources } : {}),
   })
 }

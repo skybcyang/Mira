@@ -26,6 +26,13 @@ function memoryFs() {
 }
 
 describe('v2 run store', () => {
+  it('rejects a damaged frozen guidance snapshot before writing', async () => {
+    const { listGuidance } = await import('../../src/domain/guidance.js')
+    const fs = memoryFs()
+    const store = createV2RunStore(fs)
+    await expect(store.save({ id: 'damaged', boardId: 'board', targetCardId: 'target', status: 'running', guidanceSnapshot: { ...listGuidance()[0], text: 'changed after freezing' } })).rejects.toMatchObject({ code: 'RUN_WRITE_FAILED' })
+    expect(fs.files.has('runs-v2/damaged.json')).toBe(false)
+  })
   it('serializes operations on one Run and supplies the latest persisted state', async () => {
     const store = createV2RunStore(memoryFs())
     await store.save({

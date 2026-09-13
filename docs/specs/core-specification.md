@@ -176,6 +176,7 @@ interface ContentCard {
   height: number
   headVersionId: string | null
   versions: CardVersion[]
+  extractionRef?: { boardId: string; cardId: string; versionId: string; itemId: string; batchId: string }
   fileBinding?: CardFileBinding
   createdAt: string
   updatedAt: string
@@ -401,6 +402,22 @@ interface UpdateOrganizationRequest {
 正文保存由客户端显式携带草稿 baseVersionId；不能使用保存时重新读到的 Head 替换该基线。Store 保存结果必须明确成功/失败，成功后才可编排下一次创建。`保存并新建`的下一张 Card 不复制正文、标签、组、颜色、绑定或出处，只沿用尺寸并碰撞避让。双击提交受同一请求锁保护。
 
 保存失败保留草稿并零创建；保存成功、新建失败时保留已保存 Version。新建请求结果不确定时阻止该连续动作直接重试，先刷新并核对画板，不自动推断或删除同名卡；用户显式普通新建仍是另一条命令。成功响应不能导航已失效的 Board/详情意图。
+
+### 4.4.5 文本提取清单与拆卡（2026-09-12）
+
+提取使用普通单目标 Transformation；提取要求和明确输出格式作为 instruction 保存，重跑和方法提取/应用沿用此 instruction，不增加执行引擎或隐式调用。自动建议 HTTP 入口移除；模型连接探测属于独立宿主能力，不受影响。
+
+instruction 以独立段落 `<!-- mira:extraction-format:v1 -->` 分隔用户要求与格式协议。关系阅读和编辑只呈现用户要求，保存编辑时保留提取协议。开始 Run 时对当次实际文本检查：普通 Markdown 或支持扩展名的 UTF-8 文本文件，总长最多 1,000,000 字符；空白、NUL、解码替代字符和不支持的文件类型以 `SOURCE_READ_FAILED` 拒绝，不持久化或执行 Run。支持扩展名为 md/markdown/txt/csv/tsv/json/jsonl/yaml/yml/xml/html/htm/log/srt/vtt；不解析 PDF、OCR 或音视频。
+
+清单正文是唯一真相，使用 `<!-- mira:extraction:v1 -->` 开头，每个条目使用独立行 `<!-- mira:item:ITEM_ID -->`、下一行 `## 标题`、非空 Markdown 正文，并以独立行 `<!-- mira:end -->` 结束。ITEM_ID 为 1..64 个 ASCII 字母、数字、下划线或连字符，同一版本内唯一；标题单行 1..120 字符，正文最多 20,000 字符；全文最多 1,000,000 字符、最多 100 项，可为零项。标记之间仅允许空白，正文不得嵌入保留标记。模型应把原文依据和真实段落/章节定位写入条目正文，无法核对的定位不得编造。Markdown 渲染正常隐藏注释；编辑后重新解析，结构无效时原文仍保留但不能拆卡。普通编号 Markdown 不会被自动识别为提取清单。
+
+`POST /boards/:boardId/cards/:cardId/extractions` 请求为 `{ baseVersionId, items: [{ itemId, title, markdown }] }`，items 为用户选定顺序，长度 1..100、itemId 唯一且必须出现在指定清单中。用户可改标题和正文，但不能伪造条目归属；无效结构/输入返回 `EXTRACTION_INVALID` (422)。服务在 Board 写锁中确认 active、清单当前 Head 等于 baseVersionId、版本存在且可解析，冲突返回 `SOURCE_VERSION_CHANGED`，零写入；首版只接受当前清单版本。清单为目标的活动 Run 或未处理 Candidate 分别返回现有 `TARGET_BUSY` / `CANDIDATE_PENDING`。
+
+服务计算碰撞避让布局，创建新身份的 Markdown Card 与 `origin: human` 初始 Version（用户审阅后的快照，不伪造针对新卡的模型 Run），并原子保存 Card 上的 `extractionRef: { boardId, cardId, versionId, itemId, batchId }`。前四项指向明确清单和条目，batchId 由服务为本次创建生成；出处不是结构边、不影响 stale，也不要求历史来源永久存在。响应 `{ cards }` 按请求顺序返回。新卡、版本与出处整批成功或零写入，不调用模型、不创建 Transformation/Run/Group。重复点击由客户端提交锁阻止；若响应不确定，保留草稿并禁止直接重试该提交，先刷新核对清单的已有批次，不能声称服务提供持久幂等回执。
+
+拆分草稿绑定打开时的版本，Head 更新不替换草稿，提交旧基线被拒绝。成功后一次 create history；撤销只删除本批新卡，沿用 CARD_IN_USE，不删除原清单/Run。重做使用受管精确删除回执恢复原身份与出处。普通复制只复制正文等既有字段，不携带 extractionRef；导入和 Checkpoint 副本重映射包内来源 Board/Card/Version 与批次身份，历史缺失或包外出处映射为不解析到本地对象的 opaque ID；完整备份保留出处，仍不额外读取引用文件正文。旧 Card 无此字段继续合法。
+
+验收：`EXTRACT-01` 添加步骤零 Run、显式生成单清单；`EXTRACT-02` 动态数量、编辑排序选择、确认前零新卡、确认后零模型调用；`EXTRACT-03` 畸形/空条目/重复标识/超限拒绝；`EXTRACT-04` 故障零半写、旧基线/只读/活动 Run/Candidate 拒绝、响应不确定不盲重试；`EXTRACT-05` 重跑保留旧卡、人工 Head 变化进入 Candidate；`EXTRACT-06` 批次历史与出处、精确撤销重做、导入/备份/Checkpoint 映射；`EXTRACT-07` 桌面/390px 草稿保护、焦点、长列表、真实文本模型输出质量。
 
 ### 4.5 Transformation
 
@@ -639,6 +656,77 @@ interface SourceSnapshot extends SourceRef {
 
 开始 Run 时按 Transformation 的来源顺序读取当前 Head，冻结完整 snapshot、目标基线和实际模型选择。`sourceSnapshot` 数组顺序即来源顺序，不另存 `order`；file-reference 的 `resolvedContent` 是运行开始时读取到的实际文本。之后来源变化不改变该 Run。
 
+### 6.1.1 B7 限定输入范围契约（已确认）
+
+本节语义已经用户确认并重新纳入 A3–B8 批次，不把已有全文读取行为标为已支持选区。产品意图见产品定义 §5.4；交互见体验设计 §4.3.1。实现和测试必须接通全部运行入口，不能只在 UI 截取文字。
+
+#### 对象与范围
+
+```ts
+interface TextSpan { start: number; end: number }
+type SourceScope =
+  | { cardId: string; mode: 'required' }
+  | {
+      cardId: string
+      mode: 'ranges'
+      versionId: string
+      contentDigest: string
+      spans: TextSpan[]
+    }
+// Transformation.sourceScopes?: SourceScope[]
+// SourceRef.scope?: Omit<Extract<SourceScope, { mode: 'ranges' }>, 'cardId'>
+// WorkflowStepSource.scope?: 'select-before-run'
+```
+
+缺失 sourceScopes 或某来源无对应项时保持现有全文语义。每个来源最多一项，必须属于当前 sourceCardIds，sourceScopes 按来源顺序规范化；一个来源的 spans 数组按用户明确排序进入模型，不能自动按位置重排。mode: required 只表达需要用户选择范围，不能作为可执行的空范围。
+
+首版支持 Markdown Card 及 §4.4.5 的文本扩展名，不新增 PDF/OCR/音视频解析。选区针对实际原始文本，start/end 为 UTF-16 半开区间，必须是安全整数、0 <= start < end <= text.length，不能切开代理对；1..100 个非重叠、非重复、非空白片段，原始文本总长最多 1,000,000 字符。章节按钮只是依照原文 Markdown 标题边界建立同样的片段：包括标题及其下属正文，到下一个同级或更高级标题之前；代码围栏中的井号不是章节。没有标题时仍可原生选字，不猜测章节。
+
+contentDigest 为完整原始文本的 SHA-256 指纹，服务生成并验证；不依赖仅有偏移量，也不把客户端提交的摘录当作可信来源。元数据不保存片段正文，避免将引用文件内容隐式装入 Board/备份。浏览器只在本任务草稿中持有预览文本；刷新或关闭后不承诺恢复未保存选区。
+
+#### 读取、保存与执行
+
+1. 扩展现有 Card content 读取响应，返回匹配同一次读取的 versionId、content、contentDigest；Markdown 在 Board 读取边界核对 Head，文件指纹来自这次实际读取。错误不返回伪造的空全文或零范围。
+2. 普通/批量创建 Transformation 的 sourceRefs 可携带已确认 scope，服务完整验证全部来源后原子保存 sourceScopes，仍零 Run。UI 首版也允许先添加普通或提取步骤，再在其来源列表配置范围。
+3. 普通 Transformation PATCH 增加 sourceScopes，缺失字段保留原设置，显式 [] 才表示全部改用全文。使用现有 baseUpdatedAt CAS、Board 可写门禁及目标 Run/Candidate 互斥；每项范围必须在保存时重新核对当前 Head、实际全文指纹与边界。内容或结构冲突零写入，失败保留草稿。
+4. 来源排序保留每张卡已有范围；移除来源只移除其范围；追加来源明确显示默认“全文”，不得清掉其他来源的限制。替换来源不能把旧坐标挪给新 Card。
+5. 所有 Run 入口从持久 Transformation 读取范围；省略请求 scope 不能取消限制。若调用方携带 scope，必须与持久设置一致，否则拒绝；Run 请求不是临时扩大范围的旁路。mode: required、Head 不匹配、文件指纹变化或区间无效均在持久化 Run 和调用模型前失败。
+6. 通过检查后服务切取准确片段，按明确顺序生成模型可见的输入。只允许添加固定片段分隔及原文行号等定位元数据，不包含任何未选正文；UI 的“本步实际输入”使用同一组装规则。运行中不再次读取原文或根据模型输出补读。输出还是原目标的一次 CardVersion/Candidate。
+
+同一条 API 可同时保存文案、来源与范围，但任一项失败时全部零写入。范围设置不追加 CardVersion、不进入 CanvasHistory、不生成摘录 Card、Run 或新分支。不确定保存响应先刷新核对当前设置与 updatedAt，再由用户决定是否重新提交。
+
+#### 冻结、stale 与重跑
+
+限定来源的 SourceSnapshot 保存实际模型输入 resolvedContent 与它的 digest，另保存 scope（versionId、完整原文 contentDigest、spans），以及可核对的片段行号。fullContentDigest 保存与既有文件变化检测使用同一算法的完整正文摘要，仅用于 stale 比较；范围校验仍以 SHA-256 的 contentDigest 为准。sourceSnapshot 不携带范围外正文；digest 不再拿来和完整文件 digest 直接比较。旧无 scope 的 snapshot 保持原语义。
+
+stale 继续相对最近已采用 Run：除来源成员/顺序/版本外，还比较每个来源的范围模式、顺序与区间；全文与选区之间切换或选区变化都标记 stale。完整原文指纹变化时范围失效，即使变化发生在选区外也先要求重新核对，首版不推测哪些变化“无影响”。stale 仍只提示，不自动运行。
+
+同一版本、同一实际文本、同一范围可直接显式重跑。范围失效时保存旧范围草稿供核对；用户重新读取并确认范围后才更新基线。运行到这里预估须显示遇到的“待选范围/范围已变化”阻挡；执行仍逐步复核。若上游成功产生新版本导致下游选区失效，停在下游，保留上游结果及其他成果，不自动重选或扩成全文。
+
+#### 方法与可移植数据
+
+保存方法时，把限定来源对应的 WorkflowStepSource 标成 scope: select-before-run；不保存 Card/Version ID、位置、digest 或正文。对应外部输入和 previous-output 均可携带此要求。应用方法只铺普通计划，在展开后的每个对应来源上生成 mode: required；不运行，也不立即要求尚未生成的上游成果具备选区。到该步时由用户明确选择片段，或明确“改用全文”并记录为计划调整。
+
+BoardArtifact/Checkpoint 副本重映射 sourceScopes 中的 Card/Version ID 及 Run snapshot 对应引用，保持指纹、偏移、顺序和 mode；缺失的历史版本沿用 opaque 身份，不碰巧绑定本地同名对象。完整备份保留原身份与设置。导出和备份继续不读取引用文件；file-reference snapshot 的已读正文仍按现有可移植规则移除，新 scope 字段也不得夹带摘录或完整正文。导入后文件必须实际可读且指纹匹配才允许运行，不能因导入成功而自动信任选区。旧 Board、Run 和模板缺字段时不迁移、不改写。
+
+#### 错误与验收
+
+新增 SOURCE_SCOPE_INVALID (422)：非法模式/来源归属/摘要/区间、重叠、空片段或超限；SOURCE_SCOPE_REQUIRED (409)：方法要求的范围尚未确认；SOURCE_SCOPE_CHANGED (409)：保存或执行时全文指纹变化、范围设置与请求不一致。Head 变化继续使用 SOURCE_VERSION_CHANGED，文件不可读取使用 SOURCE_READ_FAILED。已有 TARGET_BUSY、CANDIDATE_PENDING、TRANSFORMATION_CONFLICT、BOARD_READ_ONLY 保持原义。格式无效不是读取成功，模型未调用前失败不能生成伪成功 Run。
+
+| 验收 | 场景与必须结果 |
+| --- | --- |
+| SCOPE-01 | 普通推导和提取读取同一组所选片段；范围外放入辨识文本，通过实际模型 adapter 输入断言其未被发送 |
+| SCOPE-02 | 多来源、多段、逆序、重复正文、中文/emoji/CRLF；顺序正确、定位不漂移，重叠/重复/切开代理对整批拒绝 |
+| SCOPE-03 | 空选区、100 项边界、超长/乱码文件、畸形 payload、伪造摘录、取消与读取失败；零范围写入、零 Run |
+| SCOPE-04 | 选区前后原文变化、文件只改正文而路径 Version 不变、同毫秒并发更新；保存/运行拒绝旧基线，保留草稿 |
+| SCOPE-05 | 清除/更换范围触发 stale，同范围显式重跑输入一致；省略/伪造运行请求不得绕过持久范围 |
+| SCOPE-06 | 运行中改目标仍进 Candidate；活动 Run/未处理 Candidate 不允许改范围；上游更新导致下游停住，不产生隐式全文运行 |
+| SCOPE-07 | 方法保存只保留选择要求，应用后须确认；模板、BoardArtifact、备份和 Checkpoint 往返不泄漏引用文件正文、不丢范围 |
+| SCOPE-08 | 保存范围原子失败、响应丢失、切 Board、迟到回包；无半写、不改其他范围、不抢导航 |
+| SCOPE-09 | Desktop/390px 原生选字、章节选择、键盘排序、实际输入预览、焦点恢复及离开保护；console 无新增错误 |
+
+实施拓扑：单 Agent、在现有 B6 基线上推进。共享范围类型/纯校验 → snapshot/Run/可移植数据/方法契约 → API/Store → 来源管理与范围面板 → 定向 Bridge、完整工程与浏览器验证。热点为 snapshots、Transformation、Workflow 和来源 Store，暂不并行拆分。通过验收前不勾选 B7、不宣称模型质量或原生设备已验收。
+
 ### 6.2 TransformationRun
 
 ```ts
@@ -744,7 +832,7 @@ interface BoardArtifactV1 {
   workflowProvenance: WorkflowProvenanceSnapshot[]
   fileDependencies: Array<{ path: string; occurrenceCount: number }>
   externalReferences: Array<
-    | { kind: 'inspiration'; boardId: string; cardId: string; versionId: string }
+    | { kind: 'inspiration' | 'extraction'; boardId: string; cardId: string; versionId: string }
     | { kind: 'workflow'; workflowId: string; stepId?: string }
     | { kind: 'historical'; objectKind: 'card' | 'version' | 'transformation' | 'run'; objectId: string }
   >
@@ -853,7 +941,7 @@ interface ForkBoardCheckpointRequest { title?: string }
 | `GET` | `/boards/:boardId/cards/:cardId/content` | 解析当前 Head 正文；file-reference 从 workspace 读取当前文件内容 |
 | `POST` | `/boards/:boardId/cards/:cardId/versions` | 以当前 Head 为 base 提交人工 Version |
 | `POST` | `/boards/:boardId/cards/:cardId/versions/:versionId/restore` | 将历史内容复制为新的 Head Version |
-| `POST` | `/boards/:boardId/suggestions` | 为有序当前 SourceRef 请求临时下一步建议 |
+| `POST` | `/boards/:boardId/cards/:cardId/extractions` | 从明确清单版本原子创建所选条目的独立 Card；零 Run |
 | `GET` | `/workflows` | 列出全局流程模板 |
 | `POST` | `/workflows` | 从已验证路径创建模板 |
 | `GET` | `/workflows/:id` | 读取模板 |
@@ -1014,3 +1102,133 @@ Transformation PATCH 请求体是 `UpdateTransformationRequest`，位置 PATCH �
 - Board 生命周期、只读门禁和重命名并发契约由 domain、store、route 与浏览器验收覆盖。
 - BoardArtifact 的严格校验、完整 ID 映射、零可见半写，以及 MiraBackup 的完整快照与新 workspace 恢复都有故障注入测试。
 - 生产 UI、HTTP API、bridge 和 bundle 均不包含 v1/Action/chain 兼容或迁移代码。
+
+## 11. A3–B8 批次增量（2026-09-13 已确认，实施中）
+
+本节只定义产品定义 §5.11 的新增契约，未覆盖的行为沿用前文。A5 和 B6 文本首版已有验证，B7 §6.1.1 已获确认；本节不将它们的历史证据扩写成以下新功能已通过。发布契约归平台适配器文档，设备与质量的执行计划见 `docs/refactor/a3-b8-delivery-plan.md`。
+
+### 11.1 B1/B2：材料读取与明确保存
+
+读取通过注入的网页/PDF adapter 完成，domain 不请求网络、不读取本地文件。普通 file-reference 的全文 Run 不自动获得 PDF 解析：用户先阅读、核对并保存 Markdown 材料，再沿普通步骤或 B7 选区运行。网页/PDF 阅读不调用模型。
+
+```ts
+interface MaterialLocator {
+  start: number
+  end: number
+  page?: number // PDF 物理页，从 1 开始；不猜测印刷页码
+}
+interface MaterialOrigin {
+  kind: 'web' | 'pdf'
+  title: string
+  url?: string // web，最终实际读取地址；无账号密码
+  requestedUrl?: string // web，发生重定向时保留
+  path?: string // pdf，workspace-relative
+  capturedAt: string
+  sourceDigest: string // 取得的 HTML/PDF 字节的 SHA-256
+  textDigest: string // 解析出的完整规范文本 SHA-256
+  reader: { id: string; version: string }
+  locators: MaterialLocator[] // 本次保留内容在该解析快照中的位置
+}
+interface MaterialPreview {
+  previewId: string
+  expiresAt: string
+  origin: Omit<MaterialOrigin, 'locators'>
+  text: string
+  pages?: Array<{ page: number; start: number; end: number; status: 'text' | 'empty' | 'unreadable' }>
+  warnings: Array<{ code: string; message: string; page?: number }>
+}
+// CardVersion.materialOrigin?: MaterialOrigin
+```
+
+1. `POST /materials/previews` 接受互斥的 `{ kind:'web', url }` 或 `{ kind:'pdf', path }`，返回 `{ preview }`。PDF path 必须通过既有 workspace 越界/symlink 校验；外部文件继续由既有 files/import 显式拷入，不在预览接口接受绝对路径。
+2. Preview 是服务端有界临时读取回执，不是新内容对象：单个最长 10 分钟、最多 5 个、总字节最多 64 MiB。容量不足明确拒绝，不驱逐仍在使用的预览。创建、读取、取消均零 Board/池/Run 写入；`DELETE /materials/previews/:id` 释放本次临时内容，超时和 Host 关闭同样释放。
+3. 网页只允许 HTTP(S)，不接收任意请求头、Cookie 或账号密码，不执行页面脚本、不加载图片/iframe/字体/页面链接、不自动抓取下一页。每次初始请求和最多 5 次重定向都重新验证协议、端口和地址；拒绝 loopback、私网、链路本地、保留地址及 IPv4/IPv6 等价写法。DNS 解析结果必须绑定到本次实际连接，不能只预检后再由 fetch 重新解析；代理配置不能绕过此边界。HTTPS 正常校验证书。请求总时限 20 秒，响应解压后最多 5 MiB、解析后最多 1,000,000 UTF-16 字符，超限拒绝而非截断。
+4. 网页返回的非 HTML/非文本、空正文、访问受限、验证码或无法确认正文的结果不可伪装成功。明确检测到限制时拒绝；无法自动判断完整性时预览标为需核对，不宣称取得全文。地址去掉 fragment，拒绝 userinfo；查询参数可能包含私密信息，预览完整展示由用户核对，不能在错误日志或公开诊断中原样输出。相对链接按实际地址解析，危险 scheme 被过滤，外链不会自动请求。
+5. PDF 文件读取前限制为 25 MiB，最多 500 页、规范文本最多 1,000,000 字符；读取冻结同一份字节，指纹、页面渲染与提取均来自它。逐页提取，不通过 UTF-8 解码 PDF 二进制。解析器不执行 PDF JavaScript、不打开附件、不访问外部资源；本地打包字体/worker 受显式 staging 管理。取消和超时须终止解析 worker，不能只取消 UI 等待。密码保护首版明确拒绝，不收集或持久化文档密码。
+6. PDF 按物理页建立稳定文本边界，保留明确换行；页面本身可按需渲染供人工对照。复杂表格、多栏和公式不保证结构重建，预览展示对应限制。非空页面无法提取文字时提示可能需要 OCR；真实空白页与解析失败分别表示。选择含 unreadable 页时禁止保存为“完整材料”，可明确改选成功页，保存的出处必须反映实际页集合。OCR 不在这个文本版本中实现，也不能将它标为已支持。
+7. `POST /boards/:boardId/materials` 接受 `{ previewId, spans: TextSpan[] }`；完整保存也由客户端明确传整段边界，不默认填充空选区。按 B7 的 UTF-16、不重叠、顺序、数量与非空规则验证服务端预览文本。由服务组装正文与真实章节/页码标记，在 Board 锁内创建一张 `origin: human` 的 Markdown Card 与不可变 MaterialOrigin；返回 `{ card }`，不创建 Run/Transformation。PDF 选择页与任意页内片段都归一化为 spans，不接收客户端伪造的摘录正文或页码。
+8. 保存只使用仍有效的读取回执，不重新请求网址或文件。网页/PDF 在预览后发生外部变化不替换该快照；UI 显示采集时间，用户可明确重新读取并重新预览。Board 变成只读时保存拒绝；取消或保存失败保留客户端草稿，服务端失败零半写。成功后为一条 create history，撤销沿用引用检查和精确恢复回执。
+9. 读取请求与写入请求各有提交锁和异步意图。保存成功的回执在有效期内缓存目的地、规范化请求摘要和结果 ID，同请求重试返回同对象；不同目的地/选区不能复用已消费回执。重启/过期返回过期，不重新读取再建卡。无法确认写入结果的回执进入 uncertain，仅允许刷新核对，不盲重试。它不承诺跨进程持久幂等。
+
+只在最初保存版本上写 materialOrigin；后续手工编辑不沿用已失效的偏移，原始版本和出处仍可从历史查看。源 Card 名称可以按标题初始化，修改不改变原始采集标题。作为来源的普通 Run 使用当前 CardVersion 正文；B7 则冻结明确片段。历史 Run 的来源定位指向实际采用的版本，不将当前编辑文本冒充原网页原句。
+
+MaterialOrigin 是内容的出处元数据，不是文件依赖或自动同步配置。保存后的选定 Markdown 是用户明确创建的受管内容，会被导出/备份/Checkpoint 保留；未选正文、临时预览、HTML/PDF 原始字节及会话回执不进入这些数据。PDF path 的安全校验沿用 file-reference，但导出不读取原文件。恢复旧版本保留被恢复内容的对应出处，普通复制按既有规则只带当前正文、不克隆完整出处历史。
+
+错误：`MATERIAL_INVALID` (422) 参数/URL/范围无效；`MATERIAL_SOURCE_BLOCKED` (422) 网络地址或路径禁止；`MATERIAL_READ_FAILED` (422) 无法读取/解析；`MATERIAL_UNAVAILABLE` (503) 宿主无 adapter；`MATERIAL_PREVIEW_EXPIRED` (409) 回执不存在/过期；`MATERIAL_PREVIEW_CONFLICT` (409) 已消费或结果不确定；`MATERIAL_LIMIT` (413) 大小/页数/缓存上限；既有 Board/存储错误保留。任何错误均不能生成伪成功 Run。
+
+### 11.2 B8：预览片段保存到灵感池
+
+PDF 原页只读接口：`GET /materials/previews/:previewId/pages/:page` 接受 1 起始物理页码，从同一冻结 worker 文档生成 `{ image: data:image/png;base64,... }`。渲染有像素/字节和时限上限；不存在/过期回执沿用 MATERIAL 错误，关闭预览释放 worker。图像不成为 Card、运行输入或备份成员。
+
+`POST /inspiration-pool/captures` 接受 `{ previewId, spans: TextSpan[], note?: string, tags?: string[] }`，不接受 Board 或坐标。note 最多 20,000 字符，标签复用既有规范。首版网页入口使用 §11.1 回执；读取 PDF 的同一快照也可复用此明确命令，不增加独立采集引擎。
+
+服务从预览切取准确片段，按用户顺序生成一条普通 Markdown 灵感：引用部分保留原句与可核对定位，个人备注独立标注；不调用模型。InspirationVersion 增加可选 `materialOrigin`，由服务生成，不能从普通记录接口提交伪造来源。池锁内正文、版本、出处和标签一次成功或零写入；响应 `{ entry }`。回执消费、防重复、未知回包、过期与取消规则同 §11.1。
+
+池内编辑仍追加 human Version；原始引用的来源元数据留在初始版本，不给修改后的文本伪造原句背书。添加到画板复用现有 poolSource 和 INSP-08；正文中的引用和备注随快照复制，版本上的 materialOrigin 也随被选池版本复制到初始 CardVersion。此操作仍零 Run、不选中新卡、不改变原始灵感。备份保留池来源与版本；出处不存在或原网址打不开不删除已保存摘录。
+
+### 11.3 B3/B4：显式内置指导及版本冻结
+
+```ts
+interface GuidanceSnapshot {
+  id: 'mira-evidence-review' | 'mira-close-reading' | 'mira-revision'
+  version: string
+  title: string
+  text: string
+  digest: string // SHA-256(text)
+  customized: boolean
+}
+// Transformation.guidance?: GuidanceSnapshot
+// WorkflowStepTemplate.guidance?: GuidanceSnapshot
+// TransformationRun.guidanceSnapshot?: GuidanceSnapshot
+```
+
+- `GET /guidance` 只列出随应用发行、已审阅的上述三种指导及版本、完整正文。它不是全局 WorkflowTemplate 库，不扫描系统技能目录、不安装包、不执行 Markdown 内代码。
+- Transformation 创建/批量创建及 PATCH 可提交 `guidance: { id, version, text? } | null`。缺失保留原行为；null 明确移除。服务核对发行目录中的精确 id/version；若 text 缺失取该版本正文，若用户显式调整 text 则保存实际指导并标 customized。文本非空且最多 20,000 字符，其他字段由服务生成。PATCH 复用 baseUpdatedAt、Board、Run/Candidate 门禁，零 Run。
+- 每步最多一种指导；自由填写的 instruction/acceptance 仍是独立可编辑的用户意图，不被指导的默认目标替换。证据对照要求用户填写实际检查标准；精读区分原文、解释、推断和未答问题；修订按用户反馈生成新目标卡正文并保留其约束。指导中的示例不是默认分析维度。
+- Run 在创建前冻结当前 guidanceSnapshot，构造 prompt 时只用这份文本；库文件变动不能改变运行中或历史 Run。公开进度不记录指导全文，运行详情提供单独只读“本次指导”。导入的指导文本永远作为普通模型指导，不获得网络、文件或脚本执行权限，来源材料内的指令仍当作数据。
+- 保存方法时复制步骤的完整冻结指导，应用时原样复制；即使新版本应用目录不再包含旧版，已保存快照仍可用。未知 id 不能通过直接设置伪装为官方内置项；可移植数据对已有旧快照保留标识并标“来自导入”，不因快照而安装目录项。摘要、字段和长度必须严格校验，缺字段的旧 Board/Run/Workflow 无需迁移。
+- 用户升级指导必须先看新旧差异再显式 PATCH，不自动升级。指导变化标记计划 adjusted，UI 标明设置已改，可显式重新生成；不扩大 stale 的定义为所有文案/模型变更，也不让“运行到这里”暗中重跑原本最新的成果。B7 的范围 stale 规则另按 §6.1.1。
+- 正常指令、指导和提取格式使用同一 prompt 组装路径；B6 协议不能被 UI 编辑意外删除。提示词不被当成 CAS、范围或写权限的安全保证。
+
+新增 `GUIDANCE_INVALID` (422)、`GUIDANCE_UNAVAILABLE` (409) 分别表示非法输入和所选目录版本已变化/不存在；保存失败不静默回退为无指导。完整快照只包含可见指导文本，不包含材料正文、密钥或运行会话。
+
+### 11.4 B6 后续：与旧拆分卡对照并逐项采用
+
+已有 §4.4.5 的生成、批量建卡和重跑流程不变。本节只增加明确对照和人工确认的单卡更新，不新增批量模型写回或跨目标 Candidate。
+
+1. 对照绑定新清单的当前 Version、用户明确选定的旧批次、该批次对应旧清单 Version 和旧 Card 当前 Head。旧源历史缺失时仍显示旧卡内容并标“原条目不可核对”，不能猜测来源。
+2. 只有旧条目与新条目的标题/正文均完全一致、两侧均唯一时可预填一对一对应；其他情况显示“待指定对应”，不按相似标题、序号或模型判断自动关联。相同文本只能说明文本一致，不能证明判断一致。所有更新默认未采用。
+3. 用户可指定一个新条目对应一张旧卡，或选多个新条目组合为一张旧卡的更新草稿；一个新条目拆向多张旧卡也须逐卡明确编辑和确认。多批次时先选择批次，不把同一清单下所有旧卡合并为隐含集合。不存匹配置信度，不建立新的结构关系。
+4. UI 显示“未变化 / 有变化 / 新条目 / 本次未出现 / 待指定对应”，提供旧卡当前内容、关联原条目、拟采用完整正文与有界差异。人工修改是否保留由用户审阅编辑，不能自动用最新条目盖掉旧卡中的补充。
+5. 新条目通过既有 extractions 批量创建，零模型调用。旧卡一次只采用一张，不提供混合“全部同步”按钮，不把多次保存称为整批事务。已成功的单卡更新不会因之后其他卡失败而回滚。
+6. `POST /boards/:boardId/cards/:cardId/extraction-revisions` 接受 `{ baseVersionId, source: { cardId, versionId, itemIds: string[] }, markdown }`。目标必须是同一清单先前创建的、当前 Board 内可写 Markdown 拆分卡；来源清单当前 Head 必须等于明确 source.versionId，itemIds 为该版本内真实、唯一的 1..100 项，markdown 为审阅后非空且最多 1,000,000 字符的完整正文。
+7. Board 锁内重新核对来源、目标、来源与目标上的活动 Run/未处理 Candidate 及基线。目标版本冲突返回既有正文 CAS 错误并保留草稿；来源变化返回 SOURCE_VERSION_CHANGED；活动状态不允许绕过。成功只给旧卡追加一个 human Version，新增 `extractionSources?: { boardId, cardId, versionId, itemId }[]` 记录本次明确参考的新条目，不伪造 sourceRunId。Card 原 extractionRef 保留为最初拆卡出处。
+8. 更新正文与来源记录同一次 Board 原子提交；完全相同正文零新版本且返回 no-op，不因按键重复产生空历史。fileBinding 沿用已有版本保存/同步边界，外部文件冲突保持文件不变并报告状态，不能宣称 Board 与文件组成跨系统事务。当前会话正文撤销/重做依旧追加版本，并保留所恢复正文的相关出处；失败不增加历史。
+9. 提交中锁定该操作；响应不确定时重新读目标历史与基线核对，不拿最新 Head 自动重试。旧基线重放至多冲突，不创建重复版本。离开有修改草稿走已有保护，迟到结果不能抢导航。未处理的 UI 草稿不伪装为持久 Candidate；关闭前允许复制草稿并明确放弃。
+10. Artifact/Checkpoint 重映射新的 Board/Card/Version 引用，缺失历史映射为 opaque；备份保留原身份。普通复制不克隆这些版本级出处。导出仍不读取 file-reference 正文。不删除“本次未出现”的任何旧卡，不触发下游 Run。
+
+新增 `EXTRACTION_REVISION_INVALID` (422) 表示非法目标/条目归属/正文；其余 CAS、来源与存储错误沿用已有定义。界面将这种人工更新冲突与模型 Candidate 区分，不能显示“模型结果已自动合并”。
+
+### 11.5 本批增量验收矩阵
+
+| ID | 验收场景 | 必须结果 |
+| --- | --- | --- |
+| READ-01 | 普通网页、重定向、相对链接与超时/空正文/登录限制 | 实际正文与出处可核对；失败不保存、不调用模型 |
+| READ-02 | 私网 URL、重定向私网、DNS rebinding、IPv6、超大/压缩响应、脚本/远端图片 | 实际连接受限、字节有界、脚本和资源零执行/零请求 |
+| READ-03 | 文字 PDF、多栏/表格、扫描页、空白页、密码、坏页与超限 | 逐页真实定位，错误/未解析页明确，无乱码假成功或丢页假全文 |
+| READ-04 | PDF 预览期间原文件替换 | 渲染、文本、指纹仍来自同一冻结字节；重新读取需新预览 |
+| READ-05 | 预览取消、保存失败、回执重试/过期、Board 只读与迟到响应 | 取消零持久写入，创建原子且防重复，不抢新导航 |
+| READ-06 | 保存全文/选页/片段后导出、备份、恢复与旧版查看 | 只携带明确保存的 Markdown 与出处，不含原始 PDF/未选正文/预览回执 |
+| CAPTURE-01 | 无 Board 剪藏、原文与备注、标签、取消及池写失败 | 仅明确保存一条独立灵感；零 Card/Run，失败保留草稿 |
+| CAPTURE-02 | 原页面消失、池编辑、旧快照入画板、备份恢复 | 引用仍可读，修改不冒充原文，独立副本与出处准确 |
+| GUIDE-01 | 选择/编辑/移除指导后添加与运行 | 创建零 Run，实际模型输入包含精确指导及用户目标，不恢复自动推荐 |
+| GUIDE-02 | 指导版本升级、旧方法应用、导入旧快照与损坏摘要 | 历史不变、精确复用、明确升级，非法快照拒绝 |
+| GUIDE-03 | 证据对照、精读、修订各在两份不同材料运行 | 检查来源、推断标识与用户约束；结果均为普通成果卡 |
+| GUIDE-04 | 修改设置并发 Run/Candidate、失败、取消、未知回包 | 普通锁与 CAS 继续有效，零半写、草稿保留 |
+| RECON-01 | 重排/同名/重复/合并/拆开/多批次/缺失历史 | 仅唯一完全相同项可预填，其余需明确对应，无猜测绑定 |
+| RECON-02 | 人工编辑旧卡、预览后 Head 变化、活动 Run/Candidate | 保留人工正文，拒绝旧基线与不安全采用，不伪造 Candidate |
+| RECON-03 | 逐卡采用、新项建卡、未出现旧项、下游依赖 | 保存粒度准确，新版本有出处，不删除、不自动下游运行 |
+| RECON-04 | 持久化失败、回包丢失、正文撤销、文件绑定、导入/备份/检查点 | 零 Board 半写，不重复版本，引用完整且同步边界真实 |
+| BATCH-UI | Desktop、1024px、390px 的阅读/选区/指导/对照 | 同一任务层、键盘可达、焦点恢复、无遮挡或新 console 错误 |
+
+测试必须断言 adapter 的真实入参、存储故障零半写以及导入往返，不能仅检查按钮或 prompt 字符串。工程门禁通过、真实材料质量和真机验收分别记录，不互相代替。

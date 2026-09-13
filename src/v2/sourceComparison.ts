@@ -1,5 +1,6 @@
 import type { BoardV2, SourceSnapshot, Transformation, TransformationRun } from '../domain'
 import { headVersion, sourceCardPresentations } from '../v2View'
+import { assembleScopedText, sameScope } from '../domain/sourceScopes.js'
 
 export interface SourceComparisonRow {
   cardId: string
@@ -34,20 +35,25 @@ export function sourceComparisonRows(
     const historicalIndex = snapshots.findIndex((item) => item.cardId === cardId)
     const snapshot = snapshots[historicalIndex]
     const historicalVersion = card?.versions.find((version) => version.id === snapshot?.versionId)
+    let currentText = head?.content.kind === 'markdown' ? head.content.markdown : undefined
+    if (currentText !== undefined && snapshot?.scope) {
+      try { currentText = assembleScopedText(currentText, snapshot.scope.spans).resolvedContent } catch { currentText = undefined }
+    }
     let status: SourceComparisonRow['status'] = 'unknown'
     if (currentIndex < 0 && snapshot) status = 'removed'
     else if (head && applied) {
       if (!snapshot) status = 'added'
       else if (head.id !== snapshot.versionId || head.content.kind !== snapshot.contentKind) status = 'changed'
+      else if (!sameScope(transformation.sourceScopes?.find(scope => scope.cardId === cardId), snapshot.scope)) status = 'changed'
       else if (head.content.kind === 'markdown' && (
-        head.digest !== snapshot.digest || head.content.markdown !== snapshot.resolvedContent
+        head.digest !== (snapshot.fullContentDigest ?? snapshot.digest) || currentText !== snapshot.resolvedContent
       )) status = 'changed'
       else if (currentIndex !== historicalIndex) status = 'reordered'
       else if (head.content.kind === 'markdown') status = 'same'
     }
     return {
       cardId,
-      title: titles.get(cardId) || snapshot?.resolvedContent.split('\n').find((line) => line.trim())?.replace(/^#{1,6}\s+/, '').slice(0, 80) || cardId,
+      title: titles.get(cardId) || snapshot?.resolvedContent?.split('\n').find((line) => line.trim())?.replace(/^#{1,6}\s+/, '').slice(0, 80) || cardId,
       currentVersionLabel: head ? `v${head.sequence}` : '不可用',
       historicalVersionLabel: historicalVersion ? `v${historicalVersion.sequence}` : snapshot?.versionId || '无已采用输入',
       status,

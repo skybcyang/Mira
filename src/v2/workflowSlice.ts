@@ -388,8 +388,6 @@ export function createWorkflowSlice(
             selectedCardIds: [],
             deleteConfirmationIds: null,
             multiSelectMode: false,
-            suggestions: [],
-            suggestionState: 'idle' as const,
             branchDraft: null,
             applyingWorkflowId: null,
             workflowDraft: null,
