@@ -72,7 +72,7 @@ export function GuidancePanel({ transformationId, onDirtyChange }: {
       setChoice(value); setText(catalog.find(item => key(item) === value)?.text || (initial?.guidance && key(initial.guidance) === value ? initial.guidance.text : ''))
     }}><option value="">不使用指导</option>
       {initial?.guidance && !catalog.some(item => key(item) === key(initial.guidance!)) && <option value={key(initial.guidance)}>已保存：{initial.guidance.title} · {initial.guidance.version}</option>}
-      {catalog.map(item => <option key={key(item)} value={key(item)}>{item.title} · {item.version}</option>)}
+      {catalog.map(item => <option key={key(item)} value={key(item)}>{item.title} · {item.version}{item.origin === 'custom' ? ' · 自定义' : item.origin === 'imported' ? ' · 导入文本' : ' · 内置'}</option>)}
     </select></label>
     {selected && <>
       <label>完整指导正文<textarea rows={10} value={text} readOnly={!editable} disabled={saving} maxLength={20000} onChange={event => setText(event.target.value)} /></label>

@@ -27,7 +27,8 @@ it('imports without a board, shares originals across boards, and carries bytes t
   await rm(join(root, 'source.md'))
   expect(await readFile(join(target.root, imported.body.path), 'utf8')).toBe('项目原始材料')
   const backup = await target.app.backupService.exportBackup()
-  expect(backup.formatVersion).toBe(3)
+  expect(backup.formatVersion).toBe(4)
+  expect(backup.executionSettings.defaultOutputPolicy.id).toBe('concise')
   expect(backup.assets).toHaveLength(1)
   const backupPath = join(root, 'backup.json'), restoredRoot = join(root, 'restored')
   await writeFile(backupPath, JSON.stringify(backup))
@@ -40,7 +41,7 @@ it('protects internal data and immutable originals from file binding', async () 
   const { root } = await setup()
   const binding = createFileBindingService({ fs: createNodeWorkspaceAdapter(root) })
   const card = { contentKind: 'markdown', headVersionId: 'v', versions: [{ id: 'v', content: { kind: 'markdown', markdown: 'manual' } }] }
-  for (const path of ['.mira/workspace.json', 'materials/any.md', 'boards-v2/board.json', 'runs-v2/run.json']) {
+  for (const path of ['.mira/workspace.json', 'materials/any.md', 'boards-v2/board.json', 'runs-v2/run.json', 'execution-settings-v1.json', 'execution-settings-v1.json.tmp']) {
     await expect(binding.bind(card, { path, overwrite: true })).rejects.toMatchObject({ code: 'FILE_BINDING_INVALID' })
   }
   expect((await binding.bind(card, { path: 'docs/result.md' })).fileSync.status).toBe('synced')

@@ -33,7 +33,7 @@ export type DrawerState =
   | { tab: 'run'; runId: string }
   | null
 
-export type PanelState = 'workflow' | 'plan' | 'model' | null
+export type PanelState = 'workflow' | 'plan' | 'model' | 'execution' | null
 
 export type SaveAndCreateNextResult =
   | { status: 'created'; card: ContentCard }

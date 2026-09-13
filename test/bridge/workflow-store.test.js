@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { WorkflowStore, validateWorkflow } from '../../bridge/workflow-store.js'
 import { createStorageCoordinator } from '../../bridge/storage-coordinator.js'
+import { resolveOutputPolicy } from '../../src/domain/outputPolicy.js'
 
 function memoryFs() {
   const files = new Map()
@@ -74,6 +75,16 @@ function contractedWorkflow(overrides = {}) {
 }
 
 describe('workflow store', () => {
+  it('preserves frozen output rules and rejects tampered rules before replacing a method', async () => {
+    const fs = memoryFs(), store = new WorkflowStore(fs), template = workflow()
+    template.steps[0].outputPolicy = resolveOutputPolicy(undefined)
+    await store.save(template.id, template)
+    const invalid = structuredClone(template)
+    invalid.steps[0].outputPolicy.text = '篡改后的规则'
+    await expect(store.save(template.id, invalid)).rejects.toMatchObject({ code: 'WORKFLOW_INVALID' })
+    expect(await store.load(template.id)).toEqual(template)
+  })
+
   it('writes a verified temp file before atomically replacing a template', async () => {
     const fs = memoryFs()
     const replace = vi.spyOn(fs, 'replace')

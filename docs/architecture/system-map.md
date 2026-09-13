@@ -116,6 +116,8 @@ Desktop packaging
 
 步骤输出要求由 `src/domain/outputPolicy.js` 共享目录、快照校验、prompt 片段与确定性检查，`OutputPolicyPanel` / `OutputPolicyView` 承载编辑和 Run 读态。创建、配置、冻结、普通写回及方法复用继续使用既有 handler/domain/service，不增加执行器。Markdown 结构解析在无 DOM 的 Bridge 也需可用；`scripts/build-bridge.mjs` 使用 neutral 依赖解析条件，避免选择浏览器专用实体解码实现。
 
+项目默认与指导目录由 `src/domain/executionSettings.js` 定义严格校验、版本追加和纯文本导入，`bridge/execution-settings-store.js` 通过共享 coordinator、revision CAS 和临时文件校验原子保存。`ExecutionSettings.tsx` 按需加载并调用现有 API；普通步骤和直接计划在创建时读取设置，方法与已有步骤保留原快照。完整备份 V4 携带此聚合；新项目物理路径为 `.mira/execution-settings-v1.json`，旧布局保留根级文件。目录不执行脚本或授予权限。
+
 改工作台导航与本机密度偏好：`WorkbenchNavigation.tsx` 与 `workbenchPreferences.ts`；AppBar 接入既有工具，不建立新路由。`useTaskViewport.ts` 只投影视口高度，`useMobilePanelModal.ts` 处理 Compact/Mobile 焦点边界；NoticeRegion 在这些边界内投递通知。
 
 改详情：`DetailDrawer.tsx` 只保留 shell、页签、四个 panel 的路由和既有命名导出。Candidate 比较位于 `detail/CandidateComparison.tsx`，冻结已读基线并复用 `cardVersions.ts` 的有界差异；Run slice 的采用调用必须显式传基线，重新核对只读取事实。

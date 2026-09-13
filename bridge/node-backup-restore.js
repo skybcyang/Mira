@@ -316,7 +316,7 @@ async function strictReadEntities(root, directory, expected, fs) {
 }
 
 async function strictReadWorkspace(root, backup, fs, projectData = false) {
-  if (backup.formatVersion === 3) {
+  if (backup.formatVersion >= 3) {
     const entries = await fs.readdir(root, { withFileTypes: true })
     if (entries.length !== 2 || entries.some(entry => !entry.isDirectory() || entry.isSymbolicLink() || !['.mira', 'materials'].includes(entry.name))) throw new Error('Project restore layout changed')
     const manifest = JSON.parse(await fs.readFile(join(root, '.mira/workspace.json'), 'utf8'))
@@ -336,13 +336,14 @@ async function strictReadWorkspace(root, backup, fs, projectData = false) {
       if (JSON.stringify(verified) !== JSON.stringify(asset)) throw new Error('Restored material changed')
       verifiedAssets.push(verified)
     }
-    const result = { ...reread, formatVersion: 3, assets: verifiedAssets }
+    const result = { ...reread, formatVersion: backup.formatVersion, assets: verifiedAssets }
     validateWorkspaceBackup(result)
     return result
   }
   const rootEntries = await fs.readdir(root, { withFileTypes: true })
   const expectedDirectories = new Set(Object.values(ENTITY_DIRECTORIES))
   const expectedFiles = backup.inspirationPool ? new Set([INSPIRATION_POOL_FILE]) : new Set()
+  if (projectData && backup.executionSettings) expectedFiles.add('execution-settings-v1.json')
   if (projectData) expectedFiles.add('workspace.json')
   if (
     rootEntries.length !== expectedDirectories.size + expectedFiles.size
@@ -417,6 +418,11 @@ async function strictReadWorkspace(root, backup, fs, projectData = false) {
     reread.inspirationPool = parsed
   }
   validateWorkspaceBackup(reread)
+  if (projectData && backup.executionSettings) {
+    const settings = JSON.parse(await fs.readFile(join(root, 'execution-settings-v1.json'), 'utf8'))
+    if (JSON.stringify(settings) !== JSON.stringify(backup.executionSettings)) throw new Error('Execution settings changed during staging verification')
+    reread.executionSettings = settings
+  }
   return reread
 }
 
@@ -462,7 +468,7 @@ function restoredCounts(backup) {
     runCount: backup.runs.length,
     workflowCount: backup.workflows.length,
     checkpointCount: backup.formatVersion >= 2 ? backup.checkpoints.length : 0,
-    ...(backup.formatVersion === 3 ? { materialCount: backup.assets.length } : {}),
+    ...(backup.formatVersion >= 3 ? { materialCount: backup.assets.length } : {}),
     ...(backup.inspirationPool
       ? { inspirationEntryCount: backup.inspirationPool.entries.length }
       : {}),
@@ -489,8 +495,8 @@ export async function restoreWorkspaceBackup(
 
   try {
     stagingRoot = await fs.mkdtemp(join(parent, `.${basename(target)}.mira-restore-`))
-    const dataRoot = backup.formatVersion === 3 ? join(stagingRoot, '.mira') : stagingRoot
-    if (backup.formatVersion === 3) {
+    const dataRoot = backup.formatVersion >= 3 ? join(stagingRoot, '.mira') : stagingRoot
+    if (backup.formatVersion >= 3) {
       await fs.mkdir(dataRoot)
       await fs.writeFile(join(dataRoot, 'workspace.json'), JSON.stringify({ format: 'mira-workspace', formatVersion: 1, id: randomUUID(), name: basename(target), createdAt: new Date().toISOString() }))
       await fs.mkdir(join(stagingRoot, 'materials'))
@@ -502,6 +508,7 @@ export async function restoreWorkspaceBackup(
       }
     }
     await writeEntities(dataRoot, ENTITY_DIRECTORIES.boards, backup.boards, fs)
+    if (backup.executionSettings) await fs.writeFile(join(dataRoot, 'execution-settings-v1.json'), JSON.stringify(backup.executionSettings, null, 2), 'utf8')
     await writeEntities(dataRoot, ENTITY_DIRECTORIES.runs, backup.runs, fs)
     await writeEntities(dataRoot, ENTITY_DIRECTORIES.workflows, backup.workflows, fs)
     await fs.mkdir(join(dataRoot, ENTITY_DIRECTORIES.checkpoints))

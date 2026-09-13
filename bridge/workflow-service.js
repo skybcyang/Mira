@@ -2,7 +2,8 @@ import { isUsableContent } from './domain/content.js'
 import { assertBoardWritable } from './domain/board-lifecycle.js'
 import { typed } from './domain/errors.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
-import { resolveOutputPolicy, validateOutputPolicy } from '../src/domain/outputPolicy.js'
+import { validateOutputPolicy } from '../src/domain/outputPolicy.js'
+import { projectGuidance, resolveStepOutput } from '../src/domain/executionSettings.js'
 import { cardById, transformationById, validateSourceRefs } from './v2-http-policy.js'
 
 const TARGET_CARD_WIDTH = 360
@@ -251,18 +252,18 @@ function findPlanY(cards, stepCount, startX, requestedY) {
   }
 }
 
-function validateDirectPlan(body) {
+function validateDirectPlan(body, settings) {
   const title = typeof body?.title === 'string' ? body.title.trim() : ''
   if (!title) throw typed('PLAN_INVALID', 'Plan title is required')
   if (!Array.isArray(body?.steps) || body.steps.length === 0) {
     throw typed('PLAN_INVALID', 'Plan requires at least one step')
   }
   const steps = body.steps.map((step) => {
-    const guidance = resolveGuidance(step?.guidance)
+    const guidance = resolveGuidance(step?.guidance, projectGuidance(settings, false))
     assertGuidanceCriteria(guidance, step?.acceptance)
     const label = typeof step?.label === 'string' ? step.label.trim() : ''
     const instruction = typeof step?.instruction === 'string' ? step.instruction.trim() : ''
-    const outputPolicy = resolveOutputPolicy(step?.outputPolicy)
+    const outputPolicy = resolveStepOutput(step?.outputPolicy, settings)
     validateOutputPolicy(outputPolicy, instruction)
     if (!label || !instruction || typeof step?.acceptance !== 'string') {
       throw typed('PLAN_INVALID', 'Every plan step requires a label, instruction, and acceptance')
@@ -361,7 +362,7 @@ function materializeLinearPlan({
   return { targetCards, transformations }
 }
 
-export function createWorkflowService({ boardStore, workflowStore, newId, now }) {
+export function createWorkflowService({ boardStore, workflowStore, newId, now, executionSettingsStore }) {
   return {
     list() {
       return workflowStore.list()
@@ -437,7 +438,7 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now })
     },
 
     async createPlan(boardId, body) {
-      const input = validateDirectPlan(body)
+      const input = validateDirectPlan(body, await executionSettingsStore?.load())
       const planId = newId('plan')
       let created
       await boardStore.update(boardId, async (board) => {

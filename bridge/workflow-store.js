@@ -1,6 +1,7 @@
 import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
 import { validateGuidance } from '../src/domain/guidance.js'
+import { validateOutputPolicy } from '../src/domain/outputPolicy.js'
 
 export function validateWorkflow(workflow) {
   if (!workflow || typeof workflow !== 'object') return ['workflow must be an object']
@@ -54,6 +55,7 @@ export function validateWorkflow(workflow) {
       if (stepIds.has(step.id)) errors.push(`duplicate workflow step id: ${step.id}`)
       stepIds.add(step.id)
       try { validateGuidance(step.guidance) } catch { errors.push(`workflow step ${step.id} has invalid guidance`) }
+      try { validateOutputPolicy(step.outputPolicy, step.instruction) } catch { errors.push(`workflow step ${step.id} has invalid output policy`) }
       if (typeof step.label !== 'string' || !step.label.trim()) {
         errors.push(`workflow step ${step.id} missing label`)
       }

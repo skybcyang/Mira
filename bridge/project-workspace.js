@@ -5,6 +5,7 @@ import { basename, join } from 'node:path'
 export const WORKSPACE_DATA_PATHS = Object.freeze({
   boards: 'boards-v2', runs: 'runs-v2', workflows: 'workflows-v2',
   checkpoints: 'board-checkpoints-v1', inspirationPool: 'inspiration-pool-v2.json',
+  executionSettings: 'execution-settings-v1.json',
   transactions: 'transactions-v2', purged: 'purged-boards-v2',
 })
 const fail = message => { throw Object.assign(new Error(message), { code: 'WORKSPACE_FORMAT_INVALID' }) }
@@ -12,7 +13,7 @@ function info(path) { try { return lstatSync(path) } catch (error) { if (error.c
 function validateDataPaths(root) {
   for (const [key, path] of Object.entries(WORKSPACE_DATA_PATHS)) {
     const value = info(join(root, path))
-    if (value && (value.isSymbolicLink() || !(key === 'inspirationPool' ? value.isFile() : value.isDirectory()))) fail(`工作区格式无效：${path} 不能是链接或错误类型。`)
+    if (value && (value.isSymbolicLink() || !(['inspirationPool', 'executionSettings'].includes(key) ? value.isFile() : value.isDirectory()))) fail(`工作区格式无效：${path} 不能是链接或错误类型。`)
   }
 }
 

@@ -1,4 +1,5 @@
 import { validateBoardCheckpoint } from './board-checkpoint.js'
+import { validateExecutionSettings } from '../../src/domain/executionSettings.js'
 import { validateAssetClosure } from './managed-assets.js'
 import { validateMaterialOrigin } from '../../src/domain/materials.js'
 import { assertUnique as assertUniqueIds, isObject, nonEmptyString } from './guards.js'
@@ -27,7 +28,7 @@ function assertUnique(items, getId, label) {
 function validateBackupEnvelope(backup) {
   if (!isObject(backup)) throw portableError('BACKUP_INVALID', 'MiraBackup must be an object')
   if (backup.format !== 'mira-backup') throw portableError('BACKUP_INVALID', 'Invalid MiraBackup format')
-  if (![1, 2, 3].includes(backup.formatVersion)) {
+  if (![1, 2, 3, 4].includes(backup.formatVersion)) {
     throw portableError('BACKUP_INVALID', 'Unsupported MiraBackup formatVersion')
   }
   if (!nonEmptyString(backup.exportedAt)) {
@@ -104,7 +105,10 @@ function validatePortableInspirationPool(pool) {
 
 export function validateWorkspaceBackup(backup, options = {}) {
   validateBackupEnvelope(backup)
-  if (backup.formatVersion === 3) {
+  if (backup.formatVersion === 4) {
+    try { validateExecutionSettings(backup.executionSettings) } catch (error) { throw portableError('BACKUP_INVALID', error.message) }
+  } else if (backup.executionSettings !== undefined) throw portableError('BACKUP_INVALID', 'Legacy backups cannot contain execution settings')
+  if (backup.formatVersion >= 3) {
     try { validateAssetClosure(backup, backup.assets) } catch (error) { throw portableError('BACKUP_INVALID', error.message) }
   } else if (backup.assets !== undefined) throw portableError('BACKUP_INVALID', 'Legacy backups cannot contain managed assets')
   const checkpoints = backup.formatVersion >= 2 ? backup.checkpoints : []
@@ -214,6 +218,7 @@ export function projectWorkspaceBackup({
   runs,
   workflows,
   inspirationPool,
+  executionSettings,
   checkpoints = [],
   assets,
   exportedAt,
@@ -232,8 +237,9 @@ export function projectWorkspaceBackup({
     }
     const backup = {
       format: 'mira-backup',
-      formatVersion: assets ? 3 : 2,
-      ...(assets ? { assets } : {}),
+      formatVersion: executionSettings ? 4 : assets ? 3 : 2,
+      ...(executionSettings || assets ? { assets: assets || [] } : {}),
+      ...(executionSettings ? { executionSettings: structuredClone(executionSettings) } : {}),
       exportedAt,
       boards: boards.map(normalizePortableBoard),
       runs: cleanPortableValue(runs),

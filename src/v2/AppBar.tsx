@@ -64,6 +64,7 @@ export default function AppBar({
   boardHistoryOpen = false,
   openBoardHistory = () => {},
   openModelSettings,
+  openExecutionSettings,
   appearance,
   onAppearanceChange,
   onSwitchBoard,
@@ -84,6 +85,7 @@ export default function AppBar({
   boardHistoryOpen?: boolean
   openBoardHistory?: () => void
   openModelSettings: () => void
+  openExecutionSettings?: () => void
   appearance?: Appearance
   onAppearanceChange?: (appearance: Appearance) => void
   onSwitchBoard?: (boardId: string) => void | Promise<void>
@@ -223,6 +225,7 @@ export default function AppBar({
     action()
   }
   const commands: CommandItem[] = [
+    ...(openExecutionSettings ? [{ id: 'execution', label: '能力管理', description: '项目默认风格与指导目录', icon: <Settings2 size={17} />, disabled: navigationPending, action: openExecutionSettings }] : []),
     { id: 'content', label: '新建内容卡', description: '在当前视口创建并开始编辑', shortcut: 'N', icon: <Plus size={17} />, disabled: canvasUnavailable, action: () => { void addContent(center()) } },
     { id: 'file', label: '阅读材料', description: '读取网页、PDF，或添加本地文件', icon: <FilePlus2 size={17} />, action: openFilePicker },
     { id: 'inspiration', label: '打开灵感池', description: '记录灵感或添加到当前画板', icon: <Lightbulb size={17} />, action: openInspirationPicker },
@@ -267,6 +270,7 @@ export default function AppBar({
       <label className="v2-grid-setting"><span>显示网格线<small>仅改变画布背景</small></span><input type="checkbox" role="switch" checked={grid === 'visible'} onChange={(event) => setGrid(event.target.checked ? 'visible' : 'hidden')} /></label>
       {appearance && onAppearanceChange && <AppearanceSwitcher appearance={appearance} onChange={onAppearanceChange} embedded />}
       <button className="v2-settings-models" type="button" disabled={navigationPending} onClick={() => runToolbarAction(openModelSettings)}><Settings2 size={15} />模型设置</button>
+      {openExecutionSettings && <button className="v2-settings-models" type="button" disabled={navigationPending} onClick={() => runToolbarAction(openExecutionSettings)}><Settings2 size={15} />能力管理</button>}
       <ApplicationInfo />
     </div>
     <CommandPalette key={boardId} open={commandOpen} commands={commands}
