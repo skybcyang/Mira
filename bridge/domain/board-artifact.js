@@ -1,3 +1,4 @@
+import { portableToolPolicy } from '../../src/domain/toolPolicy.js'
 import {
   assertPortableByteLength,
   assertPortableObjectLimits,
@@ -607,6 +608,7 @@ export function remapBoardArtifact(artifact, { generateId, now = () => new Date(
   })
   remappedBoard.transformations = artifact.board.transformations.map((transformation) => ({
     ...cleanPortableValue(transformation),
+    ...(transformation.toolPolicy ? { toolPolicy: portableToolPolicy(transformation.toolPolicy) } : {}),
     id: transformationIds.get(transformation.id),
     sourceCardIds: transformation.sourceCardIds.map((id) => cardIds.get(id)),
     ...(transformation.sourceScopes ? { sourceScopes: transformation.sourceScopes.map(scope => ({

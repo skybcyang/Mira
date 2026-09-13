@@ -101,7 +101,7 @@ export function parseWebDocument(bytes, contentType, url) {
   return { text, title: title.slice(0, 500), warnings: [{ code: 'COMPLETENESS_UNVERIFIED', message: '请对照原网页核对正文完整性；此处不会加载动态内容或下一页。' }] }
 }
 export function createNodeWebReader({ resolve, request = requestPinned } = {}) {
-  return async ({ url: value }, { signal } = {}) => {
+  return async ({ url: value }, { signal, allowedUrls } = {}) => {
     const timeout = AbortSignal.timeout(20000)
     const combined = signal ? AbortSignal.any([signal, timeout]) : timeout
     let url = checkedWebUrl(value)
@@ -109,6 +109,7 @@ export function createNodeWebReader({ resolve, request = requestPinned } = {}) {
     try {
       for (let redirects = 0; redirects <= 5; redirects++) {
         combined.throwIfAborted()
+        if (allowedUrls && !allowedUrls.some(value => checkedWebUrl(value).href === url.href)) throw typed('TOOL_POLICY_INVALID', '网页跳转目标不在本步允许的 URL 范围内。')
         const addresses = await abortable(publicAddresses(url, resolve), combined)
         combined.throwIfAborted()
         const response = await request(url, addresses, { signal: combined })
@@ -122,7 +123,7 @@ export function createNodeWebReader({ resolve, request = requestPinned } = {}) {
         return { ...parsed, url: url.href, ...(requestedUrl !== url.href ? { requestedUrl } : {}), byteLength: response.bytes.length, sourceDigest: createHash('sha256').update(response.bytes).digest('hex'), reader: { id: 'mira-web-readability', version: '1.0.0' } }
       }
     } catch (error) {
-      if (typeof error?.code === 'string' && error.code.startsWith('MATERIAL_')) throw error
+      if (typeof error?.code === 'string' && (error.code.startsWith('MATERIAL_') || error.code === 'TOOL_POLICY_INVALID')) throw error
       throw typed('MATERIAL_READ_FAILED', '网页读取失败或超时，请检查地址后重试。')
     }
   }

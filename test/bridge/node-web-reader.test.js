@@ -52,3 +52,12 @@ it('pins the resolved address for every redirect and never connects to private r
   expect(calls).toHaveLength(1)
   expect(calls[0].addresses[0].address).toBe('93.184.216.34')
 })
+it('enforces a tool URL allowlist before resolving redirected destinations', async () => {
+  const calls = []
+  const read = createNodeWebReader({ resolve: async () => [{ address: '93.184.216.34', family: 4 }], request: async url => {
+    calls.push(url.href)
+    return { status: 302, headers: { location: 'https://other.example/secret' }, bytes: Buffer.alloc(0) }
+  } })
+  await expect(read({ url: 'https://example.com' }, { allowedUrls: ['https://example.com'] })).rejects.toMatchObject({ code: 'TOOL_POLICY_INVALID' })
+  expect(calls).toEqual(['https://example.com/'])
+})

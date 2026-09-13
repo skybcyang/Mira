@@ -1,7 +1,7 @@
 import type { GuidanceSnapshot } from './guidance.js'
 import type { OutputPolicy, OutputPolicyInput } from './outputPolicy.js'
 export interface ExecutionSettings { schemaVersion: 1; revision: number; defaultOutputPolicy: OutputPolicy | null; guidance: GuidanceSnapshot[]; disabledGuidanceIds: string[] }
-export interface GuidanceChange { id?: string; title: string; text: string; origin?: 'custom' | 'imported' }
+export interface GuidanceChange { id?: string; title: string; text: string; origin?: 'custom' | 'imported'; requiredTools?: string[]; optionalTools?: string[] }
 export type ExecutionSettingsInput = { baseRevision: number } & ({ defaultOutputPolicy: OutputPolicyInput | null } | { guidance: GuidanceChange } | { disabledGuidance: { id: string; disabled: boolean } })
 export function emptyExecutionSettings(): ExecutionSettings
 export function importGuidanceText(filename: string, text: string): GuidanceChange

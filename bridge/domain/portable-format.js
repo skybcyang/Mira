@@ -3,6 +3,7 @@ import { runProgressErrors } from './run-progress.js'
 import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
 import { validateGuidance } from '../../src/domain/guidance.js'
 import { validateOutputPolicy, validateOutputCheck } from '../../src/domain/outputPolicy.js'
+import { validateToolPolicy, validateToolEvidence, portableToolEvidence, portableToolPolicy, methodToolPolicy } from '../../src/domain/toolPolicy.js'
 import {
   isObject,
   nonEmptyString,
@@ -159,6 +160,8 @@ export function cleanPortableValue(value, seen = new WeakSet()) {
   const fileSnapshot = value.contentKind === 'file-reference'
   const result = {}
   for (const [key, item] of Object.entries(value)) {
+    if (key === 'toolReview') continue
+    if (key === 'toolExecutions') { result[key] = cleanPortableValue(portableToolEvidence({ toolExecutions: item }).toolExecutions, seen); continue }
     if (SENSITIVE_KEYS.has(normalizedSensitiveKey(key))) continue
     if (fileContent && !FILE_CONTENT_KEYS.has(key)) continue
     if (fileSnapshot && key === 'resolvedContent') continue
@@ -170,6 +173,7 @@ export function cleanPortableValue(value, seen = new WeakSet()) {
 
 export function normalizePortableBoard(board) {
   const normalized = cleanPortableValue(board)
+  normalized.transformations?.forEach(step => { if (step.toolPolicy) step.toolPolicy = portableToolPolicy(step.toolPolicy) })
   normalized.cards?.forEach((card) => { delete card.fileBinding })
   delete normalized.relations
   if (normalized.revision === undefined) normalized.revision = 0
@@ -198,6 +202,7 @@ export function collectForbiddenPortableData(value, path = '$', findings = [], s
   const fileSnapshot = value.contentKind === 'file-reference'
   for (const [key, item] of Object.entries(value)) {
     const itemPath = `${path}.${key}`
+    if (key === 'toolReview' || (key === 'toolExecutions' && Array.isArray(item) && item.some(record => record.files !== undefined))) findings.push(`${itemPath} contains nonportable tool data`)
     if (SENSITIVE_KEYS.has(normalizedSensitiveKey(key))) findings.push(`${itemPath} is secret data`)
     if (fileContent && !FILE_CONTENT_KEYS.has(key)) findings.push(`${itemPath} is file body data`)
     if (fileSnapshot && key === 'resolvedContent') findings.push(`${itemPath} is file body data`)
@@ -293,6 +298,7 @@ export function validatePortableRun(run, { terminalOnly = false } = {}) {
   try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
   try {
     validateOutputPolicy(run.outputPolicySnapshot)
+    validateToolEvidence(run)
     validateOutputCheck(run.outputCheck, run.result?.output, run.outputPolicySnapshot)
     if (run.outputCheck && run.status !== 'succeeded') errors.push('Only a succeeded Run may have an output check')
     if (run.outputPolicySnapshot && run.status === 'succeeded' && !run.outputCheck) errors.push('Output check is missing')
@@ -510,6 +516,10 @@ export function validatePortableWorkflow(workflow, { provenance = false } = {}) 
       stepIds.add(step.id)
       try { validateGuidance(step.guidance) } catch { errors.push(`Workflow step ${step.id} guidance is invalid`) }
       try { validateOutputPolicy(step.outputPolicy, step.instruction) } catch { errors.push(`Workflow step ${step.id} output policy is invalid`) }
+      try {
+        validateToolPolicy(step.toolPolicy)
+        if (step.toolPolicy && JSON.stringify(step.toolPolicy) !== JSON.stringify(methodToolPolicy(step.toolPolicy))) errors.push(`Workflow step ${step.id} contains bound tool parameters`)
+      } catch { errors.push(`Workflow step ${step.id} tool policy is invalid`) }
       if (!nonEmptyString(step.label)) errors.push(`Workflow step ${step.id} label is invalid`)
       if (!nonEmptyString(step.instruction)) {
         errors.push(`Workflow step ${step.id} instruction is invalid`)

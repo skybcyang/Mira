@@ -1,6 +1,5 @@
-import { listGuidance, validateGuidance } from './guidance.js'
+import { listGuidance, validateGuidance, guidanceDigest } from './guidance.js'
 import { resolveOutputPolicy, validateOutputPolicy } from './outputPolicy.js'
-import { sha256Text } from './digests.js'
 
 const fail = message => { throw Object.assign(new Error(message), { code: 'EXECUTION_SETTINGS_INVALID' }) }
 const object = value => value && typeof value === 'object' && !Array.isArray(value)
@@ -53,15 +52,17 @@ export function updateExecutionSettings(current, input, newId) {
     next.defaultOutputPolicy = resolveOutputPolicy(input.defaultOutputPolicy) || null
   } else if (input.guidance !== undefined) {
     const change = input.guidance
-    if (!exact(change, ['id', 'title', 'text', 'origin']) || typeof change.title !== 'string' || typeof change.text !== 'string') fail('请填写指导名称与完整正文。')
+    if (!exact(change, ['id', 'title', 'text', 'origin', 'requiredTools', 'optionalTools']) || typeof change.title !== 'string' || typeof change.text !== 'string') fail('请填写指导名称与完整正文。')
     const previous = [...next.guidance].reverse().find(item => item.id === change.id)
     if (change.id !== undefined && !previous) fail('这个项目指导已不可用。')
     if (change.origin !== undefined && (!['custom', 'imported'].includes(change.origin) || (previous && change.origin !== previous.origin))) fail('指导来源不能被改写。')
     const guide = { id: previous?.id || newId('guidance'), version: String(Number(previous?.version || 0) + 1),
-      title: change.title.trim(), text: change.text, digest: sha256Text(change.text), customized: false,
+      title: change.title.trim(), text: change.text, digest: guidanceDigest(change.text, change.requiredTools, change.optionalTools), customized: false,
+      ...(change.requiredTools?.length ? { requiredTools: change.requiredTools } : {}),
+      ...(change.optionalTools?.length ? { optionalTools: change.optionalTools } : {}),
       origin: previous?.origin || change.origin || 'custom' }
     validateGuidance(guide)
-    if (!previous || previous.title !== guide.title || previous.text !== guide.text) next.guidance.push(guide)
+    if (!previous || previous.title !== guide.title || previous.digest !== guide.digest) next.guidance.push(guide)
   } else {
     const change = input.disabledGuidance
     if (!exact(change, ['id', 'disabled']) || typeof change.disabled !== 'boolean' || !next.guidance.some(item => item.id === change.id)) fail('请选择项目指导及其可用状态。')

@@ -10,6 +10,7 @@ import { contentDigest } from '../src/domain/sourceScopes.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
 import { resolveOutputPolicy, validateOutputPolicy, checkOutput } from '../src/domain/outputPolicy.js'
 import { projectGuidance, resolveStepOutput } from '../src/domain/executionSettings.js'
+import { validateToolPolicy } from '../src/domain/toolPolicy.js'
 import { reviseExtractionCard } from './domain/extraction-revisions.js'
 import { confirmSourceScopes, scopesFromRefs, updateSourceScopes } from './domain/source-scopes.js'
 import { validateBoardV2 } from './domain/validation.js'
@@ -48,6 +49,8 @@ import {
 } from './v2-http-policy.js'
 
 export function createV2Handlers({
+  capabilities,
+  toolExecution,
   executionSettingsStore,
   store,
   runStore,
@@ -312,6 +315,7 @@ export function createV2Handlers({
       latest.acceptance !== frozenTransformation.acceptance ||
       JSON.stringify(latest.guidance) !== JSON.stringify(frozenTransformation.guidance) ||
       JSON.stringify(latest.outputPolicy) !== JSON.stringify(frozenTransformation.outputPolicy) ||
+      JSON.stringify(latest.toolPolicy) !== JSON.stringify(frozenTransformation.toolPolicy) ||
       latest.modelId !== frozenTransformation.modelId ||
       JSON.stringify(latest.sourceScopes || []) !== JSON.stringify(frozenTransformation.sourceScopes || [])
     ) {
@@ -341,7 +345,7 @@ export function createV2Handlers({
           await saveRunReliably(nextRun, runLease)
         })
       }
-      const result = await executeModel({
+      const modelInput = {
         boardId: run.boardId,
         transformation,
         sourceSnapshot: run.sourceSnapshot,
@@ -349,7 +353,13 @@ export function createV2Handlers({
         signal: controller.signal,
         onProgress,
         ...(run.modelSnapshot ? { modelSnapshot: run.modelSnapshot } : {}),
-      })
+      }
+      const result = toolExecution ? await toolExecution.execute({ run, executeModel, input: modelInput,
+        save: change => runStore.withLockedRun(run.id, async (current, lease) => {
+          if (current.status !== 'running' || controller.signal.aborted) throw typed('REVIEW_CONFLICT', '运行已结束。')
+          await saveRunReliably(change(current), lease)
+        }),
+      }) : await executeModel(modelInput)
       if (controller.signal.aborted) return
       const output = String(result?.outputText || '').trim()
       if (!output) throw typed('EMPTY_OUTPUT', '模型没有返回可用内容')
@@ -899,6 +909,8 @@ export function createV2Handlers({
         const guidance = resolveGuidance(body.guidance, projectGuidance(settings, false))
         assertGuidanceCriteria(guidance, body.acceptance)
         const outputPolicy = resolveStepOutput(body.outputPolicy, settings)
+        const toolPolicy = body.toolPolicy ?? undefined
+        validateToolPolicy(toolPolicy); capabilities?.assertSafeEvidence?.(toolPolicy)
         validateOutputPolicy(outputPolicy, body.instruction)
         const targetCard = {
           id: newId('card'),
@@ -920,6 +932,7 @@ export function createV2Handlers({
           label: String(body.label || '').trim(),
           ...(guidance ? { guidance } : {}),
           ...(outputPolicy ? { outputPolicy } : {}),
+          ...(toolPolicy ? { toolPolicy: structuredClone(toolPolicy) } : {}),
           instruction: String(body.instruction || '').trim(),
           acceptance: String(body.acceptance || '').trim(),
           ...(modelId ? { modelId } : {}),
@@ -958,6 +971,8 @@ export function createV2Handlers({
           const guidance = resolveGuidance(entry?.guidance, projectGuidance(settings, false))
           assertGuidanceCriteria(guidance, entry?.acceptance)
           const outputPolicy = resolveStepOutput(entry?.outputPolicy, settings)
+          const toolPolicy = entry?.toolPolicy ?? undefined
+          validateToolPolicy(toolPolicy); capabilities?.assertSafeEvidence?.(toolPolicy)
           validateOutputPolicy(outputPolicy, instruction)
           if (!label || !instruction) {
             throw typed('TRANSFORMATION_INVALID', '成果名称和目标不能为空')
@@ -987,6 +1002,7 @@ export function createV2Handlers({
             acceptance: String(entry?.acceptance || '').trim(),
             ...(guidance ? { guidance } : {}),
             ...(outputPolicy ? { outputPolicy } : {}),
+            ...(toolPolicy ? { toolPolicy: structuredClone(toolPolicy) } : {}),
             ...(modelId ? { modelId } : {}),
             permissions: { workspaceWrite: false },
             createdAt: timestamp,
@@ -1048,6 +1064,8 @@ export function createV2Handlers({
         const guidance = has('guidance') ? resolveGuidance(body.guidance, projectGuidance(await executionSettingsStore?.load(), false)) : current.guidance
         assertGuidanceCriteria(guidance, acceptance)
         const outputPolicy = has('outputPolicy') ? resolveOutputPolicy(body.outputPolicy) : current.outputPolicy
+        const toolPolicy = has('toolPolicy') ? body.toolPolicy ?? undefined : current.toolPolicy
+        validateToolPolicy(toolPolicy); capabilities?.assertSafeEvidence?.(toolPolicy)
         validateOutputPolicy(outputPolicy, instruction)
 
         const transformation = {
@@ -1061,6 +1079,7 @@ export function createV2Handlers({
           updatedAt: nextUpdatedAt(current.updatedAt, now()),
           ...(guidance ? { guidance } : {}),
           ...(outputPolicy ? { outputPolicy } : {}),
+          ...(toolPolicy ? { toolPolicy: structuredClone(toolPolicy) } : {}),
         }
         const semanticsChanged =
           label !== current.label ||
@@ -1069,6 +1088,7 @@ export function createV2Handlers({
           modelId !== current.modelId ||
           JSON.stringify(guidance) !== JSON.stringify(current.guidance) ||
           JSON.stringify(outputPolicy) !== JSON.stringify(current.outputPolicy) ||
+          JSON.stringify(toolPolicy) !== JSON.stringify(current.toolPolicy) ||
           JSON.stringify(sourceScopes) !== JSON.stringify(current.sourceScopes || []) ||
           sourceCardIds.length !== current.sourceCardIds.length ||
           sourceCardIds.some((cardId, index) => cardId !== current.sourceCardIds[index])
@@ -1078,6 +1098,7 @@ export function createV2Handlers({
         if (!modelId) delete transformation.modelId
         if (!guidance) delete transformation.guidance
         if (!outputPolicy) delete transformation.outputPolicy
+        if (!toolPolicy) delete transformation.toolPolicy
         if (!sourceScopes.length) delete transformation.sourceScopes
         board.transformations = board.transformations.map((item) =>
           item.id === transformationId ? transformation : item,
@@ -1116,6 +1137,8 @@ export function createV2Handlers({
       try {
         await changeBoard(boardId, async (board, boardLease) => {
           transformation = transformationById(board, transformationId)
+          if (toolExecution) await toolExecution.prepare(transformation, executeModel)
+          else if (transformation.toolPolicy?.tools.length || transformation.toolPolicy?.allowTemporaryPython || transformation.guidance?.requiredTools?.length) throw typed('TOOL_UNAVAILABLE', '此宿主未提供步骤工具执行。')
           const sourceRefs =
             body.sourceRefs ||
             transformation.sourceCardIds.map((cardId) => ({
@@ -1342,6 +1365,10 @@ export function createV2Handlers({
         await saveRunReliably(result, runLease)
       })
       return { run: result }
+    },
+
+    async interruptActiveRuns() {
+      for (const runId of [...controllers.keys()]) await this.interruptRun(runId)
     },
   }
 }

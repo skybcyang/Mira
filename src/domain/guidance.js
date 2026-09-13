@@ -25,13 +25,19 @@ const text = (value, max) => typeof value === 'string' && !!value.trim() && valu
 
 export function listGuidance() { return updated.map(item => ({ ...item })) }
 
+export function guidanceDigest(text, requiredTools, optionalTools) {
+  return sha256Text(requiredTools?.length || optionalTools?.length ? JSON.stringify({ text, requiredTools: requiredTools || [], optionalTools: optionalTools || [] }) : text)
+}
+
 export function validateGuidance(value) {
   if (value === undefined) return
-  if (!object(value) || Object.keys(value).some(key => !['id', 'version', 'title', 'text', 'digest', 'customized', 'origin'].includes(key))
+  if (!object(value) || Object.keys(value).some(key => !['id', 'version', 'title', 'text', 'digest', 'customized', 'origin', 'requiredTools', 'optionalTools'].includes(key))
     || !text(value.id, 128) || !text(value.version, 64) || !text(value.title, 120)
     || !text(value.text, 20000) || /[\u0000\uFFFD]/.test(value.text)
     || (value.origin !== undefined && !['custom', 'imported'].includes(value.origin))
-    || typeof value.customized !== 'boolean' || value.digest !== sha256Text(value.text)) throw invalid('指导快照不完整或正文校验失败。')
+    || typeof value.customized !== 'boolean' || value.digest !== guidanceDigest(value.text, value.requiredTools, value.optionalTools)) throw invalid('指导快照不完整或正文校验失败。')
+  for (const field of ['requiredTools', 'optionalTools']) if (value[field] !== undefined && (!Array.isArray(value[field]) || value[field].length > 8 || new Set(value[field]).size !== value[field].length || value[field].some(id => !text(id, 160)))) throw invalid('每类指导依赖最多 8 个唯一能力 ID。')
+  if (value.requiredTools?.some(id => value.optionalTools?.includes(id))) throw invalid('必需与可选依赖不能重复。')
 }
 
 export function resolveGuidance(input, projectEntries = []) {
@@ -42,7 +48,7 @@ export function resolveGuidance(input, projectEntries = []) {
   if (!entry) throw Object.assign(new Error('所选指导版本不可用，请重新查看可用指导。'), { code: 'GUIDANCE_UNAVAILABLE' })
   const actualText = input.text === undefined ? entry.text : input.text
   if (!text(actualText, 20000)) throw invalid('指导正文需要 1 到 20000 个字符。')
-  const snapshot = { ...entry, text: actualText, customized: actualText !== entry.text, digest: sha256Text(actualText) }
+  const snapshot = { ...entry, text: actualText, customized: actualText !== entry.text, digest: guidanceDigest(actualText, entry.requiredTools, entry.optionalTools) }
   validateGuidance(snapshot)
   return snapshot
 }

@@ -11,6 +11,18 @@ function notFound(method, segments) {
 export async function dispatchV2Route(method, segments, body, dependencies) {
   if (segments[0] !== 'v2') return null
   const seg = segments.slice(1)
+  if (seg[0] === 'capabilities' && dependencies.capabilities) {
+    const service = dependencies.capabilities, options = { signal: dependencies.signal }
+    if (seg.length === 1 && method === 'GET') return { status: 200, body: await service.get() }
+    if (seg.length === 1 && method === 'PATCH') return { status: 200, body: await service.update(body || {}) }
+    if (seg.length === 2 && seg[1] === 'connections' && method === 'POST') return { status: 200, body: await service.connect(body || {}, options) }
+    if (seg.length === 2 && seg[1] === 'python' && method === 'GET') return { status: 200, body: await service.pythonStatus() }
+    if (seg.length === 3 && seg[1] === 'python' && method === 'POST') {
+      if (seg[2] === 'prepare') return { status: 200, body: await service.preparePython(body || {}, options) }
+      if (seg[2] === 'test') return { status: 200, body: await service.testPython(body || {}, options) }
+    }
+  }
+  if (seg.length === 3 && seg[0] === 'runs' && seg[2] === 'review' && method === 'POST') return { status: 200, body: await dependencies.toolExecution.review(seg[1], body || {}) }
   if (method === 'GET' && seg.length === 1 && seg[0] === 'application-info') return { status: 200, body: { desktop: false } }
   if (method === 'GET' && seg.length === 1 && seg[0] === 'guidance') return { status: 200, body: { guidance: guidanceCatalog(await dependencies.executionSettingsStore?.load()) } }
   if (seg.length === 1 && seg[0] === 'execution-settings' && dependencies.executionSettingsStore) {
