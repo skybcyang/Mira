@@ -1,5 +1,5 @@
 import { extractionRequirement } from '../../domain/extraction.js'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Pencil } from 'lucide-react'
 import type { Transformation, TransformationRun } from '../../domain'
 import { v2Api } from '../../v2Api'
@@ -21,6 +21,7 @@ import { RunRangePreview } from './RunRangePreview'
 import { sourceComparisonRows } from '../sourceComparison'
 import { useSourcePreview } from '../sourcePreviewContext'
 import { missingRequiredTools } from './toolControls'
+import { runExclusiveAction } from '../drawerSafety'
 
 function appliedRunForRelation(
   transformation: Transformation,
@@ -40,6 +41,9 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
   const board = useV2Canvas((state) => state.board)
   const runs = useV2Canvas((state) => state.runs)
   const runTo = useV2Canvas((state) => state.runToTransformation)
+  const rerun = useV2Canvas((state) => state.rerunTransformation)
+  const rerunLock = useRef(false)
+  const [rerunStarting, setRerunStarting] = useState(false)
   const interrupt = useV2Canvas((state) => state.interruptRun)
   const runningToTransformationId = useV2Canvas((state) => state.runningToTransformationId)
   const createWorkflow = useV2Canvas((state) => state.createWorkflowFromTransformation)
@@ -146,9 +150,17 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
       sourcesReady={sourcesReady}
       candidatePending={candidatePending}
       blocked={missingTools.length > 0 ? '先补齐必需工具' : undefined}
-      busy={Boolean(runningToTransformationId)}
-      running={runningToTransformationId === transformation.id}
+      busy={Boolean(runningToTransformationId || activeRun) || rerunStarting}
+      running={runningToTransformationId === transformation.id || activeRun?.transformationId === transformation.id}
+      starting={rerunStarting}
       onRun={() => runDrawerAction(() => runTo(transformation.id))}
+      onRerun={() => runDrawerAction(() => {
+        const task = runExclusiveAction(rerunLock, () => rerun(transformation.id))
+        if (!task) return
+        setRerunStarting(true)
+        const settle = () => setRerunStarting(false)
+        void task.then(settle, settle)
+      })}
       onStop={activeRun ? () => interrupt(activeRun.id) : undefined}
     />
     <RunRangePreview transformationId={transformation.id} initiallyOpen={initialPreview} />

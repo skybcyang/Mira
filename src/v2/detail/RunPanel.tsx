@@ -10,10 +10,14 @@ import { ToolRunView } from './ToolRunView'
 export { CandidateDecisionActions } from './CandidateComparison'
 
 export function TransformationRunControl({
+  hasRun,
+  sourcesReady,
   candidatePending,
   busy = false,
   running = false,
+  starting = false,
   onRun,
+  onRerun,
   onStop,
   blocked,
 }: {
@@ -23,21 +27,28 @@ export function TransformationRunControl({
   candidatePending: boolean
   busy?: boolean
   running?: boolean
+  starting?: boolean
   onRun: () => void
+  onRerun?: () => void
   onStop?: () => void | Promise<void>
   blocked?: string
 }) {
   if (running && onStop) return <RunStopButton onStop={onStop} />
   const label = candidatePending
     ? '先处理待比较结果'
-    : running
-      ? '正在运行到这里'
-      : busy
-        ? '正在运行其他位置'
-        : blocked || '运行到这里'
-  return <button className="v2-primary-button v2-run-transformation" type="button" disabled={candidatePending || busy || Boolean(blocked)} onClick={onRun}>
+    : starting
+      ? '正在启动这一步…'
+      : running
+        ? '正在运行到这里'
+        : busy
+          ? '正在运行其他位置'
+          : blocked || '运行到这里'
+  return <><button className="v2-primary-button v2-run-transformation" type="button" disabled={candidatePending || busy || starting || Boolean(blocked)} onClick={onRun}>
     {busy ? <LoaderCircle className="is-spinning" size={15} /> : <Play size={15} />}{label}
-  </button>
+  </button>{hasRun && onRerun && <>
+    <button className="v2-secondary-button" type="button" disabled={!sourcesReady || candidatePending || busy || starting || Boolean(blocked)} onClick={onRerun}>仅重跑这一步</button>
+    <p className="v2-detail-note">使用已保存设置与当前来源重新生成，上游步骤不会运行。{!sourcesReady && '请先补齐本步可用来源。'}</p>
+  </>}</>
 }
 
 export function RunStopButton({ onStop }: { onStop: () => void | Promise<void> }) {
