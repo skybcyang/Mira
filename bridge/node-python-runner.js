@@ -124,7 +124,8 @@ function parseOutput(stdout) {
   return result;
 }
 
-export function createPythonRunner({ dockerCommand = 'docker' } = {}) {
+export function createPythonRunner({ dockerCommand = 'docker', ownerId = randomUUID() } = {}) {
+  if (typeof ownerId !== 'string' || !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(ownerId)) throw failure('TOOL_POLICY_INVALID', 'Python owner must be an exact UUID');
   // Host env configures the user's Docker endpoint, never the container environment.
   function command(args, { signal, input, timeoutMs = 10000, limit = MIB, code = 'PYTHON_UNAVAILABLE' } = {}) {
     assertActive(signal);
@@ -173,7 +174,7 @@ export function createPythonRunner({ dockerCommand = 'docker' } = {}) {
     try {
       const limits = ['--memory', '512m', '--memory-swap', '512m', '--cpus', '1', '--pids-limit', '32', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--no-healthcheck', '--log-driver', 'none'];
       const isolation = prepare ? ['--network', 'bridge'] : ['--network', 'none', '--read-only', '--user', '65534:65534', '--tmpfs', '/tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777', '--shm-size', '1m', '--workdir', '/tmp'];
-      id = (await command(['create', '--name', name, '--label', `${LABEL}=${token}`, '--pull', 'never', '-i', ...limits, ...isolation, '--entrypoint', 'python3', imageId, ...args], { signal })).trim();
+      id = (await command(['create', '--name', name, '--label', `${LABEL}=${token}`, '--label', `${LABEL}.owner=${ownerId}`, '--pull', 'never', '-i', ...limits, ...isolation, '--entrypoint', 'python3', imageId, ...args], { signal })).trim();
       if (!/^[a-f0-9]{64}$/.test(id)) throw failure('PYTHON_UNAVAILABLE', 'Docker did not return a container identity');
       result = await command(['start', '-a', '-i', id], { signal, input, timeoutMs, limit: 6 * MIB, code: 'TOOL_FAILED' });
       assertActive(signal);
