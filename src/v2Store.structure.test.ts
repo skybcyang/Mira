@@ -101,6 +101,16 @@ afterEach(() => {
 })
 
 describe('transformation structure editing', () => {
+  it('sends an explicit output policy and its original edit baseline, including removal', async () => {
+    const outputPolicy = { id: 'concise', version: '1.0.0', maxCharacters: 200 }
+    const api = vi.spyOn(v2Api, 'updateTransformation').mockResolvedValue({ transformation: original })
+    const update = useV2Canvas.getState().updateTransformation
+    expect(await update(original.id, { outputPolicy }, 'original-edit-base')).toBe(true)
+    expect(api).toHaveBeenLastCalledWith('board-1', original.id, { baseUpdatedAt: 'original-edit-base', outputPolicy })
+    expect(await update(original.id, { outputPolicy: null }, now)).toBe(true)
+    expect(api).toHaveBeenLastCalledWith('board-1', original.id, { baseUpdatedAt: now, outputPolicy: null })
+    expect(useV2Canvas.getState().runs).toEqual({ [existingRun.id]: existingRun })
+  })
   it('reconciles a decision using current Run and Board facts without navigating', async () => {
     const refresh = (useV2Canvas.getState() as unknown as { refreshCandidate?: (id: string) => Promise<boolean> }).refreshCandidate
     expect(refresh).toBeTypeOf('function')

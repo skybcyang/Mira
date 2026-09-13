@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import type { TransformationRun } from '../domain'
 import * as detailDrawer from './DetailDrawer'
+import { resolveOutputPolicy, checkOutput } from '../domain/outputPolicy.js'
 
 type RunPanelViewProps = {
   run: TransformationRun
@@ -40,6 +41,21 @@ function runningRun(progressEvents: unknown[] = []): TransformationRun {
 }
 
 describe('Run progress detail', () => {
+  it('shows frozen rules and failed checks without claiming content quality or inventing unconfigured checks', () => {
+    if (!RunPanelView) throw new Error('RunPanelView is missing')
+    const policy = resolveOutputPolicy({ id: 'concise', version: '1.0.0', maxCharacters: 2 })!
+    const output = '这是完整成果。'
+    const html = renderToStaticMarkup(createElement(RunPanelView, {
+      run: { ...runningRun(), status: 'succeeded', outputPolicySnapshot: policy, outputCheck: checkOutput(output, policy),
+        result: { output, digest: 'test', disposition: 'candidate' } },
+    }))
+    expect(html).toContain(policy.text)
+    expect(html).toContain('字符上限未通过')
+    expect(html).toContain('7 / 2')
+    expect(html).toContain('完整结果已保留')
+    expect(html).not.toContain('结构通过')
+    expect(html).toContain('查看待比较结果')
+  })
   it('shows timing, the current step, and the bounded public event timeline', () => {
     expect(RunPanelView).toBeTypeOf('function')
     if (!RunPanelView) return

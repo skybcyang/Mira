@@ -198,6 +198,7 @@ export const v2Api = {
     baseVersionId: string; source: { cardId: string; versionId: string; itemIds: string[] }; markdown: string
   }) => request<{ card: ContentCard; noop: boolean; fileSync?: FileSyncResult }>('POST', `/boards/${boardId}/cards/${cardId}/extraction-revisions`, body),
   getGuidance: () => request<{ guidance: import('./domain/guidance.js').GuidanceSnapshot[] }>('GET', '/guidance'),
+  getOutputPolicies: () => request<{ policies: import('./domain/outputPolicy.js').OutputPolicy[] }>('GET', '/output-policies'),
   extractCards: (boardId: string, cardId: string, body: { baseVersionId: string; items: ExtractionItem[] }) =>
     request<{ cards: ContentCard[] }>('POST', `/boards/${boardId}/cards/${cardId}/extractions`, body),
   getInspirationPool: () => request<{ pool: InspirationPool }>('GET', '/inspiration-pool'),
@@ -393,6 +394,7 @@ export const v2Api = {
       acceptance: string
       modelId?: string
       targetPosition: { x: number; y: number }
+      outputPolicy?: import('./domain/outputPolicy.js').OutputPolicyInput | null
     },
   ) =>
     request<{ transformation: Transformation; targetCard: ContentCard }>(
@@ -410,6 +412,7 @@ export const v2Api = {
         acceptance: string
         modelId?: string
         targetPosition: { x: number; y: number }
+        outputPolicy?: import('./domain/outputPolicy.js').OutputPolicyInput | null
       }>
     },
   ) => request<{ transformations: Transformation[]; targetCards: ContentCard[] }>(
@@ -429,6 +432,7 @@ export const v2Api = {
       sourceRefs?: Array<{ cardId: string; versionId: string }>
       sourceScopes?: import('./domain/sourceScopes.js').SourceScope[]
       guidance?: import('./domain/guidance.js').GuidanceInput | null
+      outputPolicy?: import('./domain/outputPolicy.js').OutputPolicyInput | null
     },
   ) => request<{ transformation: Transformation }>(
     'PATCH',

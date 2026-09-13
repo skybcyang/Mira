@@ -11,6 +11,7 @@ export interface PlanRef {
 
 export interface Transformation {
   guidance?: import('./guidance.js').GuidanceSnapshot
+  outputPolicy?: import('./outputPolicy.js').OutputPolicy
   id: string
   sourceCardIds: string[]
   sourceScopes?: SourceScope[]

@@ -28,6 +28,7 @@ function sameDrawer(left: DrawerState, right: DrawerState): boolean {
       && left.edit === right.edit && left.preview === right.preview
       && left.scopeCardId === right.scopeCardId
       && left.guidance === right.guidance
+      && left.output === right.output
   }
   return right.tab === 'run' && left.runId === right.runId
 }
@@ -73,6 +74,8 @@ export function userFacingStoreError(error: unknown): string {
   if (code === 'SOURCE_SCOPE_CHANGED') return '原文或范围已变化，请重新读取原文并选择范围。'
   if (code === 'SOURCE_SCOPE_INVALID') return '无法使用这个范围，请重新选择不重叠的文字片段。'
   if (code === 'GUIDANCE_INVALID') return '指导或完成标准不完整，请核对后再保存。'
+  if (code === 'OUTPUT_POLICY_INVALID') return '输出要求不完整或与提取格式冲突，请核对后再保存。'
+  if (code === 'OUTPUT_POLICY_UNAVAILABLE') return '所选输出规则版本不可用，已保存规则保持不变，请重新核对。'
   if (code === 'MATERIAL_PREVIEW_EXPIRED') return '阅读预览已过期，请重新读取并核对。'
   if (code === 'MATERIAL_PREVIEW_CONFLICT') return '这份预览已保存或结果待核对，请检查目的地。'
   if (code === 'MATERIAL_INVALID') return '材料或所选范围无效，请重新核对选择。'

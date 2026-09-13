@@ -60,6 +60,59 @@ function memoryBoardsStore(initials) {
 }
 
 describe('source scope commands', () => {
+  it('freezes independent output requirements, keeps a failed constraint result intact, and protects human Head', async () => {
+    const store = memoryBoardStore(emptyBoardV2('output', '输出'))
+    const runStore = memoryRunStore()
+    let finish
+    const executeModel = vi.fn(() => new Promise(resolve => { finish = resolve }))
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, executeModel, newId: prefix => `${prefix}-${++serial}` })
+    const { card } = await handlers.createCard('output', { markdown: '真实来源' })
+    const { transformation } = await handlers.createTransformation('output', {
+      sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], label: '结果', instruction: '保留条件',
+      guidance: { id: 'mira-close-reading', version: '1.0.1' },
+    })
+    expect(transformation.outputPolicy).toMatchObject({ id: 'concise', version: '1.0.0', format: 'auto' })
+    expect(await runStore.list()).toEqual([])
+    const { transformation: edited } = await handlers.updateTransformation('output', transformation.id, {
+      baseUpdatedAt: transformation.updatedAt,
+      outputPolicy: { id: 'detailed', version: '1.0.0', text: '保留必要条件，使用短句。', maxCharacters: 3, format: 'list' },
+    })
+    await handlers.startRun('output', edited.id)
+    await vi.waitFor(() => expect(executeModel).toHaveBeenCalledOnce())
+    expect(executeModel.mock.calls[0][0].prompt).toContain(edited.outputPolicy.text)
+    expect(executeModel.mock.calls[0][0].prompt).toContain(edited.guidance.text)
+    expect(executeModel.mock.calls[0][0].prompt).toContain('3')
+    await expect(handlers.updateTransformation('output', edited.id, {
+      baseUpdatedAt: edited.updatedAt, outputPolicy: null,
+    })).rejects.toMatchObject({ code: 'TARGET_BUSY' })
+    await handlers.commitCardVersion('output', edited.targetCardId, { baseVersionId: null, markdown: '人工判断' })
+    finish({ outputText: '这份成果超过限制，而且不是列表。' })
+    await vi.waitFor(async () => expect((await runStore.list())[0].status).toBe('succeeded'))
+    const run = (await runStore.list())[0]
+    expect(run.outputPolicySnapshot).toEqual(edited.outputPolicy)
+    expect(run.outputCheck).toMatchObject({ version: '1', maxCharacters: 3, lengthPassed: false, formatPassed: false })
+    expect(run.result).toMatchObject({ disposition: 'candidate', output: '这份成果超过限制，而且不是列表。' })
+    expect(store.current().cards.find(item => item.id === edited.targetCardId).versions.at(-1).content.markdown).toBe('人工判断')
+  })
+
+  it('rejects invalid output settings without partial Board writes and leaves legacy steps unchanged', async () => {
+    const store = memoryBoardStore(emptyBoardV2('output', '输出'))
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore: memoryRunStore(), newId: prefix => `${prefix}-${++serial}` })
+    const { card } = await handlers.createCard('output', { markdown: '材料' })
+    const body = { sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], label: '结果', instruction: '整理' }
+    const before = store.current()
+    await expect(handlers.createTransformation('output', { ...body, outputPolicy: { id: 'concise', version: '1.0.0', maxCharacters: -1 } })).rejects.toMatchObject({ code: 'OUTPUT_POLICY_INVALID' })
+    expect(store.current()).toEqual(before)
+    await expect(handlers.createTransformation('output', { ...body, instruction: extractionInstruction('提取'), outputPolicy: { id: 'concise', version: '1.0.0', format: 'table' } })).rejects.toMatchObject({ code: 'OUTPUT_POLICY_INVALID' })
+    expect(store.current()).toEqual(before)
+    const { transformation } = await handlers.createTransformation('output', { ...body, outputPolicy: null })
+    expect(transformation.outputPolicy).toBeUndefined()
+    const { transformation: edited } = await handlers.updateTransformation('output', transformation.id, { baseUpdatedAt: transformation.updatedAt, acceptance: '保留条件' })
+    expect(edited.outputPolicy).toBeUndefined()
+  })
+
   it('saves explicit guidance without running, requires criteria, and freezes exactly the visible text', async () => {
     const store = memoryBoardStore(emptyBoardV2('guide', '指导'))
     const runStore = memoryRunStore()

@@ -6,6 +6,18 @@
 
 **用户已确认 A3–B8 整批规格，当前安全本地实现已推进。** 保存、指导冻结、旧卡更新均已实现；最终实现证据见[本批报告](../validation/2026-09-13-a3-b8-validation.md)，模型质量单列[真实复核](../validation/2026-09-13-model-quality-review.md)。本机 arm64 应用已替换，升级前备份恢复到新目录的回退路径已实测，另追加三次真实模型运行，见[补充验收](../validation/2026-09-13-local-install-acceptance.md)。A3 真机、A4 签名与其他原生目标仍不能勾选；不以本地 Mac 包替代其他平台证据。执行边界见[交付计划](a3-b8-delivery-plan.md)。
 
+## 步骤执行设置增量（2026-09-14）
+
+用户确认一次完成总体设计、按依赖实施。范围与剩余验收见[整体需求](generation-controls-requirements.md)，交互见[完整方案](../design/step-execution-design-proposal.md)。第一批输出要求的源码与浏览器验收见[本批验证](../validation/2026-09-14-output-policy.md)，不代表工具执行或新的桌面安装交付。
+
+- [x] 独立输出风格、完整规则调整、字符/Markdown 结构检查；与既有单步 Skill 并存。
+- [x] Run 冻结、失败诊断保留全文、普通 Candidate/CAS，以及方法/Artifact/备份/Checkpoint 往返。
+- [ ] workspace 默认管理、自定义/导入指导目录与升级。
+- [ ] 统一工具契约、按需调用/前处理/后检查与权限范围。
+- [ ] MCP 连接、身份与能力变化、跨 workspace 重新绑定。
+- [ ] Python 已审阅脚本、可靠隔离与产物契约，再接临时代码及外部写入审阅。
+- [ ] 真实模型质量对照、目标系统原生包及交互验收。
+
 ## 项目工作区增量（2026-09-13）
 
 用户已确认“一个项目一个 workspace、多个画布共用材料、卡片独立”。实现 `95a8e8c` 已快进合入本地 main，实际旧工作区已复制迁移到新项目，本机 arm64 应用已替换并验收。规格见[项目工作区](../specs/project-workspace.md)，功能证据见[本批验证](../validation/2026-09-13-project-workspace.md)，实际交付见[迁移与安装记录](../validation/2026-09-13-project-workspace-install.md)。

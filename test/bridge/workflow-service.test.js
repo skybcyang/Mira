@@ -5,6 +5,7 @@ import { validateBoardV2 } from '../../bridge/domain/validation.js'
 import { createStorageCoordinator } from '../../bridge/storage-coordinator.js'
 import { createWorkflowService } from '../../bridge/workflow-service.js'
 import { listGuidance } from '../../src/domain/guidance.js'
+import { resolveOutputPolicy } from '../../src/domain/outputPolicy.js'
 import { WorkflowStore } from '../../bridge/workflow-store.js'
 
 const NOW = '2026-08-23T04:00:00.000Z'
@@ -252,6 +253,28 @@ async function fixture(board = linearBoard()) {
 }
 
 describe('workflow service', () => {
+  it('preserves output snapshots in methods without adding defaults to old steps', async () => {
+    const board = linearBoard()
+    board.transformations[0].outputPolicy = resolveOutputPolicy({ id: 'detailed', version: '1.0.0', maxCharacters: 200 })
+    const { service } = await fixture(board)
+    const workflow = await service.create({ title: '规则复用', sourceBoardId: board.id, transformationIds: board.transformations.map(t => t.id) })
+    expect(workflow.steps[0].outputPolicy).toEqual(board.transformations[0].outputPolicy)
+    expect(workflow.steps[1].outputPolicy).toBeUndefined()
+    const result = await service.apply(board.id, workflow.id, { sourceRefs: [{ cardId: 'source-a', versionId: 'source-a-v1' }] })
+    expect(result.transformations[0].outputPolicy).toEqual(workflow.steps[0].outputPolicy)
+    expect(result.transformations[1].outputPolicy).toBeUndefined()
+    expect(result.targetCards.every(card => card.versions.length === 0)).toBe(true)
+  })
+  it('freezes the default in direct plans and rejects invalid constraints atomically', async () => {
+    const { service, boardStore } = await fixture()
+    const before = await boardStore.load('board-1')
+    const input = directPlan()
+    input.steps[1].outputPolicy = { id: 'concise', version: '1.0.0', maxCharacters: 0 }
+    await expect(service.createPlan('board-1', input)).rejects.toMatchObject({ code: 'OUTPUT_POLICY_INVALID' })
+    expect(await boardStore.load('board-1')).toEqual(before)
+    const result = await service.createPlan('board-1', directPlan())
+    expect(result.transformations.every(step => step.outputPolicy?.id === 'concise')).toBe(true)
+  })
   it('copies frozen guidance through method extraction and application', async () => {
     const board = linearBoard()
     board.transformations[0].guidance = listGuidance()[1]

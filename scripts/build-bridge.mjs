@@ -6,6 +6,7 @@ const globalName = 'MiraBridgeBundle'
 const result = await build({
   entryPoints: ['bridge/dsh-cordis-adapter.js'],
   bundle: true,
+  platform: 'neutral',
   format: 'iife',
   globalName,
   outfile: 'dist-bridge/bridge.bundle.js',
