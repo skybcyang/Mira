@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+执行能力增量规格：[步骤工具、MCP 与 Python](specs/tool-execution.md)。
+
 2026-09-14 步骤执行设置：[整体需求与进度](refactor/generation-controls-requirements.md)、[完整交互方案](design/step-execution-design-proposal.md)、[独立输出要求第一批验证](validation/2026-09-14-output-policy.md)、[项目默认与指导目录第二批验证](validation/2026-09-14-execution-settings.md)。整体方案已确认；已完成输出规则/约束、项目默认与版本化指导目录，工具、MCP 与 Python 尚未实现。
 
 项目工作区已合入本地 main，并完成本机迁移与安装：[权威规格](specs/project-workspace.md)、[实施进度](refactor/project-workspace-plan.md)、[功能验证](validation/2026-09-13-project-workspace.md)、[迁移、安装与回退记录](validation/2026-09-13-project-workspace-install.md)。
