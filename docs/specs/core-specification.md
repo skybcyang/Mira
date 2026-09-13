@@ -1,5 +1,7 @@
 # Mira 核心规格
 
+2026-09-14 工具执行增量：步骤工具配置、MCP/Python 宿主、运行内审阅与有界证据由[工具执行规格](tool-execution.md)定义。普通 Run 状态与 CAS/Candidate 不变，详细工具记录与公开 progress 分离。
+
 2026-09-13 项目工作区增量：受管原件、`.mira/` 布局、跨工作区卡片复用与新版可移植格式由[项目工作区规格](project-workspace.md)定义。本文旧格式中“不携带引用文件正文”继续适用于未收纳外部引用；受管资产按增量规格携带。其余 Card/Version/Run/Candidate/Workflow 契约不变。
 
 - 状态：Card 与画布版本管理实施基线
