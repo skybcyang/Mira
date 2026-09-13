@@ -112,8 +112,6 @@ export function createInspirationSlice({
           deleteConfirmationIds: null,
           multiSelectMode: false,
           editingCardId: null,
-          suggestions: [],
-          suggestionState: 'idle' as const,
           branchDraft: null,
         } : {}),
         ...(poolSelection ? noticePatch(state, 'success', `已添加 ${cards.length} 条灵感到当前画板`, { boardId }) : { message: null }),

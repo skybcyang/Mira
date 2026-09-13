@@ -63,12 +63,12 @@ export async function executeModel({
   return { outputText: await generateText({ prompt, signal }) }
 }
 
-export async function executeSuggestion({ boardId, sourceSnapshot, prompt }) {
-  return await generateSuggestionJson(prompt)
+export async function executeSuggestion({ prompt }) {
+  return await generateText(prompt) // 兼容名称，仅供显式模型连接测试
 }
 ```
 
-`executeSuggestion` 可省略。模型模块负责自己的 SDK、凭据、限流和供应商错误映射；Mira 不读取厂商密钥。完整来源正文会随请求传给模型模块，因此模块也必须承担相应的数据边界责任。
+`executeSuggestion` 是可省略的历史文本探针接口，用于显式连接测试，不再提供选卡推荐。模型模块负责自己的 SDK、凭据、限流和供应商错误映射；Mira 不读取厂商密钥。完整来源正文会随请求传给模型模块，因此模块也必须承担相应的数据边界责任。
 
 仓库内置 `bridge/openai-compatible-adapter.js` 作为最小直接 LLM 实现。它使用原生 `fetch` 调用非流式 `chat/completions`，通过 `MIRA_LLM_BASE_URL`、`MIRA_LLM_MODEL` 和可选的 `MIRA_LLM_API_KEY` 配置。`pnpm start:llm` 会把它装配到同一个 Model port；该路径没有 Agent session、工具调用、自动重试或跨请求记忆。
 
@@ -77,7 +77,7 @@ Standalone 默认同时装配 `bridge/model-settings.js`。它提供进程内、
 未配置模型模块时：
 
 - Board、Card、Version 和 Workflow 正常工作。
-- 下一步建议使用内置确定性回退。
+- 选卡与添加步骤不调用模型，也不提供内置推荐回退。
 - 显式 Run 会持久化为 `failed`，错误码为 `MODEL_UNAVAILABLE`，不会修改目标 Head。
 
 DSH 模型会话实现仍位于 `bridge/dsh-cordis-adapter.js` 及其私有 helper 中，只负责把同一个 Model port 映射到 DSH root session、subagent 和 session event。
@@ -166,3 +166,29 @@ on-demand。安装命令会显式启动当前登录会话；重新登录后的�
 文件夹访问授权。
 
 DSH 兼容部署使用 `bridge/dsh-cordis-adapter.js`。`packages/mira-bridge` 和 `pnpm build:bridge` 直接引用该适配器，核心入口不反向引用它。
+
+## A3–B8 材料适配与 A4 分发增量（2026-09-13 已确认）
+
+以下是新增批次方案，不覆盖前文已经实施的未签名 Actions 契约。读取对象与 HTTP 行为以核心规格 §11 为准，执行顺序与当前阻挡见 `docs/refactor/a3-b8-delivery-plan.md`。
+
+### 材料读取 port
+
+`createMiraApplication` 注入网页/PDF 读取能力；Node Host 提供具体实现，缺席能力返回 MATERIAL_UNAVAILABLE。DSH/Cordis 不借实现文件反向依赖 Node，UI 根据宿主能力显示可用项。原 readFileContent 文本协议不改为“碰到任何文件就猜测解析”。
+
+网页 adapter 使用受限网络连接取得有界字节，再以 Readability 0.6.0 和无脚本 linkedom 解析静态正文；DNS/重定向和连接地址由 Mira 自身校验，不能直接把第三方 URL fetch 当成安全边界。PDF 使用 PDF.js 5.4.624（兼容项目 Node 最低版本），独立 worker 共享解析文本与原页渲染的冻结字节，字体与 CMaps 只用随包本地资产。核心领域只消费规范文本、出处和错误，不 import 这些平台库。新增依赖必须通过四个原生目标 make/packed smoke，当前 Mac 两架构已验证，Windows 原生仍未验证；第三方文件列入最小 staging 清单。
+
+### A4 手动更新与正式发行
+
+1. 保留现有每次 main push 的四架构未签名 Actions 测试包。稳定下载采用 GitHub Releases 的明确版本资产；代码内只使用已验证的官方仓库地址，不生成第三方镜像链接。
+2. 发行版本采用 SemVer，`v<package.json.version>` 与 changelog/manifest 一致；版本在实际发行准备时选定，不在设计阶段凭空创建 tag。预发布标明 prerelease，稳定版本不得混用 beta/候选描述。来源 SHA 固定到已验证提交，四个产物必须属于同一版本和 SHA。
+3. 每个产物提供版本、平台、架构、字节大小、SHA-256、源码 SHA、构建运行链接及签名状态；生成统一 manifest 和校验文件。缺任一目标、签名状态不符或验证失败时拒绝推进为正式发行，不能拼接不同时刻的成功包。
+4. 拟新增手动发行准备 workflow，仅接受明确源码 ref/版本；与现有自动测试包共用构建脚本。先执行全仓门禁、四个 native make、正常/恢复 packed smoke 和所需真机检查，再生成可审阅发行说明、manifest 与本地待上传资产。正式创建/公开 Release 为独立明确动作；默认脚本不得 push/tag/publish 或将失败包标为最新。
+5. 签名为显式配置档：internal 继续 unsigned；release 模式缺少凭据必须失败，不回退 unsigned。macOS 使用 Developer ID Application、hardened runtime、公证和 stapling，验证 codesign、Gatekeeper 与 notarization 状态。Windows 对所分发 EXE/DLL 等需签名文件使用选定的 Authenticode 方案及可信时间戳，并在原生 runner 验证；继续保留完整解压目录，不凭空承诺安装器。签名方式依用户实际证书/服务决定，不自动采购。
+6. 凭据来自操作系统凭据设施或受限 CI secrets，只在签名步骤可用；不得写入源码、manifest、renderer、workspace、日志或发行包。PR 与未签名测试任务无权访问发行凭据。不读取用户私钥内容来完成“配置检查”。
+7. 第一阶段应用仅提供版本/架构显示和明确打开官方发行页面的入口，用户手动下载、校验、保存退出并替换应用；不检查后台 feed、不自动下载或安装。应用内自动更新列为第二阶段：签名、安装包格式、更新服务器/metadata 验签、用户确认、活动 Run/草稿退出与失败恢复需另有契约和验证，不能以两行 updater 接入代替这些条件。
+8. 每次发行说明声明最低系统、兼容数据格式、已知限制、备份建议与回退方法。应用回退只适用于仍能读取当前数据的旧版本；不兼容时只能把事先备份恢复到新/空 workspace，再用旧版本打开副本，不覆盖当前工作区。至少验证本版到此前兼容版的启动/读取和数据不变。
+9. A4 只有在版本资产、签名/公证、四平台验证、手动升级与回退证据及正式发布决策全部收口后才能勾选；仅提供 workflow 或下载按钮不算稳定分发完成。
+
+验收 `DIST-01..06`：版本/SHA/架构一致且缺项拒绝；manifest 校验损坏包；缺凭据 release 模式失败而 internal 可用；签名/公证与正常/恢复 smoke；实际手动升级/回退且 workspace 不丢数据；检查/准备命令零远端写入，明确发布前不能改动 latest。
+
+2026-09-12 核对的技术依据：[Defuddle](https://github.com/kepano/defuddle)、[PDF.js API](https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html)、[Forge macOS 签名](https://www.electronforge.io/guides/code-signing/code-signing-macos)、[Windows 签名](https://www.electronforge.io/guides/code-signing/code-signing-windows)、[自动更新](https://www.electronforge.io/advanced/auto-update)。这些资料只说明工具接口与前置条件，不证明 Mira 已集成或发布成功。

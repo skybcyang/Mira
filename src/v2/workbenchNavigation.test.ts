@@ -12,7 +12,7 @@ describe('workbench navigation', () => {
       active: 'inspiration', collapsed: true, unavailable: false,
       onCanvas: vi.fn(), onInspiration: vi.fn(), onWorkflow: vi.fn(), onFile: vi.fn(), onPlan: vi.fn(), onHistory: vi.fn(), onToggle: vi.fn(), onCreate: vi.fn(), onMultiSelect: vi.fn(), multiSelectMode: false,
     }))
-    for (const label of ['新建卡片', '多选卡片', '画布', '灵感池', '方法与计划', '文件', '画布版本', '展开导航']) expect(html).toContain(`aria-label="${label}"`)
+    for (const label of ['新建卡片', '多选卡片', '画布', '灵感池', '方法与计划', '材料', '画布版本', '展开导航']) expect(html).toContain(`aria-label="${label}"`)
     expect(html).not.toContain('aria-label="搭计划"')
     expect(html.match(/aria-pressed="true"/g)).toHaveLength(1)
     expect(html).not.toContain('更多')

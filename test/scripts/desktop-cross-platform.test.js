@@ -21,7 +21,7 @@ describe('internal desktop targets', () => {
     expect(makers.map((maker) => maker.name)).toEqual(['@electron-forge/maker-zip'])
     expect(config.packagerConfig).not.toHaveProperty('icon')
     expect(config.packagerConfig).not.toHaveProperty('extendInfo')
-    expect(config.packagerConfig.asar).toBe(true)
+    expect(config.packagerConfig.asar).toEqual({ unpackDir: 'pdf-runtime' })
     expect(config.plugins).toHaveLength(1)
     expect(config.packagerConfig.download.checksums['electron-v44.0.0-win32-x64.zip'])
       .toMatch(/^[a-f0-9]{64}$/)

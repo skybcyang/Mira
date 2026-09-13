@@ -1,6 +1,7 @@
 import type { NodeChange } from '@xyflow/react'
 import type { BoardV2, ContentCard, TransformationRun } from './domain'
 import { TRANSFORMATION_NODE_WIDTH } from './v2Projection'
+import { sameScope } from './domain/sourceScopes.js'
 
 const TRANSFORMATION_GAP = TRANSFORMATION_NODE_WIDTH + 32 * 2
 const BRANCH_CARD_WIDTH = 360
@@ -78,6 +79,7 @@ export type TransformationExecutionDecision =
   | { kind: 'candidate'; reason: string }
   | { kind: 'sources-unavailable'; reason: string }
   | { kind: 'tracking-unavailable'; reason: string }
+  | { kind: 'scope-required' | 'scope-changed'; reason: string }
 
 function usableHead(card: ContentCard | undefined): boolean {
   if (!card?.headVersionId) return false
@@ -141,6 +143,10 @@ export function transformationExecutionDecision(
   if (latestRun?.status === 'succeeded' && latestRun.result?.disposition === 'candidate') {
     return { kind: 'candidate', reason: latestRun.id }
   }
+  for (const scope of transformation.sourceScopes || []) {
+    if (scope.mode === 'required') return { kind: 'scope-required', reason: scope.cardId }
+    if (board.cards.find(card => card.id === scope.cardId)?.headVersionId !== scope.versionId) return { kind: 'scope-changed', reason: scope.cardId }
+  }
   for (const sourceCardId of transformation.sourceCardIds) {
     if (!usableHead(board.cards.find((card) => card.id === sourceCardId))) {
       return { kind: 'sources-unavailable', reason: sourceCardId }
@@ -162,7 +168,8 @@ export function transformationExecutionDecision(
   const structureChanged = transformation.sourceCardIds.length !== snapshotCardIds.length
     || transformation.sourceCardIds.some((cardId, index) => cardId !== snapshotCardIds[index])
   const sourceChanged = appliedRun.sourceSnapshot.some((snapshot) =>
-    board.cards.find((card) => card.id === snapshot.cardId)?.headVersionId !== snapshot.versionId)
+    board.cards.find((card) => card.id === snapshot.cardId)?.headVersionId !== snapshot.versionId
+    || !sameScope(transformation.sourceScopes?.find(scope => scope.cardId === snapshot.cardId), snapshot.scope))
   return structureChanged || sourceChanged
     ? { kind: 'run', reason: 'stale' }
     : { kind: 'current' }

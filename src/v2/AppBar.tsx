@@ -10,6 +10,7 @@ import { WorkbenchNavigation } from './WorkbenchNavigation'
 import BoardMenu from './BoardMenu'
 import { useCardSelection } from './drawerIntent'
 import { useWorkbenchPreference } from './workbenchPreferences'
+import { ApplicationInfo } from './ApplicationInfo'
 
 const BLOCKING_OVERLAY_SELECTOR = 'dialog[open]:not(.v2-command-palette), [aria-modal="true"]:not(.v2-command-palette)'
 
@@ -223,7 +224,7 @@ export default function AppBar({
   }
   const commands: CommandItem[] = [
     { id: 'content', label: '新建内容卡', description: '在当前视口创建并开始编辑', shortcut: 'N', icon: <Plus size={17} />, disabled: canvasUnavailable, action: () => { void addContent(center()) } },
-    { id: 'file', label: '添加文件材料', description: '浏览 workspace 或备份外部文件', icon: <FilePlus2 size={17} />, disabled: canvasUnavailable, action: openFilePicker },
+    { id: 'file', label: '阅读材料', description: '读取网页、PDF，或添加本地文件', icon: <FilePlus2 size={17} />, action: openFilePicker },
     { id: 'inspiration', label: '打开灵感池', description: '记录灵感或添加到当前画板', icon: <Lightbulb size={17} />, action: openInspirationPicker },
     { id: 'plan', label: '搭一个计划', description: '只铺步骤，不自动运行', icon: <ListTodo size={17} />, disabled: canvasUnavailable, action: openPlanComposer },
     { id: 'workflow', label: '方法与计划', description: '搭计划或使用已经验证的方法', icon: <Workflow size={17} />, disabled: canvasUnavailable, action: openWorkflowLibrary },
@@ -266,6 +267,7 @@ export default function AppBar({
       <label className="v2-grid-setting"><span>显示网格线<small>仅改变画布背景</small></span><input type="checkbox" role="switch" checked={grid === 'visible'} onChange={(event) => setGrid(event.target.checked ? 'visible' : 'hidden')} /></label>
       {appearance && onAppearanceChange && <AppearanceSwitcher appearance={appearance} onChange={onAppearanceChange} embedded />}
       <button className="v2-settings-models" type="button" disabled={navigationPending} onClick={() => runToolbarAction(openModelSettings)}><Settings2 size={15} />模型设置</button>
+      <ApplicationInfo />
     </div>
     <CommandPalette key={boardId} open={commandOpen} commands={commands}
       cards={canvasUnavailable ? [] : board?.cards} onLocateCard={locateCard}

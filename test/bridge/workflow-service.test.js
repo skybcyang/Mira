@@ -4,6 +4,7 @@ import { appendVersion } from '../../bridge/domain/versioning.js'
 import { validateBoardV2 } from '../../bridge/domain/validation.js'
 import { createStorageCoordinator } from '../../bridge/storage-coordinator.js'
 import { createWorkflowService } from '../../bridge/workflow-service.js'
+import { listGuidance } from '../../src/domain/guidance.js'
 import { WorkflowStore } from '../../bridge/workflow-store.js'
 
 const NOW = '2026-08-23T04:00:00.000Z'
@@ -251,6 +252,36 @@ async function fixture(board = linearBoard()) {
 }
 
 describe('workflow service', () => {
+  it('copies frozen guidance through method extraction and application', async () => {
+    const board = linearBoard()
+    board.transformations[0].guidance = listGuidance()[1]
+    const { service } = await fixture(board)
+    const workflow = await service.create({ title: '精读', sourceBoardId: board.id, transformationIds: board.transformations.map(t => t.id) })
+    expect(workflow.steps[0].guidance).toEqual(board.transformations[0].guidance)
+    const result = await service.apply(board.id, workflow.id, { sourceRefs: [{ cardId: 'source-a', versionId: 'source-a-v1' }] })
+    expect(result.transformations[0].guidance).toEqual(workflow.steps[0].guidance)
+  })
+  it('never silently broadens scoped binding requests into full-text plans', async () => {
+    const { service, workflowStore } = await fixture()
+    const ref = { cardId: 'source-a', versionId: 'source-a-v1', scope: { mode: 'ranges', versionId: 'source-a-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 2 }] } }
+    await expect(service.createPlan('board-1', directPlan({ sourceRefs: [ref] }))).rejects.toMatchObject({ code: 'SOURCE_SCOPE_INVALID' })
+    await workflowStore.save('workflow-research', template())
+    await expect(service.apply('board-1', 'workflow-research', { sourceRefs: [ref] })).rejects.toMatchObject({ code: 'SOURCE_SCOPE_INVALID' })
+  })
+  it('extracts selection requirements without old offsets and reapplies them without running', async () => {
+    const board = linearBoard()
+    board.transformations[0].sourceScopes = [{ cardId: 'source-a', mode: 'ranges', versionId: 'source-a-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 2 }] }]
+    board.transformations[1].sourceScopes = [{ cardId: 'middle', mode: 'required' }]
+    const { service } = await fixture(board)
+    const workflow = await service.create({ title: '限定输入', sourceBoardId: board.id, transformationIds: board.transformations.map(t => t.id), inputs: ['source-a', 'source-b'].map(sourceCardId => ({ sourceCardId, name: sourceCardId, required: true, cardinality: 'one' })) })
+    expect(workflow.steps[0].sources[0]).toMatchObject({ scope: 'select-before-run' })
+    expect(workflow.steps[1].sources[0]).toMatchObject({ scope: 'select-before-run' })
+    expect(JSON.stringify(workflow)).not.toContain('sha256:')
+    const result = await service.apply(board.id, workflow.id, { inputBindings: workflow.inputs.map((input, i) => ({ inputId: input.id, sourceRefs: [{ cardId: ['source-a', 'source-b'][i], versionId: `${['source-a', 'source-b'][i]}-v1` }] })) })
+    expect(result.transformations[0].sourceScopes).toEqual([{ cardId: 'source-a', mode: 'required' }])
+    expect(result.transformations[1].sourceScopes).toEqual([{ cardId: result.targetCards[0].id, mode: 'required' }])
+    expect(result.targetCards.every(card => card.headVersionId === null)).toBe(true)
+  })
   it.each(['archived', 'trashed'])('rejects extraction, direct plans, and applications on %s boards', async (state) => {
     const board = linearBoard()
     board.lifecycle = { state }

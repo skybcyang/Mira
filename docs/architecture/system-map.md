@@ -69,7 +69,7 @@ Desktop packaging
 | `src/v2/organizationSlice.ts` | 显式分组、颜色 CAS、组选择和冻结整体拖动 | 正文、Run、自动归组或新执行模型 |
 | `src/v2/canvasOrganization.ts` | 颜色枚举文案、成员转换、组框投影、整理请求反转与元数据合并 | HTTP I/O、领域写回或持久历史 |
 | `src/v2/workflowSlice.ts` | 方法提取、直接计划与方法草稿、原子铺计划 | 新的执行引擎或自动 Run |
-| `src/v2/transformationSlice.ts` | 建议、单步/批量转化创建、更新与结构删除 | Run polling 或 Card 正文 |
+| `src/v2/transformationSlice.ts` | 单步/批量转化创建、更新与结构删除 | Run polling 或 Card 正文 |
 | `src/v2/sourceSlice.ts`、`transformationSources.ts` | 来源追加、页面点选草稿与来源校验；由 Transformation slice 组合 | 新 Run、目标创建或持久选择对象 |
 | `src/v2/runSlice.ts` | Run 执行、轮询、初始读取重试、停止和 Candidate 命令 | Board 导航代次与领域写回规则 |
 | `src/v2/inspirationSlice.ts` | 灵感记录、批量快照放入与 create history 编排 | 池检索 UI、领域校验或独立的 Board 导航状态 |
@@ -77,7 +77,7 @@ Desktop packaging
 | `src/v2/DetailDrawer.tsx`、`src/v2/detail/` | 稳定详情 shell/兼容导出与分面组件 | 新的详情导航或重复 Store |
 | `src/styles.css`、`src/styles/` | 固定导入顺序与 token、feature、外观、响应式模块 | 重排层叠或组件隐式重复加载样式 |
 | `src/v2Api.ts` | HTTP 序列化和错误解码 | 业务决策 |
-| `bridge/v2-http-policy.js` | 请求校验 helper、建议解析、prompt 与 Run 进度 helper 的兼容导出 | 存储写入 |
+| `bridge/v2-http-policy.js` | 请求校验 helper、prompt 与 Run 进度 helper 的兼容导出 | 存储写入 |
 | `bridge/v2-http.js` | Card/Transformation/Run 命令编排 | host 路由与产品 UI |
 | `bridge/domain/` | Version、snapshot、Candidate、Board 校验 | HTTP 和宿主能力 |
 | `bridge/domain/run-progress.js` | Run 公开进度规范化、最近 20 条追加与持久字段校验 | 模型原始事件或 UI 呈现 |
@@ -100,7 +100,13 @@ Desktop packaging
 
 改错误提示：浏览器文案在 `src/v2/storePolicy.ts`，HTTP 错误码仍由 handler/domain 产生。不要在多个组件分别翻译同一错误码。
 
-改请求校验或模型建议格式：在 `bridge/v2-http-policy.js` 做纯函数，并由 `v2-http.js` 调用。涉及写入原子性或 CAS 时才进入 handler/domain。
+改文本提取：`src/domain/extraction.js` 是浏览器与 Bridge 共用的格式、条目和输入校验；`src/v2/extractionSlice.ts` 编排显式步骤创建、拆卡和不确定响应核对；`src/v2/detail/ExtractionPanel.tsx` 负责冻结预览、编辑、选择和排序。`bridge/v2-http.js` 在 Board 锁内复用普通 Card 创建和原子存储，`board-artifact.js` 处理出处与批次重映射。Run/Candidate/Workflow 沿用原有路径。
+
+旧卡对照由 `ExtractionComparisonPanel` / `ExtractionRevisionEditor` 承载，精确对应纯策略在 `extractionComparison.ts`，单卡 CAS 领域写回在 `bridge/domain/extraction-revisions.js`，元数据随版本与可移植映射处理。
+
+材料阅读由 `bridge/material-service.js` 管理有界临时快照与明确保存，`node-web-reader.js` / `node-pdf-reader.js` 为 Node 注入适配器，PDF worker 在 `bridge/pdf-runtime/`。`src/domain/materials.js` 共享出处/选择校验，`MaterialReader.tsx` 和 `materialSlice.ts` 复用文件任务及普通 Card/灵感写入。临时全文不进入持久领域。发行准备脚本位于 `scripts/release-*`，没有复制应用 runtime 或增加自动发布。
+
+改请求校验或 prompt 格式：在 `bridge/v2-http-policy.js` 做纯函数，并由 `v2-http.js` 调用。涉及写入原子性或 CAS 时才进入 handler/domain。
 
 改工作台导航与本机密度偏好：`WorkbenchNavigation.tsx` 与 `workbenchPreferences.ts`；AppBar 接入既有工具，不建立新路由。`useTaskViewport.ts` 只投影视口高度，`useMobilePanelModal.ts` 处理 Compact/Mobile 焦点边界；NoticeRegion 在这些边界内投递通知。
 
@@ -153,3 +159,6 @@ macOS Desktop 当前是 Electron 44 internal Alpha，目标为 macOS 13 或更�
 macOS / Windows arm64/x64 未签名测试包与主干更新后 GitHub Actions 自动构建已于 2026-09-10 获用户确认；
 操作及平台验收限制见[内部桌面打包](../operations/desktop-internal-builds.md)。
 正式桌面 Release 前还需要完成签名/公证/更新策略与对应发布门禁；已授权的未签名 Actions 测试包按平台契约单独验证。
+
+2026-09-13 A3–B8 的材料、指导、范围和对照增量已本地实现，沿上述 application/domain/feature/slice 边界接入。
+实现及质量证据见[本批报告](../validation/2026-09-13-a3-b8-validation.md)，外部设备与发行剩余条件见[交付计划](../refactor/a3-b8-delivery-plan.md)。

@@ -1,5 +1,5 @@
 {
-  "generatedOn": "2026-09-10",
+  "generatedOn": "2026-09-13",
   "source": "pnpm-lock.yaml / pnpm licenses list --json",
   "note": "No installation paths are retained. Development includes build and test tools; production refers to the dependency graph, not a claim that every file ships in a bundle.",
   "packages": [
@@ -340,6 +340,13 @@
       "homepage": "https://github.com/evanw/esbuild#readme"
     },
     {
+      "name": "@esbuild/darwin-x64",
+      "version": "0.25.12",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://github.com/evanw/esbuild#readme"
+    },
+    {
       "name": "@gar/promisify",
       "version": "1.1.3",
       "license": "MIT",
@@ -522,6 +529,41 @@
       "homepage": "https://github.com/malept/cross-spawn-promise#readme"
     },
     {
+      "name": "@mozilla/readability",
+      "version": "0.6.0",
+      "license": "Apache-2.0",
+      "scope": "production",
+      "homepage": "https://github.com/mozilla/readability"
+    },
+    {
+      "name": "@napi-rs/canvas-darwin-arm64",
+      "version": "0.1.100",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/Brooooooklyn/canvas#readme"
+    },
+    {
+      "name": "@napi-rs/canvas-darwin-x64",
+      "version": "0.1.100",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/Brooooooklyn/canvas#readme"
+    },
+    {
+      "name": "@napi-rs/canvas",
+      "version": "0.1.100",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/Brooooooklyn/canvas#readme"
+    },
+    {
+      "name": "@noble/hashes",
+      "version": "2.4.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://paulmillr.com/noble/"
+    },
+    {
       "name": "@nodelib/fs.scandir",
       "version": "2.1.5",
       "license": "MIT",
@@ -565,6 +607,13 @@
     },
     {
       "name": "@rollup/rollup-darwin-arm64",
+      "version": "4.62.4",
+      "license": "MIT",
+      "scope": "development",
+      "homepage": "https://rollupjs.org/"
+    },
+    {
+      "name": "@rollup/rollup-darwin-x64",
       "version": "4.62.4",
       "license": "MIT",
       "scope": "development",
@@ -1229,6 +1278,13 @@
       "homepage": "https://github.com/petkaantonov/bluebird"
     },
     {
+      "name": "boolbase",
+      "version": "2.0.0",
+      "license": "ISC",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/boolbase"
+    },
+    {
       "name": "boolean",
       "version": "3.2.0",
       "license": "MIT",
@@ -1586,6 +1642,27 @@
       "homepage": "https://github.com/feross/cross-zip"
     },
     {
+      "name": "css-select",
+      "version": "7.0.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/css-select#readme"
+    },
+    {
+      "name": "css-what",
+      "version": "8.0.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/css-what#readme"
+    },
+    {
+      "name": "cssom",
+      "version": "0.5.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/NV/CSSOM#readme"
+    },
+    {
       "name": "csstype",
       "version": "3.2.3",
       "license": "MIT",
@@ -1747,6 +1824,62 @@
       "homepage": "https://github.com/gliviu/dir-compare#readme"
     },
     {
+      "name": "dom-serializer",
+      "version": "2.0.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/cheeriojs/dom-serializer#readme"
+    },
+    {
+      "name": "dom-serializer",
+      "version": "3.1.1",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/cheeriojs/dom-serializer#readme"
+    },
+    {
+      "name": "domelementtype",
+      "version": "2.3.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domelementtype#readme"
+    },
+    {
+      "name": "domelementtype",
+      "version": "3.0.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domelementtype#readme"
+    },
+    {
+      "name": "domhandler",
+      "version": "5.0.3",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domhandler#readme"
+    },
+    {
+      "name": "domhandler",
+      "version": "6.0.1",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domhandler#readme"
+    },
+    {
+      "name": "domutils",
+      "version": "3.2.2",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domutils#readme"
+    },
+    {
+      "name": "domutils",
+      "version": "4.0.2",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/domutils#readme"
+    },
+    {
       "name": "ds-store",
       "version": "0.1.6",
       "license": "MIT",
@@ -1829,6 +1962,27 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/webpack/enhanced-resolve#readme"
+    },
+    {
+      "name": "entities",
+      "version": "4.5.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/entities#readme"
+    },
+    {
+      "name": "entities",
+      "version": "7.0.1",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/entities#readme"
+    },
+    {
+      "name": "entities",
+      "version": "8.1.0",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/entities#readme"
     },
     {
       "name": "env-paths",
@@ -2307,11 +2461,25 @@
       "homepage": "https://github.com/npm/hosted-git-info"
     },
     {
+      "name": "html-escaper",
+      "version": "3.0.3",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/WebReflection/html-escaper"
+    },
+    {
       "name": "html-url-attributes",
       "version": "3.0.1",
       "license": "MIT",
       "scope": "production",
       "homepage": "https://github.com/rehypejs/rehype-minify/tree/main#readme"
+    },
+    {
+      "name": "htmlparser2",
+      "version": "10.1.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/htmlparser2#readme"
     },
     {
       "name": "http-cache-semantics",
@@ -2445,6 +2613,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/beaugunderson/ip-address#readme"
+    },
+    {
+      "name": "ipaddr.js",
+      "version": "2.5.0",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/whitequark/ipaddr.js#readme"
     },
     {
       "name": "is-alphabetical",
@@ -2683,6 +2858,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/jaredwray/keyv"
+    },
+    {
+      "name": "linkedom",
+      "version": "0.18.13",
+      "license": "ISC",
+      "scope": "production",
+      "homepage": "https://github.com/WebReflection/linkedom#readme"
     },
     {
       "name": "listr2",
@@ -3355,6 +3537,13 @@
       "homepage": "https://github.com/bitinn/node-fetch"
     },
     {
+      "name": "node-readable-to-web-readable-stream",
+      "version": "0.4.2",
+      "license": "MIT",
+      "scope": "production",
+      "homepage": "https://github.com/Borewit/node-readable-to-web-readable-stream#readme"
+    },
+    {
       "name": "node-releases",
       "version": "2.0.53",
       "license": "MIT",
@@ -3395,6 +3584,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/sindresorhus/npm-run-path#readme"
+    },
+    {
+      "name": "nth-check",
+      "version": "3.0.1",
+      "license": "BSD-2-Clause",
+      "scope": "production",
+      "homepage": "https://github.com/fb55/nth-check"
     },
     {
       "name": "object-keys",
@@ -3584,6 +3780,13 @@
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/unjs/pathe#readme"
+    },
+    {
+      "name": "pdfjs-dist",
+      "version": "5.4.624",
+      "license": "Apache-2.0",
+      "scope": "production",
+      "homepage": "https://mozilla.github.io/pdf.js/"
     },
     {
       "name": "pe-library",
@@ -4389,6 +4592,13 @@
       "license": "Apache-2.0",
       "scope": "development",
       "homepage": "https://www.typescriptlang.org/"
+    },
+    {
+      "name": "uhyphen",
+      "version": "0.2.0",
+      "license": "ISC",
+      "scope": "production",
+      "homepage": "https://github.com/WebReflection/uhyphen#readme"
     },
     {
       "name": "undici-types",

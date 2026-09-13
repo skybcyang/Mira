@@ -62,8 +62,6 @@ function resetTo(board: BoardV2) {
     ...projectV2Board(board, {}),
     runs: {},
     selectedCardIds: [],
-    suggestions: [],
-    suggestionState: 'idle',
     clipboard: null,
     deleteConfirmationIds: null,
     branchDraft: null,

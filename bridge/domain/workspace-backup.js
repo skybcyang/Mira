@@ -1,4 +1,5 @@
 import { validateBoardCheckpoint } from './board-checkpoint.js'
+import { validateMaterialOrigin } from '../../src/domain/materials.js'
 import { assertUnique as assertUniqueIds, isObject, nonEmptyString } from './guards.js'
 import {
   MIRA_BACKUP_LIMITS,
@@ -89,6 +90,9 @@ function validatePortableInspirationPool(pool) {
         return
       }
       versionIds.add(version.id)
+      if (version.materialOrigin !== undefined) {
+        try { validateMaterialOrigin(version.materialOrigin) } catch { errors.push(`InspirationPool entry ${entry.id} material origin is invalid`) }
+      }
     })
   }
   if (errors.length > 0) {

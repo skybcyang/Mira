@@ -114,8 +114,6 @@ function resetTo(canvas: BoardV2) {
     ...projectV2Board(canvas, {}),
     runs: {},
     selectedCardIds: [],
-    suggestions: [],
-    suggestionState: 'idle',
     applyingWorkflowId: null,
     branchDraft: null,
     drawer: null,
@@ -903,24 +901,6 @@ describe('board-scoped API responses', () => {
     expect(useV2Canvas.getState().message).toBeNull()
   })
 
-  it('does not publish old suggestions when the new board selects cards with the same ids', async () => {
-    const oldBoard = board('old', [card('shared', 'old-v1')])
-    const newBoard = board('new', [card('shared', 'new-v1')])
-    resetTo(oldBoard)
-    useV2Canvas.setState({ selectedCardIds: ['shared'] })
-    const suggestions = deferred<{ suggestions: Array<{ id: string; label: string; instruction: string; acceptance: string }> }>()
-    vi.spyOn(v2Api, 'suggest').mockReturnValue(suggestions.promise)
-    vi.spyOn(v2Api, 'getBoard').mockResolvedValue({ board: newBoard })
-
-    const suggestPending = useV2Canvas.getState().requestSuggestions()
-    await useV2Canvas.getState().switchBoard('new')
-    useV2Canvas.setState({ selectedCardIds: ['shared'] })
-    suggestions.resolve({ suggestions: [{ id: 'stale', label: '旧建议', instruction: '旧建议', acceptance: '' }] })
-    await suggestPending
-
-    expect(useV2Canvas.getState().suggestions).toEqual([])
-    expect(useV2Canvas.getState().suggestionState).toBe('idle')
-  })
 
   it('does not replace the new board with a late transformation response', async () => {
     const oldBoard = board('old', [card('source', 'old-v1')])

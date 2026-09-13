@@ -1,3 +1,4 @@
+import { extractionRequirement } from '../../domain/extraction.js'
 import { useState } from 'react'
 import { Save } from 'lucide-react'
 import type { CreateWorkflowInputSlot, Transformation, WorkflowTemplate } from '../../domain'
@@ -57,7 +58,7 @@ export function SaveWorkflowForm({
           <label className="v2-workflow-required"><input type="checkbox" checked={inputs[index]?.required ?? true} onChange={(event) => setInputs((current) => current.map((input, itemIndex) => itemIndex === index ? { ...input, required: event.target.checked } : input))} /><span>必填</span></label></div>
       </fieldset>)}
     </div></section>
-    <section className="v2-workflow-extraction-section"><h3>将保存的步骤</h3><ol className="v2-chain-preview">{preview.chain.map((item, index) => <li key={item.id}><span>{index + 1}</span><div><strong>{item.label}</strong><p>{item.instruction}</p>{item.acceptance && <small>完成标准：{item.acceptance}</small>}</div></li>)}</ol></section>
+    <section className="v2-workflow-extraction-section"><h3>将保存的步骤</h3><ol className="v2-chain-preview">{preview.chain.map((item, index) => <li key={item.id}><span>{index + 1}</span><div><strong>{item.label}</strong><p>{extractionRequirement(item.instruction) ?? item.instruction}</p>{item.acceptance && <small>完成标准：{item.acceptance}</small>}</div></li>)}</ol></section>
     {preview.stopReason && <p className={`v2-workflow-stop-reason ${preview.stopReason}`}>{STOP_REASON_COPY[preview.stopReason]}</p>}
     <p className="v2-workflow-method-note">只保存方法，不复制当前内容。</p>
     <div><button type="button" onClick={onCancel}>取消</button><button className="v2-primary-button" type="submit" disabled={!title.trim() || inputs.some((input) => !input.name.trim()) || saving}>{saving ? '正在保存…' : '保存'}</button></div>

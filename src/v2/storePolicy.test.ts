@@ -19,6 +19,12 @@ describe('canvas history error policy', () => {
 })
 
 describe('v2 store policy', () => {
+  it('recognizes input scope navigation as a new detail intent', () => {
+    const origin = detailSurfaceSnapshot(1, { tab: 'relation', transformationId: 'step' }, null)
+    const next = transitionDetailSurface(origin, { tab: 'relation', transformationId: 'step', scopeCardId: 'source' }, null)
+    expect(next.detailSurfaceRevision).toBe(2)
+    expect(next.drawer).toMatchObject({ scopeCardId: 'source' })
+  })
   it('treats Content and Versions as distinct views of the same card', () => {
     const content = detailSurfaceSnapshot(2, { tab: 'content', cardId: 'card-1' }, null)
 

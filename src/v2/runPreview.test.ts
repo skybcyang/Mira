@@ -37,6 +37,20 @@ function apply(canvas: BoardV2, index: number): TransformationRun {
 }
 
 describe('read-only run range preview', () => {
+  it('stops at an explicit selection requirement after preserving upstream work', () => {
+    const canvas = board()
+    canvas.transformations[1].sourceScopes = [{ cardId: 'a', mode: 'required' }]
+    expect(previewRunTo(canvas, {}, 'step-c').rows.map(row => [row.status, row.reason])).toEqual([
+      ['generate', 'empty-target'], ['blocked', 'scope-required'], ['unreached', 'earlier-stop'],
+    ])
+  })
+  it('requires reselection when an upstream generation will replace the selected version', () => {
+    const canvas = board()
+    const run = apply(canvas, 0)
+    run.sourceSnapshot[0].versionId = 'old'
+    canvas.transformations[1].sourceScopes = [{ cardId: 'a', mode: 'ranges', versionId: 'a-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 2 }] }]
+    expect(previewRunTo(canvas, { [run.id]: run }, 'step-b').rows[1]).toMatchObject({ status: 'blocked', reason: 'scope-changed' })
+  })
   it('predicts a whole empty chain without inventing committed versions or runs', () => {
     const canvas = board()
     const before = structuredClone(canvas)

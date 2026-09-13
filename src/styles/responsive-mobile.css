@@ -156,10 +156,6 @@
     border-radius: 7px 7px 0 0;
   }
 
-  .v2-suggestions button {
-    min-height: 44px;
-  }
-
   .v2-draft-use-selection,
   .v2-draft-binding button,
   .v2-draft-actions button {
@@ -884,3 +880,8 @@
   .v2-settings-heading .v2-icon-button { width: 44px; height: 44px; }
 }
 @media (max-width: 719px) { .v2-card-name-editor input, .v2-card-name-editor button { min-height: 44px; } }
+@media (max-width: 719px) {
+  .v2-extraction-panel button, .v2-extraction-entry button, .v2-extraction-panel summary, .v2-extraction-item-heading label { min-height: 44px; }
+  .v2-extraction-item-heading label { align-items: center; }
+  .v2-extraction-panel input[type="checkbox"] { width: 20px; height: 20px; }
+}

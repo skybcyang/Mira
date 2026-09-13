@@ -1,5 +1,6 @@
 import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
+import { validateGuidance } from '../src/domain/guidance.js'
 
 export function validateWorkflow(workflow) {
   if (!workflow || typeof workflow !== 'object') return ['workflow must be an object']
@@ -52,6 +53,7 @@ export function validateWorkflow(workflow) {
       }
       if (stepIds.has(step.id)) errors.push(`duplicate workflow step id: ${step.id}`)
       stepIds.add(step.id)
+      try { validateGuidance(step.guidance) } catch { errors.push(`workflow step ${step.id} has invalid guidance`) }
       if (typeof step.label !== 'string' || !step.label.trim()) {
         errors.push(`workflow step ${step.id} missing label`)
       }
@@ -76,6 +78,7 @@ export function validateWorkflow(workflow) {
         } else {
           let previousOutputCount = 0
           for (const source of step.sources) {
+            if (source?.scope !== undefined && source.scope !== 'select-before-run') errors.push(`workflow step ${step.id} has invalid scope`)
             if (source?.kind === 'previous-output') {
               previousOutputCount += 1
             } else if (source?.kind === 'input' && typeof source.inputId === 'string') {

@@ -6,6 +6,7 @@ import { headVersion } from '../../v2View'
 import { when } from './formatters'
 import { cardVersionComparison, cardVersionPreview, cardVersionRows, restoreVersionMessage, selectedCardVersion } from '../cardVersions'
 import MarkdownContent from '../MarkdownContent'
+import { MaterialOriginView } from './MaterialOriginView'
 
 export function VersionPanelView({
   card,
@@ -33,6 +34,7 @@ export function VersionPanelView({
     ? cardVersionComparison(selected, current)
     : null
   return <div className="v2-version-panel">
+    <MaterialOriginView origin={selected?.materialOrigin} />
     <div className="v2-version-current"><span>当前版本</span><strong>{current ? `当前 v${current.sequence}` : '不可用'}</strong></div>
     <div className="v2-version-timeline">
       {rows.map((row) => <button type="button" className={row.id === selected?.id ? 'is-active' : ''} key={row.id} onClick={() => onSelect(row.id)}>

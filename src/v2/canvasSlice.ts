@@ -192,8 +192,6 @@ export function createCanvasSlice(
             : state.clipboard,
           deleteConfirmationIds: null,
           editingCardId: null,
-          suggestions: [],
-          suggestionState: 'idle',
           saveState: 'saved',
           historyPast: [
             ...state.historyPast,
@@ -255,7 +253,8 @@ export function createCanvasSlice(
           throw new Error('这张卡已不在当前画板中。')
         }
         const markdown = direction === 'undo' ? entry.before : entry.after
-        cards = [(await v2Api.commitVersion(boardId, entry.cardId, {
+        const restoreId = direction === 'undo' ? entry.beforeVersionId : entry.afterVersionId
+        cards = [restoreId ? (await v2Api.restoreVersion(boardId, entry.cardId, restoreId, currentCard.headVersionId)).card : (await v2Api.commitVersion(boardId, entry.cardId, {
           baseVersionId: currentCard.headVersionId,
           markdown,
         })).card]
@@ -455,8 +454,6 @@ export function createCanvasSlice(
             deleteConfirmationIds: null,
             multiSelectMode: false,
             editingCardId: removed.has(state.editingCardId || '') ? null : state.editingCardId,
-            suggestions: [],
-            suggestionState: 'idle',
             saveState: 'saved',
             ...noticePatch(state, 'success', message, { boardId }),
             historyPast: [
@@ -500,8 +497,6 @@ export function createCanvasSlice(
         nodes: state.nodes.map((node) => ({ ...node, selected: false })),
         deleteConfirmationIds: null,
         branchDraft: null,
-        suggestions: [],
-        suggestionState: 'idle',
       }))
     },
 
@@ -564,14 +559,6 @@ export function createCanvasSlice(
           selectedCardIds.join('|') === state.selectedCardIds.join('|')
             ? state.deleteConfirmationIds
             : null,
-        suggestions:
-          selectedCardIds.join('|') === state.selectedCardIds.join('|')
-            ? state.suggestions
-            : [],
-        suggestionState:
-          selectedCardIds.join('|') === state.selectedCardIds.join('|')
-            ? state.suggestionState
-            : 'idle',
       }})
       const completedMoves = appliedChanges.filter(
         (change): change is Extract<NodeChange, { type: 'position' }> =>
@@ -639,8 +626,6 @@ export function createCanvasSlice(
         return {
           selectedCardIds: next,
           branchDraft: state.branchDraft ? { ...state.branchDraft, sourceCardIds: next } : null,
-          suggestions: [],
-          suggestionState: 'idle',
         }
       })
     },
@@ -656,8 +641,6 @@ export function createCanvasSlice(
         branchDraft: state.branchDraft && selectedCardIds.length > 0
           ? { ...state.branchDraft, sourceCardIds: selectedCardIds }
           : null,
-        suggestions: [],
-        suggestionState: 'idle',
         deleteConfirmationIds: null,
       }})
     },
@@ -671,8 +654,6 @@ export function createCanvasSlice(
           ...node,
           selected: unique.includes(node.id),
         })),
-        suggestions: [],
-        suggestionState: 'idle',
         deleteConfirmationIds: null,
       }))
     },
@@ -687,8 +668,6 @@ export function createCanvasSlice(
         })),
         multiSelectMode: false,
         deleteConfirmationIds: null,
-        suggestions: [],
-        suggestionState: 'idle',
       }))
     },
 

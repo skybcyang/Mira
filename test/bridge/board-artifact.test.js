@@ -5,6 +5,8 @@ import {
   validateBoardArtifact,
 } from '../../bridge/domain/board-artifact.js'
 import { BOARD_ARTIFACT_LIMITS } from '../../bridge/domain/portable-format.js'
+import { projectWorkspaceBackup, validateWorkspaceBackup } from '../../bridge/domain/workspace-backup.js'
+import { validateBoardCheckpoint } from '../../bridge/domain/board-checkpoint.js'
 
 const NOW = '2026-09-02T08:00:00.000Z'
 const IMPORTED_AT = '2026-09-02T09:00:00.000Z'
@@ -223,10 +225,103 @@ function artifact(overrides = {}) {
   })
 }
 
+it('preserves frozen guidance and rejects tampered text across portable objects', async () => {
+  const { listGuidance } = await import('../../src/domain/guidance.js')
+  const guidance = listGuidance()[1]
+  const input = board()
+  input.transformations[0].guidance = guidance
+  const run = terminalRun({ guidanceSnapshot: guidance })
+  const workflow = provenance()
+  workflow.steps[0].guidance = guidance
+  const exported = artifact({ board: input, runs: [run, historicalRun()], workflowProvenance: [workflow] })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('guide'), now: () => IMPORTED_AT })
+  expect(imported.board.transformations[0].guidance).toEqual(guidance)
+  expect(imported.runs[0].guidanceSnapshot).toEqual(guidance)
+  expect(imported.workflowProvenance[0].steps[0].guidance).toEqual(guidance)
+  for (const object of [exported.board.transformations[0].guidance, exported.runs[0].guidanceSnapshot, exported.workflowProvenance[0].steps[0].guidance]) {
+    const before = object.text
+    object.text = 'tampered frozen guidance'
+    expect(() => validateBoardArtifact(exported)).toThrow()
+    object.text = before
+  }
+})
+
+it('remaps extraction provenance and batch identity while retaining per-version item identity', () => {
+  const input = board()
+  input.cards[1].extractionRef = { boardId: input.id, cardId: 'source', versionId: 'source-v1', itemId: 'one', batchId: 'batch-old' }
+  const exported = artifact({ board: input })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('extract'), now: () => IMPORTED_AT })
+  expect(imported.board.cards[1].extractionRef).toEqual({ boardId: imported.board.id, cardId: imported.board.cards[0].id, versionId: imported.board.cards[0].headVersionId, itemId: 'one', batchId: expect.any(String) })
+  expect(imported.board.cards[1].extractionRef.batchId).not.toBe('batch-old')
+})
+
+it.each(['other-board', 'board-1'])('keeps missing extraction provenance opaque for %s', (boardId) => {
+  const input = board()
+  input.cards[1].extractionRef = { boardId, cardId: 'missing-list', versionId: 'missing-version', itemId: 'one', batchId: 'batch-old' }
+  const exported = artifact({ board: input })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('opaque'), now: () => IMPORTED_AT })
+  const ref = imported.board.cards[1].extractionRef
+  expect(ref.cardId).not.toBe('missing-list')
+  expect(ref.versionId).not.toBe('missing-version')
+  expect(imported.externalReferences).toContainEqual({ kind: 'extraction', boardId: ref.boardId, cardId: ref.cardId, versionId: ref.versionId })
+  expect(() => validateBoardArtifact(imported)).not.toThrow()
+})
+
 function sequenceIds(prefix) {
   let index = 0
   return () => `${prefix}-${++index}`
 }
+
+it('remaps source selections and rejects hidden material inside scope metadata', () => {
+  const input = board()
+  const scope = { mode: 'ranges', versionId: 'source-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 2 }] }
+  input.transformations[0].sourceScopes = [{ cardId: 'source', ...scope }]
+  const run = terminalRun()
+  run.sourceSnapshot[0] = { ...run.sourceSnapshot[0], scope, lines: [{ startLine: 1, endLine: 1 }], fullContentDigest: 'full-digest' }
+  const exported = artifact({ board: input, runs: [run, historicalRun()] })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('scope'), now: () => IMPORTED_AT })
+  const source = imported.board.cards[0]
+  expect(imported.board.transformations[0].sourceScopes[0]).toMatchObject({ cardId: source.id, versionId: source.headVersionId })
+  expect(imported.runs[0].sourceSnapshot[0].scope.versionId).toBe(source.headVersionId)
+  input.transformations[0].sourceScopes[0].text = 'unselected secret body'
+  expect(() => artifact({ board: input })).toThrow()
+  exported.runs[0].sourceSnapshot[0].scope.text = 'unselected secret body'
+  expect(() => validateBoardArtifact(exported)).toThrow()
+})
+
+it('lists missing scope versions as opaque historical dependencies', () => {
+  const input = board()
+  input.transformations[0].sourceScopes = [{ cardId: 'source', mode: 'ranges', versionId: 'old-scope-version', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 0, end: 1 }] }]
+  const exported = artifact({ board: input })
+  expect(exported.externalReferences).toContainEqual({ kind: 'historical', objectKind: 'version', objectId: 'old-scope-version' })
+})
+
+it('remaps per-version extraction references and keeps missing history opaque', () => {
+  const input = board()
+  input.cards[1].versions[0].extractionSources = [
+    { boardId: input.id, cardId: 'source', versionId: 'source-v1', itemId: 'one' },
+    { boardId: input.id, cardId: 'missing-list', versionId: 'missing-list-version', itemId: 'two' },
+  ]
+  const exported = artifact({ board: input })
+  const imported = remapBoardArtifact(exported, { generateId: sequenceIds('revision'), now: () => IMPORTED_AT })
+  const refs = imported.board.cards[1].versions[0].extractionSources
+  expect(refs[0]).toEqual({ boardId: imported.board.id, cardId: imported.board.cards[0].id, versionId: imported.board.cards[0].headVersionId, itemId: 'one' })
+  expect(refs[1].cardId).not.toBe('missing-list')
+  expect(imported.externalReferences).toContainEqual({ kind: 'extraction', boardId: refs[1].boardId, cardId: refs[1].cardId, versionId: refs[1].versionId })
+  exported.board.cards[1].versions[0].extractionSources[0].text = 'hidden data'
+  expect(() => validateBoardArtifact(exported)).toThrow()
+})
+
+it('preserves extraction provenance through backup and checkpoint validation', () => {
+  const input = board({ cards: [card('list', { kind: 'markdown', markdown: '清单' }), card('item', { kind: 'markdown', markdown: '条目' })], transformations: [] })
+  input.cards[1].extractionRef = { boardId: input.id, cardId: 'list', versionId: 'list-v1', itemId: 'one', batchId: 'batch-one' }
+  const checkpoint = { schemaVersion: 1, id: 'checkpoint-one', boardId: input.id, title: '稳定版本', baseBoardRevision: input.revision, artifact: projectBoardArtifact({ board: input, runs: [], exportedAt: NOW }), createdAt: NOW, metadataUpdatedAt: NOW }
+  expect(() => validateBoardCheckpoint(checkpoint)).not.toThrow()
+  const backup = projectWorkspaceBackup({ boards: [input], runs: [], workflows: [], checkpoints: [checkpoint], exportedAt: NOW })
+  expect(() => validateWorkspaceBackup(JSON.parse(JSON.stringify(backup)))).not.toThrow()
+  expect(backup.boards[0].cards[1].extractionRef).toEqual(input.cards[1].extractionRef)
+  expect(backup.checkpoints[0].artifact.board.cards[1].extractionRef).toEqual(input.cards[1].extractionRef)
+})
 
 describe('BoardArtifact export projection', () => {
   it('preserves independent names when exporting and remapping identities', () => {

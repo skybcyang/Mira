@@ -19,6 +19,7 @@ export function poolSnapshotInput(pool, input) {
     markdown: version.content.markdown,
     tags: normalizeTags(input.tags ?? entry.tags ?? []),
     inspirationRef: { ...ref },
+    ...(version.materialOrigin ? { materialOrigin: structuredClone(version.materialOrigin) } : {}),
   }
 }
 

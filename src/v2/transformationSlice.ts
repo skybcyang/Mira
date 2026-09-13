@@ -26,7 +26,6 @@ type TransformationSliceDependencies = Pick<
 
 type TransformationSliceActions = Pick<
   V2CanvasState,
-  | 'requestSuggestions'
   | 'generate'
   | 'generateBranches'
   | 'updateTransformation'
@@ -52,27 +51,6 @@ export function createTransformationSlice(
   const pendingSourceWrites = new Set<string>()
   return {
     ...createSourceSlice(context),
-    async requestSuggestions() {
-      const { boardId, board, selectedCardIds, branchDraft } = get()
-      const sourceIds = branchDraft?.sourceCardIds || selectedCardIds
-      if (!boardId || !board || sourceIds.length === 0) return
-      const context = contextFor(boardId)
-      setForBoard(context, { suggestionState: 'loading', message: null })
-      try {
-        const refs = sourceRefsFor(board, sourceIds)
-        const result = await v2Api.suggest(boardId, refs)
-        if (!contextIsCurrent(context)) return
-        const currentIds = get().branchDraft?.sourceCardIds || get().selectedCardIds
-        if (currentIds.join('|') !== sourceIds.join('|')) return
-        setForBoard(context, { suggestions: result.suggestions.slice(0, 3), suggestionState: 'ready' })
-      } catch (error) {
-        setForBoard(context, (state) => ({
-          suggestionState: 'error',
-          ...noticePatch(state, 'error', safeMessage(error), { boardId }),
-        }))
-      }
-    },
-
     async generate(suggestion) {
       const { boardId, board, selectedCardIds, branchDraft } = get()
       const sourceIds = branchDraft?.sourceCardIds || selectedCardIds
@@ -106,8 +84,6 @@ export function createTransformationSlice(
             ...project(updatedBoard, state.runs, []),
             selectedCardIds: [],
             deleteConfirmationIds: null,
-            suggestions: [],
-            suggestionState: 'idle',
             branchDraft: null,
             ...resolveAsyncDetailSurface(
               startedDetailSurface,
@@ -124,7 +100,6 @@ export function createTransformationSlice(
         })
       } catch (error) {
         setForBoard(context, (state) => ({
-          suggestionState: 'error',
           ...noticePatch(
             state,
             'error',
@@ -175,8 +150,6 @@ export function createTransformationSlice(
             ...project(nextBoard, state.runs, []),
             selectedCardIds: [],
             deleteConfirmationIds: null,
-            suggestions: [],
-            suggestionState: 'idle',
             branchDraft: null,
             ...resolveAsyncDetailSurface(
               startedDetailSurface,
@@ -196,7 +169,6 @@ export function createTransformationSlice(
         })
       } catch (error) {
         setForBoard(context, (state) => ({
-          suggestionState: 'error',
           ...noticePatch(state, 'error', safeMessage(error), noticeOperation),
         }))
       }
@@ -212,9 +184,9 @@ export function createTransformationSlice(
         setNoticeForBoard(context, 'attention', '正在保存转化，请稍后再试。')
         return false
       }
-      if (changes.sourceCardIds) {
+      if (changes.sourceCardIds || changes.sourceScopes) {
         const error = sourceEditBlock(board, transformation, get().runs)
-          || sourceListError(board, transformation, changes.sourceCardIds)
+          || (changes.sourceCardIds ? sourceListError(board, transformation, changes.sourceCardIds) : null)
         if (error) {
           setNoticeForBoard(context, 'attention', error)
           return false
@@ -228,6 +200,8 @@ export function createTransformationSlice(
           ...(changes.instruction === undefined ? {} : { instruction: changes.instruction }),
           ...(changes.acceptance === undefined ? {} : { acceptance: changes.acceptance }),
           ...(changes.modelId === undefined ? {} : { modelId: changes.modelId }),
+          ...(changes.sourceScopes === undefined ? {} : { sourceScopes: changes.sourceScopes }),
+          ...(changes.guidance === undefined ? {} : { guidance: changes.guidance }),
           ...(changes.sourceCardIds === undefined
             ? {}
             : { sourceRefs: sourceRefsFor(board, changes.sourceCardIds) }),
@@ -252,7 +226,7 @@ export function createTransformationSlice(
         })
         return true
       } catch (error) {
-        if ((error as { code?: string })?.code === 'TRANSFORMATION_CONFLICT') {
+        if (changes.sourceScopes !== undefined || (error as { code?: string })?.code === 'TRANSFORMATION_CONFLICT') {
           try {
             await refreshBoard(context)
           } catch {}

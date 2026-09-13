@@ -2,6 +2,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { emptyBoardV2 } from '../../bridge/v2-board-store.js'
 import { appendVersion } from '../../bridge/domain/versioning.js'
 import { createV2Handlers } from '../../bridge/v2-http.js'
+import { extractionInstruction } from '../../src/domain/extraction.js'
+import { contentDigest } from '../../src/domain/sourceScopes.js'
+import { listGuidance, resolveGuidance } from '../../src/domain/guidance.js'
 
 function memoryBoardStore(initial) {
   let board = structuredClone(initial)
@@ -56,7 +59,131 @@ function memoryBoardsStore(initials) {
   }
 }
 
+describe('source scope commands', () => {
+  it('saves explicit guidance without running, requires criteria, and freezes exactly the visible text', async () => {
+    const store = memoryBoardStore(emptyBoardV2('guide', '指导'))
+    const runStore = memoryRunStore()
+    const executeModel = vi.fn(async () => ({ outputText: '只读核对结果' }))
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, executeModel, newId: prefix => `${prefix}-${++serial}` })
+    const { card } = await handlers.createCard('guide', { markdown: '唯一材料事实' })
+    const body = { sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], label: '核对', instruction: '核对这份材料', guidance: { id: 'mira-evidence-review', version: '1.0.0' } }
+    await expect(handlers.createTransformation('guide', body)).rejects.toMatchObject({ code: 'GUIDANCE_INVALID' })
+    const { transformation } = await handlers.createTransformation('guide', { ...body, acceptance: '所有引用与原文一致' })
+    expect(transformation.guidance).toEqual(resolveGuidance(body.guidance))
+    expect(await runStore.list()).toEqual([])
+    const { transformation: edited } = await handlers.updateTransformation('guide', transformation.id, { baseUpdatedAt: transformation.updatedAt, guidance: { ...body.guidance, text: '只核对我指定的引用，不评判观点。' } })
+    await handlers.startRun('guide', edited.id)
+    await vi.waitFor(() => expect(executeModel).toHaveBeenCalledOnce())
+    const run = (await runStore.list())[0]
+    expect(run.guidanceSnapshot).toEqual(edited.guidance)
+    expect(executeModel.mock.calls[0][0].prompt).toContain(edited.guidance.text)
+    expect(executeModel.mock.calls[0][0].prompt).not.toContain(listGuidance()[0].text)
+  })
+  it.each(['普通推导', extractionInstruction('提取选中的观点')])('persists ranges and sends only confirmed text to the actual adapter: %s', async instruction => {
+    const store = memoryBoardStore(emptyBoardV2('scope', '范围'))
+    const runStore = memoryRunStore()
+    const executeModel = vi.fn(async () => ({ outputText: 'result' }))
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, executeModel, newId: prefix => `${prefix}-${++serial}` })
+    const { card } = await handlers.createCard('scope', { markdown: 'outside\nselected\noutside' })
+    const content = await handlers.readCardContent('scope', card.id)
+    expect(content.contentDigest).toBe(await contentDigest(content.content))
+    const scope = { mode: 'ranges', versionId: card.headVersionId, contentDigest: content.contentDigest, spans: [{ start: 8, end: 16 }] }
+    const { transformation } = await handlers.createTransformation('scope', { sourceRefs: [{ cardId: card.id, versionId: card.headVersionId, scope }], label: '结果', instruction })
+    expect(transformation.sourceScopes).toEqual([{ cardId: card.id, ...scope }])
+    expect(await runStore.list()).toEqual([])
+    await handlers.startRun('scope', transformation.id)
+    await vi.waitFor(() => expect(executeModel).toHaveBeenCalledOnce())
+    expect(executeModel.mock.calls[0][0].sourceSnapshot[0].resolvedContent).toContain('selected')
+    expect(executeModel.mock.calls[0][0].sourceSnapshot[0].resolvedContent).not.toContain('outside')
+    expect(executeModel.mock.calls[0][0].prompt).not.toContain('outside')
+  })
+  it('saves ranges with CAS and rejects changed file bytes before creating a Run', async () => {
+    const store = memoryBoardStore(emptyBoardV2('scope', '范围'))
+    const runStore = memoryRunStore()
+    let text = 'first\nsecond'
+    const executeModel = vi.fn()
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, executeModel, readFileContent: async () => text, newId: prefix => `${prefix}-${++serial}` })
+    const { card } = await handlers.createCard('scope', { contentKind: 'file-reference', filePath: 'notes.txt' })
+    const { transformation } = await handlers.createTransformation('scope', { sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], label: '结果', instruction: '推导' })
+    const sourceScopes = [{ cardId: card.id, mode: 'ranges', versionId: card.headVersionId, contentDigest: await contentDigest(text), spans: [{ start: 6, end: 12 }] }]
+    const updated = await handlers.updateTransformation('scope', transformation.id, { baseUpdatedAt: transformation.updatedAt, sourceScopes })
+    expect(updated.transformation.sourceScopes).toEqual(sourceScopes)
+    text = 'other\nsecond'
+    const before = store.current()
+    await expect(handlers.startRun('scope', transformation.id)).rejects.toMatchObject({ code: 'SOURCE_SCOPE_CHANGED' })
+    expect(store.current()).toEqual(before)
+    expect(await runStore.list()).toEqual([])
+    expect(executeModel).not.toHaveBeenCalled()
+    await expect(handlers.updateTransformation('scope', transformation.id, { baseUpdatedAt: updated.transformation.updatedAt, sourceScopes })).rejects.toMatchObject({ code: 'SOURCE_SCOPE_CHANGED' })
+    expect(store.current()).toEqual(before)
+  })
+})
+
 describe('independent card names', () => {
+  it('checks actual extraction file text before saving or executing a Run', async () => {
+    const store = memoryBoardStore(emptyBoardV2('extract', '课题'))
+    const runStore = memoryRunStore()
+    let serial = 0
+    const executeModel = vi.fn()
+    const handlers = createV2Handlers({ store, runStore, executeModel, readFileContent: async () => 'binary\u0000content', newId: prefix => `${prefix}-${++serial}`, now: () => '2026-09-12T00:00:00Z' })
+    const { card } = await handlers.createCard('extract', { contentKind: 'file-reference', filePath: 'notes.txt', readonly: true })
+    const { transformation } = await handlers.createTransformation('extract', { sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], label: '清单', instruction: extractionInstruction('提取观点') })
+    const before = store.current()
+    await expect(handlers.startRun('extract', transformation.id)).rejects.toMatchObject({ code: 'SOURCE_READ_FAILED' })
+    expect(store.current()).toEqual(before)
+    expect(await runStore.list()).toEqual([])
+    expect(executeModel).not.toHaveBeenCalled()
+  })
+  it('fails closed when extraction cannot verify Run history', async () => {
+    const store = memoryBoardStore(emptyBoardV2('extract', '课题'))
+    const runStore = { list: async () => [], listStrict: async () => { throw Object.assign(new Error('corrupt run'), { code: 'RUN_CORRUPT' }) } }
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, newId: prefix => `${prefix}-${++serial}`, now: () => '2026-09-12T00:00:00Z' })
+    const { card } = await handlers.createCard('extract', { markdown: '<!-- mira:extraction:v1 -->\n<!-- mira:item:a -->\n## 标题\n依据\n<!-- mira:end -->' })
+    const before = store.current()
+    await expect(handlers.extractCards('extract', card.id, { baseVersionId: card.headVersionId, items: [{ itemId: 'a', title: '标题', markdown: '依据' }] })).rejects.toMatchObject({ code: 'RUN_CORRUPT' })
+    expect(store.current()).toEqual(before)
+  })
+  it.each([['running', undefined, 'TARGET_BUSY'], ['succeeded', 'candidate', 'CANDIDATE_PENDING']])('blocks extraction from a %s target without writes', async (status, disposition, code) => {
+    const store = memoryBoardStore(emptyBoardV2('extract', '课题'))
+    const runStore = { list: vi.fn(async () => []) }
+    let serial = 0
+    const handlers = createV2Handlers({ store, runStore, newId: prefix => `${prefix}-${++serial}`, now: () => '2026-09-12T00:00:00Z' })
+    const { card } = await handlers.createCard('extract', { markdown: '<!-- mira:extraction:v1 -->\n<!-- mira:item:a -->\n## 标题\n依据\n<!-- mira:end -->' })
+    runStore.list.mockResolvedValue([{ boardId: 'extract', targetCardId: card.id, status, result: { disposition } }])
+    const before = store.current()
+    await expect(handlers.extractCards('extract', card.id, { baseVersionId: card.headVersionId, items: [{ itemId: 'a', title: '标题', markdown: '依据' }] })).rejects.toMatchObject({ code })
+    expect(store.current()).toEqual(before)
+  })
+  it('materializes an explicitly selected extraction list atomically and preserves its source', async () => {
+    const store = memoryBoardStore(emptyBoardV2('extract-board', '课题'))
+    let serial = 0
+    const executeModel = vi.fn()
+    const handlers = createV2Handlers({ store, runStore: memoryRunStore(), executeModel, newId: prefix => `${prefix}-${++serial}` })
+    const markdown = '<!-- mira:extraction:v1 -->\n<!-- mira:item:first -->\n## 第一项\n原文依据一\n<!-- mira:end -->\n<!-- mira:item:second -->\n## 第二项\n原文依据二\n<!-- mira:end -->'
+    const { card } = await handlers.createCard('extract-board', { markdown, x: 0, y: 0 })
+    expect(handlers.extractCards).toBeTypeOf('function')
+    const { cards } = await handlers.extractCards('extract-board', card.id, {
+      baseVersionId: card.headVersionId,
+      items: [{ itemId: 'second', title: '修改后的第二项', markdown: '人工补充依据二' }, { itemId: 'first', title: '第一项', markdown: '原文依据一' }],
+    })
+    expect(cards.map(item => item.name)).toEqual(['修改后的第二项', '第一项'])
+    expect(cards[0].extractionRef).toMatchObject({ boardId: 'extract-board', cardId: card.id, versionId: card.headVersionId, itemId: 'second' })
+    expect(cards[0].extractionRef.batchId).toBe(cards[1].extractionRef.batchId)
+    expect(cards[0].versions[0].origin).toBe('human')
+    expect(cards[0].versions[0]).not.toHaveProperty('sourceRunId')
+    expect(store.current().cards[0]).toEqual(card)
+    expect(store.current().transformations).toEqual([])
+    expect(executeModel).not.toHaveBeenCalled()
+    const before = store.current()
+    await expect(handlers.extractCards('extract-board', card.id, { baseVersionId: 'old', items: [{ itemId: 'first', title: '一', markdown: '正文' }] })).rejects.toMatchObject({ code: 'SOURCE_VERSION_CHANGED' })
+    await expect(handlers.extractCards('extract-board', card.id, { baseVersionId: card.headVersionId, items: [{ itemId: 'missing', title: '一', markdown: '正文' }] })).rejects.toMatchObject({ code: 'EXTRACTION_INVALID' })
+    expect(store.current()).toEqual(before)
+  })
+
   it('renames with a name baseline, preserving content, generation and portable data', async () => {
     const store = memoryBoardStore(emptyBoardV2('named-board', '课题'))
     let serial = 0
@@ -492,7 +619,7 @@ describe('v2 HTTP application handlers', () => {
     })
   })
 
-  it('uses ordered multi-card context for suggestions and transformation creation', async () => {
+  it('uses ordered multi-card context for explicit transformation creation without calling the model', async () => {
     const { store, runStore } = await boardWithSources()
     const executeSuggestion = vi.fn(async ({ prompt }) =>
       JSON.stringify([
@@ -512,19 +639,16 @@ describe('v2 HTTP application handlers', () => {
       { cardId: 'card-b', versionId: 'card-b-v1' },
       { cardId: 'card-a', versionId: 'card-a-v1' },
     ]
-    const suggested = await handlers.suggest('board-1', { sourceRefs })
     const created = await handlers.createTransformation('board-1', {
       sourceRefs,
-      label: suggested.suggestions[0].label,
-      instruction: suggested.suggestions[0].instruction,
-      acceptance: suggested.suggestions[0].acceptance,
+      label: '形成决策',
+      instruction: '综合材料形成决策',
+      acceptance: '保留全部约束',
       modelId: 'reasoning-model',
       targetPosition: { x: 520, y: 80 },
     })
 
-    expect(executeSuggestion.mock.calls[0][0].prompt.indexOf('材料 B')).toBeLessThan(
-      executeSuggestion.mock.calls[0][0].prompt.indexOf('材料 A'),
-    )
+    expect(executeSuggestion).not.toHaveBeenCalled()
     expect(created.transformation.sourceCardIds).toEqual(['card-b', 'card-a'])
     expect(created.transformation.modelId).toBe('reasoning-model')
     expect(created.transformation).not.toHaveProperty('lastRunId')
@@ -2268,6 +2392,7 @@ describe('v2 HTTP application handlers', () => {
       contentKind: 'file-reference',
       path: 'docs/source.md',
       content: '# 完整材料\n\n正文',
+      contentDigest: await contentDigest('# 完整材料\n\n正文'),
     })
     expect(readFileContent).toHaveBeenCalledWith('docs/source.md')
   })

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { BoardV2, ContentCard, SourceSnapshot, Transformation, TransformationRun } from '../domain'
 import { sourceComparisonRows } from './sourceComparison'
+import { assembleScopedText } from '../domain/sourceScopes.js'
 
 const now = '2026-09-07T00:00:00.000Z'
 function card(id: string): ContentCard {
@@ -27,6 +28,15 @@ function run(): TransformationRun {
 }
 
 describe('source comparison rows', () => {
+  it('compares the selected text and configuration, not the excluded full text', () => {
+    const input = board()
+    const applied = run()
+    const scope = { mode: 'ranges' as const, versionId: 'a-v1', contentDigest: `sha256:${'a'.repeat(64)}`, spans: [{ start: 2, end: 3 }] }
+    applied.sourceSnapshot[0] = { ...applied.sourceSnapshot[0], scope, ...assembleScopedText('# a', scope.spans), digest: 'selected', fullContentDigest: 'a' }
+    const selected = { ...transformation, sourceScopes: [{ cardId: 'a', ...scope }] }
+    expect(sourceComparisonRows(input, selected, applied)[0].status).toBe('same')
+    expect(sourceComparisonRows(input, transformation, applied)[0].status).toBe('changed')
+  })
   it('compares the latest applied snapshot without changing the supplied objects', () => {
     const input = board()
     const applied = run()

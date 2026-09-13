@@ -2,6 +2,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { dispatchV2Route } from '../../bridge/v2-routes.js'
 
 describe('v2 route dispatcher', () => {
+  it('provides a non-desktop application info fallback without host dependencies', async () => {
+    await expect(dispatchV2Route('GET', ['v2', 'application-info'], undefined, {})).resolves.toEqual({ status: 200, body: { desktop: false } })
+  })
   it('routes the complete BoardCheckpoint surface before generic Board routes', async () => {
     const checkpointService = {
       list: vi.fn(async () => ({ checkpoints: [] })),

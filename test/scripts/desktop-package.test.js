@@ -50,10 +50,11 @@ describe('desktop package staging', () => {
 
     expect(DESKTOP_STAGE_ENTRIES.map(({ role }) => role).sort()).toEqual([
       'main',
+      'pdf-reader',
       'preload',
       'renderer',
     ])
-    expect(DESKTOP_STAGE_ENTRIES).toHaveLength(3)
+    expect(DESKTOP_STAGE_ENTRIES).toHaveLength(4)
 
     const main = DESKTOP_STAGE_ENTRIES.find(({ role }) => role === 'main')
     const preload = DESKTOP_STAGE_ENTRIES.find(({ role }) => role === 'preload')
@@ -420,7 +421,7 @@ describe('desktop artifact configuration', () => {
       },
     })
 
-    expect(forgeConfig.packagerConfig).toMatchObject({ asar: true })
+    expect(forgeConfig.packagerConfig).toMatchObject({ asar: { unpackDir: 'pdf-runtime' } })
     const desktopIconPath = fileURLToPath(
       new URL('../../desktop/assets/mira-app.icns', import.meta.url),
     )

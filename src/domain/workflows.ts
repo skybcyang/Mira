@@ -1,5 +1,6 @@
 import type { ContentCard } from './cards'
 import type { Transformation } from './transformations'
+import type { RangeScope } from './sourceScopes.js'
 
 export type WorkflowInputCardinality = 'one' | 'many'
 
@@ -12,10 +13,11 @@ export interface WorkflowInputSlot {
 }
 
 export type WorkflowStepSource =
-  | { kind: 'input'; inputId: string }
-  | { kind: 'previous-output' }
+  | { kind: 'input'; inputId: string; scope?: 'select-before-run' }
+  | { kind: 'previous-output'; scope?: 'select-before-run' }
 
 export interface WorkflowStepTemplate {
+  guidance?: import('./guidance.js').GuidanceSnapshot
   id: string
   label: string
   instruction: string
@@ -41,6 +43,7 @@ export interface CreateWorkflowInputSlot extends Omit<WorkflowInputSlot, 'id'> {
 export interface SourceRef {
   cardId: string
   versionId: string
+  scope?: RangeScope
 }
 
 export interface WorkflowInputBinding {

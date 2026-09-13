@@ -318,6 +318,13 @@ export function createRunSlice({
             )
             return
           }
+          if (decision.kind === 'scope-required' || decision.kind === 'scope-changed') {
+            setForBoard(context, current => ({
+              ...resolveAsyncDetailSurface(startedDetailSurface, currentDetailSurface(current), { tab: 'relation', transformationId: currentTransformationId, scopeCardId: decision.reason }),
+              ...noticePatch(current, 'attention', '已停在需要确认输入范围的步骤。请重新选择，或明确改用全文。', noticeOperation),
+            }))
+            return
+          }
           if (decision.kind === 'tracking-unavailable') {
             setNoticeForBoard(
               context, 'error', '运行信息暂时无法确认，请重新打开画板后再运行到这里。', noticeOperation,

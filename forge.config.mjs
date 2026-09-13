@@ -2,6 +2,8 @@ import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
+import { releaseProfile } from './scripts/release-policy.mjs'
+import { finishReleaseSigning, finishReleaseArtifacts } from './scripts/release-signing.mjs'
 
 const require = createRequire(import.meta.url)
 const electronChecksums = require('electron/checksums.json')
@@ -27,7 +29,7 @@ export const desktopPackagePolicy = Object.freeze({
 
 const forgeConfig = {
   packagerConfig: {
-    asar: desktopPackagePolicy.asar,
+    asar: { unpackDir: 'pdf-runtime' },
     download: {
       checksums: electronChecksums,
     },
@@ -65,8 +67,10 @@ const forgeConfig = {
 }
 
 export function createDesktopForgeConfig(platform = process.platform) {
+  const profile = releaseProfile(process.env, platform)
   return {
     ...forgeConfig,
+    hooks: { postPackage: finishReleaseSigning, postMake: finishReleaseArtifacts },
     packagerConfig: {
       ...forgeConfig.packagerConfig,
       ...(platform === 'darwin' ? {
@@ -74,8 +78,8 @@ export function createDesktopForgeConfig(platform = process.platform) {
         appCategoryType: 'public.app-category.productivity',
         icon: desktopIconPath,
         extendInfo: { LSMinimumSystemVersion: desktopPackagePolicy.minimumMacOS },
-        osxSign: false,
-        osxNotarize: false,
+        osxSign: profile.mode === 'release' ? { identity: profile.identity, hardenedRuntime: true } : false,
+        osxNotarize: profile.mode === 'release' ? { keychainProfile: profile.keychainProfile, ...(process.env.MIRA_MAC_NOTARY_KEYCHAIN ? { keychain: process.env.MIRA_MAC_NOTARY_KEYCHAIN } : {}) } : false,
       } : {}),
     },
   }

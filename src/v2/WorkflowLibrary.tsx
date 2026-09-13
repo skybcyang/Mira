@@ -1,3 +1,4 @@
+import { extractionRequirement } from '../domain/extraction.js'
 import { ArrowDown, ArrowUp, ArrowLeft, ArrowRight, LayoutTemplate, Plus, RefreshCw, Trash2, X } from 'lucide-react'
 import { useEffect, useId, useState, useLayoutEffect } from 'react'
 import type { WorkflowTemplate } from '../domain'
@@ -191,7 +192,10 @@ export function WorkflowLibraryView({
           <div className="v2-workflow-summary"><p className="v2-workflow-outcome"><span>最终成果</span><strong>{workflow.steps[workflow.steps.length - 1]?.label || '未命名成果'}</strong></p><span>{workflow.steps.length} 步</span></div>
           <div className="v2-workflow-input-list"><span>需要</span>{contract.inputs.map((input) => <strong key={input.id}>{input.name}<small>{input.cardinality === 'many' ? '可多选' : '单张'}{input.required ? ' · 必填' : ''}</small></strong>)}</div>
           <details className="v2-workflow-details"><summary>完整步骤</summary>
-          <ol className="v2-workflow-step-list">{workflow.steps.map((step, index) => <li key={step.id}><span>{String(index + 1).padStart(2, '0')}</span><div><strong>{step.label}</strong><small>{step.instruction}</small></div></li>)}</ol>
+          <ol className="v2-workflow-step-list">{workflow.steps.map((step, index) => <li key={step.id}><span>{String(index + 1).padStart(2, '0')}</span><div><strong>{step.label}</strong><small>{extractionRequirement(step.instruction) ?? step.instruction}</small>
+            {step.sources?.some(source => source.scope) && <small>换材料后需要选择输入范围</small>}
+            {step.guidance && <details className="v2-guidance-read"><summary>指导：{step.guidance.title} · {step.guidance.version}</summary><p>{step.guidance.text}</p></details>}
+          </div></li>)}</ol>
           </details>
           <button className="v2-secondary-button v2-workflow-use" type="button" onClick={() => onUse(workflow.id)}><LayoutTemplate size={15} />使用方法</button>
         </article>})}

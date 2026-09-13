@@ -5,6 +5,7 @@ export type RunPreviewStatus = 'generate' | 'keep' | 'check' | 'blocked' | 'unre
 export type RunPreviewReason = 'empty-target' | 'waiting-upstream' | 'stale' | 'upstream-change'
   | 'current' | 'manual-content' | 'candidate' | 'active-run' | 'run-unavailable'
   | 'source-unavailable' | 'target-unavailable' | 'content-unavailable' | 'file-unchecked' | 'earlier-stop' | 'cycle' | 'not-found'
+  | 'scope-required' | 'scope-changed'
 
 export interface RunPreviewRow {
   transformationId: string
@@ -46,6 +47,8 @@ export const runPreviewReasonLabels: Record<RunPreviewReason, string> = {
   'earlier-stop': '前序步骤尚未通过检查',
   cycle: '存在循环关系',
   'not-found': '步骤已不在当前画板',
+  'scope-required': '先选择输入范围，或明确改用全文',
+  'scope-changed': '来源变化后需要重新选择输入范围',
 }
 
 const headContent = (card: ContentCard | undefined) => card?.versions.find((version) => version.id === card.headVersionId)?.content
@@ -109,6 +112,10 @@ export function previewRunTo(board: BoardV2, runs: Record<string, Transformation
       Object.assign(row, { status: 'check', reason: 'run-unavailable', runId: missingRunId })
     } else if (!targetCard) {
       Object.assign(row, { status: 'blocked', reason: 'target-unavailable' })
+    } else if (decision.kind === 'scope-required' || decision.kind === 'scope-changed') {
+      Object.assign(row, { status: 'blocked', reason: decision.kind, sourceCardId: decision.reason })
+    } else if (step.sourceScopes?.some(scope => predictedOutputs.has(scope.cardId))) {
+      Object.assign(row, { status: 'blocked', reason: 'scope-changed' })
     } else if (unloadedSource || (targetCard.headVersionId && !headContent(targetCard))) {
       Object.assign(row, { status: 'check', reason: 'content-unavailable', sourceCardId: unloadedSource })
     } else if (unavailableSource) {

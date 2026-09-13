@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDown, ArrowRight, ArrowUp, GitBranch, Plus, X } from 'lucide-react'
 import type { ContentCard } from '../domain'
-import type { V2Suggestion } from '../v2Api'
+import type { StepIntent } from '../v2Api'
 import { useV2Canvas } from '../v2Store'
-import { createCustomSuggestion, sourceCardPresentations } from '../v2View'
-import { cardHeadHasUsableContent } from '../workflows'
+import { createStepIntent, sourceCardPresentations } from '../v2View'
 import { useDrawerAction } from './drawerIntent'
 import { useSourcePreview } from './sourcePreviewContext'
 
@@ -23,8 +22,8 @@ export function CreateTransformationButton({
 export async function submitCreateStep(
   pending: { current: boolean },
   setPending: (value: boolean) => void,
-  suggestion: V2Suggestion,
-  generate: (value: V2Suggestion) => Promise<void>,
+  suggestion: StepIntent,
+  generate: (value: StepIntent) => Promise<void>,
 ) {
   if (pending.current) return
   pending.current = true
@@ -106,37 +105,25 @@ export function ContextSourceChips({
 }
 
 export function SingleStepControls({
-  suggestions,
-  suggestionState,
   custom,
   pending,
   onCustomChange,
   onCreate,
   onStartBranch,
+  onExtract,
 }: {
-  suggestions: V2Suggestion[]
-  suggestionState: 'idle' | 'loading' | 'ready' | 'error'
   custom: string
   pending: boolean
   onCustomChange: (value: string) => void
-  onCreate: (suggestion: V2Suggestion) => void
+  onCreate: (suggestion: StepIntent) => void
   onStartBranch: () => void
+  onExtract?: () => void
 }) {
-  const customSuggestion = createCustomSuggestion(custom)
+  const customSuggestion = createStepIntent(custom)
   return <div aria-busy={pending}>
-    <div className="v2-suggestions">
-      {suggestionState === 'loading' && <><i /><i /><i /></>}
-      {suggestions.map((suggestion) => <button
-        type="button"
-        key={suggestion.id}
-        aria-label={`添加步骤：${suggestion.label}`}
-        disabled={pending}
-        onClick={() => onCreate(suggestion)}
-      >{suggestion.label}</button>)}
-      {suggestionState === 'error' && <span>建议暂时不可用，你仍可直接描述成果。</span>}
-    </div>
     <div className="v2-custom-target-tools">
       <span>添加一个步骤，或拆成多个方向</span>
+      {onExtract && <button className="v2-icon-text-button" type="button" disabled={pending} onClick={onExtract}>提取为多张卡片…</button>}
       <button className="v2-icon-text-button" type="button" aria-label="添加分支" title="添加分支" disabled={pending} onClick={onStartBranch}><Plus size={15} />添加分支</button>
     </div>
     <form className="v2-custom-target" onSubmit={(event) => {
@@ -156,14 +143,12 @@ export default function ContextDock() {
   const multiSelectMode = useV2Canvas((state) => state.multiSelectMode)
   const branchDraft = useV2Canvas((state) => state.branchDraft)
   const workflowDraft = useV2Canvas((state) => state.workflowDraft)
-  const suggestions = useV2Canvas((state) => state.suggestions)
-  const suggestionState = useV2Canvas((state) => state.suggestionState)
-  const requestSuggestions = useV2Canvas((state) => state.requestSuggestions)
   const generate = useV2Canvas((state) => state.generate)
   const generateBranches = useV2Canvas((state) => state.generateBranches)
   const reorder = useV2Canvas((state) => state.reorderSources)
   const remove = useV2Canvas((state) => state.removeSource)
   const cancelBranch = useV2Canvas((state) => state.cancelBranch)
+  const openDrawer = useV2Canvas((state) => state.openDrawer)
   const [custom, setCustom] = useState('')
   const [branchMode, setBranchMode] = useState(false)
   const [branchValues, setBranchValues] = useState<string[]>([])
@@ -173,16 +158,6 @@ export default function ContextDock() {
   const sources = selectedIds
     .map((id) => board?.cards.find((card) => card.id === id))
     .filter((card): card is ContentCard => Boolean(card))
-  const sourceVersionKey = sources.map((card) => card?.headVersionId || '').join('|')
-  const sourcesReady = board
-    ? sources.length === selectedIds.length
-      && selectedIds.every((cardId) => cardHeadHasUsableContent(board, cardId))
-    : false
-  useEffect(() => {
-    if (multiSelectMode || selectedIds.length === 0 || !sourcesReady) return
-    const timer = window.setTimeout(() => void requestSuggestions(), 240)
-    return () => window.clearTimeout(timer)
-  }, [selectedIds.join('|'), sourceVersionKey, sourcesReady, multiSelectMode, branchDraft?.targetPosition.x, branchDraft?.targetPosition.y, requestSuggestions])
   useEffect(() => {
     setCustom(''); setBranchMode(false); setBranchValues([])
   }, [board?.id, selectedIds.join('|')])
@@ -199,7 +174,7 @@ export default function ContextDock() {
   }
   const submitBranches = () => {
     const branchSuggestions = branchValues
-      .map((value) => createCustomSuggestion(value))
+      .map((value) => createStepIntent(value))
       .filter((suggestion): suggestion is NonNullable<typeof suggestion> => Boolean(suggestion))
     if (branchSuggestions.length !== branchValues.length || branchSuggestions.length < 2) return
     runDrawerAction(async () => {
@@ -211,7 +186,7 @@ export default function ContextDock() {
       }
     })
   }
-  const createStep = (suggestion: V2Suggestion) => {
+  const createStep = (suggestion: StepIntent) => {
     runDrawerAction(() => submitCreateStep(
       createStepPendingRef,
       setCreateStepPending,
@@ -227,13 +202,12 @@ export default function ContextDock() {
       {branchDraft && <button className="v2-cancel-branch" type="button" onClick={cancelBranch}>取消新方向</button>}
     </div>
     {!branchMode && <SingleStepControls
-      suggestions={suggestions}
-      suggestionState={suggestionState}
       custom={custom}
       pending={createStepPending}
       onCustomChange={setCustom}
       onCreate={createStep}
       onStartBranch={startBranchMode}
+      onExtract={sources.length === 1 && !branchDraft ? () => runDrawerAction(() => openDrawer({ tab: 'content', cardId: sources[0].id, mode: 'extract' })) : undefined}
     />}
     {branchMode && <BranchTargetEditor
       values={branchValues}

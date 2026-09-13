@@ -15,7 +15,7 @@ import type {
 } from '../domain'
 import type { CanvasClipboard } from '../canvasOperations'
 import type { CanvasAlignmentGuide } from '../canvasAlignment'
-import type { BoardSummary, FileBindingStatus, V2Suggestion } from '../v2Api'
+import type { BoardSummary, FileBindingStatus, StepIntent } from '../v2Api'
 import type { InspirationCandidate, InspirationCapture } from './inspiration'
 import type { AdHocPlanInput, WorkflowDraft } from './workflowDraft'
 import type { Notice } from './noticePolicy'
@@ -23,11 +23,13 @@ import type { CheckpointActions } from './checkpointSlice'
 import type { OrganizationActions } from './organizationSlice'
 import type { OrganizationRequest } from './canvasOrganization'
 import type { SourcePicker } from './sourceSlice'
+import type { ExtractionActions } from './extractionSlice'
+import type { MaterialActions } from './materialSlice'
 
 export type DrawerState =
-  | { tab: 'content'; cardId: string; mode?: 'read' | 'edit' | 'rename' }
+  | { tab: 'content'; cardId: string; mode?: 'read' | 'edit' | 'rename' | 'extract' | 'split' | 'compare'; batchId?: string }
   | { tab: 'versions'; cardId: string }
-  | { tab: 'relation'; transformationId: string; edit?: boolean; preview?: boolean }
+  | { tab: 'relation'; transformationId: string; edit?: boolean; preview?: boolean; scopeCardId?: string; guidance?: boolean }
   | { tab: 'run'; runId: string }
   | null
 
@@ -51,11 +53,11 @@ export interface CardGeometry {
 export type CanvasHistoryEntry =
   | { kind: 'organization'; boardId: string; request: OrganizationRequest }
   | { kind: 'move'; boardId: string; before: CardGeometry[]; after: CardGeometry[] }
-  | { kind: 'content'; boardId: string; cardId: string; before: string; after: string }
+  | { kind: 'content'; boardId: string; cardId: string; before: string; after: string; beforeVersionId?: string; afterVersionId?: string }
   | { kind: 'create'; boardId: string; cardIds: string[]; restoreReceiptId?: string }
   | { kind: 'delete'; boardId: string; cardIds: string[]; restoreReceiptId: string }
 
-export interface V2CanvasState extends CheckpointActions, OrganizationActions {
+export interface V2CanvasState extends CheckpointActions, OrganizationActions, ExtractionActions, MaterialActions {
   sourcePicker: SourcePicker | null
   appendTransformationSources(transformationId: string, cardIds: string[]): Promise<boolean>
   beginSourcePicker(transformationId: string): void
@@ -86,8 +88,6 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions {
   alignmentGuides: CanvasAlignmentGuide[] | null
   deleteConfirmationIds: string[] | null
   multiSelectMode: boolean
-  suggestions: V2Suggestion[]
-  suggestionState: 'idle' | 'loading' | 'ready' | 'error'
   message: string | null
   notices: Notice[]
   editingCardId: string | null
@@ -157,9 +157,8 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions {
   onNodesChange(changes: NodeChange[]): void
   onEdgesChange(changes: EdgeChange[]): void
   onConnect(connection: Connection): Promise<void>
-  requestSuggestions(): Promise<void>
-  generate(suggestion: V2Suggestion): Promise<void>
-  generateBranches(suggestions: V2Suggestion[]): Promise<void>
+  generate(suggestion: StepIntent): Promise<void>
+  generateBranches(suggestions: StepIntent[]): Promise<void>
   updateTransformation(
     transformationId: string,
     changes: {
@@ -168,6 +167,8 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions {
       acceptance?: string
       modelId?: string | null
       sourceCardIds?: string[]
+      sourceScopes?: import('../domain/sourceScopes.js').SourceScope[]
+      guidance?: import('../domain/guidance.js').GuidanceInput | null
     },
     baseUpdatedAt?: string,
   ): Promise<boolean>

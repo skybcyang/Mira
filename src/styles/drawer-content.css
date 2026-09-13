@@ -732,3 +732,49 @@
 .v2-card-info > summary { min-height: 32px; padding: 8px 0; cursor: pointer; }
 .v2-card-info .v2-file-binding { border-top: 0; }
 .v2-drawer-leave-confirm > div > .v2-primary-button { background: var(--mira-accent); color: var(--mira-on-accent); border-color: var(--mira-accent); }
+
+.v2-extraction-panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; font-size: 13px; line-height: 1.7; }
+.v2-extraction-panel p { margin: 0; overflow-wrap: anywhere; }
+.v2-extraction-panel label { display: grid; gap: 6px; }
+.v2-extraction-panel input:not([type="checkbox"]), .v2-extraction-panel textarea { width: 100%; box-sizing: border-box; min-width: 0; padding: 10px; font: inherit; color: var(--mira-ink); background: var(--mira-surface); border: 1px solid var(--mira-border); border-radius: 4px; }
+.v2-extraction-panel textarea { resize: vertical; min-height: 120px; }
+.v2-extraction-source, .v2-extraction-selection, .v2-extraction-entry, .v2-extraction-recovery { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.v2-extraction-source strong { min-width: 0; overflow-wrap: anywhere; }
+.v2-extraction-source > span { color: var(--mira-muted); }
+.v2-extraction-items { list-style: none; margin: 0; padding: 0; }
+.v2-extraction-items > li { padding: 12px 0; border-bottom: 1px solid var(--mira-border); }
+.v2-extraction-item-heading { display: flex; align-items: flex-start; gap: 4px; }
+.v2-extraction-item-heading label { display: flex; flex: 1; min-width: 0; align-items: baseline; gap: 8px; overflow-wrap: anywhere; }
+.v2-extraction-item-heading input { flex: 0 0 auto; }
+.v2-extraction-summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; color: var(--mira-muted); }
+.v2-extraction-items details > summary { cursor: pointer; padding: 8px 0; }
+.v2-extraction-items details label + label { margin-top: 10px; }
+.v2-extraction-footer { position: sticky; bottom: -16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); margin-top: auto; background: var(--mira-surface); border-top: 1px solid var(--mira-border); z-index: 2; }
+.v2-extraction-history section { display: grid; gap: 4px; padding: 8px 0; }
+.v2-extraction-history strong, .v2-extraction-provenance { overflow-wrap: anywhere; font-size: 12px; }
+.v2-extraction-provenance { padding: 8px 0; color: var(--mira-muted); }
+
+.v2-scope-panel { display: grid; gap: 12px; min-width: 0; font-size: 13px; line-height: 1.7; padding-bottom: 12px; }
+.v2-scope-panel p, .v2-scope-panel h3, .v2-scope-panel h4 { margin: 0; overflow-wrap: anywhere; }
+.v2-scope-panel fieldset { display: flex; gap: 16px; flex-wrap: wrap; border: 1px solid var(--mira-border); }
+.v2-scope-panel label { display: grid; gap: 8px; }
+.v2-scope-panel fieldset label { display: flex; align-items: center; min-height: 44px; }
+.v2-scope-panel textarea { width: 100%; min-width: 0; box-sizing: border-box; padding: 10px; color: var(--mira-ink); background: var(--mira-surface); border: 1px solid var(--mira-border); border-radius: 4px; resize: vertical; font: inherit; }
+.v2-scope-panel button, .v2-scope-panel summary { min-height: 44px; cursor: pointer; }
+.v2-scope-panel button { white-space: normal; overflow-wrap: anywhere; }
+.v2-scope-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; max-height: 320px; overflow-y: auto; }
+.v2-scope-spans, .v2-scope-chapters { padding-left: 24px; margin: 0; }
+.v2-scope-spans > li { padding: 8px 0; border-bottom: 1px solid var(--mira-border); }
+.v2-scope-spans > li > p { white-space: pre-wrap; max-height: 160px; overflow-y: auto; }
+.v2-scope-spans > li > div { display: flex; gap: 8px; }
+.v2-scope-footer { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; border-top: 1px solid var(--mira-border); padding-top: 12px; }
+.v2-guidance-panel select { width: 100%; min-width: 0; min-height: 44px; padding: 8px; font: inherit; color: var(--mira-ink); background: var(--mira-surface); border: 1px solid var(--mira-border); border-radius: 4px; }
+.v2-guidance-panel button, .v2-guidance-read summary { min-height: 44px; }
+.v2-guidance-panel pre, .v2-guidance-read p { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
+.v2-reconcile-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; max-height: 320px; overflow-y: auto; }
+.v2-reconcile-panel select { min-width: 0; width: 100%; min-height: 44px; font: inherit; color: var(--mira-ink); background: var(--mira-surface); border: 1px solid var(--mira-border); }
+.v2-reconcile-list { list-style: none; margin: 0; padding: 0; }
+.v2-reconcile-list > li { display: grid; gap: 8px; padding: 12px 0; border-bottom: 1px solid var(--mira-border); overflow-wrap: anywhere; }
+.v2-extraction-panel fieldset { min-width: 0; border: 1px solid var(--mira-border); }
+.v2-extraction-panel fieldset label { display: flex; gap: 8px; align-items: center; min-height: 44px; }
+.v2-extraction-panel button, .v2-extraction-panel summary { min-height: 44px; }

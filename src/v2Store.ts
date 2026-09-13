@@ -11,6 +11,8 @@ import { createCanvasSlice } from './v2/canvasSlice'
 import { createWorkflowSlice } from './v2/workflowSlice'
 import { createTransformationSlice } from './v2/transformationSlice'
 import { createOrganizationSlice } from './v2/organizationSlice'
+import { createExtractionSlice } from './v2/extractionSlice'
+import { createMaterialSlice } from './v2/materialSlice'
 
 export const useV2Canvas = create<V2CanvasState>()((set, get) => {
   const context = createCanvasStoreContext(set, get)
@@ -42,8 +44,6 @@ export const useV2Canvas = create<V2CanvasState>()((set, get) => {
     alignmentGuides: null,
     deleteConfirmationIds: null,
     multiSelectMode: false,
-    suggestions: [],
-    suggestionState: 'idle',
     message: null,
     notices: [],
     editingCardId: null,
@@ -63,6 +63,8 @@ export const useV2Canvas = create<V2CanvasState>()((set, get) => {
     ...createWorkflowSlice(context),
     ...createTransformationSlice(context),
     ...createOrganizationSlice(context),
+    ...createExtractionSlice(context),
+    ...createMaterialSlice(context),
     ...runSlice.actions,
     async addInspirationCards(selected, anchor) {
       return inspirationSlice.addInspirationCards(selected, anchor)

@@ -14,6 +14,8 @@ import { CardTagEditor, ContentEditorView, ContentReaderView } from './ContentVi
 import { useSourcePreview } from '../sourcePreviewContext'
 import { CardNameEditor } from './CardNameEditor'
 import { useInspectorDraft } from '../inspectorDrafts'
+import { useDrawerAction } from '../drawerIntent'
+import { EXTRACTION_HEADER } from '../../domain/extraction.js'
 
 function fileSyncLabel(status: FileSyncStatus): string {
   return {
@@ -40,6 +42,8 @@ export function ContentPanel({
   nameTarget?: HTMLElement | null
 }) {
   const boardId = useV2Canvas((state) => state.boardId)
+  const openDrawer = useV2Canvas((state) => state.openDrawer)
+  const action = useDrawerAction()
   const drawerRequest = useV2Canvas((state) => state.drawer)
   const sourceIds = useV2Canvas((state) => state.board?.transformations.find((item) => item.targetCardId === cardId)?.sourceCardIds)
   const sourcePreview = useSourcePreview()
@@ -138,10 +142,19 @@ export function ContentPanel({
     ? boards.find((item) => item.id === card.inspirationRef?.boardId)
     : undefined
   return <div className="v2-content-detail">
+    <MaterialOriginView origin={head?.materialOrigin} />
     {nameTarget && createPortal(<CardNameEditor key={card.id} cardId={card.id} name={card.name} title={cardSummary(card).title} autoFocus={initialMode === 'rename'} disabled={continuing} onDirtyChange={setNameDirty} />, nameTarget)}
     {sourceIds?.length && sourcePreview && boardId ? <div className="v2-content-sources" aria-label="成果来源">
       {sourceIds.map((id, index) => <button className="v2-quiet-button" type="button" key={id} onClick={() => sourcePreview({ boardId, cardId: id })}><BookOpen size={14} />查看来源 {index + 1}</button>)}
     </div> : null}
+    <div className="v2-extraction-entry">
+      <button type="button" className="v2-secondary-button" onClick={() => action(() => openDrawer({ tab: 'content', cardId, mode: 'extract' }))}>提取为多张卡片…</button>
+      {markdown.trimStart().startsWith(EXTRACTION_HEADER) && <button type="button" className="v2-secondary-button" onClick={() => action(() => openDrawer({ tab: 'content', cardId, mode: 'split' }))}>拆成卡片…</button>}
+    </div>
+    {card.extractionRef && <section className="v2-extraction-provenance" aria-label="提取出处"><strong>来自提取清单</strong>
+      <p>条目 {card.extractionRef.itemId} · 清单版本 {card.extractionRef.versionId}</p>
+      {card.extractionRef.boardId === boardId && <button type="button" className="v2-quiet-button" onClick={() => action(() => openDrawer({ tab: 'versions', cardId: card.extractionRef!.cardId }))}>查看清单版本</button>}
+    </section>}
     <details className="v2-content-metadata"><summary><span>标签</span>{card.tags?.length ? card.tags.slice(0, 2).map(tag => <span className="v2-inspector-tag" key={tag}>{tag}</span>) : <span className="v2-detail-note">添加标签</span>}{(card.tags?.length || 0) > 2 && <span className="v2-inspector-tag">+{card.tags!.length - 2}</span>}</summary><fieldset disabled={continuing} className="v2-tag-editor-fieldset"><CardTagEditor
       scopeId={card.id}
       tags={card.tags || []}
@@ -226,3 +239,4 @@ export function ContentPanel({
       />}
   </div>
 }
+import { MaterialOriginView } from './MaterialOriginView'

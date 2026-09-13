@@ -1,4 +1,6 @@
 export type { BoardV2 } from './board'
+export type { SourceScope, RangeScope, TextSpan } from './sourceScopes.js'
+export type { GuidanceSnapshot, GuidanceInput } from './guidance.js'
 export type {
   BoardArtifactV1,
   BoardCheckpointSummary,

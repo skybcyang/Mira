@@ -10,6 +10,7 @@ export function SourceManager({ transformation, sources, blocked }: {
 }) {
   const update = useV2Canvas(state => state.updateTransformation)
   const begin = useV2Canvas(state => state.beginSourcePicker)
+  const open = useV2Canvas(state => state.openDrawer)
   const [saving, setSaving] = useState(false)
   const container = useRef<HTMLElement>(null)
   useEffect(() => {
@@ -36,7 +37,9 @@ export function SourceManager({ transformation, sources, blocked }: {
     </header>
     <ol aria-live="polite">{sources.map((source, index) => <li key={source.cardId}>
       <span className="v2-source-number">{index + 1}</span>
-      <div className="v2-source-summary"><strong title={source.title}>{source.title}</strong><small>{source.status}</small></div>
+      <div className="v2-source-summary"><strong title={source.title}>{source.title}</strong><small>{source.status}</small>
+        <button className="v2-quiet-button" type="button" disabled={saving || Boolean(blocked)} onClick={() => open({ tab: 'relation', transformationId: transformation.id, scopeCardId: source.cardId })}>输入范围 · {(() => { const scope = transformation.sourceScopes?.find(item => item.cardId === source.cardId); return scope?.mode === 'required' ? '待选择' : scope?.mode === 'ranges' ? `${scope.spans.length} 个片段` : '全文' })()}</button>
+      </div>
       <div className="v2-source-actions">
         {([-1, 1] as const).map(direction => {
           const name = direction === -1 ? '上移来源' : '下移来源'

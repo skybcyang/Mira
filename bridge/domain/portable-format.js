@@ -1,5 +1,7 @@
 import { validateBoardV2 } from './validation.js'
 import { runProgressErrors } from './run-progress.js'
+import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
+import { validateGuidance } from '../../src/domain/guidance.js'
 import {
   isObject,
   nonEmptyString,
@@ -287,6 +289,7 @@ export function validatePortableRun(run, { terminalOnly = false } = {}) {
     if (!nonEmptyString(run[field])) errors.push(`Run ${field} is invalid`)
   }
   if (!ALL_RUN_STATUSES.has(run.status)) errors.push('Run status is invalid')
+  try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
   if (terminalOnly && !TERMINAL_RUN_STATUSES.has(run.status)) errors.push('Run must be terminal')
   if (!Array.isArray(run.sourceSnapshot)) {
     errors.push('Run sourceSnapshot must be an array')
@@ -306,6 +309,18 @@ export function validatePortableRun(run, { terminalOnly = false } = {}) {
         errors.push('Run sourceSnapshot contentKind is invalid')
       }
       if (!nonEmptyString(snapshot.digest)) errors.push('Run sourceSnapshot digest is invalid')
+      if (snapshot.scope !== undefined) {
+        try {
+          if (snapshot.scope?.mode !== 'ranges' || 'cardId' in snapshot.scope) throw new Error('Invalid scope')
+          validateSourceScopes([{ ...snapshot.scope, cardId: snapshot.cardId }], [snapshot.cardId])
+          if (snapshot.scope.versionId !== snapshot.versionId || !nonEmptyString(snapshot.fullContentDigest)
+            || !Array.isArray(snapshot.lines) || snapshot.lines.length !== snapshot.scope.spans.length
+            || snapshot.lines.some(line => !isObject(line) || Object.keys(line).some(key => !['startLine', 'endLine'].includes(key))
+              || !Number.isSafeInteger(line.startLine) || !Number.isSafeInteger(line.endLine) || line.startLine < 1 || line.endLine < line.startLine)) throw new Error('Invalid scope lines')
+        } catch { errors.push('Run sourceSnapshot scope is invalid') }
+      } else if (snapshot.lines !== undefined || snapshot.fullContentDigest !== undefined) {
+        errors.push('Run scope metadata requires a scope')
+      }
       if (snapshot.contentKind === 'markdown' && typeof snapshot.resolvedContent !== 'string') {
         errors.push('Markdown Run sourceSnapshot content is invalid')
       }
@@ -486,6 +501,7 @@ export function validatePortableWorkflow(workflow, { provenance = false } = {}) 
         return
       }
       stepIds.add(step.id)
+      try { validateGuidance(step.guidance) } catch { errors.push(`Workflow step ${step.id} guidance is invalid`) }
       if (!nonEmptyString(step.label)) errors.push(`Workflow step ${step.id} label is invalid`)
       if (!nonEmptyString(step.instruction)) {
         errors.push(`Workflow step ${step.id} instruction is invalid`)
@@ -506,6 +522,7 @@ export function validatePortableWorkflow(workflow, { provenance = false } = {}) 
         }
         let previousOutputCount = 0
         for (const source of step.sources) {
+          if (source?.scope !== undefined && source.scope !== 'select-before-run') errors.push(`Workflow step ${step.id} scope is invalid`)
           if (source?.kind === 'previous-output') {
             previousOutputCount += 1
           } else if (source?.kind === 'input' && nonEmptyString(source.inputId)) {

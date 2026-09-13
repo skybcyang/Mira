@@ -56,8 +56,6 @@ function resetTo(nextBoard: BoardV2) {
     ...projectV2Board(nextBoard, {}),
     runs: {},
     selectedCardIds: [],
-    suggestions: [],
-    suggestionState: 'idle',
     clipboard: null,
     deleteConfirmationIds: null,
     branchDraft: null,

@@ -1,6 +1,7 @@
 import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
 import { appendTerminalRunProgress, runProgressErrors } from './domain/run-progress.js'
+import { validateGuidance } from '../src/domain/guidance.js'
 
 const TERMINAL = new Set(['succeeded', 'failed', 'interrupted'])
 const ACTIVE = new Set(['queued', 'running'])
@@ -19,6 +20,7 @@ export function validatePersistedRun(run, expectedId) {
     }
     if (!STATUSES.has(run.status)) errors.push('Run status is invalid')
     errors.push(...runProgressErrors(run))
+    try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
     if (
       run.modelSnapshot !== undefined
       && (

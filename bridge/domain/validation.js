@@ -1,5 +1,8 @@
 import { isCardColor, validateGroups } from './organization.js'
 import { normalizeCardName } from './card-name.js'
+import { validExtractionRef, validExtractionSources } from '../../src/domain/extraction.js'
+import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
+import { validateGuidance } from '../../src/domain/guidance.js'
 
 const CONTENT_KINDS = new Set(['markdown', 'file-reference'])
 const VERSION_ORIGINS = new Set(['human', 'ai', 'restore', 'import'])
@@ -130,6 +133,7 @@ export function validateBoardV2(board) {
     if (card.inspirationRef !== undefined && !hasValidInspirationRef(card.inspirationRef)) {
       errors.push(`card ${card.id} has invalid inspirationRef`)
     }
+    if (card.extractionRef !== undefined && !validExtractionRef(card.extractionRef)) errors.push(`card ${card.id} has invalid extractionRef`)
     if (card.fileBinding !== undefined && (
       card.contentKind !== 'markdown' || !hasValidFileBinding(card.fileBinding, card)
     )) {
@@ -161,6 +165,10 @@ export function validateBoardV2(board) {
       }
       if (versionIds.has(version.id)) errors.push(`duplicate version id: ${version.id}`)
       versionIds.add(version.id)
+      if (version.extractionSources !== undefined && !validExtractionSources(version.extractionSources)) errors.push(`version ${version.id} has invalid extraction sources`)
+      if (version.materialOrigin !== undefined) {
+        try { validateMaterialOrigin(version.materialOrigin); if (version.content?.kind !== 'markdown') throw new Error() } catch { errors.push(`version ${version.id} has invalid material origin`) }
+      }
       if (version.cardId !== card.id) {
         errors.push(`version ${version.id} belongs to another card: ${version.cardId}`)
       }
@@ -202,12 +210,23 @@ export function validateBoardV2(board) {
       errors.push(`duplicate transformation id: ${transformation.id}`)
     }
     transformationIds.add(transformation.id)
+    try { validateGuidance(transformation.guidance) } catch { errors.push(`transformation ${transformation.id} has invalid guidance`) }
     if (
       !Array.isArray(transformation.sourceCardIds) ||
       transformation.sourceCardIds.length === 0
     ) {
       errors.push(`transformation ${transformation.id} requires at least one source`)
       continue
+    }
+    try {
+      const scopes = validateSourceScopes(transformation.sourceScopes, transformation.sourceCardIds)
+      for (const scope of scopes) {
+        if (scope.mode === 'ranges' && board.cards.some(card => card?.id !== scope.cardId && Array.isArray(card?.versions) && card.versions.some(version => version?.id === scope.versionId))) {
+          errors.push(`transformation ${transformation.id} scope references another card version`)
+        }
+      }
+    } catch {
+      errors.push(`transformation ${transformation.id} has invalid source scopes`)
     }
     if (new Set(transformation.sourceCardIds).size !== transformation.sourceCardIds.length) {
       errors.push(`transformation ${transformation.id} has a duplicate source`)
@@ -326,3 +345,4 @@ export function validateBoardV2(board) {
 
   return errors
 }
+import { validateMaterialOrigin } from '../../src/domain/materials.js'

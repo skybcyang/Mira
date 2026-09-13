@@ -1,5 +1,6 @@
 import type { Edge, Node } from '@xyflow/react'
 import type { BoardV2, ContentCard, Transformation, TransformationRun } from './domain'
+import { sameScope } from './domain/sourceScopes.js'
 
 export interface V2CardNodeData extends Record<string, unknown> {
   card: ContentCard
@@ -58,6 +59,7 @@ function runMakesTransformationStale(
   return run.sourceSnapshot.some((snapshot) => {
     const card = board.cards.find((item) => item.id === snapshot.cardId)
     return !card || card.headVersionId !== snapshot.versionId
+      || !sameScope(transformation.sourceScopes?.find(scope => scope.cardId === snapshot.cardId), snapshot.scope)
   })
 }
 

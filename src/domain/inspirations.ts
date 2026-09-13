@@ -1,6 +1,7 @@
 import type { CardContent } from './versions'
 
 export interface InspirationVersion {
+  materialOrigin?: import('./materials.js').MaterialOrigin
   id: string
   entryId: string
   sequence: number

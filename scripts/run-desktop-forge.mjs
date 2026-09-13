@@ -48,7 +48,7 @@ export async function makeDesktopArtifacts({
     root: projectRoot,
     configFile: join(projectRoot, 'vite.config.ts'),
   })
-  await stageDesktopApp({ projectRoot, stageRoot })
+  await stageDesktopApp({ projectRoot, stageRoot, architecture })
 
   const { api } = await import('@electron-forge/core')
   const results = await api.make({

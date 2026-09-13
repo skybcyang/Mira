@@ -1,5 +1,5 @@
 import type { ContentCard, CardVersion } from './domain'
-import type { V2Suggestion } from './v2Api'
+import type { StepIntent } from './v2Api'
 
 export function headVersion(card: ContentCard): CardVersion | undefined {
   return card.versions.find((version) => version.id === card.headVersionId)
@@ -14,10 +14,11 @@ export function cardSummary(card: ContentCard): { title: string; preview: string
   const markdown = markdownFor(card)
   const lines = markdown
     .split('\n')
+    .filter(line => !/^\s*<!-- mira:(?:extraction:|item:|end)/.test(line))
     .map((line) => line.replace(/^\s{0,3}#{1,6}\s+/, '').replace(/[*_`>~-]/g, '').trim())
     .filter(Boolean)
   return {
-    title: card.name || lines[0] || (card.contentKind === 'file-reference' ? '文件材料' : '未命名内容'),
+    title: card.name || (markdown.trimStart().startsWith('<!-- mira:extraction:') ? '提取清单' : lines[0]) || (card.contentKind === 'file-reference' ? '文件材料' : '未命名内容'),
     preview: lines.slice(1).join(' '),
   }
 }
@@ -145,7 +146,7 @@ export function searchCards(cards: ContentCard[], query: string): CardSearchResu
   }).sort((a, b) => a.rank - b.rank).map(({ rank: _rank, ...result }) => result)
 }
 
-export function createCustomSuggestion(value: string): V2Suggestion | null {
+export function createStepIntent(value: string): StepIntent | null {
   const instruction = value.trim()
   if (!instruction) return null
   return { id: 'custom', label: instruction, instruction, acceptance: '' }

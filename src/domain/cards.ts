@@ -1,4 +1,5 @@
 import type { CardContent, CardVersion } from './versions'
+import type { ExtractionRef } from './extraction.js'
 
 export type ContentKind = CardContent['kind']
 export type CardColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet'
@@ -32,6 +33,7 @@ export interface ContentCard {
   contentKind: ContentKind
   tags?: string[]
   inspirationRef?: InspirationRef
+  extractionRef?: ExtractionRef
   fileBinding?: CardFileBinding
   x: number
   y: number
