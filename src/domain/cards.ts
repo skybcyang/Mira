@@ -34,6 +34,7 @@ export interface ContentCard {
   tags?: string[]
   inspirationRef?: InspirationRef
   extractionRef?: ExtractionRef
+  copiedFrom?: { workspace: string; board: string; card: string; version: string }
   fileBinding?: CardFileBinding
   x: number
   y: number

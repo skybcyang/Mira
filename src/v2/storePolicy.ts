@@ -76,6 +76,7 @@ export function userFacingStoreError(error: unknown): string {
   if (code === 'MATERIAL_PREVIEW_EXPIRED') return '阅读预览已过期，请重新读取并核对。'
   if (code === 'MATERIAL_PREVIEW_CONFLICT') return '这份预览已保存或结果待核对，请检查目的地。'
   if (code === 'MATERIAL_INVALID') return '材料或所选范围无效，请重新核对选择。'
+  if (code === 'MATERIAL_CORRUPT') return '项目材料缺失或已被修改。请从可信备份恢复原件。'
   if (code === 'MATERIAL_SOURCE_BLOCKED') return '地址或文件路径不可读取，请使用公开网页或工作区内 PDF。'
   if (code === 'MATERIAL_READ_FAILED') return '材料读取失败，请核对地址、文件和读取限制。'
   if (code === 'MATERIAL_LIMIT') return '材料或打开的预览超过上限，请减少后再试。'

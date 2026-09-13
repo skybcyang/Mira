@@ -12,6 +12,7 @@ export function MaterialReader({ path, onStateChange, onBack }: {
   const [spans, setSpans] = useState<TextSpan[]>([]), [note, setNote] = useState(''), [tags, setTags] = useState('')
   const [error, setError] = useState(''), [reading, setReading] = useState(false), [saving, setSaving] = useState(false)
   const [finished, setFinished] = useState(false), [uncertain, setUncertain] = useState(false)
+  const [originalSaved, setOriginalSaved] = useState(false), [originalMessage, setOriginalMessage] = useState('')
   const [page, setPage] = useState(1), [pageImage, setPageImage] = useState(''), [pageError, setPageError] = useState('')
   const board = useV2Canvas(state => state.board), save = useV2Canvas(state => state.saveMaterial)
   const alive = useRef(true), lock = useRef(false), readAbort = useRef<AbortController | null>(null), previewId = useRef<string | null>(null)
@@ -43,6 +44,7 @@ export function MaterialReader({ path, onStateChange, onBack }: {
       if (!alive.current || controller.signal.aborted) { void v2Api.releaseMaterial(result.preview.previewId); return }
       if (previewId.current) await v2Api.releaseMaterial(previewId.current).catch(() => {})
       previewId.current = result.preview.previewId; setPreview(result.preview); setSpans([]); setFinished(false); setUncertain(false); setPage(1)
+      setOriginalSaved(false); setOriginalMessage('')
     } catch (cause) { if (alive.current && !controller.signal.aborted) setError(userFacingStoreError(cause)) }
     finally { lock.current = false; if (alive.current) setReading(false) }
   }
@@ -82,6 +84,12 @@ export function MaterialReader({ path, onStateChange, onBack }: {
     {preview && <>
       <h3>{preview.origin.title}</h3><p className="v2-material-origin">{preview.origin.url || preview.origin.path}<br />采集于 {new Date(preview.origin.capturedAt).toLocaleString()} · 预览保留 10 分钟</p>
       {preview.origin.requestedUrl && <p className="v2-material-origin">原始地址：{preview.origin.requestedUrl}</p>}
+      {preview.origin.kind === 'web' && <div className="v2-material-actions"><button type="button" className="v2-secondary-button" disabled={saving || originalSaved} onClick={() => {
+        if (lock.current) return
+        lock.current = true; setSaving(true); setError('')
+        void v2Api.saveMaterialOriginal(preview.previewId).then(() => { if (alive.current) { setOriginalSaved(true); setOriginalMessage('网页正文已收纳到项目材料库。') } }, cause => { if (alive.current) setError(userFacingStoreError(cause)) }).finally(() => { lock.current = false; if (alive.current) setSaving(false) })
+      }}>{originalSaved ? '已收纳网页' : '收纳完整网页正文'}</button></div>}
+      {originalMessage && <p role="status">{originalMessage}</p>}
       <ul>{preview.warnings.map((warning, index) => <li key={index}>{warning.message}</li>)}</ul>
       {preview.pages && <div className="v2-material-page"><label>对照原页<select value={page} onChange={event => setPage(Number(event.target.value))}>{preview.pages.map(item => <option key={item.page} value={item.page}>物理页 {item.page} · {item.status === 'text' ? '可读文字' : item.status === 'empty' ? '空白' : '无法提取文字'}</option>)}</select></label>
         {pageImage ? <img src={pageImage} alt={`PDF 物理页 ${page}`} /> : <p role="status">{pageError || '正在渲染原页…'}</p>}

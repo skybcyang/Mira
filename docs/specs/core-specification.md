@@ -1,5 +1,7 @@
 # Mira 核心规格
 
+2026-09-13 项目工作区增量：受管原件、`.mira/` 布局、跨工作区卡片复用与新版可移植格式由[项目工作区规格](project-workspace.md)定义。本文旧格式中“不携带引用文件正文”继续适用于未收纳外部引用；受管资产按增量规格携带。其余 Card/Version/Run/Candidate/Workflow 契约不变。
+
 - 状态：Card 与画布版本管理实施基线
 - 日期：2026-09-05
 - 产品来源：[`../product/product-definition.md`](../product/product-definition.md)
@@ -48,7 +50,7 @@
 | WorkflowPlan | 直接创建或应用方法后铺在 Board 上的一组普通 Card 与 Transformation；不独立持久化 |
 | Branch | 用户明确画出或配置的新方向 |
 | BoardArtifact | 一个 Board、其 Run 与非安装型方法出处快照组成的版本化可移植数据包 |
-| MiraBackup | 当前 workspace 中全部 Mira 管理数据的一致、版本化备份；不包含秘密配置或引用文件正文 |
+| MiraBackup | 当前 workspace 中全部 Mira 管理数据的一致、版本化备份；新版携带已收纳原件，不含秘密配置和未收纳文件 |
 
 ## 3. Board 聚合
 
@@ -916,7 +918,7 @@ interface ForkBoardCheckpointRequest { title?: string }
 | `POST` | `/boards/:boardId/trash` | 将无活动 Run/Candidate 的 active/archived Board 移入废纸篓 |
 | `POST` | `/boards/:boardId/restore` | 将 archived/trashed Board 恢复为 active |
 | `POST` | `/boards/:boardId/purge` | 对 trashed Board 做明确确认后的不可撤销清除，并原子移除其 Board 级 Run 与 Checkpoint |
-| `GET` | `/boards/:boardId/export` | 导出版本化 BoardArtifact；不嵌入引用文件正文或秘密配置 |
+| `GET` | `/boards/:boardId/export` | 导出版本化 BoardArtifact；新版包含需要的已收纳原件，不嵌入未收纳文件或秘密配置 |
 | `POST` | `/boards/imports` | 严格校验 BoardArtifact 并导入为全新身份的 Board 副本 |
 | `GET` | `/boards/:boardId/checkpoints` | 按创建时间倒序列出轻量 Checkpoint 摘要 |
 | `POST` | `/boards/:boardId/checkpoints` | 以 `baseRevision` 为 active Board 手动保存命名 Checkpoint |
@@ -930,7 +932,7 @@ interface ForkBoardCheckpointRequest { title?: string }
 | `PATCH` | `/inspiration-pool/entries/:entryId` | 原子编辑正文与标签，检查 Head 和更新时间基线 |
 | `GET` | `/backup` | 导出当前 workspace 的一致 MiraBackup（含灵感池）；不提供当前 workspace 覆盖恢复 |
 | `POST` | `/files/browse` | 浏览一个本地目录并列出可选择的子目录与文件；不提供文件浏览的宿主返回 `FILES_UNAVAILABLE` |
-| `POST` | `/files/import` | 把一个文件解析为 workspace 相对路径；工作区外文件先拷贝备份进 `attachments/` 并去重命名 |
+| `POST` | `/files/import` | Node 对项目内外文件均收纳不可变原件；返回相对路径、copied 与材料记录，见项目工作区规格 |
 | `POST` | `/boards/:boardId/cards` | 创建 Markdown 或工作区 file-reference Card |
 | `POST` | `/boards/:boardId/cards/batch` | 原子创建 `1..100` 张独立 Card |
 | `POST` | `/boards/:boardId/cards/restore` | 仅用同一进程的精确删除回执恢复 Card，服务当前会话 undo |
@@ -970,7 +972,7 @@ interface ForkBoardCheckpointRequest { title?: string }
 
 Transformation PATCH 请求体是 `UpdateTransformationRequest`，位置 PATCH 路径为 `/boards/:boardId/transformations/:transformationId/position`，请求体是 `UpdateTransformationPositionRequest`；两者都响应 `{ transformation }`。Transformation DELETE 响应 `{ deletedTransformationId }`。这些操作都修改 Board 聚合，但结构删除不返回或删除 Card/Run。
 
-`cards/restore` 只接受服务进程持有的精确删除回执，不是 import。App bar 的`文件`通过目录选择器创建 file-reference Card：选择器经 `files/browse` 浏览目录，工作区外文件经 `files/import` 拷贝备份到 `attachments/` 后仍只以 workspace 相对路径创建 Card，这不是 BoardArtifact 式数据导入，Card 也不跟踪原文件变化；BoardArtifact 导入只能经过独立的严格验证、ID 映射与 staging 命令。`files/browse` 与 `files/import` 由具备本地文件系统能力的宿主（Standalone/Desktop）提供，其他宿主可以缺席并返回 `FILES_UNAVAILABLE`。完整备份恢复不属于当前运行 workspace 的 HTTP surface。`boards/:boardId/purge` 只接受 trashed Board 和确认值，不提供恢复端点。
+`cards/restore` 只接受服务进程持有的精确删除回执，不是 import。`材料`经 `files/browse` 浏览目录，`files/import` 明确收纳原件，再由用户从材料库添加普通 file-reference Card；Card 不跟踪原文件变化。收纳、卡片包与 BoardArtifact 的契约见[项目工作区规格](project-workspace.md)，可移植对象导入经过严格验证、ID 映射与 staging 命令。文件端口由具备本地文件系统能力的宿主（Standalone/Desktop）提供，其他宿主可以缺席并返回 `FILES_UNAVAILABLE`。完整备份恢复不属于当前运行 workspace 的 HTTP surface。`boards/:boardId/purge` 只接受 trashed Board 和确认值，不提供恢复端点。
 
 批量创建响应 `{ cards }`，批量更新响应 `{ cards }`，且顺序与请求一致；批量删除响应 `{ deletedCardIds, restoreReceiptId }`，单卡删除响应 `{ deletedCardId, restoreReceiptId }`，回执恢复响应 `{ cards }`。批量创建请求以 `poolSource` 选择经服务端核对的池版本和 `tags`，响应 Card 携带 pool 形式 `inspirationRef`，但不复制或删除 Transformation、Run 或 Workflow 数据。灵感池直接记录使用独立的 `/inspiration-pool/entries` 命令。
 
@@ -1218,7 +1220,7 @@ interface GuidanceSnapshot {
 | READ-03 | 文字 PDF、多栏/表格、扫描页、空白页、密码、坏页与超限 | 逐页真实定位，错误/未解析页明确，无乱码假成功或丢页假全文 |
 | READ-04 | PDF 预览期间原文件替换 | 渲染、文本、指纹仍来自同一冻结字节；重新读取需新预览 |
 | READ-05 | 预览取消、保存失败、回执重试/过期、Board 只读与迟到响应 | 取消零持久写入，创建原子且防重复，不抢新导航 |
-| READ-06 | 保存全文/选页/片段后导出、备份、恢复与旧版查看 | 只携带明确保存的 Markdown 与出处，不含原始 PDF/未选正文/预览回执 |
+| READ-06 | 保存全文/选页/片段后导出、备份、恢复与旧版查看 | 携带明确保存的 Markdown 与出处；受管 PDF/网页原件按项目规格携带，不含预览回执 |
 | CAPTURE-01 | 无 Board 剪藏、原文与备注、标签、取消及池写失败 | 仅明确保存一条独立灵感；零 Card/Run，失败保留草稿 |
 | CAPTURE-02 | 原页面消失、池编辑、旧快照入画板、备份恢复 | 引用仍可读，修改不冒充原文，独立副本与出处准确 |
 | GUIDE-01 | 选择/编辑/移除指导后添加与运行 | 创建零 Run，实际模型输入包含精确指导及用户目标，不恢复自动推荐 |

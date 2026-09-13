@@ -20,20 +20,21 @@ function entry(overrides: Partial<FileBrowseEntry>): FileBrowseEntry {
 }
 
 describe('file picker policy', () => {
-  it('references workspace files in place and copies outside files', () => {
-    expect(pickModeForEntry(entry({}))).toBe('reference')
+  it('copies both project and outside files, reusing only managed originals', () => {
+    expect(pickModeForEntry(entry({}))).toBe('copy')
     expect(pickModeForEntry(entry({ workspaceRelative: null, path: '/tmp/x.md' }))).toBe('copy')
+    expect(pickModeForEntry(entry({ workspaceRelative: `materials/${'a'.repeat(64)}/original.txt` }))).toBe('reference')
   })
 
   it('explains the confirm action for each mode', () => {
-    expect(confirmLabel('reference')).toBe('添加材料')
-    expect(confirmLabel('copy')).toBe('拷贝到工作区并添加')
+    expect(confirmLabel('reference')).toBe('查看已收纳材料')
+    expect(confirmLabel('copy')).toBe('导入到项目')
   })
 
   it('describes the selected file with its workspace outcome', () => {
-    expect(selectionDetail(entry({}), 'reference')).toBe('将引用工作区文件 docs/research.md')
+    expect(selectionDetail(entry({}), 'reference')).toBe('复用已收纳的原件，不创建卡片。')
     expect(selectionDetail(entry({ workspaceRelative: null }), 'copy'))
-      .toBe('文件不在工作区，添加时会先拷贝备份到 attachments/research.md')
+      .toBe('将 research.md 复制到项目材料库，原文件以后修改不会影响副本。')
   })
 
   it('labels the current location relative to the workspace', () => {

@@ -2,7 +2,7 @@ import { readFile, stat } from 'node:fs/promises'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import { createServer } from 'node:http'
 import { extname, join, resolve } from 'node:path'
-import { createMiraApplication } from './mira-application.js'
+import { createMiraApplication, createMiraStores } from './mira-application.js'
 import {
   API_PREFIX,
   STATIC_PREFIX,
@@ -14,6 +14,8 @@ import { acquireNodeWorkspaceWriteLock } from './node-workspace-lock.js'
 import { createFileLibrary } from './file-library.js'
 import { createNodeWebReader } from './node-web-reader.js'
 import { createNodePdfReader } from './node-pdf-reader.js'
+import { initializeProjectWorkspace } from './project-workspace.js'
+import { createManagedMaterials, isManagedMaterialPath } from './managed-materials.js'
 
 const MAX_STATIC_BYTES = 8 * 1024 * 1024
 const DESKTOP_TOKEN_HEADER = 'x-mira-desktop-token'
@@ -153,16 +155,28 @@ export function createStandaloneMiraHost({
   const fs = createNodeWorkspaceAdapter(resolvedWorkspaceRoot)
   let coreApplication
   try {
+    const project = initializeProjectWorkspace(resolvedWorkspaceRoot)
+    const stores = createMiraStores({ fs, newId, now, directories: project.directories })
+    const materials = createManagedMaterials({ workspaceRoot: resolvedWorkspaceRoot, coordinator: stores.coordinator })
+    const pdfReader = createNodePdfReader({ workspaceRoot: resolvedWorkspaceRoot })
     coreApplication = createMiraApplication({
       fs,
+      stores,
+      managedMaterials: materials,
+      workspace: project.workspace,
+      directories: project.directories,
       newId,
       now,
-      readFileContent: (path) => fs.readText(path),
+      readFileContent: (path) => isManagedMaterialPath(path) ? materials.readText(path) : fs.readText(path),
       executeModel: modelSettings?.executeModel || executeModel,
       executeSuggestion: modelSettings?.executeSuggestion || executeSuggestion,
       resolveModel: modelSettings?.resolveModel,
-      fileLibrary: createFileLibrary({ workspaceRoot: resolvedWorkspaceRoot }),
-      materialReaders: { web: createNodeWebReader(), pdf: createNodePdfReader({ workspaceRoot: resolvedWorkspaceRoot }) },
+      fileLibrary: createFileLibrary({ workspaceRoot: resolvedWorkspaceRoot, materials }),
+      materialReaders: { web: createNodeWebReader(), pdf: async (input, options) => {
+        const asset = isManagedMaterialPath(input.path) ? await materials.verify(input.path) : undefined
+        const result = await pdfReader(input, { ...options, expectedDigest: asset?.sha256 })
+        return asset ? { ...result, title: asset.name } : result
+      } },
       onRecovery({ reconciled, interrupted }) {
         if (reconciled.length > 0) {
           logger.log('[mira] reconciled applied runs:', reconciled.map((run) => run.id).join(', '))

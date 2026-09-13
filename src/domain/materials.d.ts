@@ -1,5 +1,6 @@
 import type { TextSpan } from './sourceScopes.js'
 export interface MaterialOrigin {
+  assetPath?: string
   kind: 'web' | 'pdf'; title: string; url?: string; requestedUrl?: string; path?: string; capturedAt: string
   sourceDigest: string; textDigest: string; reader: { id: string; version: string }; locators: Array<TextSpan & { page?: number }>
 }

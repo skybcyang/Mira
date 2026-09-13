@@ -134,6 +134,10 @@ export function validateBoardV2(board) {
       errors.push(`card ${card.id} has invalid inspirationRef`)
     }
     if (card.extractionRef !== undefined && !validExtractionRef(card.extractionRef)) errors.push(`card ${card.id} has invalid extractionRef`)
+    if (card.copiedFrom !== undefined && (!card.copiedFrom || typeof card.copiedFrom !== 'object'
+      || Object.keys(card.copiedFrom).some(key => !['workspace', 'board', 'card', 'version'].includes(key))
+      || ['workspace', 'board', 'card', 'version'].some(key => typeof card.copiedFrom[key] !== 'string' || card.copiedFrom[key].length > 512 || /[\u0000-\u001f]/.test(card.copiedFrom[key]))
+      || ['workspace', 'board', 'card'].some(key => !card.copiedFrom[key]))) errors.push(`card ${card.id} has invalid copiedFrom`)
     if (card.fileBinding !== undefined && (
       card.contentKind !== 'markdown' || !hasValidFileBinding(card.fileBinding, card)
     )) {

@@ -189,6 +189,15 @@ describe('canvas card store operations', () => {
     expect(useV2Canvas.getState().nodes.filter((node) => node.selected).map((node) => node.id))
       .toEqual(['copy-a', 'copy-b'])
   })
+  it('imports a card package into the current board and records one undoable creation', async () => {
+    const current = canvas(), incoming = card('portable-card', 10, 20, '独立副本')
+    vi.spyOn(v2Api, 'getBoard').mockResolvedValue({ board: { ...current, revision: 5 } })
+    const importCards = vi.spyOn(v2Api, 'importCardPackage').mockResolvedValue({ board: { ...current, revision: 6, cards: [...current.cards, incoming] }, cards: [incoming] })
+    await useV2Canvas.getState().importCardPackage({ selection: true }, { x: 10, y: 20 })
+    expect(importCards).toHaveBeenCalledWith('board-1', { artifact: { selection: true }, baseRevision: 5, position: { x: 10, y: 20 } })
+    expect(useV2Canvas.getState().selectedCardIds).toEqual(['portable-card'])
+    expect(useV2Canvas.getState().historyPast.slice(-1)[0]).toEqual({ kind: 'create', boardId: 'board-1', cardIds: ['portable-card'] })
+  })
 
   it('uses the receipt from undoing a creation to redo the same exact card', async () => {
     const created = card('file-card', 760, 320, 'docs/source.md')

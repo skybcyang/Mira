@@ -218,7 +218,7 @@ describe('standalone Node host', () => {
       )
       expect(traversal.status).toBe(403)
       await expect(
-        readFile(join(workspaceRoot, 'boards-v2', 'board-standalone.json'), 'utf8'),
+        readFile(join(workspaceRoot, '.mira', 'boards-v2', 'board-standalone.json'), 'utf8'),
       ).resolves.toContain('Independent board')
     } finally {
       await host.close()

@@ -29,6 +29,7 @@ import {
   type BoardLifecycleState,
   type BoardManagerAction,
 } from './boardManagerPolicy'
+import { CardPackageImport } from './CardPackageImport'
 
 type AsyncResult = void | Promise<void>
 
@@ -191,15 +192,16 @@ export function BoardImportPreview({
   onImport: () => AsyncResult
 }) {
   return <section className="v2-board-import-preview" aria-labelledby="v2-board-import-preview-title" aria-busy={busy}>
-    <header><div><span>Mira Board V1</span><h3 id="v2-board-import-preview-title">{preview.title}</h3></div><code>{fileName}</code></header>
+    <header><div><span>Mira Board V{preview.formatVersion}</span><h3 id="v2-board-import-preview-title">{preview.title}</h3></div><code>{fileName}</code></header>
     <dl>
       <div><dt>内容</dt><dd>{preview.cardCount} 张卡片 · {preview.versionCount} 个版本</dd></div>
       <div><dt>结构</dt><dd>{preview.transformationCount} 个转化</dd></div>
       <div><dt>运行</dt><dd>{preview.runCount} 次终态运行</dd></div>
       <div><dt>出处</dt><dd>{preview.externalReferenceCount} 个包外出处 · {preview.workflowProvenanceCount} 份方法出处</dd></div>
       <div><dt>文件</dt><dd>{preview.fileDependencyCount} 项文件依赖</dd></div>
+      {preview.materialCount !== undefined && <div><dt>随包材料</dt><dd>{preview.materialCount} 份原件</dd></div>}
     </dl>
-    <p><strong>作为新画板导入，不覆盖现有内容。</strong><span>方法出处仅用于解释，不会安装到方法库。引用文件只保留路径，不读取正文。导入时 Mira 还会进行完整校验。</span></p>
+    <p><strong>作为新画板导入，不覆盖现有内容。</strong><span>方法出处仅用于解释，不会安装到方法库。{preview.formatVersion === 2 ? '已收纳材料随包复制；旧的外部文件引用仍需另行提供。' : '引用文件只保留路径，不读取正文。'}导入时 Mira 还会进行完整校验。</span></p>
     {error && <div className="v2-board-inline-error" role="alert">{error}</div>}
     <footer>
       <button type="button" disabled={busy} onClick={onCancel}>取消</button>
@@ -447,8 +449,9 @@ export default function BoardManager({
           }).finally(() => setBackupBusy(false))
         }}>{backupBusy ? <LoaderCircle className="is-spinning" size={15} /> : <Download size={15} />}{backupBusy ? '正在备份…' : '备份 Mira 数据'}</button>
       </div>
-      <p><span>导入会创建独立副本，不覆盖现有内容。</span><span>备份包含工作中、已归档、废纸篓画板、运行记录和方法，不含 API 密钥、页面草稿和引用文件正文。</span></p>
+      <p><span>导入会创建独立副本，不覆盖现有内容。</span><span>备份包含全部画板、运行记录、方法和已收纳材料。不含 API 密钥、页面草稿及未导入的项目文件。</span></p>
       {backupError && <div className="v2-board-inline-error" role="alert">{backupError}</div>}
+      <CardPackageImport disabled={navigationBusy || importBusy || backupBusy} onBusy={setNavigationBusy} />
     </section>
 
     {tool === 'create' && <form className="v2-board-create-form" onSubmit={(event) => {

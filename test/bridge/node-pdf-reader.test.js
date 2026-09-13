@@ -22,6 +22,13 @@ it('distinguishes unreadable graphics from blank pages and rejects malformed or 
   } finally { await result?.dispose(); await rm(root, { recursive: true, force: true }) }
 }, 20000)
 
+it('checks the actual frozen bytes against a managed original digest before parsing', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'mira-pdf-digest-'))
+  try {
+    await writeFile(join(root, 'document.pdf'), samplePdf())
+    await expect(createNodePdfReader({ workspaceRoot: root })({ path: 'document.pdf' }, { expectedDigest: 'a'.repeat(64) })).rejects.toMatchObject({ code: 'MATERIAL_CORRUPT' })
+  } finally { await rm(root, { recursive: true, force: true }) }
+})
 // A deliberately small generated fixture: one text page and one truly blank page.
 export function samplePdf(text = 'Selected evidence') {
   const stream = `BT /F1 12 Tf 40 140 Td (${text}) Tj ET`

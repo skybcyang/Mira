@@ -142,6 +142,11 @@ export interface FileBrowseResult {
 export interface FileImportResult {
   path: string
   copied: boolean
+  asset?: ManagedMaterial
+}
+export interface ManagedMaterial {
+  formatVersion: 1; id: string; path: string; name: string; byteLength: number; sha256: string; createdAt: string
+  source?: { url: string; title: string; capturedAt: string }
 }
 
 export interface ModelSettings {
@@ -292,6 +297,11 @@ export const v2Api = {
     request<FileBrowseResult>('POST', '/files/browse', path ? { path } : {}),
   importFile: (path: string) =>
     request<FileImportResult>('POST', '/files/import', { path }),
+  listMaterials: () => request<{ assets: ManagedMaterial[] }>('GET', '/materials'),
+  exportCardPackage: (boardId: string, cardIds: string[]) => request<unknown>('POST', `/boards/${boardId}/cards/export`, { cardIds }),
+  importCardPackage: (boardId: string, body: { artifact: unknown; baseRevision: number; position: { x: number; y: number } }) => request<{ board: BoardV2; cards: ContentCard[] }>('POST', `/boards/${boardId}/cards/import`, body),
+  materialContent: (id: string) => request<{ text: string }>('GET', `/materials/${id}/content`),
+  saveMaterialOriginal: (id: string) => request<FileImportResult>('POST', `/materials/previews/${id}/original`, {}),
   createCard: (
     boardId: string,
     body: CreateCardInput,

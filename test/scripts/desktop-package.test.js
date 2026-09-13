@@ -368,6 +368,17 @@ describe('desktop artifact configuration', () => {
       await rm(temporaryRoot, { recursive: true, force: true })
     }
   })
+  it('verifies project identity for a newly initialized packed workspace', async () => {
+    const { verifyPackedSmokeWorkspace } = await import('../../scripts/packed-desktop-smoke.mjs')
+    const { initializeProjectWorkspace } = await import('../../bridge/project-workspace.js')
+    const root = await mkdtemp(join(tmpdir(), 'mira-packed-project-'))
+    try {
+      initializeProjectWorkspace(root)
+      await expect(verifyPackedSmokeWorkspace(root)).resolves.toBeUndefined()
+      await writeFile(join(root, '.mira/workspace.json'), '{}')
+      await expect(verifyPackedSmokeWorkspace(root)).rejects.toThrow()
+    } finally { await rm(root, { recursive: true, force: true }) }
+  })
 
   it('exposes development, dual-architecture make, and packed-smoke commands', async () => {
     const packageJson = JSON.parse(

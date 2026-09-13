@@ -22,11 +22,23 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
     backupService,
     fileLibrary,
     materialService,
+    managedMaterials,
+    cardPortabilityService,
   } = dependencies
+  if (method === 'POST' && seg.length === 4 && seg[0] === 'boards' && seg[2] === 'cards' && seg[3] === 'export') return { status: 200, body: await cardPortabilityService.exportCards(seg[1], body) }
+  if (method === 'POST' && seg.length === 4 && seg[0] === 'boards' && seg[2] === 'cards' && seg[3] === 'import') return { status: 201, body: await cardPortabilityService.importCards(seg[1], body) }
+  if (method === 'GET' && seg.length === 1 && seg[0] === 'materials') return { status: 200, body: { assets: managedMaterials ? await managedMaterials.list() : [] } }
   if (seg[0] === 'materials' && seg[1] === 'previews') {
+    if (method === 'POST' && seg.length === 4 && seg[3] === 'original') return { status: 201, body: await materialService.saveOriginal(seg[2]) }
     if (method === 'POST' && seg.length === 2) return { status: 200, body: await materialService.preview(body, { signal: dependencies.signal }) }
     if (method === 'DELETE' && seg.length === 3) return { status: 200, body: materialService.release(seg[2]) }
     if (method === 'GET' && seg.length === 5 && seg[3] === 'pages') return { status: 200, body: await materialService.page(seg[2], Number(seg[4])) }
+  }
+  if (method === 'GET' && seg.length === 3 && seg[0] === 'materials' && seg[2] === 'content' && managedMaterials) {
+    const assets = await managedMaterials.list(), asset = assets.find(item => item.id === seg[1])
+    if (!asset) throw Object.assign(new Error('材料不存在。'), { code: 'MATERIAL_INVALID' })
+    if (!asset.path.endsWith('.txt') || asset.byteLength > 1000000) throw Object.assign(new Error('此材料暂不支持文字预览，可添加到画布保留引用。'), { code: 'MATERIAL_LIMIT' })
+    return { status: 200, body: { text: await managedMaterials.readText(asset.path) } }
   }
   if (method === 'POST' && seg.length === 3 && seg[0] === 'boards' && seg[2] === 'materials') return { status: 201, body: await materialService.saveCard(seg[1], body) }
   if (method === 'POST' && seg.length === 2 && seg[0] === 'inspiration-pool' && seg[1] === 'captures') return { status: 201, body: await materialService.saveCapture(body) }

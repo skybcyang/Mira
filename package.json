@@ -22,6 +22,7 @@
     "start": "node scripts/start-standalone.mjs",
     "start:standalone": "node scripts/start-standalone.mjs",
     "restore:backup": "node scripts/restore-backup.mjs",
+    "migrate:workspace": "node scripts/migrate-workspace.mjs",
     "migrate:remove-relations": "node scripts/migrate-remove-relations.mjs",
     "start:llm": "MIRA_MODEL_ADAPTER=./bridge/openai-compatible-adapter.js node scripts/start-standalone.mjs",
     "service:install": "node scripts/macos-service.mjs install",

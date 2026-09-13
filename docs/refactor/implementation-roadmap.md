@@ -7,6 +7,12 @@
 
 ## 1. 已有安全基线
 
+### 项目工作区（2026-09-13 本地分支交付）
+
+- [x] 单项目多画布、新 `.mira/` 布局、材料原件和共享材料库、所选卡片跨项目独立复用、新版导出/备份与显式离线迁移。
+- [x] 原件损坏、PDF 快照变动、并发/CAS、事务失败与重启、检查点/备份恢复、浏览器/390px、macOS arm64 原生与 packed 验证，见[本批证据](../validation/2026-09-13-project-workspace.md)。
+- 交付分支 `codex/project-workspace`；真实用户数据迁移、main 合入、远端构建和安装版更新尚未执行。细项见[交付记录](project-workspace-plan.md)与[统一 TODO](evolution-todo.md)。
+
 ### 依赖升级与主干桌面构建（2026-09-10）
 
 - [x] 验证并合入 React 19、React Flow 与构建工具升级，补齐 DOM 类型和 React 分包；1531 项测试、浏览器/390px/HMR 和 macOS packed smoke 通过，见[依赖升级](../validation/2026-09-10-dependency-upgrades.md)。

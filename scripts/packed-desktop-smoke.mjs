@@ -104,8 +104,12 @@ export function createPackedRestoreBackup() {
 }
 
 export async function verifyPackedSmokeWorkspace(workspaceRoot, { restore = false } = {}) {
+  if (!restore) {
+    const workspace = JSON.parse(await readFile(join(workspaceRoot, '.mira/workspace.json'), 'utf8'))
+    if (workspace.format !== 'mira-workspace' || workspace.formatVersion !== 1 || typeof workspace.id !== 'string' || !workspace.id) throw new Error('Packed project workspace identity is invalid')
+    return
+  }
   await Promise.all(DATA_DIRECTORIES.map((name) => access(join(workspaceRoot, name))))
-  if (!restore) return
 
   const boardPath = join(
     workspaceRoot,

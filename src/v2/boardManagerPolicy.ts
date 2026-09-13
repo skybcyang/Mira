@@ -11,7 +11,8 @@ export interface BoardCatalogEntry {
 }
 
 export interface BoardArtifactPreview {
-  formatVersion: 1
+  formatVersion: 1 | 2
+  materialCount?: number
   title: string
   cardCount: number
   versionCount: number
@@ -79,7 +80,8 @@ export function boardDangerCopy(
 export function inspectBoardArtifact(value: unknown): BoardArtifactPreview {
   const envelope = record(value)
   if (!envelope || envelope.format !== 'mira-board') throw new Error('这不是 Mira 画板文件。')
-  if (envelope.formatVersion !== 1) throw new Error('不支持这个画板文件版本。')
+  if (envelope.formatVersion !== 1 && envelope.formatVersion !== 2) throw new Error('不支持这个画板文件版本。')
+  if (envelope.formatVersion === 2 && !Array.isArray(envelope.assets)) throw new Error('画板文件缺少材料清单。')
 
   const board = record(envelope.board)
   const cards = array(board?.cards)
@@ -102,7 +104,8 @@ export function inspectBoardArtifact(value: unknown): BoardArtifactPreview {
   }
 
   return {
-    formatVersion: 1,
+    formatVersion: envelope.formatVersion,
+    ...(envelope.formatVersion === 2 ? { materialCount: (envelope.assets as unknown[]).length } : {}),
     title: board.title,
     cardCount: cards.length,
     versionCount,

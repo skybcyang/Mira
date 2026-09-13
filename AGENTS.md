@@ -42,7 +42,7 @@ Windows native make/packed smoke 与客户端 UI 验收必须分别记录，不�
 - 结构删除不级联删除 Card、Version 或 Run。
 - Board 归档、移入废纸篓和恢复只改变生命周期元数据；活动 Run 或未处理 Candidate 存在时不得隐藏 Board。移入废纸篓不物理清除；永久清除的独立二次确认、删除范围与不可撤销边界以产品定义 §5.1 和核心规格 §3 为准。
 - BoardCheckpoint 只由用户为稳定 Board 手动保存；活动 Run 或未处理 Candidate 时拒绝创建，每个 Board 最多 20 个。从检查点继续工作只创建全新 active Board 副本，不覆盖原 Board。
-- BoardArtifact 导入只创建全新身份，当前结构引用闭合，合法历史缺失与包外出处使用不解析到本地对象的 opaque ID；方法出处不安装。完整备份恢复只进入新建或空 workspace，不包含秘密配置、runtime session 或 file-reference 正文。
+- BoardArtifact 导入只创建全新身份，当前结构引用闭合，合法历史缺失与包外出处使用不解析到本地对象的 opaque ID；方法出处不安装。完整备份恢复只进入新建或空 workspace，不包含秘密配置、runtime session 或未收纳的历史外部引用正文；受管原件随新版包携带，见 `docs/specs/project-workspace.md`。
 - v1 Action/chain 只存在于离线归档，不得重新接入生产路径。
 
 ## 改动路由
@@ -61,6 +61,8 @@ Windows native make/packed smoke 与客户端 UI 验收必须分别记录，不�
 - 完整备份投影与严格校验：`bridge/domain/workspace-backup.js`
 - 画布检查点存储与服务：`bridge/board-checkpoint-store.js`、`bridge/board-checkpoint-service.js`
 - 存储和平台适配：`bridge/*-store.js`、`bridge/*-adapter.js`、`bridge/node-host.js`
+- 项目布局与原件：`bridge/project-workspace.js`、`bridge/managed-materials.js`、`bridge/domain/managed-assets.js`；离线迁移：`bridge/project-migration.js`
+- 卡片包复用：`bridge/card-portability-service.js`；材料/Board 跨文件提交统一由 `bridge/board-import-committer.js` 管理
 - 可复用 Node runtime：`bridge/node-runtime.js`；Standalone CLI 只负责环境变量、日志与信号编排
 - macOS 桌面宿主：`desktop/`；只负责 workspace、窗口、安全策略和应用生命周期
 - 桌面 staging/打包/smoke：`scripts/stage-desktop.mjs`、`scripts/run-desktop-forge.mjs`、

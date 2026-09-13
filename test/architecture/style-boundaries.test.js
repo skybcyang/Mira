@@ -63,8 +63,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Materials, reconciliation, scopes, guidance and version info: desktop/1024/390px reviewed on 2026-09-13.
-    expect(digest).toBe('c2fcf17e8610c0ab7bc2ad87a8ebbf4284db3f8c25ec1265a716c81318ef6991')
+    // Project materials: desktop and 390px light/dark, keyboard focus reviewed on 2026-09-13.
+    expect(digest).toBe('ff45268d6996e76e12c0a8301462e14f816deabc3d7ecd8fa0408cf8348cc581')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {

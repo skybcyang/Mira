@@ -162,6 +162,7 @@ export function ContentPanel({
       onDirtyChange={setTagsDirty}
     /></fieldset></details>
     <details className="v2-card-info"><summary>卡片信息{card.fileBinding ? ' · 已绑定文件' : ''}{card.inspirationRef ? ' · 来自灵感池' : ''}</summary>
+    {card.copiedFrom && <section aria-label="复制出处"><strong>独立副本</strong><p>源卡片后续修改不会同步到这里。</p><dl><dt>源项目</dt><dd>{card.copiedFrom.workspace}</dd><dt>源画板</dt><dd>{card.copiedFrom.board}</dd><dt>源卡片</dt><dd>{card.copiedFrom.card}</dd><dt>所选版本</dt><dd>{card.copiedFrom.version || '空白卡片'}</dd></dl></section>}
     {card.inspirationRef && <section className="v2-inspiration-provenance" aria-label="灵感出处">
       <header><Link2 size={14} /><strong>来自灵感池</strong></header>
       {card.inspirationRef.poolId

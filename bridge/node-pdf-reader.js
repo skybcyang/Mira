@@ -8,7 +8,7 @@ import { typed } from './domain/errors.js'
 
 const LIMIT = 25 * 1024 * 1024
 export function createNodePdfReader({ workspaceRoot, workerUrl = new URL('./pdf-runtime/pdf-reader-worker.mjs', import.meta.url) }) {
-  return async ({ path }, { signal } = {}) => {
+  return async ({ path }, { signal, expectedDigest } = {}) => {
     let bytes
     try {
       if (typeof path !== 'string' || isAbsolute(path) || path.split(/[\\/]/).includes('..') || !/\.pdf$/i.test(path)) throw typed('MATERIAL_SOURCE_BLOCKED', '请选择工作区内的 PDF 文件。')
@@ -28,6 +28,8 @@ export function createNodePdfReader({ workspaceRoot, workerUrl = new URL('./pdf-
       if (error?.code?.startsWith('MATERIAL_')) throw error
       throw typed('MATERIAL_READ_FAILED', 'PDF 文件无法读取。')
     }
+    const sourceDigest = createHash('sha256').update(bytes).digest('hex')
+    if (expectedDigest !== undefined && sourceDigest !== expectedDigest) throw typed('MATERIAL_CORRUPT', 'PDF 原件已被修改，请从可信备份恢复。')
     if (signal?.aborted) throw typed('MATERIAL_READ_FAILED', 'PDF 读取已取消。')
     const worker = new Worker(workerUrl, { workerData: { bytes }, execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 256 }, stdout: true, stderr: true })
     // Parser diagnostics may quote PDF content. They are not public application logs.
@@ -56,7 +58,7 @@ export function createNodePdfReader({ workspaceRoot, workerUrl = new URL('./pdf-
     signal?.addEventListener('abort', stop, { once: true })
     try {
       const result = await ready
-      return { ...result, title: basename(path), byteLength: bytes.length, sourceDigest: createHash('sha256').update(bytes).digest('hex'),
+      return { ...result, title: basename(path), byteLength: bytes.length, sourceDigest,
         render(page) { const id = ++nextId, pending = wait(id, 20000); if (!dead) worker.postMessage({ id, page }); return pending },
         dispose: stop,
       }

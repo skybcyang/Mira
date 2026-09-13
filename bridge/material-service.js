@@ -7,13 +7,27 @@ const fail = (code, message) => { throw typed(code, message) }
 const inputKeys = (input, allowed) => {
   if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some(key => !allowed.includes(key))) fail('MATERIAL_INVALID', '材料请求字段无效。')
 }
-export function createMaterialService({ readers = {}, createCard, capture, newId = () => crypto.randomUUID(), now = Date.now } = {}) {
+export function createMaterialService({ readers = {}, createCard, capture, managedMaterials, newId = () => crypto.randomUUID(), now = Date.now } = {}) {
   const previews = new Map(), pending = new Set()
   let reserved = 0, closed = false
   const release = id => { const entry = previews.get(id); if (entry?.state === 'writing') return; entry?.dispose?.(); previews.delete(id) }
   const sweep = () => { for (const [id, entry] of previews) if (entry.expires <= now()) release(id) }
   const timer = setInterval(sweep, 30000); timer.unref?.()
   const get = id => { sweep(); const entry = previews.get(id); if (!entry || entry.expires <= now()) fail('MATERIAL_PREVIEW_EXPIRED', '阅读预览已过期，请重新读取并核对。'); return entry }
+  async function saveOriginal(id) {
+    const entry = get(id)
+    if (!managedMaterials) fail('MATERIAL_UNAVAILABLE', '当前宿主不支持收纳原件。')
+    if (!entry.original) {
+      entry.original = entry.preview.origin.kind === 'web'
+        ? managedMaterials.importText(entry.preview.text, entry.preview.origin.title, { url: entry.preview.origin.url, title: entry.preview.origin.title, capturedAt: entry.preview.origin.capturedAt })
+        : managedMaterials.importFile(entry.preview.origin.path).then(result => {
+          if (result.asset.sha256 !== entry.preview.origin.sourceDigest) fail('MATERIAL_PREVIEW_CONFLICT', 'PDF 在阅读后发生变化，请重新读取并核对。')
+          return result
+        })
+      entry.original.catch(() => { entry.original = undefined })
+    }
+    return entry.original
+  }
   async function consume(destination, body, save, captureMode = false) {
     inputKeys(body, captureMode ? ['previewId', 'spans', 'note', 'tags'] : ['previewId', 'spans'])
     const entry = get(body.previewId)
@@ -29,6 +43,7 @@ export function createMaterialService({ readers = {}, createCard, capture, newId
     if (!save) fail('MATERIAL_UNAVAILABLE', '当前宿主不支持材料保存。')
     entry.state = 'writing'
     try {
+      if (managedMaterials) selected.materialOrigin.assetPath = (await saveOriginal(body.previewId)).path
       const input = captureMode ? { ...selected, tags, markdown: `${selected.markdown.split('\n').map(line => `> ${line}`).join('\n')}${note ? `\n\n## 我的备注\n\n${note}` : ''}` } : { ...selected, name: entry.preview.origin.title.slice(0, 120) }
       const result = await save(input)
       entry.state = 'saved'; entry.fingerprint = fingerprint; entry.result = structuredClone(result)
@@ -40,6 +55,7 @@ export function createMaterialService({ readers = {}, createCard, capture, newId
     }
   }
   return {
+    saveOriginal,
     async preview(input, { signal } = {}) {
       inputKeys(input, input?.kind === 'web' ? ['kind', 'url'] : ['kind', 'path'])
       if (!['web', 'pdf'].includes(input.kind) || typeof input[input.kind === 'web' ? 'url' : 'path'] !== 'string') fail('MATERIAL_INVALID', '请选择网页地址或 PDF 文件。')

@@ -19,7 +19,9 @@ function requireMarkdownCard(card) {
 
 function safePath(path) {
   try {
-    return validateWorkspaceRelativePath(path)
+    const normalized = validateWorkspaceRelativePath(path)
+    if (/^(?:\.mira|materials(?:\/|$)|(?:boards-v2|runs-v2|workflows-v2|transactions-v2|purged-boards-v2|board-checkpoints-v1)(?:\/|$)|inspiration-pool-v2\.json$)/i.test(normalized)) throw new Error('Managed path')
+    return normalized
   } catch (error) {
     throw typed('FILE_BINDING_INVALID', '本地文件路径必须位于工作区内', { path }, error)
   }
@@ -49,6 +51,7 @@ export function createFileBindingService({ fs, newId, now = () => new Date().toI
 
   async function read(card) {
     const path = safePath(card.fileBinding.path)
+    await fs.assertFileBindingPath?.(path)
     try {
       const content = await fs.readText(path)
       return { path, content, digest: digestText(content) }
@@ -59,6 +62,7 @@ export function createFileBindingService({ fs, newId, now = () => new Date().toI
   }
 
   async function atomicWrite(path, content) {
+    await fs.assertFileBindingPath?.(path)
     const token = typeof newId === 'function' ? newId('file-sync') : undefined
     const tempPath = `.mira-file-sync-${String(token || Date.now())}.tmp`
     try {
@@ -96,6 +100,7 @@ export function createFileBindingService({ fs, newId, now = () => new Date().toI
   async function bind(card, { path: requestedPath, overwrite = false } = {}) {
     const head = requireMarkdownCard(card)
     const path = safePath(requestedPath)
+    await fs.assertFileBindingPath?.(path)
     let file
     try {
       const content = await fs.readText(path)

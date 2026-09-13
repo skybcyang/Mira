@@ -9,12 +9,13 @@ const url = value => {
   try { const parsed = new URL(value); return string(value, 8192) && ['http:', 'https:'].includes(parsed.protocol) && !parsed.username && !parsed.password && !parsed.hash } catch { return false }
 }
 export function validateMaterialOrigin(origin) {
-  if (!keys(origin, ['kind', 'title', 'url', 'requestedUrl', 'path', 'capturedAt', 'sourceDigest', 'textDigest', 'reader', 'locators'])
+  if (!keys(origin, ['kind', 'title', 'url', 'requestedUrl', 'path', 'assetPath', 'capturedAt', 'sourceDigest', 'textDigest', 'reader', 'locators'])
     || !['web', 'pdf'].includes(origin.kind) || !string(origin.title, 500)
     || !string(origin.capturedAt, 64) || !Number.isFinite(Date.parse(origin.capturedAt))
     || !['sourceDigest', 'textDigest'].every(key => typeof origin[key] === 'string' && /^[a-f0-9]{64}$/.test(origin[key]))
     || !keys(origin.reader, ['id', 'version']) || !string(origin.reader.id, 128) || !string(origin.reader.version, 64)
     || !Array.isArray(origin.locators) || !origin.locators.length || origin.locators.length > 100) invalid()
+  if (origin.assetPath !== undefined && (typeof origin.assetPath !== 'string' || !/^materials\/[a-f0-9]{64}\/original\.(txt|pdf|bin)$/.test(origin.assetPath))) invalid()
   if (origin.kind === 'web' ? !url(origin.url) || origin.path !== undefined || (origin.requestedUrl !== undefined && !url(origin.requestedUrl))
     : !string(origin.path, 4096) || /^(?:\/|\\|[a-z]:)/i.test(origin.path) || origin.path.split(/[\\/]/).some(part => part === '..' || part === '.') || origin.url !== undefined || origin.requestedUrl !== undefined) invalid()
   for (const span of origin.locators) {

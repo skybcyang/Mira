@@ -185,6 +185,12 @@
 }
 .v2-material-source-tabs, .v2-material-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .v2-material-source-tabs { padding: 12px 20px; border-bottom: 1px solid var(--mira-border); }
+.v2-material-source-tabs button { min-height: 44px; }
+.v2-material-source-tabs button[aria-pressed="true"] { border-color: var(--mira-accent); }
+.v2-material-library .v2-file-picker-list { display: grid; gap: 16px; padding: 0; }
+.v2-material-library .v2-file-picker-list > li { display: grid; gap: 8px; border-bottom: 1px solid var(--mira-border); padding-bottom: 16px; }
+.v2-file-picker > .v2-material-origin { padding: 8px 20px; margin: 0; font-size: 12px; overflow-wrap: anywhere; }
+.v2-card-package-import { min-width: 0; overflow-wrap: anywhere; }
 .v2-material-reader { padding: 20px; overflow-y: auto; min-height: 0; display: grid; gap: 12px; font-size: 13px; line-height: 1.7; }
 .v2-material-reader h3, .v2-material-reader h4, .v2-material-reader p { margin: 0; overflow-wrap: anywhere; }
 .v2-material-reader label { display: grid; gap: 6px; }

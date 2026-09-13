@@ -20,6 +20,7 @@ interface CanvasSelectionToolbarViewProps {
   deleteConfirmationCount: number
   multiSelectMode: boolean
   onCopy: () => void
+  onExport?: () => void
   onPaste: () => void
   onDuplicate: () => void
   onRequestDelete: () => void
@@ -37,6 +38,7 @@ export function CanvasSelectionToolbarView({
   deleteConfirmationCount,
   multiSelectMode,
   onCopy,
+  onExport,
   onPaste,
   onDuplicate,
   onRequestDelete,
@@ -76,7 +78,7 @@ export function CanvasSelectionToolbarView({
       </button>
       <details className="v2-selection-more" data-context-menu>
         <summary aria-label="更多卡片操作" title="更多卡片操作"><MoreHorizontal size={16} /></summary>
-        <div className="v2-card-menu"><button className="danger-icon" type="button" aria-label="删除卡片" title="删除卡片" onClick={onRequestDelete}>
+        <div className="v2-card-menu">{onExport && <button type="button" onClick={onExport}>导出所选卡片</button>}<button className="danger-icon" type="button" aria-label="删除卡片" title="删除卡片" onClick={onRequestDelete}>
           <Trash2 size={16} />删除卡片
         </button></div>
       </details>
@@ -109,6 +111,7 @@ export default function CanvasSelectionToolbar() {
   const deleteConfirmationCount = useV2Canvas((state) => state.deleteConfirmationIds?.length || 0)
   const multiSelectMode = useV2Canvas((state) => state.multiSelectMode)
   const copySelectedCards = useV2Canvas((state) => state.copySelectedCards)
+  const exportSelectedCards = useV2Canvas(state => state.exportSelectedCards)
   const pasteCards = useV2Canvas((state) => state.pasteCards)
   const duplicateSelectedCards = useV2Canvas((state) => state.duplicateSelectedCards)
   const requestDeleteSelectedCards = useV2Canvas((state) => state.requestDeleteSelectedCards)
@@ -132,6 +135,7 @@ export default function CanvasSelectionToolbar() {
     deleteConfirmationCount={deleteConfirmationCount}
     multiSelectMode={multiSelectMode}
     onCopy={copySelectedCards}
+    onExport={() => { void exportSelectedCards().catch(() => {}) }}
     onPaste={() => void pasteCards(center())}
     onDuplicate={() => void duplicateSelectedCards()}
     onRequestDelete={requestDeleteSelectedCards}

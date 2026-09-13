@@ -13,6 +13,7 @@ import { createInspirationPoolHandlers } from './inspiration-pool-http.js'
 import { BoardCheckpointStore } from './board-checkpoint-store.js'
 import { createBoardCheckpointService } from './board-checkpoint-service.js'
 import { createMaterialService } from './material-service.js'
+import { createCardPortabilityService } from './card-portability-service.js'
 
 function defaultNewId(prefix = 'id') {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36)}`
@@ -50,6 +51,7 @@ export function createMiraStores({
     coordinator,
     newId,
     now,
+    purgedDir: directories.purged || 'purged-boards-v2',
   })
   const runStore = createV2RunStore(fs, directories.runs || 'runs-v2', { coordinator, now })
   const workflowStore = new WorkflowStore(fs, directories.workflows || 'workflows-v2', {
@@ -91,6 +93,8 @@ export function createMiraApplication({
   onRecovery,
   fileLibrary,
   materialReaders,
+  managedMaterials,
+  workspace,
 } = {}) {
   const resolvedStores = stores || createMiraStores({ fs, newId, now, directories })
   const { boardStore, runStore, workflowStore, inspirationPoolStore } = resolvedStores
@@ -140,6 +144,7 @@ export function createMiraApplication({
   const inspirationPoolHandlers = createInspirationPoolHandlers({ poolStore: inspirationPoolStore })
   const materialService = createMaterialService({
     readers: materialReaders, newId,
+    managedMaterials,
     createCard: (boardId, input) => handlers.createMaterialCard(boardId, input),
     capture: async ({ materialOrigin, ...input }) => ({ entry: await inspirationPoolStore.createEntry(input, materialOrigin) }),
   })
@@ -149,15 +154,18 @@ export function createMiraApplication({
     newId,
     now,
     directories,
+    managedMaterials,
   })
   const boardPortabilityService = createBoardPortabilityService({
     boardStore,
     runStore,
     workflowStore,
     committer: importCommitter,
+    managedMaterials,
     newId,
     now,
   })
+  const cardPortabilityService = createCardPortabilityService({ boardStore, managedMaterials, committer: importCommitter, workspace, newId, now })
   const checkpointService = createBoardCheckpointService({
     boardStore,
     runStore,
@@ -173,6 +181,7 @@ export function createMiraApplication({
     workflowStore,
     inspirationPoolStore,
     checkpointStore,
+    managedMaterials,
     now,
   })
   const ready = (async () => {
@@ -224,6 +233,8 @@ export function createMiraApplication({
         backupService,
         fileLibrary,
         materialService,
+        managedMaterials,
+        cardPortabilityService,
         signal: options?.signal,
       })) || {
         status: 404,
@@ -242,6 +253,7 @@ export function createMiraApplication({
     checkpointService,
     importCommitter,
     boardPortabilityService,
+    cardPortabilityService,
     backupService,
     ready,
     dispatch,

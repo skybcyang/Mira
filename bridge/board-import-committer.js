@@ -1,6 +1,8 @@
 import { validateBoardV2 } from './domain/validation.js'
 import { validatePersistedRun } from './v2-run-store.js'
 import { typed } from './domain/errors.js'
+import { validateManagedAssets } from './domain/managed-assets.js'
+import { normalizeBoardLifecycle } from './domain/board-lifecycle.js'
 
 const JOURNAL_FORMAT = 'mira-board-import-transaction'
 const JOURNAL_VERSION = 1
@@ -29,11 +31,13 @@ function entityEntry(kind, id, transactionId, directories) {
   }
 }
 
-function buildJournal({ transactionId, board, runs, now, directories }) {
+function buildJournal({ transactionId, board, runs, now, directories, assetIds = [], previousBoard }) {
   const paths = journalPaths(transactionId, directories.transactions)
   return {
     format: JOURNAL_FORMAT,
-    formatVersion: JOURNAL_VERSION,
+    formatVersion: previousBoard ? 3 : assetIds.length ? 2 : JOURNAL_VERSION,
+    ...(assetIds.length || previousBoard ? { assetIds } : {}),
+    ...(previousBoard ? { previousBoard } : {}),
     transactionId,
     createdAt: now(),
     journalPaths: paths,
@@ -57,9 +61,15 @@ function validateJournal(journal, directories) {
     throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Import journal must be an object')
   }
   const transactionId = safeId(journal.transactionId, 'Transaction')
-  if (journal.format !== JOURNAL_FORMAT || journal.formatVersion !== JOURNAL_VERSION) {
+  if (journal.format !== JOURNAL_FORMAT || ![JOURNAL_VERSION, 2, 3].includes(journal.formatVersion)) {
     throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Import journal format is unsupported')
   }
+  if (journal.formatVersion >= 2 && (!Array.isArray(journal.assetIds)
+    || journal.assetIds.length > 10000 || new Set(journal.assetIds).size !== journal.assetIds.length
+    || journal.assetIds.some(id => typeof id !== 'string' || !/^[a-f0-9]{64}$/.test(id)))) {
+    throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Import journal material identities are invalid')
+  }
+  if (journal.formatVersion === 1 && journal.assetIds !== undefined) throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Legacy journal cannot own materials')
   const boardIds = journal.ownedIds?.boardIds
   const runIds = journal.ownedIds?.runIds
   if (!Array.isArray(boardIds) || boardIds.length !== 1 || !Array.isArray(runIds)) {
@@ -69,6 +79,8 @@ function validateJournal(journal, directories) {
     boardIds: boardIds.map((id) => safeId(id, 'Board')),
     runIds: runIds.map((id) => safeId(id, 'Run')),
   }
+  if (journal.formatVersion === 3) defaultBoardValidator(journal.previousBoard, owned.boardIds[0])
+  else if (journal.previousBoard !== undefined) throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Legacy journal cannot replace a Board')
   if (new Set(owned.runIds).size !== owned.runIds.length) {
     throw typed('BOARD_IMPORT_JOURNAL_INVALID', 'Import journal Run IDs are duplicated')
   }
@@ -133,6 +145,7 @@ export function createBoardImportCommitter({
   validateBoard = defaultBoardValidator,
   validateRun = defaultRunValidator,
   directories = {},
+  managedMaterials,
 } = {}) {
   if (!fs || !coordinator || typeof newId !== 'function') {
     throw new TypeError('Import committer requires fs, coordinator, and newId')
@@ -143,7 +156,9 @@ export function createBoardImportCommitter({
     transactions: directories.transactions || 'transactions-v2',
   }
 
-  function validateEntities({ board, runs }) {
+  function validateEntities({ board, runs, assets = [], previousBoard }) {
+    validateManagedAssets(assets)
+    if (assets.length && !managedMaterials) throw typed('BOARD_IMPORT_INVALID', 'This host cannot install managed materials')
     safeId(board?.id, 'Board')
     if (!Array.isArray(runs)) throw typed('BOARD_IMPORT_INVALID', 'Imported Runs must be an array')
     const runIds = runs.map((run) => safeId(run?.id, 'Run'))
@@ -157,15 +172,25 @@ export function createBoardImportCommitter({
         throw typed('BOARD_IMPORT_INVALID', `Run ${run.id} belongs to another Board`)
       }
     }
-    return { board, runs }
+    if (previousBoard) {
+      validateBoard(previousBoard, board.id)
+      if (runs.length || board.revision !== (previousBoard.revision || 0) + 1) throw typed('BOARD_IMPORT_INVALID', 'Card import must append to exactly one Board revision')
+    }
+    return { board, runs, assets, ...(previousBoard ? { previousBoard } : {}) }
   }
 
   async function assertNoFinalCollisions(journal) {
     const conflicts = []
     for (const entry of journal.entries) {
       try {
+        if (entry.kind === 'board' && journal.previousBoard) {
+          const current = normalizeBoardLifecycle(JSON.parse(await fs.readText(entry.finalPath)))
+          if (!sameValues(current, journal.previousBoard)) throw typed('BOARD_CONFLICT', '目标画板已变化，请重新核对。')
+          continue
+        }
         if (await exists(fs, entry.finalPath)) conflicts.push({ kind: entry.kind, id: entry.id })
       } catch (error) {
+        if (error?.code === 'BOARD_CONFLICT') throw error
         throw typed(
           'BOARD_IMPORT_READ_FAILED',
           `Could not check imported ${entry.kind} ${entry.id}: ${error?.message || error}`,
@@ -237,11 +262,22 @@ export function createBoardImportCommitter({
 
   async function rollback(journal) {
     const cleanupPaths = [
-      ...journal.entries.map((entry) => entry.finalPath).reverse(),
+      ...journal.entries.filter(entry => !(entry.kind === 'board' && journal.previousBoard)).map((entry) => entry.finalPath).reverse(),
       ...journal.entries.map((entry) => entry.stagePath).reverse(),
     ]
     try {
       for (const path of cleanupPaths) await removeIfPresent(fs, path)
+      if (journal.previousBoard) {
+        const entry = journal.entries.find(item => item.kind === 'board')
+        await fs.writeText(entry.stagePath, JSON.stringify(journal.previousBoard, null, 2))
+        const previous = await parseAndValidate(entry.stagePath, validateBoard, entry.id)
+        if (!sameValues(previous, journal.previousBoard)) throw typed('BOARD_IMPORT_RECOVERY_FAILED', 'Previous Board staging changed')
+        await fs.replace(entry.stagePath, entry.finalPath)
+      }
+      if (journal.assetIds?.length) {
+        if (!managedMaterials) throw typed('BOARD_IMPORT_RECOVERY_FAILED', 'Material recovery adapter is missing')
+        await managedMaterials.rollback(journal.assetIds)
+      }
       await removeIfPresent(fs, journal.journalPaths.preparing)
       await removeIfPresent(fs, journal.journalPaths.final)
       return true
@@ -250,18 +286,13 @@ export function createBoardImportCommitter({
     }
   }
 
-  async function commit(input) {
+  async function commit(input, lease) {
     const entities = validateEntities(input)
     const transactionId = safeId(newId('import-transaction'), 'Transaction')
-    const journal = validateJournal(buildJournal({
-      transactionId,
-      ...entities,
-      now,
-      directories: resolvedDirectories,
-    }), resolvedDirectories)
-
     return coordinator.withImport(async (importLease) =>
       coordinator.withBoard(entities.board.id, importLease, async () => {
+        const assetIds = managedMaterials ? await managedMaterials.missing(entities.assets) : []
+        const journal = validateJournal(buildJournal({ transactionId, ...entities, assetIds, now, directories: resolvedDirectories }), resolvedDirectories)
         await assertNoFinalCollisions(journal)
         let reservation
         try {
@@ -275,6 +306,7 @@ export function createBoardImportCommitter({
         const runsById = new Map(entities.runs.map((run) => [run.id, run]))
         try {
           await writeJournal(journal)
+          if (entities.assets.length) await managedMaterials.install(entities.assets, importLease)
           for (const entry of journal.entries) {
             const value = entry.kind === 'board'
               ? entities.board
@@ -326,7 +358,7 @@ export function createBoardImportCommitter({
             error,
           )
         }
-      }))
+      }), lease)
   }
 
   async function recover() {

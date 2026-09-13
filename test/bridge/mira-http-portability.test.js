@@ -26,6 +26,13 @@ function request({ method = 'POST', url, chunks }) {
 }
 
 describe('portable HTTP request limits', () => {
+  it('caps card packages before dispatching or parsing their assets', async () => {
+    const application = { dispatch: vi.fn() }
+    const response = responseRecorder()
+    await createMiraApiHandler(application, { maxImportBodyBytes: 8 })(request({ url: '/graphmind/api/v2/boards/target/cards/import', chunks: ['{"artifact":{}}'] }), response)
+    expect(response.status).toBe(413)
+    expect(application.dispatch).not.toHaveBeenCalled()
+  })
   it('measures capped request bodies by actual streamed UTF-8 bytes', async () => {
     const encoded = new TextEncoder().encode(JSON.stringify({ text: '你' }))
     const req = request({

@@ -8,6 +8,7 @@ import {
   utf8JsonByteLength,
 } from './domain/portable-format.js'
 import { typed } from './domain/errors.js'
+import { collectManagedPaths } from './domain/managed-assets.js'
 
 const ACTIVE_RUN_STATUSES = new Set(['queued', 'running'])
 
@@ -28,6 +29,7 @@ export function createBoardPortabilityService({
   runStore,
   workflowStore,
   committer,
+  managedMaterials,
   newId,
   now = () => new Date().toISOString(),
   measureJsonByteLength = utf8JsonByteLength,
@@ -68,6 +70,11 @@ export function createBoardPortabilityService({
         workflowProvenance,
         exportedAt: now(),
       })
+      if (managedMaterials) {
+        artifact.formatVersion = 2
+        artifact.assets = await managedMaterials.export([...collectManagedPaths(artifact)])
+        validateBoardArtifact(artifact, { operation: 'export' })
+      }
       assertPortableByteLength('mira-board', measureJsonByteLength({ artifact }))
       return artifact
     }, ...(lease === undefined ? [] : [lease]))
@@ -79,7 +86,7 @@ export function createBoardPortabilityService({
       generateId: (kind) => newId(kind),
       now,
     })
-    await committer.commit({ board: remapped.board, runs: remapped.runs })
+    await committer.commit({ board: remapped.board, runs: remapped.runs, assets: input.artifact.assets || [] })
     return {
       boardId: remapped.board.id,
       board: remapped.board,
