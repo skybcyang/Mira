@@ -1,6 +1,7 @@
 export interface GuidanceSnapshot {
   id: string; version: string; title: string; text: string; digest: string; customized: boolean
   origin?: 'custom' | 'imported'
+  requiredTools?: string[]; optionalTools?: string[]
 }
 export interface GuidanceInput { id: string; version: string; text?: string }
 export function listGuidance(): GuidanceSnapshot[]

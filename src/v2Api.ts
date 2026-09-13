@@ -170,7 +170,7 @@ export interface ModelConnectionResult {
   latencyMs: number
 }
 
-async function request<T>(method: string, path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
+export async function request<T>(method: string, path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`${API}${path}`, {
     method,
     ...(signal ? { signal } : {}),

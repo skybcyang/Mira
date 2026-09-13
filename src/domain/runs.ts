@@ -37,6 +37,9 @@ export interface RunProgressEvent {
 }
 
 export interface TransformationRun {
+  toolPolicySnapshot?: import('./toolPolicy.js').ToolPolicy
+  toolExecutions?: import('./toolPolicy.js').ToolExecution[]
+  toolReview?: import('./toolPolicy.js').ToolReview
   guidanceSnapshot?: import('./guidance.js').GuidanceSnapshot
   outputPolicySnapshot?: import('./outputPolicy.js').OutputPolicy
   outputCheck?: import('./outputPolicy.js').OutputCheck
