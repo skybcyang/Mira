@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawn } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
+import { randomUUID } from 'node:crypto';
 import { createPythonRunner } from '../bridge/node-python-runner.js';
 
 // No download by default. --prepare is an explicit environment setup operation.
-const runner = createPythonRunner();
+const ownerId = randomUUID();
+const ownerFilter = `label=app.mira.python.owner=${ownerId}`;
+const runner = createPythonRunner({ ownerId });
 const image = process.env.MIRA_PYTHON_IMAGE || 'python:3.13-slim';
 const withDependencies = process.argv.includes('--prepare-dependencies');
 const status = withDependencies || process.argv.includes('--prepare') ? await runner.prepare({ image, ...(withDependencies ? { dependencies: ['packaging==24.2'] } : {}) }) : await runner.status({ image });
@@ -26,10 +29,10 @@ const pending = execute('import time\ntime.sleep(30)', {}, { signal: controller.
 setTimeout(() => controller.abort(), 2000);
 await assert.rejects(pending, { name: 'AbortError' });
 // The container's wall-time limit must survive abrupt loss of the Node Host.
-const childCode = `import {createPythonRunner} from './bridge/node-python-runner.js'; await createPythonRunner().execute(${JSON.stringify({ code: 'import signal,time\nsignal.alarm(0)\ntime.sleep(30)', input, imageId, timeoutMs: 1500 })});`;
+const childCode = `import {createPythonRunner} from './bridge/node-python-runner.js'; await createPythonRunner(${JSON.stringify({ ownerId })}).execute(${JSON.stringify({ code: 'import signal,time\nsignal.alarm(0)\ntime.sleep(30)', input, imageId, timeoutMs: 1500 })});`;
 const host = spawn(process.execPath, ['--input-type=module', '-e', childCode], { stdio: 'ignore' });
 await delay(800);
-const owned = execFileSync('docker', ['ps', '-q', '--filter', 'label=app.mira.python'], { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+const owned = execFileSync('docker', ['ps', '-q', '--filter', ownerFilter], { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
 assert.ok(owned.length, 'host-crash test must observe an active container');
 host.kill('SIGKILL');
 try {
@@ -39,8 +42,12 @@ try {
     assert.equal(running, 'false', 'container must enforce timeout after Host death');
   }
 } finally {
-  for (const id of owned) execFileSync('docker', ['rm', '--force', id], { stdio: 'ignore' });
+  for (const id of owned) {
+    const container = JSON.parse(execFileSync('docker', ['inspect', id], { encoding: 'utf8' }))[0];
+    assert.equal(container.Config.Labels['app.mira.python.owner'], ownerId);
+    execFileSync('docker', ['rm', '--force', container.Id], { stdio: 'ignore' });
+  }
 }
-const remaining = execFileSync('docker', ['ps', '-aq', '--filter', 'label=app.mira.python'], { encoding: 'utf8' }).trim();
+const remaining = execFileSync('docker', ['ps', '-aq', '--filter', ownerFilter], { encoding: 'utf8' }).trim();
 assert.equal(remaining, '', 'owned containers must be removed after timeout and cancellation');
 console.log(JSON.stringify({ passed: true, imageId, runtime: status.runtime, checks: ['real isolation probes', 'stdin scope', 'text and attachments', 'byte limits', 'path rejection', 'timeout cleanup', 'abort cleanup', 'Host-crash wall-time limit'] }));

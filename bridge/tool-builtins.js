@@ -1,4 +1,4 @@
-import { toolError } from '../src/domain/toolPolicy.js'
+import { jsonBytes, toolError } from '../src/domain/toolPolicy.js'
 const failed = message => { throw toolError('TOOL_FAILED', message) }
 function csvRows(text) {
   const rows = []; let row = [], field = '', quoted = false, closed = false
@@ -17,6 +17,7 @@ function csvRows(text) {
   }
   if (quoted) failed('CSV 存在未闭合引号。')
   if (field || row.length || closed) rows.push([...row, field])
+  if (rows.length > 10000 || rows.some(r => r.length > 100)) failed('CSV 超过 10000 行或 100 列。')
   if (rows.length < 2 || rows.some(r => r.length !== rows[0].length)) failed('CSV 需要表头和宽度一致的数据行。')
   return rows
 }
@@ -24,7 +25,16 @@ export async function executeBuiltin(id, args, input, { urls = [], web, signal }
   let result
   if (id === 'mira-source-search') {
     if (!args.query?.trim()) failed('请输入检索词。')
-    result = (input.sources || []).flatMap((source, sourceIndex) => source.text.split(/\r?\n/).flatMap((text, index) => text.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()) ? [{ sourceIndex, line: index + 1, text }] : []))
+    result = []; let inputBytes = 0, resultBytes = 2
+    const query = args.query.toLowerCase()
+    for (const [sourceIndex, source] of (input.sources || []).entries()) {
+      if (typeof source.text !== 'string' || source.text.length > 2097152 || (inputBytes += new TextEncoder().encode(source.text).length) > 2097152) throw toolError('TOOL_LIMIT', '材料检索最多接收 2 MiB 冻结文本。')
+      for (const [index, text] of source.text.split(/\r?\n/).entries()) if (text.toLowerCase().includes(query)) {
+        const match = { sourceIndex, line: index + 1, text }
+        if ((resultBytes += jsonBytes(match) + 1) > 65536) throw toolError('TOOL_LIMIT', '检索结果超过 64 KiB，请缩小检索词或来源范围。')
+        result.push(match)
+      }
+    }
   } else if (id === 'mira-calculator') {
     const v = args.values
     if (!Array.isArray(v) || !v.length || v.some(x => !Number.isFinite(x))) failed('请提供有限数字。')
@@ -34,7 +44,7 @@ export async function executeBuiltin(id, args, input, { urls = [], web, signal }
     result = { value, arithmetic: 'IEEE-754 double precision' }
   } else if (id === 'mira-csv-summary') {
     const source = input.sources?.[args.sourceIndex]
-    if (!source || source.text.length > 1000000) failed('所选冻结来源不存在或 CSV 超过 1 MB。')
+    if (!source || source.text.length > 1000000 || new TextEncoder().encode(source.text).length > 1000000) failed('所选冻结来源不存在或 CSV 超过 1 MB。')
     const [header, ...rows] = csvRows(source.text.replace(/^\uFEFF/, ''))
     result = { rows: rows.length, columns: header.map((name, i) => {
       const values = rows.map(row => row[i].trim()), nonempty = values.filter(Boolean)
@@ -50,7 +60,7 @@ export async function executeBuiltin(id, args, input, { urls = [], web, signal }
   } else if (id === 'mira-web-read') {
     if (!urls.includes(args.url)) throw toolError('TOOL_POLICY_INVALID', '该 URL 不在本步允许范围内。')
     if (!web) throw toolError('TOOL_UNAVAILABLE', '此宿主未提供网页读取。')
-    const page = await web({ url: args.url }, { signal })
+    const page = await web({ url: args.url }, { signal, allowedUrls: urls })
     result = { url: page.url || args.url, text: page.text, warnings: page.warnings }
   } else throw toolError('TOOL_UNAVAILABLE', '内置工具不存在。')
   return { text: JSON.stringify(result) }

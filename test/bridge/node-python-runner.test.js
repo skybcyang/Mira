@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 const runner = async (options) => (await import('../../bridge/node-python-runner.js')).createPythonRunner(options);
 
 describe('isolated Python availability and input boundary', () => {
+  it('requires an exact UUID for test container ownership', async () => {
+    await expect(runner({ ownerId: 'app.mira.python' })).rejects.toMatchObject({ code: 'TOOL_POLICY_INVALID' });
+  });
   it('reports unavailable without an installed Docker CLI instead of executing host Python', async () => {
     const api = await runner({ dockerCommand: '/mira-missing-docker' });
     expect(await api.status()).toMatchObject({ available: false });
