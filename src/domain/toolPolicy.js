@@ -3,6 +3,8 @@ import { sha256Text } from './digests.js'
 export const toolPhases = { before: '生成前', model: '模型按需', after: '生成后' }
 export const toolError = (code, message) => Object.assign(new Error(message), { code })
 const invalid = message => { throw toolError('TOOL_POLICY_INVALID', message) }
+const secretKeys = new Set(['token', 'accesstoken', 'refreshtoken', 'apikey', 'password', 'passwd', 'authorization', 'auth', 'credential', 'credentials', 'secret', 'clientsecret', 'env'])
+const isSecretKey = key => secretKeys.has(key.replace(/[^A-Za-z0-9]/g, '').toLowerCase())
 export function validateToolJson(value) {
   let nodes = 0
   const path = new Set()
@@ -24,11 +26,10 @@ export function canonicalToolJson(value) {
 }
 export function validateToolArgumentData(value) {
   if (!isObject(value) || jsonBytes(value) > 32768) invalid('工具参数必须是有界的 JSON 对象。')
-  const secretKeys = new Set(['token', 'accesstoken', 'refreshtoken', 'apikey', 'password', 'passwd', 'authorization', 'auth', 'credential', 'credentials', 'secret', 'clientsecret', 'env'])
   function visit(v) {
     if (!v || typeof v !== 'object') return
     for (const [key, nested] of Object.entries(v)) {
-      if (secretKeys.has(key.replace(/[^A-Za-z0-9]/g, '').toLowerCase())) invalid('认证与环境凭据不能写入工具参数，请使用连接的会话凭据。')
+      if (isSecretKey(key)) invalid('认证与环境凭据不能写入工具参数，请使用连接的会话凭据。')
       visit(nested)
     }
   }
@@ -38,11 +39,14 @@ export function validateToolSchema(value) {
   if (!isObject(value) || value.type !== 'object' || jsonBytes(value) > 16384) invalid('工具参数结构无效。')
   let nodes = 0
   const allowed = ['type', 'properties', 'required', 'additionalProperties', 'items', 'enum', 'const', 'anyOf', 'oneOf', 'allOf', 'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'multipleOf', 'minLength', 'maxLength', 'minItems', 'maxItems', 'minProperties', 'maxProperties', 'title', 'description', 'default', 'examples', '$schema']
-  function visit(s, depth) {
+  function visit(s, depth, secretProperty = false) {
     if (++nodes > 256 || depth > 8 || !keys(s, allowed)) invalid('工具参数结构不受支持：不接受正则、引用或过深的结构。')
+    for (const keyword of ['default', 'examples', 'const', 'enum']) if (s[keyword] !== undefined) {
+      validateToolArgumentData({ [secretProperty ? 'credential' : 'value']: s[keyword] })
+    }
     if (s.properties !== undefined) {
       if (!isObject(s.properties) || Object.keys(s.properties).length > 100) invalid('工具属性过多。')
-      for (const nested of Object.values(s.properties)) visit(nested, depth + 1)
+      for (const [name, nested] of Object.entries(s.properties)) visit(nested, depth + 1, secretProperty || isSecretKey(name))
     }
     const types = Array.isArray(s.type) ? s.type : [s.type]
     if (s.type !== undefined && (!types.length || types.length > 7 || new Set(types).size !== types.length || types.some(t => !['object', 'array', 'string', 'number', 'integer', 'boolean', 'null'].includes(t)))) invalid('工具参数类型无效。')
@@ -52,11 +56,11 @@ export function validateToolSchema(value) {
     for (const k of ['minLength', 'maxLength', 'minItems', 'maxItems', 'minProperties', 'maxProperties']) if (s[k] !== undefined && (!Number.isSafeInteger(s[k]) || s[k] < 0)) invalid('工具长度范围无效。')
     for (const k of ['title', 'description']) if (s[k] !== undefined && typeof s[k] !== 'string') invalid('工具参数说明无效。')
     if (s.examples !== undefined && (!Array.isArray(s.examples) || s.examples.length > 10)) invalid('工具示例过多。')
-    if (s.items !== undefined) visit(s.items, depth + 1)
-    if (isObject(s.additionalProperties)) visit(s.additionalProperties, depth + 1)
+    if (s.items !== undefined) visit(s.items, depth + 1, secretProperty)
+    if (isObject(s.additionalProperties)) visit(s.additionalProperties, depth + 1, secretProperty)
     for (const keyword of ['anyOf', 'oneOf', 'allOf']) if (s[keyword] !== undefined) {
       if (!Array.isArray(s[keyword]) || !s[keyword].length || s[keyword].length > 8) invalid('工具参数分支过多。')
-      for (const nested of s[keyword]) visit(nested, depth + 1)
+      for (const nested of s[keyword]) visit(nested, depth + 1, secretProperty)
     }
     if (s.enum !== undefined && (!Array.isArray(s.enum) || !s.enum.length || s.enum.length > 100)) invalid('工具枚举过多。')
     if (s.$schema !== undefined && !['http://json-schema.org/draft-07/schema#', 'https://json-schema.org/draft-07/schema'].includes(s.$schema)) invalid('仅支持 JSON Schema draft-07 的有界子集。')
@@ -104,6 +108,7 @@ export function validateToolPolicy(value) {
     if (!keys(item, ['id', 'tool', 'phase', 'arguments', 'urls']) || !text(item.id, 160) || ids.has(item.id)) invalid('工具实例标识无效或重复。')
     ids.add(item.id); validateTool(item.tool)
     if (!item.tool.phases.includes(item.phase) || !isObject(item.arguments) || jsonBytes(item.arguments) > 32768) invalid('工具阶段或参数无效。')
+    if (item.phase === 'after' && item.tool.effect !== 'check') invalid('生成后仅支持确定性的正文检查工具。')
     validateToolArgumentData(item.arguments)
     if (item.urls !== undefined && (!Array.isArray(item.urls) || item.urls.length > 20 || item.urls.some(url => { try { const u = new URL(url); return !['http:', 'https:'].includes(u.protocol) || !!u.username || !!u.password || url.length > 2048 } catch { return true } }))) invalid('请填写明确的公开网页地址。')
     if (item.tool.id === 'mira-web-read' && !item.tool.requiresBinding && !item.urls?.length) invalid('网页读取需要明确的 URL 范围。')

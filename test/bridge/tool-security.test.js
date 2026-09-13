@@ -31,10 +31,12 @@ const approve = f => f.service.review(f.run.id, { requestId: f.run.toolReview.re
 
 it('stops immediately when a completed evidence write fails with any storage error', async () => {
   let calls = 0, writes = 0
-  const tool = remote({ effect: 'read' })
-  const f = execution([{ id: 'one', tool, phase: 'after', arguments: {} }, { id: 'two', tool, phase: 'after', arguments: {} }], { call: async () => { calls++; return { text: 'done' } } })
+  const tool = listBuiltinTools().find(t => t.id === 'mira-output-check')
+  const f = execution([{ id: 'one', tool, phase: 'after', arguments: {} }, { id: 'two', tool, phase: 'after', arguments: {} }], { assertSafeEvidence: value => { if (typeof value?.text === 'string') calls++ } })
   await expect(f.start(undefined, async update => { if (++writes === 2) throw Object.assign(Error('disk'), { code: 'EIO' }); await f.save(update) })).rejects.toMatchObject({ code: 'EIO' })
   expect(calls).toBe(1)
+  expect(writes).toBe(2)
+  expect(f.run.toolExecutions).toHaveLength(1)
 })
 it('canonical MCP arguments accept reordered keys without changing the fixed binding', async () => {
   let actual
@@ -154,7 +156,8 @@ it('rejects overcommitted temporary tool selections before a durable Run', async
   const tool = remote({ effect: 'read' })
   const capabilities = { pythonStatus: async () => ({ available: true, imageId: imageA }) }
   for (const phase of ['before', 'model', 'after']) {
-    const f = execution(Array.from({ length: 8 }, (_, i) => ({ id: 'call-' + i, tool, phase, arguments: {} })), capabilities, {}, true)
+    const phaseTool = phase === 'after' ? listBuiltinTools().find(t => t.id === 'mira-output-check') : tool
+    const f = execution(Array.from({ length: 8 }, (_, i) => ({ id: 'call-' + i, tool: phaseTool, phase, arguments: {} })), capabilities, {}, true)
     await expect(f.service.prepare({ toolPolicy: f.run.toolPolicySnapshot }, Object.assign(async () => {}, { supportsTools: true }))).rejects.toMatchObject({ code: 'TOOL_LIMIT' })
   }
 })
