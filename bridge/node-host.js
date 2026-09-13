@@ -3,6 +3,8 @@ import { createHash, timingSafeEqual } from 'node:crypto'
 import { createServer } from 'node:http'
 import { extname, join, resolve } from 'node:path'
 import { createMiraApplication, createMiraStores } from './mira-application.js'
+import { createMcpClient } from './node-mcp-client.js'
+import { createPythonRunner } from './node-python-runner.js'
 import {
   API_PREFIX,
   STATIC_PREFIX,
@@ -162,6 +164,7 @@ export function createStandaloneMiraHost({
     coreApplication = createMiraApplication({
       fs,
       stores,
+      toolAdapters: { mcp: createMcpClient(), python: createPythonRunner() },
       managedMaterials: materials,
       workspace: project.workspace,
       directories: project.directories,
@@ -287,6 +290,8 @@ export function createStandaloneMiraHost({
       closed = true
       application.materialService.close()
       try {
+        await application.handlers.interruptActiveRuns()
+        await application.capabilities.close()
         if (server.listening) {
           await new Promise((resolveClose, rejectClose) => {
             server.close((error) => (error ? rejectClose(error) : resolveClose()))

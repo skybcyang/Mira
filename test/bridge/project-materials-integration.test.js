@@ -41,10 +41,20 @@ it('protects internal data and immutable originals from file binding', async () 
   const { root } = await setup()
   const binding = createFileBindingService({ fs: createNodeWorkspaceAdapter(root) })
   const card = { contentKind: 'markdown', headVersionId: 'v', versions: [{ id: 'v', content: { kind: 'markdown', markdown: 'manual' } }] }
-  for (const path of ['.mira/workspace.json', 'materials/any.md', 'boards-v2/board.json', 'runs-v2/run.json', 'execution-settings-v1.json', 'execution-settings-v1.json.tmp']) {
+  for (const path of ['.mira/workspace.json', 'materials/any.md', 'boards-v2/board.json', 'runs-v2/run.json', 'execution-settings-v1.json', 'execution-settings-v1.json.tmp', 'capability-settings-v1.json', 'capability-settings-v1.json.tmp']) {
     await expect(binding.bind(card, { path, overwrite: true })).rejects.toMatchObject({ code: 'FILE_BINDING_INVALID' })
   }
   expect((await binding.bind(card, { path: 'docs/result.md' })).fileSync.status).toBe('synced')
+})
+it('injects Node tool capabilities but saves host configuration only under the project metadata directory', async () => {
+  const { root, app } = await setup()
+  const response = await app.dispatch('GET', ['v2', 'capabilities'])
+  expect(response.body.runtime).toEqual({ mcp: true, python: true })
+  await app.dispatch('PATCH', ['v2', 'capabilities'], { baseRevision: 0, pythonImageId: 'sha256:' + 'a'.repeat(64) })
+  expect(JSON.parse(await readFile(join(root, '.mira/capability-settings-v1.json'), 'utf8')).revision).toBe(1)
+  await expect(readFile(join(root, 'capability-settings-v1.json'))).rejects.toMatchObject({ code: 'ENOENT' })
+  const backup = await app.backupService.exportBackup()
+  expect(JSON.stringify(backup)).not.toContain('pythonImageId')
 })
 it('preserves managed originals in checkpoints, forks, and full backup restore', async () => {
   const { root, app } = await setup()

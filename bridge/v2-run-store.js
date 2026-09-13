@@ -2,6 +2,7 @@ import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
 import { appendTerminalRunProgress, runProgressErrors } from './domain/run-progress.js'
 import { validateGuidance } from '../src/domain/guidance.js'
+import { validateToolEvidence } from '../src/domain/toolPolicy.js'
 import { validateOutputPolicy, validateOutputCheck } from '../src/domain/outputPolicy.js'
 
 const TERMINAL = new Set(['succeeded', 'failed', 'interrupted'])
@@ -22,6 +23,7 @@ export function validatePersistedRun(run, expectedId) {
     if (!STATUSES.has(run.status)) errors.push('Run status is invalid')
     errors.push(...runProgressErrors(run))
     try { validateGuidance(run.guidanceSnapshot) } catch { errors.push('Run guidance snapshot is invalid') }
+    try { validateToolEvidence(run) } catch { errors.push('Run tool evidence is invalid') }
     try {
       validateOutputPolicy(run.outputPolicySnapshot)
       validateOutputCheck(run.outputCheck, run.result?.output, run.outputPolicySnapshot)

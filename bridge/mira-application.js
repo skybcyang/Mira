@@ -15,6 +15,8 @@ import { createBoardCheckpointService } from './board-checkpoint-service.js'
 import { createMaterialService } from './material-service.js'
 import { createCardPortabilityService } from './card-portability-service.js'
 import { ExecutionSettingsStore } from './execution-settings-store.js'
+import { createCapabilityService } from './capability-service.js'
+import { createToolExecutionService } from './tool-execution-service.js'
 
 function defaultNewId(prefix = 'id') {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36)}`
@@ -96,6 +98,7 @@ export function createMiraApplication({
   onRecovery,
   fileLibrary,
   materialReaders,
+  toolAdapters,
   managedMaterials,
   workspace,
 } = {}) {
@@ -127,7 +130,11 @@ export function createMiraApplication({
     throw new TypeError('Mira stores must share the supplied storage coordinator')
   }
 
+  const capabilities = createCapabilityService({ fs: storageFs, coordinator, newId, path: directories?.capabilities, ...toolAdapters })
+  const toolExecution = createToolExecutionService({ capabilities, web: materialReaders?.web, now })
   const handlers = createV2Handlers({
+    capabilities,
+    toolExecution,
     executionSettingsStore,
     store: boardStore,
     inspirationPoolStore,
@@ -142,6 +149,7 @@ export function createMiraApplication({
     checkpointStore,
   })
   const workflowService = createWorkflowService({
+    capabilities,
     executionSettingsStore,
     boardStore,
     workflowStore,
@@ -233,6 +241,8 @@ export function createMiraApplication({
     return (
       (await dispatchV2Route(method, segments, body, {
         store: boardStore,
+        capabilities,
+        toolExecution,
         executionSettingsStore,
         handlers,
         workflowService,
@@ -255,6 +265,7 @@ export function createMiraApplication({
   return {
     ...resolvedStores,
     handlers,
+    capabilities,
     executionSettingsStore,
     workflowService,
     inspirationPoolStore,

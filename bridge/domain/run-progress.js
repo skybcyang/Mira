@@ -76,7 +76,10 @@ export function appendRunProgress(run, summary, updatedAt) {
 
 export function appendTerminalRunProgress(run, status, occurredAt) {
   const summary = TERMINAL_PROGRESS[status]
-  return summary ? appendRunProgress(run, summary, occurredAt) : run
+  if (!summary) return run
+  const next = { ...run }
+  delete next.toolReview
+  return appendRunProgress(next, summary, occurredAt)
 }
 
 export function runProgressErrors(run) {

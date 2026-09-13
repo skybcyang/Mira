@@ -4,6 +4,7 @@ import { typed } from './domain/errors.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
 import { validateOutputPolicy } from '../src/domain/outputPolicy.js'
 import { projectGuidance, resolveStepOutput } from '../src/domain/executionSettings.js'
+import { validateToolPolicy, methodToolPolicy } from '../src/domain/toolPolicy.js'
 import { cardById, transformationById, validateSourceRefs } from './v2-http-policy.js'
 
 const TARGET_CARD_WIDTH = 360
@@ -264,6 +265,8 @@ function validateDirectPlan(body, settings) {
     const label = typeof step?.label === 'string' ? step.label.trim() : ''
     const instruction = typeof step?.instruction === 'string' ? step.instruction.trim() : ''
     const outputPolicy = resolveStepOutput(step?.outputPolicy, settings)
+    const toolPolicy = step?.toolPolicy ?? undefined
+    validateToolPolicy(toolPolicy)
     validateOutputPolicy(outputPolicy, instruction)
     if (!label || !instruction || typeof step?.acceptance !== 'string') {
       throw typed('PLAN_INVALID', 'Every plan step requires a label, instruction, and acceptance')
@@ -279,6 +282,7 @@ function validateDirectPlan(body, settings) {
       acceptance: step.acceptance.trim(),
       ...(guidance ? { guidance } : {}),
       ...(outputPolicy ? { outputPolicy } : {}),
+      ...(toolPolicy ? { toolPolicy: structuredClone(toolPolicy) } : {}),
       ...(modelId ? { modelId } : {}),
     }
   })
@@ -340,6 +344,7 @@ function materializeLinearPlan({
       acceptance: step.acceptance,
       ...(step.guidance ? { guidance: structuredClone(step.guidance) } : {}),
       ...(step.outputPolicy ? { outputPolicy: structuredClone(step.outputPolicy) } : {}),
+      ...(step.toolPolicy ? { toolPolicy: structuredClone(step.toolPolicy) } : {}),
       ...(step.modelId ? { modelId: step.modelId } : {}),
       permissions: { workspaceWrite: false },
       planRef: {
@@ -362,7 +367,7 @@ function materializeLinearPlan({
   return { targetCards, transformations }
 }
 
-export function createWorkflowService({ boardStore, workflowStore, newId, now, executionSettingsStore }) {
+export function createWorkflowService({ boardStore, workflowStore, newId, now, executionSettingsStore, capabilities }) {
   return {
     list() {
       return workflowStore.list()
@@ -422,6 +427,7 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now, e
             ...(transformation.modelId ? { modelId: transformation.modelId } : {}),
             ...(transformation.guidance ? { guidance: structuredClone(transformation.guidance) } : {}),
             ...(transformation.outputPolicy ? { outputPolicy: structuredClone(transformation.outputPolicy) } : {}),
+            ...(transformation.toolPolicy ? { toolPolicy: methodToolPolicy(transformation.toolPolicy) } : {}),
             ...(workflowInputs ? { sources: transformation.sourceCardIds.map((cardId) => ({
               ...(index > 0 && cardId === transformations[index - 1].targetCardId
                 ? { kind: 'previous-output' }
@@ -439,6 +445,7 @@ export function createWorkflowService({ boardStore, workflowStore, newId, now, e
 
     async createPlan(boardId, body) {
       const input = validateDirectPlan(body, await executionSettingsStore?.load())
+      for (const step of input.steps) capabilities?.assertSafeEvidence?.(step.toolPolicy)
       const planId = newId('plan')
       let created
       await boardStore.update(boardId, async (board) => {

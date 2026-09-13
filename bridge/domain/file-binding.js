@@ -20,7 +20,7 @@ function requireMarkdownCard(card) {
 function safePath(path) {
   try {
     const normalized = validateWorkspaceRelativePath(path)
-    if (/^(?:\.mira|materials(?:\/|$)|(?:boards-v2|runs-v2|workflows-v2|transactions-v2|purged-boards-v2|board-checkpoints-v1)(?:\/|$)|inspiration-pool-v2\.json$|execution-settings-v1\.json(?:\.tmp)?$)/i.test(normalized)) throw new Error('Managed path')
+    if (/^(?:\.mira|materials(?:\/|$)|(?:boards-v2|runs-v2|workflows-v2|transactions-v2|purged-boards-v2|board-checkpoints-v1)(?:\/|$)|inspiration-pool-v2\.json$|(?:execution|capability)-settings-v1\.json(?:\.tmp)?$)/i.test(normalized)) throw new Error('Managed path')
     return normalized
   } catch (error) {
     throw typed('FILE_BINDING_INVALID', '本地文件路径必须位于工作区内', { path }, error)
