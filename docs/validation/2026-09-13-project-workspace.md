@@ -1,5 +1,7 @@
 # 项目工作区本地交付验证
 
+后续状态：本文“未合入/未迁移/未替换”保留为首轮验收时的事实。用户随后明确授权并完成实际交付，当前状态见[迁移与安装记录](2026-09-13-project-workspace-install.md)。
+
 日期：2026-09-13。基线 `b5cb2a9`，交付分支 `codex/project-workspace`，隔离工作树 `.worktrees/project-workspace`。用户确认的产品命题见[项目工作区规格](../specs/project-workspace.md)，剩余交付项见[统一 TODO](../refactor/evolution-todo.md)。
 
 ## 产品命题与结果

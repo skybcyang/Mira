@@ -1,6 +1,6 @@
 # Mira 文档地图
 
-项目工作区增量：[权威规格](specs/project-workspace.md)、[实施与验证进度](refactor/project-workspace-plan.md)、[本地工程与原生验收](validation/2026-09-13-project-workspace.md)。
+项目工作区已合入本地 main，并完成本机迁移与安装：[权威规格](specs/project-workspace.md)、[实施进度](refactor/project-workspace-plan.md)、[功能验证](validation/2026-09-13-project-workspace.md)、[迁移、安装与回退记录](validation/2026-09-13-project-workspace-install.md)。
 
 2026-09-13 增量：[本地安装、恢复与补充验收](validation/2026-09-13-local-install-acceptance.md)、[A3–B8 实施验证](validation/2026-09-13-a3-b8-validation.md)、[真实模型质量复核](validation/2026-09-13-model-quality-review.md)、[正式桌面发行准备](operations/desktop-release.md)。当前完成范围及设备阻挡见[统一 TODO](refactor/evolution-todo.md)。
 
