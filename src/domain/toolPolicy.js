@@ -3,7 +3,7 @@ import { sha256Text } from './digests.js'
 export const toolPhases = { before: '生成前', model: '模型按需', after: '生成后' }
 export const toolError = (code, message) => Object.assign(new Error(message), { code })
 const invalid = message => { throw toolError('TOOL_POLICY_INVALID', message) }
-const secretKeys = new Set(['token', 'accesstoken', 'refreshtoken', 'apikey', 'password', 'passwd', 'authorization', 'auth', 'credential', 'credentials', 'secret', 'clientsecret', 'env'])
+const secretKeys = new Set(['token', 'accesstoken', 'refreshtoken', 'authtoken', 'apikey', 'password', 'passwd', 'authorization', 'auth', 'credential', 'credentials', 'secret', 'clientsecret', 'privatekey', 'rootsessionid', 'env'])
 const isSecretKey = key => secretKeys.has(key.replace(/[^A-Za-z0-9]/g, '').toLowerCase())
 export function validateToolJson(value) {
   let nodes = 0

@@ -8,7 +8,10 @@ it('searches only frozen fragments and calculates without eval', async () => {
 it('parses quoted CSV and reports after-check diagnostics without editing output', async () => {
   const summary = JSON.parse((await executeBuiltin('mira-csv-summary', { sourceIndex: 0 }, { sources: [{ text: 'name,n\n"a,b",3\nc,5' }] })).text)
   expect(summary.rows).toBe(2); expect(summary.columns[1]).toMatchObject({ name: 'n', sum: 8, mean: 4 })
-  expect(JSON.parse((await executeBuiltin('mira-output-check', { maxCharacters: 1 }, { output: 'abc' })).text).passed).toBe(false)
+  const check = await executeBuiltin('mira-output-check', { maxCharacters: 1 }, { output: 'abc' })
+  expect(JSON.parse(check.text).passed).toBe(false)
+  expect(check.isError).toBe(true)
+  expect((await executeBuiltin('mira-output-check', { maxCharacters: 3 }, { output: 'abc' })).isError).not.toBe(true)
 })
 it('refuses URLs outside explicitly bound scope before network', async () => {
   let reads = 0

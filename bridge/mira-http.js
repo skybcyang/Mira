@@ -109,6 +109,7 @@ const STATUS_BY_CODE = {
   SOURCE_SCOPE_REQUIRED: 409,
   SOURCE_SCOPE_CHANGED: 409,
   GUIDANCE_INVALID: 422,
+  HOST_CLOSING: 503,
   TOOL_POLICY_INVALID: 422,
   CAPABILITY_INVALID: 422,
   TOOL_UNAVAILABLE: 409,
@@ -268,7 +269,7 @@ export function createMiraApiHandler(application, {
       const body = requestMethodHasJsonBody(method)
         ? await readJsonBody(req, isBoardImport ? { maxBytes: maxImportBodyBytes } : undefined)
         : undefined
-      const response = segments[1] === 'materials' && segments[2] === 'previews'
+      const response = (segments[1] === 'materials' && segments[2] === 'previews') || segments[1] === 'capabilities'
         ? await application.dispatch(method, segments, body, { signal: controller.signal })
         : await application.dispatch(method, segments, body)
       sendJson(res, response.status, response.body)

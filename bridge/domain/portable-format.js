@@ -3,7 +3,7 @@ import { runProgressErrors } from './run-progress.js'
 import { validateSourceScopes } from '../../src/domain/sourceScopes.js'
 import { validateGuidance } from '../../src/domain/guidance.js'
 import { validateOutputPolicy, validateOutputCheck } from '../../src/domain/outputPolicy.js'
-import { validateToolPolicy, validateToolEvidence, portableToolEvidence, portableToolPolicy, methodToolPolicy } from '../../src/domain/toolPolicy.js'
+import { validateTool, validateToolPolicy, validateToolEvidence, portableToolEvidence, portableToolPolicy, validateMethodToolPolicy } from '../../src/domain/toolPolicy.js'
 import {
   isObject,
   nonEmptyString,
@@ -60,6 +60,11 @@ export function portableError(code, message, details) {
 
 function normalizedSensitiveKey(key) {
   return key.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
+function hasToolSchema(value) {
+  if (!['builtin', 'mcp', 'python'].includes(value.source) || !value.inputSchema) return false
+  try { validateTool(value); return true } catch { return false }
 }
 
 function formatCodes(format) {
@@ -158,8 +163,11 @@ export function cleanPortableValue(value, seen = new WeakSet()) {
   seen.add(value)
   const fileContent = value.kind === 'file-reference'
   const fileSnapshot = value.contentKind === 'file-reference'
+  const toolSchema = hasToolSchema(value)
   const result = {}
   for (const [key, item] of Object.entries(value)) {
+    // Property names in a validated schema describe parameters; they are not credentials.
+    if (toolSchema && key === 'inputSchema') { result[key] = structuredClone(item); continue }
     if (key === 'toolReview') continue
     if (key === 'toolExecutions') { result[key] = cleanPortableValue(portableToolEvidence({ toolExecutions: item }).toolExecutions, seen); continue }
     if (SENSITIVE_KEYS.has(normalizedSensitiveKey(key))) continue
@@ -200,7 +208,9 @@ export function collectForbiddenPortableData(value, path = '$', findings = [], s
   seen.add(value)
   const fileContent = value.kind === 'file-reference'
   const fileSnapshot = value.contentKind === 'file-reference'
+  const toolSchema = hasToolSchema(value)
   for (const [key, item] of Object.entries(value)) {
+    if (toolSchema && key === 'inputSchema') continue
     const itemPath = `${path}.${key}`
     if (key === 'toolReview' || (key === 'toolExecutions' && Array.isArray(item) && item.some(record => record.files !== undefined))) findings.push(`${itemPath} contains nonportable tool data`)
     if (SENSITIVE_KEYS.has(normalizedSensitiveKey(key))) findings.push(`${itemPath} is secret data`)
@@ -517,8 +527,7 @@ export function validatePortableWorkflow(workflow, { provenance = false } = {}) 
       try { validateGuidance(step.guidance) } catch { errors.push(`Workflow step ${step.id} guidance is invalid`) }
       try { validateOutputPolicy(step.outputPolicy, step.instruction) } catch { errors.push(`Workflow step ${step.id} output policy is invalid`) }
       try {
-        validateToolPolicy(step.toolPolicy)
-        if (step.toolPolicy && JSON.stringify(step.toolPolicy) !== JSON.stringify(methodToolPolicy(step.toolPolicy))) errors.push(`Workflow step ${step.id} contains bound tool parameters`)
+        validateMethodToolPolicy(step.toolPolicy)
       } catch { errors.push(`Workflow step ${step.id} tool policy is invalid`) }
       if (!nonEmptyString(step.label)) errors.push(`Workflow step ${step.id} label is invalid`)
       if (!nonEmptyString(step.instruction)) {

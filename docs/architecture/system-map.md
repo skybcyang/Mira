@@ -83,7 +83,7 @@ Desktop packaging
 | `bridge/domain/run-progress.js` | Run 公开进度规范化、最近 20 条追加与持久字段校验 | 模型原始事件或 UI 呈现 |
 | `bridge/domain/organization.js` | 颜色/分组/几何严格校验与 CAS、删除成员回执前后态 | UI、文件 I/O、CardVersion 或 Run 执行 |
 | `bridge/board-checkpoint-service.js`、`board-checkpoint-store.js` | 命名检查点、Board 锁内一致快照、元数据 CAS 与原子存储 | 原地回滚或自动检查点 |
-| `bridge/domain/workspace-backup.js` | MiraBackup V1/V2/V3 全量校验、材料闭合与检查点归属 | 平台 I/O 或第二套 artifact schema |
+| `bridge/domain/workspace-backup.js` | MiraBackup V1–V4 全量校验、材料闭合与检查点归属 | 平台 I/O 或第二套 artifact schema |
 | `bridge/project-workspace.js` | 单写者锁内识别旧布局、初始化或核对 `.mira` 项目身份与数据路径 | 扫描项目代码、自动迁移 |
 | `bridge/domain/managed-assets.js`、`bridge/managed-materials.js` | 纯资产校验；Node 原件读写、摘要、去重和材料库 | Card/Run 领域写回、自动清理 |
 | `bridge/card-portability-service.js` | 所选 Head 导出、独立身份导入、只读复制出处 | 跨画板实时同步、自动 Run |
@@ -117,6 +117,10 @@ Desktop packaging
 步骤输出要求由 `src/domain/outputPolicy.js` 共享目录、快照校验、prompt 片段与确定性检查，`OutputPolicyPanel` / `OutputPolicyView` 承载编辑和 Run 读态。创建、配置、冻结、普通写回及方法复用继续使用既有 handler/domain/service，不增加执行器。Markdown 结构解析在无 DOM 的 Bridge 也需可用；`scripts/build-bridge.mjs` 使用 neutral 依赖解析条件，避免选择浏览器专用实体解码实现。
 
 项目默认与指导目录由 `src/domain/executionSettings.js` 定义严格校验、版本追加和纯文本导入，`bridge/execution-settings-store.js` 通过共享 coordinator、revision CAS 和临时文件校验原子保存。`ExecutionSettings.tsx` 按需加载并调用现有 API；普通步骤和直接计划在创建时读取设置，方法与已有步骤保留原快照。完整备份 V4 携带此聚合；新项目物理路径为 `.mira/execution-settings-v1.json`，旧布局保留根级文件。目录不执行脚本或授予权限。
+
+工具快照、参数/证据校验和可移植需求由 `src/domain/toolPolicy.js` 定义。`bridge/capability-service.js` 管理独立宿主目录、项目启用、会话凭据与版本核对；`bridge/tool-execution-service.js` 在普通 Run 中编排前处理、模型工具循环、后检查和单次审阅，复用既有 Run 锁与 CAS/Candidate。`bridge/tool-builtins.js` 只操作冻结输入或明确 URL。
+
+`node-host.js` 注入 `node-mcp-client.js` 与 `node-python-runner.js`，SDK、网络、进程和 Docker 不进入领域模块；无相应适配器的宿主明确报告不可用。OpenAI-compatible 适配器承载有界 tool_call_id 往返，不支持工具的适配器在 Run 前拒绝。UI 为 `detail/ToolPolicyPanel.tsx`、`ToolRunView.tsx` 和按需加载的 `CapabilityManager.tsx`，能力请求集中 `capabilitiesApi.ts`。物理配置 `.mira/capability-settings-v1.json` 不进入备份、方法或 Artifact。详见[契约](../specs/tool-execution.md)。
 
 改工作台导航与本机密度偏好：`WorkbenchNavigation.tsx` 与 `workbenchPreferences.ts`；AppBar 接入既有工具，不建立新路由。`useTaskViewport.ts` 只投影视口高度，`useMobilePanelModal.ts` 处理 Compact/Mobile 焦点边界；NoticeRegion 在这些边界内投递通知。
 

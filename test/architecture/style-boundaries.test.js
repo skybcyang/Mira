@@ -18,6 +18,8 @@ const modules = [
   'drawer-content.css',
   'transformation-detail.css',
   'run-and-model-settings.css',
+  'step-tools.css',
+  'capability-management.css',
   'workflow-library.css',
   'notices-and-plan-draft.css',
   'board-manager.css',
@@ -63,8 +65,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Capability settings: desktop/390px light/dark, draft protection and conflict recovery verified on 2026-09-14.
-    expect(digest).toBe('d6ae28a7884fbd991045d59faea46ef1c8e2b12224b2cf85f1ed11fb1f218250')
+    // Tools and capability settings: desktop/1024/390px light/dark verified on 2026-09-14.
+    expect(digest).toBe('25ad8ef3e86460e95776c38ad2b7e9fe7dd15d56166ead3320e6c83a30ea3de3')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {
@@ -87,7 +89,7 @@ describe('stylesheet boundaries', () => {
       const root = postcss.parse(await readFile(new URL(`../../src/styles/${name}`, import.meta.url), 'utf8'))
       root.walkDecls(/^--mira-/, () => expect(name).toBe('tokens.css'))
       root.walkAtRules('media', () => {
-        expect(['responsive-desktop.css', 'responsive-mobile.css', 'accessibility.css']).toContain(name)
+        expect(['responsive-desktop.css', 'responsive-mobile.css', 'accessibility.css', 'step-tools.css', 'capability-management.css']).toContain(name)
       })
       for (const node of root.nodes) {
         if (!featureBases.has(node.selector) || seen.has(node.selector)) continue

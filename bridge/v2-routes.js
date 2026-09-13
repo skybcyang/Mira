@@ -18,6 +18,7 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
     if (seg.length === 2 && seg[1] === 'connections' && method === 'POST') return { status: 200, body: await service.connect(body || {}, options) }
     if (seg.length === 2 && seg[1] === 'python' && method === 'GET') return { status: 200, body: await service.pythonStatus() }
     if (seg.length === 3 && seg[1] === 'python' && method === 'POST') {
+      if (seg[2] === 'status') return { status: 200, body: await service.pythonStatus(body || {}, options) }
       if (seg[2] === 'prepare') return { status: 200, body: await service.preparePython(body || {}, options) }
       if (seg[2] === 'test') return { status: 200, body: await service.testPython(body || {}, options) }
     }

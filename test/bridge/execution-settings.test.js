@@ -3,6 +3,8 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import * as nodeFs from 'node:fs/promises'
+import { updateExecutionSettings, emptyExecutionSettings } from '../../src/domain/executionSettings.js'
+import { validateGuidance } from '../../src/domain/guidance.js'
 import { validateWorkspaceBackup } from '../../bridge/domain/workspace-backup.js'
 import { createMiraApplication, createMiraStores } from '../../bridge/mira-application.js'
 import { createNodeWorkspaceAdapter } from '../../bridge/node-workspace-adapter.js'
@@ -19,6 +21,13 @@ async function fixture() {
 }
 
 describe('project execution settings', () => {
+  it('rejects malformed dependency fields before omission and freezes caller arrays', () => {
+    for (const requiredTools of [null, {}, 42, false]) expect(() => updateExecutionSettings(emptyExecutionSettings(), { baseRevision: 0, guidance: { title: '检查', text: '正文', requiredTools } }, () => 'guidance-test')).toThrow()
+    const requiredTools = ['mira-calculator']
+    const next = updateExecutionSettings(emptyExecutionSettings(), { baseRevision: 0, guidance: { title: '检查', text: '正文', requiredTools } }, () => 'guidance-test')
+    requiredTools.push('later-change')
+    expect(next.guidance[0].requiredTools).toEqual(['mira-calculator']); expect(() => validateGuidance(next.guidance[0])).not.toThrow()
+  })
   it('reads the default without creating a file and persists an explicitly selected rule', async () => {
     const { root, store } = await fixture()
     expect(store).toBeDefined()

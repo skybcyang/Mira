@@ -11,7 +11,7 @@ function fixture(tools, capabilities = {}) {
 it('executes before/after tools around the model and preserves failed checks', async () => {
   const f = fixture([configuration('mira-source-search', 'before', { query: 'yes' }), configuration('mira-output-check', 'after', { maxCharacters: 1 })])
   const result = await f.service.execute({ run: f.run, save: f.save, executeModel: async input => { expect(input.prompt).toContain('yes'); return { outputText: '正文' } }, input: { prompt: 'task', signal: new AbortController().signal } })
-  expect(result.outputText).toBe('正文'); expect(f.run.toolExecutions.map(t => t.status)).toEqual(['succeeded', 'succeeded'])
+  expect(result.outputText).toBe('正文'); expect(f.run.toolExecutions.map(t => t.status)).toEqual(['succeeded', 'failed'])
   expect(f.run.toolExecutions[1].text).toContain('false')
 })
 it('requires one exact review before external call and rejects duplicate approval', async () => {

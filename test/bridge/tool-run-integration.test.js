@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createMiraApplication, createMiraStores } from '../../bridge/mira-application.js'
 import { createNodeWorkspaceAdapter } from '../../bridge/node-workspace-adapter.js'
-import { listBuiltinTools } from '../../src/domain/toolPolicy.js'
-import { cleanPortableValue } from '../../bridge/domain/portable-format.js'
+import { listBuiltinTools, toolDefinition, validateToolPolicy } from '../../src/domain/toolPolicy.js'
+import { cleanPortableValue, collectForbiddenPortableData } from '../../bridge/domain/portable-format.js'
 import { appendTerminalRunProgress } from '../../bridge/domain/run-progress.js'
 import { validatePersistedRun } from '../../bridge/v2-run-store.js'
 const roots = []
@@ -19,6 +19,24 @@ async function fixture(options = {}) {
   return { root, stores, app, board, card, input }
 }
 const policy = (id, phase, args) => ({ tools: [{ id: 'tool-config-1', tool: listBuiltinTools().find(t => t.id === id), phase, arguments: args }], allowTemporaryPython: false })
+it('persists interruption even when an aborted model finishes before shutdown drains requests', async () => {
+  let entered = false, aborted = false
+  const f = await fixture({ executeModel: async ({ signal }) => {
+    entered = true
+    await new Promise(resolve => signal.addEventListener('abort', resolve, { once: true }))
+    aborted = true
+    return { outputText: 'late' }
+  } })
+  const { transformation } = await f.app.handlers.createTransformation(f.board.id, f.input)
+  const { run } = await f.app.handlers.startRun(f.board.id, transformation.id)
+  await vi.waitFor(() => expect(entered).toBe(true))
+  f.app.handlers.beginShutdown()
+  await vi.waitFor(() => expect(aborted).toBe(true))
+  await new Promise(resolve => setImmediate(resolve))
+  await f.app.handlers.interruptActiveRuns()
+  expect((await f.stores.runStore.load(run.id)).status).toBe('interrupted')
+  expect((await f.stores.boardStore.load(f.board.id)).cards.find(c => c.id === transformation.targetCardId).headVersionId).toBeNull()
+})
 it('persists and freezes explicit tools then writes the ordinary target with actual evidence', async () => {
   const executeModel = vi.fn(async input => { expect(input.prompt).toContain('selected material'); return { outputText: '结果正文' } })
   const f = await fixture({ executeModel })
@@ -31,6 +49,17 @@ it('persists and freezes explicit tools then writes the ordinary target with act
   const saved = await f.stores.runStore.load(run.id)
   expect(saved.toolPolicySnapshot).toEqual(toolPolicy); expect(saved.toolExecutions[0]).toMatchObject({ status: 'succeeded', phase: 'before' })
   expect(saved.result.disposition).toBe('applied')
+})
+it('shows a failed after-check while preserving the complete generated result', async () => {
+  const f = await fixture()
+  const { transformation } = await f.app.handlers.createTransformation(f.board.id, { ...f.input, toolPolicy: policy('mira-output-check', 'after', { maxCharacters: 1 }) })
+  const { run } = await f.app.handlers.startRun(f.board.id, transformation.id)
+  await vi.waitFor(async () => expect((await f.stores.runStore.load(run.id)).result?.disposition).toBe('applied'))
+  const saved = await f.stores.runStore.load(run.id)
+  expect(saved.status).toBe('succeeded')
+  expect(saved.result.output).toBe('完成。')
+  expect(saved.toolExecutions[0]).toMatchObject({ status: 'failed', phase: 'after' })
+  expect(JSON.parse(saved.toolExecutions[0].text).passed).toBe(false)
 })
 it('rejects unsupported model tools and missing Skill dependencies before creating any Run', async () => {
   const f = await fixture()
@@ -66,6 +95,22 @@ it('exports bounded evidence without attachments and invalidates pending reviews
   expect(cleanPortableValue(value)).toEqual({ status: 'running', toolExecutions: [{ id: 'call', text: 'retained', filesOmitted: true }] })
   expect(appendTerminalRunProgress(value, 'interrupted', new Date().toISOString()).toolReview).toBeUndefined()
   expect(() => validatePersistedRun({ id: 'r', boardId: 'b', targetCardId: 'c', status: 'running', toolExecutions: [{ token: 'bad' }] }, 'r')).toThrow()
+})
+it('preserves schema property declarations without treating them as credential values', () => {
+  const tool = toolDefinition({ id: 'schema-tool', name: 'schema_tool', title: 'schema', description: 'schema', source: 'mcp', bindingId: 'mcp-fixture', phases: ['before'], effect: 'review', inputSchema: { type: 'object', properties: { token: { type: 'string' } } } })
+  const policy = { allowTemporaryPython: false, tools: [{ id: 'schema-1', tool, phase: 'before', arguments: {} }] }
+  const portable = cleanPortableValue(policy)
+  expect(portable.tools[0].tool.inputSchema.properties.token).toEqual({ type: 'string' })
+  expect(() => validateToolPolicy(portable)).not.toThrow()
+  expect(collectForbiddenPortableData(portable)).toEqual([])
+})
+it.each([{ default: { token: 'fixture-secret' } }, { examples: [{ password: 'fixture-secret' }] }, ...['privateKey', 'authToken', 'rootSessionId'].map(key => ({ default: { [key]: 'fixture-secret' } }))])('does not exempt credential-bearing schema instances from portability checks: %j', fragment => {
+  const tool = toolDefinition({ id: 'schema-tool', name: 'schema_tool', title: 'schema', description: 'schema', source: 'mcp', bindingId: 'mcp-fixture', phases: ['before'], effect: 'review', inputSchema: { type: 'object', ...fragment } })
+  const policy = { allowTemporaryPython: false, tools: [{ id: 'schema-1', tool, phase: 'before', arguments: {} }] }
+  expect(() => validateToolPolicy(policy)).toThrow()
+  expect(collectForbiddenPortableData(policy).length).toBeGreaterThan(0)
+  expect(JSON.stringify(cleanPortableValue(policy))).not.toContain('fixture-secret')
+  expect(() => validateToolPolicy(cleanPortableValue(policy))).toThrow()
 })
 it('extracts only tool requirements into a method and requires explicit binding on application', async () => {
   const f = await fixture()
