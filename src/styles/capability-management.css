@@ -1,0 +1,28 @@
+.v2-capability-manager { min-width: 0; }
+.v2-capability-editor, .v2-capability-tools { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.v2-capability-editor > :is(h3,p), .v2-capability-tools > :is(h3,p), .v2-capability-tool :is(h4,p) { margin: 0; }
+.v2-capability-editor label, .v2-capability-tools > label { display: grid; gap: 7px; min-width: 0; font-size: 13px; color: var(--mira-muted); }
+.v2-capability-editor :is(input,select) { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; color: var(--mira-ink); background: var(--mira-surface); border: 1px solid var(--mira-border); border-radius: 4px; font: inherit; }
+.v2-capability-manager :is(button,summary) { min-height: 44px; }
+.v2-capability-manager button:not(.v2-primary-button) { padding: 8px 11px; border: 1px solid var(--mira-border); border-radius: 4px; color: var(--mira-ink); background: transparent; font-size: 12px; font-weight: 600; }
+.v2-capability-manager button:not(.v2-primary-button):hover:not(:disabled) { border-color: var(--mira-border-strong); background: var(--mira-surface-subtle); }
+.v2-capability-manager summary { cursor: pointer; padding: 10px 0; overflow-wrap: anywhere; }
+.v2-capability-manager details { min-width: 0; }
+.v2-capability-manager :is(code,dd,p) { overflow-wrap: anywhere; }
+.v2-capability-manager pre { max-width: 100%; max-height: 400px; overflow: auto; white-space: pre; padding: 12px; background: var(--mira-surface-subtle); font: 12px/1.6 ui-monospace, monospace; border: 1px solid var(--mira-border); }
+.v2-capability-manager .v2-capability-code { font: 13px/1.6 ui-monospace, monospace; white-space: pre; overflow: auto; }
+.v2-capability-manager .v2-capability-small-code { min-height: 90px; font: 13px/1.6 ui-monospace, monospace; }
+.v2-capability-manager :is(footer,.v2-capability-actions) { display: flex; flex-wrap: wrap; gap: 8px; }
+.v2-capability-manager fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
+.v2-capability-manager legend { margin-bottom: 8px; font-size: 13px; }
+.v2-capability-env { display: grid; gap: 8px; border-top: 1px solid var(--mira-border); padding: 12px 0; }
+.v2-capability-tools { border-top: 1px solid var(--mira-border); padding-top: 18px; margin-top: 6px; }
+.v2-capability-tool { display: grid; gap: 10px; min-width: 0; padding: 14px 0; border-bottom: 1px solid var(--mira-border); }
+.v2-capability-tool header { display: grid; gap: 6px; }
+.v2-capability-tool header span { color: var(--mira-muted); font-size: 12px; }
+.v2-capability-tool p { font-size: 13px; line-height: 1.6; }
+.v2-capability-tool dl { display: grid; gap: 5px; font-size: 12px; }
+.v2-capability-tool dd { margin: 0 0 10px; }
+.v2-capability-result img { display: block; width: auto; max-width: 100%; max-height: 480px; object-fit: contain; }
+.v2-capability-result a { display: inline-flex; align-items: center; min-height: 44px; color: var(--mira-ink); text-decoration: underline; }
+@media (max-width: 600px) { .v2-capability-manager :is(footer,.v2-capability-actions) > button { flex: 1 1 140px; } }

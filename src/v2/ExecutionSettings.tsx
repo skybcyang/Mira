@@ -5,6 +5,8 @@ import { guidanceCatalog, importGuidanceText, updateExecutionSettings, type Exec
 import { listOutputPolicies } from '../domain/outputPolicy.js'
 import { useInspectorDraft } from './inspectorDrafts'
 import { compareVersionText } from './cardVersions'
+import { CapabilityManager } from './CapabilityManager'
+import { toolDependencyIds } from './capabilityForms'
 
 export default function ExecutionSettings({ onClose, onDirtyChange, onRequestLeave }: {
   onClose: () => void; onDirtyChange: (dirty: boolean) => void; onRequestLeave: (action: () => void) => void
@@ -41,14 +43,15 @@ export default function ExecutionSettings({ onClose, onDirtyChange, onRequestLea
             <option value="new">新建或导入指导</option>
             {choices.map(item => <option key={item.id} value={item.id}>{item.title} · {item.origin === 'custom' ? '自定义' : item.origin === 'imported' ? '导入文本' : '内置'} · {item.version}{settings.disabledGuidanceIds.includes(item.id) ? ' · 已停用' : ''}</option>)}
           </optgroup>
+          <optgroup label="工具来源"><option value="mcp">MCP 连接与工具</option><option value="python">Python 环境与脚本</option></optgroup>
         </select></label>
       </div>
       {error && <p role="alert">{error}</p>}
       {notice && <p className="v2-detail-note" role="status">{notice}</p>}
-      <ExecutionSettingsEditor key={`${selection}:${generation}`} settings={settings} selection={selection}
+      {selection === 'mcp' || selection === 'python' ? <CapabilityManager key={selection} mode={selection} onDirtyChange={handleDirtyChange} onRequestLeave={onRequestLeave} /> : <ExecutionSettingsEditor key={`${selection}:${generation}`} settings={settings} selection={selection}
         onDirtyChange={handleDirtyChange} onRequestLeave={onRequestLeave}
         onSaved={(saved, id) => { setSettings(saved); setNotice('已保存。已有步骤与 Run 保持原规则。'); if (id) setSelection(id); setGeneration(value => value + 1) }}
-        onReload={() => void load()} />
+        onReload={() => void load()} />}
     </>}
   </aside>
 }
@@ -67,6 +70,8 @@ export function ExecutionSettingsEditor({ settings, selection, onDirtyChange, on
   const [title, setTitle] = useState(guide?.title || '')
   const [text, setText] = useState(isDefault ? initial.defaultOutputPolicy?.text || '' : guide?.text || '')
   const [origin, setOrigin] = useState<GuidanceChange['origin']>(guide?.origin || 'custom')
+  const [requiredTools, setRequiredTools] = useState((guide?.requiredTools || []).join('\n'))
+  const [optionalTools, setOptionalTools] = useState((guide?.optionalTools || []).join('\n'))
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [uncertain, setUncertain] = useState(false)
@@ -77,16 +82,19 @@ export function ExecutionSettingsEditor({ settings, selection, onDirtyChange, on
   const defaultSelect = useRef<HTMLSelectElement>(null)
   useEffect(() => { alive.current = true; (isDefault ? defaultSelect.current : firstInput.current)?.focus(); return () => { alive.current = false } }, [isDefault])
   const dirty = !saved && (isDefault ? policyId !== initialPolicyKey || (Boolean(policyId) && text !== initial.defaultOutputPolicy?.text)
-    : editable && (title !== (guide?.title || '') || text !== (guide?.text || '')))
+    : editable && (title !== (guide?.title || '') || text !== (guide?.text || '') || requiredTools !== (guide?.requiredTools || []).join('\n') || optionalTools !== (guide?.optionalTools || []).join('\n')))
   useLayoutEffect(() => { onDirtyChange(dirty) }, [dirty, onDirtyChange])
   useEffect(() => () => onDirtyChange(false), [onDirtyChange])
   const policy = policies.find(item => policyKey(item) === policyId)
   const historicalPolicy = initial.defaultOutputPolicy && !policies.some(item => policyKey(item) === initialPolicyKey) ? initial.defaultOutputPolicy : null
+  let dependencies: { requiredTools?: string[]; optionalTools?: string[] } = {}, dependencyError = ''
+  if (!isDefault) try { const required = toolDependencyIds(requiredTools), optional = toolDependencyIds(optionalTools); if (required.some(id => optional.includes(id))) throw Error('同一个能力不能同时是必需和可选。'); dependencies = { ...(required.length ? { requiredTools: required } : {}), ...(optional.length ? { optionalTools: optional } : {}) } } catch (cause) { dependencyError = cause instanceof Error ? cause.message : '请核对工具依赖。' }
+  const guidanceChange: GuidanceChange & typeof dependencies = { ...(guide ? { id: guide.id } : {}), title, text, origin, ...dependencies }
   const input: ExecutionSettingsInput = isDefault ? { baseRevision: initial.revision,
     defaultOutputPolicy: policy ? { id: policy.id, version: policy.version, text } : null }
-    : { baseRevision: initial.revision, guidance: { ...(guide ? { id: guide.id } : {}), title, text, origin } }
-  let validation = ''
-  if (dirty) try { updateExecutionSettings(initial, input, () => 'guidance-preview') } catch (cause) { validation = cause instanceof Error ? cause.message : '请核对设置。' }
+    : { baseRevision: initial.revision, guidance: guidanceChange }
+  let validation = dependencyError
+  if (dirty && !validation) try { updateExecutionSettings(initial, input, () => 'guidance-preview') } catch (cause) { validation = cause instanceof Error ? cause.message : '请核对设置。' }
   const submit = async (body: ExecutionSettingsInput) => {
     if (lock.current || uncertain) return false
     lock.current = true; setBusy(true); setError('')
@@ -123,6 +131,7 @@ export function ExecutionSettingsEditor({ settings, selection, onDirtyChange, on
     </select></label> : <label>指导名称<input ref={firstInput} value={title} maxLength={120} readOnly={!editable || uncertain} disabled={busy} data-drawer-dirty={dirty || undefined} onChange={event => setTitle(event.target.value)} /></label>}
     {(!isDefault || policyId) && <label>完整规则<textarea value={text} rows={10} maxLength={20000} readOnly={!editable || uncertain || (isDefault && !policy)} disabled={busy} data-drawer-dirty={dirty || undefined} onChange={event => setText(event.target.value)} /></label>}
     {!isDefault && <p className="v2-detail-note">{guide ? `${guide.origin === 'custom' ? '自定义' : guide.origin === 'imported' ? '导入文本' : '随应用发行'} · 版本 ${guide.version}` : origin === 'imported' ? '来源：明确导入的文本' : '来源：自定义文本'}{guide && editable ? ' · 保存修改会新增版本，旧步骤不变。' : ''}</p>}
+    {!isDefault && <details className="v2-guidance-read"><summary>工具依赖</summary><p>填写能力 ID，用逗号或换行分隔。依赖声明不授予权限；缺必需工具时可保存计划，但不能运行。</p><label>必需工具 ID<textarea rows={3} value={requiredTools} readOnly={!editable || uncertain} disabled={busy} onChange={event => setRequiredTools(event.target.value)} /></label><label>可选工具 ID<textarea rows={3} value={optionalTools} readOnly={!editable || uncertain} disabled={busy} onChange={event => setOptionalTools(event.target.value)} /></label></details>}
     {selection === 'new' && <><input ref={fileInput} hidden type="file" accept=".md,.txt,text/plain,text/markdown" onChange={event => void importFile(event.target.files?.[0])} /><button type="button" className="v2-secondary-button" disabled={busy || uncertain} onClick={() => onRequestLeave(() => fileInput.current?.click())}>从文本导入…</button></>}
     {dirty && diff.hasChanges && <details className="v2-guidance-read"><summary>核对规则变更</summary>{diff.tooLarge ? <p>{isDefault ? initial.defaultOutputPolicy?.text : guide?.text}</p> : <div className="v2-diff">{diff.lines.map((line, index) => <div key={index} className={line.kind}><span>{line.kind === 'added' ? '+' : line.kind === 'removed' ? '−' : ' '}</span>{line.text}</div>)}</div>}</details>}
     {(error || validation) && <p role="alert">{error || validation}</p>}
