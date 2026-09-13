@@ -63,5 +63,5 @@ export async function executeBuiltin(id, args, input, { urls = [], web, signal }
     const page = await web({ url: args.url }, { signal, allowedUrls: urls })
     result = { url: page.url || args.url, text: page.text, warnings: page.warnings }
   } else throw toolError('TOOL_UNAVAILABLE', '内置工具不存在。')
-  return { text: JSON.stringify(result) }
+  return { text: JSON.stringify(result), ...(id === 'mira-output-check' && !result.passed ? { isError: true } : {}) }
 }

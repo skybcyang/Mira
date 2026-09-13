@@ -72,6 +72,8 @@ export function createV2Handlers({
   inspirationPoolStore,
 }) {
   const controllers = new Map()
+  let shuttingDown = false
+  const assertRunningHost = () => { if (shuttingDown) throw typed('RUN_INTERRUPTED', '宿主正在关闭，本次运行未启动。') }
   const deletedCardReceiptsByBoard = new Map()
   const fileBinding = fs ? createFileBindingService({ fs, newId, now }) : null
 
@@ -465,7 +467,8 @@ export function createV2Handlers({
         console.error(`[mira] Run ${run.id} failure could not be resolved:`, persistError)
       }
     } finally {
-      controllers.delete(run.id)
+      // Shutdown still needs the controller identity to persist interruption after HTTP drain.
+      if (!shuttingDown) controllers.delete(run.id)
     }
   }
 
@@ -1131,6 +1134,7 @@ export function createV2Handlers({
     },
 
     async startRun(boardId, transformationId, body = {}) {
+      assertRunningHost()
       let run
       let transformation
       let runStarted = false
@@ -1139,6 +1143,7 @@ export function createV2Handlers({
           transformation = transformationById(board, transformationId)
           if (toolExecution) await toolExecution.prepare(transformation, executeModel)
           else if (transformation.toolPolicy?.tools.length || transformation.toolPolicy?.allowTemporaryPython || transformation.guidance?.requiredTools?.length) throw typed('TOOL_UNAVAILABLE', '此宿主未提供步骤工具执行。')
+          assertRunningHost()
           const sourceRefs =
             body.sourceRefs ||
             transformation.sourceCardIds.map((cardId) => ({
@@ -1171,6 +1176,7 @@ export function createV2Handlers({
             path: cardById(board, snapshot.cardId).versions.find(version => version.id === snapshot.versionId)?.content.path,
           })))
           run = { ...run, status: 'running', startedAt: now() }
+          assertRunningHost()
           await runStore.start(run, boardLease)
           runStarted = true
           assertFrozenRunIsCurrent(board, transformationId, run, transformation)
@@ -1206,6 +1212,7 @@ export function createV2Handlers({
         }
         throw error
       }
+      if (shuttingDown) { await this.interruptRun(run.id); throw typed('RUN_INTERRUPTED', '宿主关闭中断了本次运行。') }
       void executeRun(run, transformation)
       return { run }
     },
@@ -1368,7 +1375,17 @@ export function createV2Handlers({
     },
 
     async interruptActiveRuns() {
-      for (const runId of [...controllers.keys()]) await this.interruptRun(runId)
+      const results = await Promise.allSettled([...controllers.keys()].map(async runId => {
+        await this.interruptRun(runId)
+        controllers.delete(runId)
+      }))
+      const failed = results.find(result => result.status === 'rejected')
+      if (failed) throw failed.reason
+    },
+
+    beginShutdown() {
+      shuttingDown = true
+      for (const controller of controllers.values()) controller.abort()
     },
   }
 }

@@ -19,6 +19,7 @@ it('discovers without enabling, stores no credentials and fails stale CAS', asyn
   expect(result.settings.tools).toHaveLength(1); expect(result.settings.enabled).toEqual([]); expect(calls).toBe(0)
   expect(await readFile(join(root, 'capability-settings-v1.json'), 'utf8')).not.toContain('session-secret')
   const tool = result.settings.tools[0]
+  expect(tool.phases).toEqual(['before', 'model'])
   await expect(service.resolve(tool)).rejects.toMatchObject({ code: 'TOOL_UNAVAILABLE' })
   await service.update({ baseRevision: 1, tool: { id: tool.id, enabled: true, readOnly: false } })
   expect((await service.resolve(tool)).tool.effect).toBe('review')
@@ -28,6 +29,7 @@ it('script versions are immutable and bound to reviewed code and immutable envir
   const { service } = await fixture({ python: { status: async () => ({ available: true, imageId: 'sha256:' + 'a'.repeat(64) }) } })
   const saved = await service.update({ baseRevision: 0, script: { title: '计算', code: 'print(1)', imageId: 'sha256:' + 'a'.repeat(64), inputSchema: { type: 'object' } } })
   const first = saved.settings.scripts[0]
+  expect(saved.settings.tools[0].phases).toEqual(['before', 'model'])
   const next = await service.update({ baseRevision: 1, script: { ...first, code: 'print(2)' } })
   expect(next.settings.scripts[0].code).toBe('print(1)'); expect(next.settings.scripts).toHaveLength(2)
   await expect(service.resolve(saved.settings.tools[0])).rejects.toMatchObject({ code: 'TOOL_UNAVAILABLE' })

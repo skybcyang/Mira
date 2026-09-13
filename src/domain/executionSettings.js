@@ -53,13 +53,14 @@ export function updateExecutionSettings(current, input, newId) {
   } else if (input.guidance !== undefined) {
     const change = input.guidance
     if (!exact(change, ['id', 'title', 'text', 'origin', 'requiredTools', 'optionalTools']) || typeof change.title !== 'string' || typeof change.text !== 'string') fail('请填写指导名称与完整正文。')
+    for (const field of ['requiredTools', 'optionalTools']) if (Object.hasOwn(change, field) && !Array.isArray(change[field])) fail('工具依赖须为能力 ID 列表。')
     const previous = [...next.guidance].reverse().find(item => item.id === change.id)
     if (change.id !== undefined && !previous) fail('这个项目指导已不可用。')
     if (change.origin !== undefined && (!['custom', 'imported'].includes(change.origin) || (previous && change.origin !== previous.origin))) fail('指导来源不能被改写。')
     const guide = { id: previous?.id || newId('guidance'), version: String(Number(previous?.version || 0) + 1),
       title: change.title.trim(), text: change.text, digest: guidanceDigest(change.text, change.requiredTools, change.optionalTools), customized: false,
-      ...(change.requiredTools?.length ? { requiredTools: change.requiredTools } : {}),
-      ...(change.optionalTools?.length ? { optionalTools: change.optionalTools } : {}),
+      ...(change.requiredTools?.length ? { requiredTools: [...change.requiredTools] } : {}),
+      ...(change.optionalTools?.length ? { optionalTools: [...change.optionalTools] } : {}),
       origin: previous?.origin || change.origin || 'custom' }
     validateGuidance(guide)
     if (!previous || previous.title !== guide.title || previous.digest !== guide.digest) next.guidance.push(guide)

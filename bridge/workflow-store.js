@@ -1,7 +1,7 @@
 import { createStorageCoordinator } from './storage-coordinator.js'
 import { typed } from './domain/errors.js'
 import { validateGuidance } from '../src/domain/guidance.js'
-import { validateToolPolicy, methodToolPolicy } from '../src/domain/toolPolicy.js'
+import { validateMethodToolPolicy } from '../src/domain/toolPolicy.js'
 import { validateOutputPolicy } from '../src/domain/outputPolicy.js'
 
 export function validateWorkflow(workflow) {
@@ -57,8 +57,7 @@ export function validateWorkflow(workflow) {
       stepIds.add(step.id)
       try { validateGuidance(step.guidance) } catch { errors.push(`workflow step ${step.id} has invalid guidance`) }
       try {
-        validateToolPolicy(step.toolPolicy)
-        if (step.toolPolicy && JSON.stringify(step.toolPolicy) !== JSON.stringify(methodToolPolicy(step.toolPolicy))) errors.push(`workflow step ${step.id} contains bound tool parameters`)
+        validateMethodToolPolicy(step.toolPolicy)
       } catch { errors.push(`workflow step ${step.id} has invalid tool policy`) }
       try { validateOutputPolicy(step.outputPolicy, step.instruction) } catch { errors.push(`workflow step ${step.id} has invalid output policy`) }
       if (typeof step.label !== 'string' || !step.label.trim()) {

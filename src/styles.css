@@ -9,6 +9,8 @@
 @import './styles/drawer-content.css';
 @import './styles/transformation-detail.css';
 @import './styles/run-and-model-settings.css';
+@import './styles/step-tools.css';
+@import './styles/capability-management.css';
 @import './styles/workflow-library.css';
 @import './styles/notices-and-plan-draft.css';
 @import './styles/board-manager.css';

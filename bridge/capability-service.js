@@ -109,7 +109,7 @@ export function createCapabilityService({ fs, coordinator, path = 'capability-se
     const result = await mutate(input.baseRevision, s => {
       s.connections = [...s.connections.filter(c => c.id !== connection.id), connection]
       s.tools = s.tools.filter(t => t.bindingId !== connection.id)
-      for (const t of found.tools) s.tools.push(toolDefinition({ id: `${connection.id}:${t.name}`, name: t.name, title: t.name.slice(0, 120), description: t.description || t.name, source: 'mcp', inputSchema: t.inputSchema, phases: ['before', 'model', 'after'], effect: 'review', bindingId: connection.id, bindingVersion: sha256Text(JSON.stringify(connection)) }))
+      for (const t of found.tools) s.tools.push(toolDefinition({ id: `${connection.id}:${t.name}`, name: t.name, title: t.name.slice(0, 120), description: t.description || t.name, source: 'mcp', inputSchema: t.inputSchema, phases: ['before', 'model'], effect: 'review', bindingId: connection.id, bindingVersion: sha256Text(JSON.stringify(connection)) }))
       s.enabled = s.enabled.filter(id => s.tools.some(t => t.id === id && t.bindingId !== connection.id))
       return s
     })
@@ -142,7 +142,7 @@ export function createCapabilityService({ fs, coordinator, path = 'capability-se
         try { ajv.compile(p.inputSchema) } catch { fail('CAPABILITY_INVALID', '脚本参数结构无效。') } finally { ajv.removeSchema(p.inputSchema) }
         const script = { id: previous?.id || newId('python'), title: p.title, code: p.code, digest: sha256Text(p.code), imageId: p.imageId, inputSchema: p.inputSchema, version: (previous?.version || 0) + 1 }
         s.scripts.push(script)
-        s.tools = [...s.tools.filter(t => t.bindingId !== script.id), toolDefinition({ id: script.id, title: script.title, description: '已审阅的隔离 Python 脚本；仅接收本次冻结输入。', source: 'python', name: script.id.replaceAll('-', '_'), inputSchema: script.inputSchema, phases: ['before', 'model', 'after'], effect: 'read', bindingId: script.id, bindingVersion: sha256Text(JSON.stringify(script)) })]
+        s.tools = [...s.tools.filter(t => t.bindingId !== script.id), toolDefinition({ id: script.id, title: script.title, description: '已审阅的隔离 Python 脚本；仅接收本次冻结输入。', source: 'python', name: script.id.replaceAll('-', '_'), inputSchema: script.inputSchema, phases: ['before', 'model'], effect: 'read', bindingId: script.id, bindingVersion: sha256Text(JSON.stringify(script)) })]
         s.enabled = s.enabled.filter(id => id !== script.id)
       }
       return s

@@ -193,9 +193,12 @@ export function createStandaloneMiraHost({
     workspaceLock.release()
     throw error
   }
+  const requests = new Set()
   const application = {
     ...coreApplication,
-    async dispatch(method, segments, body, options) {
+    dispatch(method, segments, body, options) {
+      if (closed) return Promise.reject(Object.assign(new Error('宿主正在关闭，请重新打开项目。'), { code: 'HOST_CLOSING' }))
+      const operation = (async () => {
       await coreApplication.ready
       if (method === 'GET' && segments.join('/') === 'v2/application-info') return {
         status: 200, body: applicationInfo ? { desktop: true, version: applicationInfo.version, platform: applicationInfo.platform, architecture: applicationInfo.architecture } : { desktop: false },
@@ -204,6 +207,10 @@ export function createStandaloneMiraHost({
         (await modelSettingsRoute(modelSettings, method, segments, body)) ||
         coreApplication.dispatch(method, segments, body, options)
       )
+      })()
+      requests.add(operation)
+      operation.then(() => requests.delete(operation), () => requests.delete(operation))
+      return operation
     },
   }
   const handleApi = createMiraApiHandler(application)
@@ -252,6 +259,7 @@ export function createStandaloneMiraHost({
   })
 
   let closed = false
+  let closePromise
 
   return {
     application,
@@ -285,21 +293,24 @@ export function createStandaloneMiraHost({
         url: `http://${displayHost}:${address.port}`,
       }
     },
-    async close() {
-      if (closed) return
+    close() {
+      if (closePromise) return closePromise
       closed = true
+      application.handlers.beginShutdown()
       application.materialService.close()
-      try {
-        await application.handlers.interruptActiveRuns()
-        await application.capabilities.close()
-        if (server.listening) {
-          await new Promise((resolveClose, rejectClose) => {
+      closePromise = (async () => {
+        const stoppedServer = server.listening ? new Promise((resolveClose, rejectClose) => {
             server.close((error) => (error ? rejectClose(error) : resolveClose()))
-          })
+          }) : Promise.resolve()
+        try {
+          await Promise.all([stoppedServer, Promise.allSettled([...requests])])
+          await application.handlers.interruptActiveRuns()
+        } finally {
+          await application.capabilities.close()
+          if (!server.listening && requests.size === 0) workspaceLock.release()
         }
-      } finally {
-        workspaceLock.release()
-      }
+      })()
+      return closePromise
     },
   }
 }

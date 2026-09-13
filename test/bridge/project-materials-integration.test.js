@@ -1,4 +1,4 @@
-import { afterEach, expect, it } from 'vitest'
+import { afterEach, expect, it, vi } from 'vitest'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -6,6 +6,7 @@ import { createStandaloneMiraHost } from '../../bridge/node-host.js'
 import { restoreWorkspaceBackup } from '../../bridge/node-backup-restore.js'
 import { createFileBindingService } from '../../bridge/domain/file-binding.js'
 import { createNodeWorkspaceAdapter } from '../../bridge/node-workspace-adapter.js'
+import { listBuiltinTools } from '../../src/domain/toolPolicy.js'
 
 const roots = [], hosts = []
 afterEach(async () => { for (const host of hosts.splice(0)) await host.close(); for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true }) })
@@ -55,6 +56,24 @@ it('injects Node tool capabilities but saves host configuration only under the p
   await expect(readFile(join(root, 'capability-settings-v1.json'))).rejects.toMatchObject({ code: 'ENOENT' })
   const backup = await app.backupService.exportBackup()
   expect(JSON.stringify(backup)).not.toContain('pythonImageId')
+})
+it('prevents a Run still preparing inputs from starting after Host shutdown', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'mira-host-shutdown-')); roots.push(root)
+  let release, entered = false, modelCalls = 0
+  const ready = new Promise(resolve => { release = resolve })
+  const host = createStandaloneMiraHost({ workspaceRoot: root, executeModel: async () => { modelCalls++; return { outputText: 'late' } } }); hosts.push(host)
+  const app = host.application; await app.ready
+  const board = await app.boardStore.create('shutdown'), { card } = await app.handlers.createCard(board.id, { markdown: 'input' })
+  const tool = listBuiltinTools().find(t => t.id === 'mira-calculator')
+  const { transformation } = await app.handlers.createTransformation(board.id, { label: 'step', instruction: 'sum', sourceRefs: [{ cardId: card.id, versionId: card.headVersionId }], toolPolicy: { tools: [{ id: 'calc', tool, phase: 'before', arguments: { operation: 'sum', values: [1] } }], allowTemporaryPython: false } })
+  app.capabilities.resolve = async tool => { entered = true; await ready; return { tool } }
+  const pending = app.dispatch('POST', ['v2', 'boards', board.id, 'transformations', transformation.id, 'runs'])
+  pending.catch(() => {})
+  await vi.waitFor(() => expect(entered).toBe(true))
+  const closing = host.close(); release()
+  await expect(pending).rejects.toMatchObject({ code: 'RUN_INTERRUPTED' })
+  await closing
+  expect(modelCalls).toBe(0); expect(await app.runStore.listStrict()).toEqual([])
 })
 it('preserves managed originals in checkpoints, forks, and full backup restore', async () => {
   const { root, app } = await setup()
