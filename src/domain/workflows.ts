@@ -17,6 +17,7 @@ export type WorkflowStepSource =
   | { kind: 'previous-output'; scope?: 'select-before-run' }
 
 export interface WorkflowStepTemplate {
+  toolPolicy?: import('./toolPolicy.js').ToolPolicy
   guidance?: import('./guidance.js').GuidanceSnapshot
   outputPolicy?: import('./outputPolicy.js').OutputPolicy
   id: string
