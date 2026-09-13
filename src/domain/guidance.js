@@ -27,17 +27,18 @@ export function listGuidance() { return updated.map(item => ({ ...item })) }
 
 export function validateGuidance(value) {
   if (value === undefined) return
-  if (!object(value) || Object.keys(value).some(key => !['id', 'version', 'title', 'text', 'digest', 'customized'].includes(key))
+  if (!object(value) || Object.keys(value).some(key => !['id', 'version', 'title', 'text', 'digest', 'customized', 'origin'].includes(key))
     || !text(value.id, 128) || !text(value.version, 64) || !text(value.title, 120)
     || !text(value.text, 20000) || /[\u0000\uFFFD]/.test(value.text)
+    || (value.origin !== undefined && !['custom', 'imported'].includes(value.origin))
     || typeof value.customized !== 'boolean' || value.digest !== sha256Text(value.text)) throw invalid('指导快照不完整或正文校验失败。')
 }
 
-export function resolveGuidance(input) {
+export function resolveGuidance(input, projectEntries = []) {
   if (input === null || input === undefined) return undefined
   if (!object(input) || Object.keys(input).some(key => !['id', 'version', 'text'].includes(key))
     || !text(input.id, 128) || !text(input.version, 64)) throw invalid('请选择指导及其版本。')
-  const entry = [...updated, ...catalog].find(item => item.id === input.id && item.version === input.version)
+  const entry = [...updated, ...catalog, ...projectEntries].find(item => item.id === input.id && item.version === input.version)
   if (!entry) throw Object.assign(new Error('所选指导版本不可用，请重新查看可用指导。'), { code: 'GUIDANCE_UNAVAILABLE' })
   const actualText = input.text === undefined ? entry.text : input.text
   if (!text(actualText, 20000)) throw invalid('指导正文需要 1 到 20000 个字符。')

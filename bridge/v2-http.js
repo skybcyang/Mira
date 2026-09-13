@@ -9,6 +9,7 @@ import { createSourceSnapshots, createTransformationRun } from './domain/snapsho
 import { contentDigest } from '../src/domain/sourceScopes.js'
 import { resolveGuidance, assertGuidanceCriteria } from '../src/domain/guidance.js'
 import { resolveOutputPolicy, validateOutputPolicy, checkOutput } from '../src/domain/outputPolicy.js'
+import { projectGuidance, resolveStepOutput } from '../src/domain/executionSettings.js'
 import { reviseExtractionCard } from './domain/extraction-revisions.js'
 import { confirmSourceScopes, scopesFromRefs, updateSourceScopes } from './domain/source-scopes.js'
 import { validateBoardV2 } from './domain/validation.js'
@@ -47,6 +48,7 @@ import {
 } from './v2-http-policy.js'
 
 export function createV2Handlers({
+  executionSettingsStore,
   store,
   runStore,
   newId,
@@ -893,9 +895,10 @@ export function createV2Handlers({
         const sourceCardIds = body.sourceRefs.map((sourceRef) => sourceRef.cardId)
         const sourceScopes = await confirmSourceScopes(board, scopesFromRefs(body.sourceRefs), sourceCardIds, readFileContent)
         const timestamp = now()
-        const guidance = resolveGuidance(body.guidance)
+        const settings = await executionSettingsStore?.load()
+        const guidance = resolveGuidance(body.guidance, projectGuidance(settings, false))
         assertGuidanceCriteria(guidance, body.acceptance)
-        const outputPolicy = resolveOutputPolicy(body.outputPolicy)
+        const outputPolicy = resolveStepOutput(body.outputPolicy, settings)
         validateOutputPolicy(outputPolicy, body.instruction)
         const targetCard = {
           id: newId('card'),
@@ -948,12 +951,13 @@ export function createV2Handlers({
         const timestamp = now()
         const targetCards = []
         const transformations = []
+        const settings = await executionSettingsStore?.load()
         for (const entry of entries) {
           const label = String(entry?.label || '').trim()
           const instruction = String(entry?.instruction || '').trim()
-          const guidance = resolveGuidance(entry?.guidance)
+          const guidance = resolveGuidance(entry?.guidance, projectGuidance(settings, false))
           assertGuidanceCriteria(guidance, entry?.acceptance)
-          const outputPolicy = resolveOutputPolicy(entry?.outputPolicy)
+          const outputPolicy = resolveStepOutput(entry?.outputPolicy, settings)
           validateOutputPolicy(outputPolicy, instruction)
           if (!label || !instruction) {
             throw typed('TRANSFORMATION_INVALID', '成果名称和目标不能为空')
@@ -1041,7 +1045,7 @@ export function createV2Handlers({
           assertSourcesDoNotCloseCycle(board, current, sourceCardIds)
         }
         const sourceScopes = await updateSourceScopes(board, current, body, sourceCardIds, readFileContent)
-        const guidance = has('guidance') ? resolveGuidance(body.guidance) : current.guidance
+        const guidance = has('guidance') ? resolveGuidance(body.guidance, projectGuidance(await executionSettingsStore?.load(), false)) : current.guidance
         assertGuidanceCriteria(guidance, acceptance)
         const outputPolicy = has('outputPolicy') ? resolveOutputPolicy(body.outputPolicy) : current.outputPolicy
         validateOutputPolicy(outputPolicy, instruction)

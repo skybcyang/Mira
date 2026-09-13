@@ -199,6 +199,8 @@ export const v2Api = {
   }) => request<{ card: ContentCard; noop: boolean; fileSync?: FileSyncResult }>('POST', `/boards/${boardId}/cards/${cardId}/extraction-revisions`, body),
   getGuidance: () => request<{ guidance: import('./domain/guidance.js').GuidanceSnapshot[] }>('GET', '/guidance'),
   getOutputPolicies: () => request<{ policies: import('./domain/outputPolicy.js').OutputPolicy[] }>('GET', '/output-policies'),
+  getExecutionSettings: () => request<{ settings: import('./domain/executionSettings.js').ExecutionSettings }>('GET', '/execution-settings'),
+  updateExecutionSettings: (body: import('./domain/executionSettings.js').ExecutionSettingsInput) => request<{ settings: import('./domain/executionSettings.js').ExecutionSettings }>('PATCH', '/execution-settings', body),
   extractCards: (boardId: string, cardId: string, body: { baseVersionId: string; items: ExtractionItem[] }) =>
     request<{ cards: ContentCard[] }>('POST', `/boards/${boardId}/cards/${cardId}/extractions`, body),
   getInspirationPool: () => request<{ pool: InspirationPool }>('GET', '/inspiration-pool'),

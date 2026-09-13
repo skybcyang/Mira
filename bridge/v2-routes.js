@@ -1,4 +1,4 @@
-import { listGuidance } from '../src/domain/guidance.js'
+import { guidanceCatalog } from '../src/domain/executionSettings.js'
 import { listOutputPolicies } from '../src/domain/outputPolicy.js'
 
 function notFound(method, segments) {
@@ -12,7 +12,11 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
   if (segments[0] !== 'v2') return null
   const seg = segments.slice(1)
   if (method === 'GET' && seg.length === 1 && seg[0] === 'application-info') return { status: 200, body: { desktop: false } }
-  if (method === 'GET' && seg.length === 1 && seg[0] === 'guidance') return { status: 200, body: { guidance: listGuidance() } }
+  if (method === 'GET' && seg.length === 1 && seg[0] === 'guidance') return { status: 200, body: { guidance: guidanceCatalog(await dependencies.executionSettingsStore?.load()) } }
+  if (seg.length === 1 && seg[0] === 'execution-settings' && dependencies.executionSettingsStore) {
+    if (method === 'GET') return { status: 200, body: { settings: await dependencies.executionSettingsStore.load() } }
+    if (method === 'PATCH') return { status: 200, body: { settings: await dependencies.executionSettingsStore.update(body) } }
+  }
   if (method === 'GET' && seg.length === 1 && seg[0] === 'output-policies') return { status: 200, body: { policies: listOutputPolicies() } }
   const {
     store,

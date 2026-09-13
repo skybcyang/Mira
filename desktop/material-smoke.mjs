@@ -7,6 +7,6 @@ export async function verifyPackedMaterialReader(application) {
     const { image } = await application.materialService.page(preview.previewId, 1)
     if (!image?.startsWith('data:image/png;base64,')) throw new Error('Packed PDF page rendering failed')
     const backup = await application.backupService.exportBackup()
-    if (backup.formatVersion !== 3 || backup.assets.length !== 1) throw new Error('Packed backup did not include the PDF original')
+    if (backup.formatVersion !== 4 || !backup.executionSettings || backup.assets.length !== 1) throw new Error('Packed backup did not include project settings and the PDF original')
   } finally { application.materialService.release(preview.previewId) }
 }

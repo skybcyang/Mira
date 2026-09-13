@@ -898,6 +898,24 @@ GET /output-policies 返回当前三种发行规则（concise/balanced/detailed�
 
 外部基础路径：`/graphmind/api/v2`。下表的 Path 省略该前缀。
 
+### 项目执行设置与指导目录（2026-09-14，第二实施批）
+
+`ExecutionSettings = { schemaVersion: 1, revision, defaultOutputPolicy: OutputPolicy | null, guidance: GuidanceSnapshot[], disabledGuidanceIds: string[] }`。项目布局存入 `.mira/execution-settings-v1.json`，旧布局存同名根文件。文件缺失读取为 revision 0、发行 concise、空目录，不因读取写文件；损坏/不可读时明确失败。revision 是非负安全整数，每次有效变更加一；同值保存零修改。整个聚合严格字段校验、串行 CAS、临时文件重读校验与原子 replace，并使用共享 mutation/snapshot lease。
+
+默认仅配置风格及完整文本，format 必须 auto 且不设字符上限；null 为新步骤使用原有表达。创建单步、批量步骤、直接计划在命令内读取一次默认并冻结；显式传值优先，PATCH 不补默认，方法精确复用自身规则。读取与保存失败不退回发行默认。默认不会自动随发行版本升级。
+
+指导快照增加可选 `origin: 'custom' | 'imported'`；内置缺字段兼容。目录只允许服务生成的 `guidance-` 前缀 ID，版本为从 1 开始的连续正整数字符串；同 ID 的来源不变，每次名称/正文变更加一版，旧版不改写。最多 200 个版本，disabledGuidanceIds 唯一且只能引用目录身份。名称、正文与摘要沿用指导快照长度和完整性契约。目录来源只是录入方式，不证明作者身份；文本内依赖声明不被当作可执行资源。
+
+`GET /execution-settings` 返回 `{ settings }`。`PATCH /execution-settings` 接受 `{ baseRevision, defaultOutputPolicy? , guidance?: { id?, title, text, origin? }, disabledGuidance?: { id, disabled } }`，每次只能提交一种操作；全部未知字段拒绝。新指导不带 id，可明确选择 custom/imported；修改带 id，来源沿用已有记录。停用可恢复，旧步骤仍用快照运行，目录不提供物理删除。
+
+`GET /guidance` 返回当前内置版与未停用的项目指导最新版；普通创建/配置指导按当前项目目录核对精确版本，再冻结原文或用户调整的文本。旧版目录仍可精确解析，停用后不可新选；旧步骤不因此失效。跨项目导入快照只读复用，不因同名指导自动安装或替换。修改前展示原规则/新版全文差异。
+
+新增 EXECUTION_SETTINGS_INVALID (422)、EXECUTION_SETTINGS_CONFLICT (409)、EXECUTION_SETTINGS_READ_FAILED / EXECUTION_SETTINGS_WRITE_FAILED (500)。具体规则/指导输入仍使用既有 OUTPUT_POLICY_INVALID / GUIDANCE_INVALID (422)、OUTPUT_POLICY_UNAVAILABLE (409)。保存失败/响应不确定保留草稿与原 revision，重新读取核对后再提交；不能静默拿新 revision 重放旧操作。
+
+MiraBackup V4 继承 V3 原件与检查点，必含 executionSettings；严格验证目录和默认，恢复到新建/空项目时精确重读并随整个 staging 根原子提交。V1–V3 不带本字段，恢复后按缺文件默认处理。单 BoardArtifact、CardPackage 和 Checkpoint 不安装项目目录，已使用的指导/输出快照仍保留。旧版恢复器拒绝未知 V4，避免静默丢目录。
+
+验收：默认只影响之后创建；批量/计划一致冻结；并发配置 CAS、坏摘要及写失败零半写；自定义/文本导入/新增版本/停用/恢复均零 Run；精确指导进入模型，旧 Run/方法不漂移；V4 备份恢复及旧包兼容；桌面/390px 草稿、目录切换、错误恢复与焦点可达。
+
 ```ts
 type BoardLifecycleState = 'active' | 'archived' | 'trashed'
 
@@ -1201,8 +1219,8 @@ interface GuidanceSnapshot {
 // TransformationRun.guidanceSnapshot?: GuidanceSnapshot
 ```
 
-- `GET /guidance` 只列出随应用发行、已审阅的上述三种指导及版本、完整正文。它不是全局 WorkflowTemplate 库，不扫描系统技能目录、不安装包、不执行 Markdown 内代码。
-- Transformation 创建/批量创建及 PATCH 可提交 `guidance: { id, version, text? } | null`。缺失保留原行为；null 明确移除。服务核对发行目录中的精确 id/version；若 text 缺失取该版本正文，若用户显式调整 text 则保存实际指导并标 customized。文本非空且最多 20,000 字符，其他字段由服务生成。PATCH 复用 baseUpdatedAt、Board、Run/Candidate 门禁，零 Run。
+- `GET /guidance` 包含随应用发行的上述三种指导及完整正文；项目指导目录的版本、停用和导入规则见“项目执行设置与指导目录”。它不是全局 WorkflowTemplate 库，不扫描系统技能目录、不安装包、不执行 Markdown 内代码。
+- Transformation 创建/批量创建及 PATCH 可提交 `guidance: { id, version, text? } | null`。缺失保留原行为；null 明确移除。服务核对可选目录中的精确 id/version；若 text 缺失取该版本正文，若用户显式调整 text 则保存实际指导并标 customized。文本非空且最多 20,000 字符，其他字段由服务生成。PATCH 复用 baseUpdatedAt、Board、Run/Candidate 门禁，零 Run。
 - 每步最多一种指导；自由填写的 instruction/acceptance 仍是独立可编辑的用户意图，不被指导的默认目标替换。证据对照要求用户填写实际检查标准；精读区分原文、解释、推断和未答问题；修订按用户反馈生成新目标卡正文并保留其约束。指导中的示例不是默认分析维度。
 - Run 在创建前冻结当前 guidanceSnapshot，构造 prompt 时只用这份文本；库文件变动不能改变运行中或历史 Run。公开进度不记录指导全文，运行详情提供单独只读“本次指导”。导入的指导文本永远作为普通模型指导，不获得网络、文件或脚本执行权限，来源材料内的指令仍当作数据。
 - 保存方法时复制步骤的完整冻结指导，应用时原样复制；即使新版本应用目录不再包含旧版，已保存快照仍可用。未知 id 不能通过直接设置伪装为官方内置项；可移植数据对已有旧快照保留标识并标“来自导入”，不因快照而安装目录项。摘要、字段和长度必须严格校验，缺字段的旧 Board/Run/Workflow 无需迁移。

@@ -60,6 +60,7 @@ const nodeTypes = {
 const DetailDrawer = lazy(() => import('./v2/DetailDrawer'))
 const WorkflowLibrary = lazy(() => import('./v2/WorkflowLibrary'))
 const ModelSettings = lazy(() => import('./v2/ModelSettings'))
+const ExecutionSettings = lazy(() => import('./v2/ExecutionSettings'))
 const InspirationPicker = lazy(() => import('./v2/InspirationPicker'))
 const FilePicker = lazy(() => import('./v2/FilePicker'))
 const BoardManager = lazy(() => import('./v2/BoardManager'))
@@ -685,6 +686,7 @@ function V2Canvas({ appearance, setAppearance }: {
         void refreshBoardCatalog().catch(() => {})
       })}
       openModelSettings={() => requestPanelChange('model')}
+      openExecutionSettings={() => requestPanelChange('execution')}
     />
     <div ref={canvasShellRef} className="v2-canvas-shell" aria-busy={loadState === 'loading'}>
       <ReactFlow nodes={displayNodes} edges={displayEdges} nodeTypes={nodeTypes} onNodesChange={onNodesChange}
@@ -769,6 +771,8 @@ function V2Canvas({ appearance, setAppearance }: {
         />
         : sidePanel === 'model'
           ? <ModelSettings onClose={() => openPanel(null)} />
+          : sidePanel === 'execution'
+            ? <ExecutionSettings onClose={() => openPanel(null)} onDirtyChange={handlePlanDirtyChange} onRequestLeave={requestDrawerIntent} />
           : null}</div>}
       {((!sidePanel && !boardHistoryTarget) || sourcePreview) && <DetailDrawer
             sourcePreview={sourcePreview}
@@ -783,7 +787,7 @@ function V2Canvas({ appearance, setAppearance }: {
           />}
     </Suspense>}
     {pendingDrawerIntent && <DrawerLeaveConfirmation
-      plan={planDirty}
+      plan={planDirty && sidePanel !== 'execution'}
       switching={switchingCard}
       onSave={drawer?.tab === 'content' && drawer.mode !== 'extract' && drawer.mode !== 'split' ? async () => {
         const origin = useV2Canvas.getState()
@@ -798,7 +802,7 @@ function V2Canvas({ appearance, setAppearance }: {
       } : undefined}
       onContinue={() => {
         setPendingDrawerIntent(null)
-        if (planDirty) requestAnimationFrame(() => document.querySelector<HTMLInputElement>('.v2-plan-composer input')?.focus())
+        if (planDirty && sidePanel !== 'execution') requestAnimationFrame(() => document.querySelector<HTMLInputElement>('.v2-plan-composer input')?.focus())
         else restoreDrawerEditingFocus(document)
       }}
       onDiscard={() => {

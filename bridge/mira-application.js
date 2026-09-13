@@ -14,6 +14,7 @@ import { BoardCheckpointStore } from './board-checkpoint-store.js'
 import { createBoardCheckpointService } from './board-checkpoint-service.js'
 import { createMaterialService } from './material-service.js'
 import { createCardPortabilityService } from './card-portability-service.js'
+import { ExecutionSettingsStore } from './execution-settings-store.js'
 
 function defaultNewId(prefix = 'id') {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36)}`
@@ -47,6 +48,7 @@ export function createMiraStores({
 }) {
   if (!fs) throw new TypeError('A storage adapter is required')
   const coordinator = createStorageCoordinator()
+  const executionSettingsStore = new ExecutionSettingsStore(fs, { coordinator, newId, path: directories.executionSettings })
   const boardStore = new V2BoardStore(fs, directories.boards || 'boards-v2', {
     coordinator,
     newId,
@@ -76,6 +78,7 @@ export function createMiraStores({
     workflowStore,
     inspirationPoolStore,
     checkpointStore,
+    executionSettingsStore,
   }
 }
 
@@ -113,6 +116,8 @@ export function createMiraApplication({
     throw new TypeError('Mira stores must share the supplied storage coordinator')
   }
   if (!storageFs) throw new TypeError('A storage adapter is required for Board import recovery')
+  const executionSettingsStore = resolvedStores.executionSettingsStore || new ExecutionSettingsStore(storageFs, { coordinator, newId, path: directories?.executionSettings })
+  if (executionSettingsStore.coordinator !== coordinator) throw new TypeError('Mira stores must share the supplied storage coordinator')
   const checkpointStore = resolvedStores.checkpointStore || new BoardCheckpointStore(
     storageFs,
     directories?.checkpoints || 'board-checkpoints-v1',
@@ -123,6 +128,7 @@ export function createMiraApplication({
   }
 
   const handlers = createV2Handlers({
+    executionSettingsStore,
     store: boardStore,
     inspirationPoolStore,
     runStore,
@@ -136,6 +142,7 @@ export function createMiraApplication({
     checkpointStore,
   })
   const workflowService = createWorkflowService({
+    executionSettingsStore,
     boardStore,
     workflowStore,
     newId,
@@ -175,6 +182,7 @@ export function createMiraApplication({
     now,
   })
   const backupService = createBackupService({
+    executionSettingsStore,
     coordinator,
     boardStore,
     runStore,
@@ -225,6 +233,7 @@ export function createMiraApplication({
     return (
       (await dispatchV2Route(method, segments, body, {
         store: boardStore,
+        executionSettingsStore,
         handlers,
         workflowService,
         inspirationPoolHandlers,
@@ -246,6 +255,7 @@ export function createMiraApplication({
   return {
     ...resolvedStores,
     handlers,
+    executionSettingsStore,
     workflowService,
     inspirationPoolStore,
     inspirationPoolHandlers,

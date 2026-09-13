@@ -315,7 +315,7 @@ describe('board organization', () => {
     await fs.writeText('organization-backup.json', JSON.stringify(backup))
     const workspaceRoot = join(fs.root, 'restored')
     await restoreWorkspaceBackup({ inputPath: join(fs.root, 'organization-backup.json'), workspaceRoot })
-    const restoredApp = createMiraApplication({ fs: createNodeWorkspaceAdapter(workspaceRoot) })
+    const restoredApp = createMiraApplication({ fs: createNodeWorkspaceAdapter(join(workspaceRoot, '.mira')) })
     await restoredApp.ready
     expect((await restoredApp.boardStore.load('board')).groups).toEqual(groups)
     const restoredCheckpoint = await restoredApp.checkpointStore.load('board', checkpoint.id)
