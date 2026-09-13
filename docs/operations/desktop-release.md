@@ -34,7 +34,7 @@ workflow 只上传有效期 7 天的 Actions 审阅附件，权限为 contents: 
 
 只读 `GET /application-info` 由 Node Host 返回白名单版本/平台/架构，普通 Bridge 返回 `{ desktop: false }`；不暴露宿主路径或秘密配置。
 
-1. 保存正文与计划草稿，处理 Candidate，结束活动 Run。备份 Mira 数据，并另行保管引用原文件；关闭所有使用该 workspace 的 Mira 实例。
+1. 保存正文与计划草稿，处理 Candidate，结束活动 Run。备份 Mira 数据；新备份已包含明确收纳的原件，未收纳的旧引用文件和项目其他文件仍需另行保管。关闭所有使用该 workspace 的 Mira 实例。
 2. 下载与系统/架构一致的明确版本，核对发布 manifest 与 SHA-256。macOS 使用 `shasum -a 256 <asset>`，Windows 使用 `Get-FileHash -Algorithm SHA256 <asset>`；再核对系统签名、公证和发行说明。
 3. 在隔离副本先检查启动、旧 Board/Run/Workflow/池/Checkpoint 阅读，以及新版本保存后重新打开。macOS 替换应用；Windows 整体解压新目录并从新目录启动，不混用旧 DLL。当前工作区路径不随应用目录搬迁。
 4. 回退只在旧版本已验证兼容当前格式时直接更换应用。不兼容时，保留新工作区，把升级前备份恢复到全新或空目录，再由旧版本打开副本；不覆盖、不批量降级改写当前数据。
@@ -42,3 +42,5 @@ workflow 只上传有效期 7 天的 Actions 审阅附件，权限为 contents: 
 每个目标记录旧/新版本与 SHA、系统和 CPU、签名检查、操作、实际结果、数据前后摘要、恢复路径和截图。浏览器、Rosetta 或 mock 不能替代 Windows 原生/Intel Mac 客户端证据。本批只有 Mac 本地构建与 packed smoke，签名、四原生目标与真实升级回退尚待环境验证，详见[本批报告](../validation/2026-09-13-a3-b8-validation.md)。
 
 应用内自动更新属于后续阶段：先定义平台安装格式、签名 feed、用户确认、草稿/运行退出及失败恢复，再实现；本次未接 updater。
+
+2026-09-13 项目工作区安装补充：本机 arm64 已从 `95a8e8c` 主干构建替换，实际旧布局复制到新项目，原目录和旧应用保留；完整备份及恢复副本重启验证通过，见[迁移、安装与回退记录](../validation/2026-09-13-project-workspace-install.md)。这不替代正式签名或其他原生目标验收。
