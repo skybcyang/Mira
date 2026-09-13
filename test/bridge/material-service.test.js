@@ -2,6 +2,30 @@ import { expect, it, vi } from 'vitest'
 import { createMaterialService } from '../../bridge/material-service.js'
 
 const data = () => ({ text: '第一段\n第二段😀', title: '材料', url: 'https://example.com/article', sourceDigest: 'a'.repeat(64), reader: { id: 'test', version: '1' }, warnings: [], byteLength: 20 })
+it('does not attach a changed PDF original to an earlier reading snapshot', async () => {
+  const createCard = vi.fn()
+  const service = createMaterialService({ readers: { pdf: async () => ({ ...data(), pages: [{ page: 1, start: 0, end: 10, status: 'text' }] }) }, createCard,
+    managedMaterials: { importFile: async () => ({ path: 'changed.pdf', asset: { sha256: 'b'.repeat(64) } }) } })
+  try {
+    const { preview } = await service.preview({ kind: 'pdf', path: 'source.pdf' })
+    await expect(service.saveCard('board', { previewId: preview.previewId, spans: [{ start: 0, end: 3 }] })).rejects.toMatchObject({ code: 'MATERIAL_PREVIEW_CONFLICT' })
+    expect(createCard).not.toHaveBeenCalled()
+  } finally { service.close() }
+})
+it('retains a web original only on explicit save, once, and attaches its path to copied excerpts', async () => {
+  const path = `materials/${'a'.repeat(64)}/original.txt`
+  const materials = { importText: vi.fn(async () => ({ path })) }
+  const service = createMaterialService({ readers: { web: async () => data() }, managedMaterials: materials, createCard: async (_id, value) => value })
+  try {
+    const { preview } = await service.preview({ kind: 'web', url: 'https://example.com/article' })
+    expect(materials.importText).not.toHaveBeenCalled()
+    await service.saveOriginal(preview.previewId)
+    const result = await service.saveCard('board', { previewId: preview.previewId, spans: [{ start: 0, end: 3 }] })
+    expect(materials.importText).toHaveBeenCalledTimes(1)
+    expect(materials.importText.mock.calls[0][0]).toBe(data().text)
+    expect(result.materialOrigin.assetPath).toBe(path)
+  } finally { service.close() }
+})
 it('bounds concurrent previews and disposes released or over-budget adapter results', async () => {
   let serial = 0
   const dispose = vi.fn()

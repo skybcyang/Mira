@@ -16,6 +16,7 @@ import {
   isObject,
   nonEmptyString,
 } from './guards.js'
+import { validateAssetClosure } from './managed-assets.js'
 
 function codeFor(operation) {
   return operation === 'export' ? 'BOARD_EXPORT_INVALID' : 'BOARD_IMPORT_INVALID'
@@ -225,7 +226,7 @@ function deriveExternalReferences({ board, runs, workflowProvenance }) {
 function validateArtifactEnvelope(artifact, operation) {
   if (!isObject(artifact)) fail(operation, 'BoardArtifact must be an object')
   if (artifact.format !== 'mira-board') fail(operation, 'Invalid BoardArtifact format')
-  if (artifact.formatVersion !== 1) fail(operation, 'Unsupported BoardArtifact formatVersion')
+  if (![1, 2].includes(artifact.formatVersion)) fail(operation, 'Unsupported BoardArtifact formatVersion')
   if (!nonEmptyString(artifact.exportedAt)) fail(operation, 'BoardArtifact exportedAt is invalid')
   if (!isObject(artifact.board)) fail(operation, 'BoardArtifact board must be an object')
   for (const field of ['runs', 'workflowProvenance', 'fileDependencies', 'externalReferences']) {
@@ -269,6 +270,9 @@ function assertExactExternalReferences(actual, expected, operation) {
 export function validateBoardArtifact(artifact, options = {}) {
   const operation = options.operation === 'export' ? 'export' : 'import'
   validateArtifactEnvelope(artifact, operation)
+  if (artifact.formatVersion === 2) {
+    try { validateAssetClosure(artifact, artifact.assets, { exact: true }) } catch (error) { fail(operation, error.message) }
+  } else if (artifact.assets !== undefined) fail(operation, 'V1 artifacts cannot contain managed assets')
 
   try {
     validatePortableBoard(artifact.board)

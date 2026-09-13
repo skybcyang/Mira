@@ -4,6 +4,7 @@ import { v2Api, type FileBrowseEntry, type FileBrowseResult } from '../v2Api'
 import { useV2Canvas } from '../v2Store'
 import { confirmLabel, locationLabel, pickModeForEntry, selectionDetail, browseErrorMessage } from './filePickerPolicy'
 import { MaterialReader } from './MaterialReader'
+import { MaterialLibrary } from './MaterialLibrary'
 
 export default function FilePicker({
   anchor,
@@ -16,7 +17,6 @@ export default function FilePicker({
   cardId?: string
   onClose: (outcome: 'cancel' | 'complete') => void
 }) {
-  const createFileCard = useV2Canvas((state) => state.createFileCard)
   const bindCardFile = useV2Canvas((state) => state.bindCardFile)
   const board = useV2Canvas(state => state.board)
   const writableBoard = Boolean(board && (!board.lifecycle || board.lifecycle.state === 'active'))
@@ -26,6 +26,7 @@ export default function FilePicker({
   const [error, setError] = useState<string | null>(null)
   const [selected, setSelected] = useState<FileBrowseEntry | null>(null)
   const [busy, setBusy] = useState(false)
+  const [library, setLibrary] = useState(false), [importMessage, setImportMessage] = useState('')
   const [reader, setReader] = useState<{ path?: string } | null>(null)
   const [readerDirty, setReaderDirty] = useState(false)
   const [readerSaving, setReaderSaving] = useState(false)
@@ -65,7 +66,7 @@ export default function FilePicker({
 
   async function confirm(overwrite = false) {
     if (!selected || busy) return
-    if (!writableBoard && (mode === 'binding' || !/\.pdf$/i.test(selected.path))) { setError('先打开可写画板，再添加文件引用。仍可阅读 PDF 或剪藏网页。'); return }
+    if (!writableBoard && mode === 'binding') { setError('先打开可写画板，再绑定文件。'); return }
     setBusy(true)
     setError(null)
     try {
@@ -73,13 +74,13 @@ export default function FilePicker({
       if (mode === 'binding') {
         if (!cardId || path === null) throw new Error('只能绑定工作区内文件')
         if (!(await bindCardFile(cardId, path, overwrite))) return
-      } else if (path === null) {
-        path = (await v2Api.importFile(selected.path)).path
-        if (/\.pdf$/i.test(path)) { setReader({ path }); return }
-        await createFileCard(anchor, path)
       } else {
-        if (/\.pdf$/i.test(path)) { setReader({ path }); return }
-        await createFileCard(anchor, path)
+        const imported = await v2Api.importFile(selected.path)
+        path = imported.path
+        setImportMessage(imported.copied ? `“${selected.name}”已复制到项目。` : `“${selected.name}”已在材料库中。`)
+        setLibrary(true)
+        if (/\.pdf$/i.test(path)) setReader({ path })
+        return
       }
       onClose('complete')
     } catch (cause) {
@@ -104,9 +105,11 @@ export default function FilePicker({
       <h2 id="v2-file-picker-title"><FileText size={17} />{mode === 'binding' ? '绑定本地文件' : '材料'}</h2>
       <button className="v2-icon-button" type="button" aria-label="关闭文件选择器" title="关闭" disabled={busy || readerSaving} onClick={() => requestLeave(() => onClose('cancel'))}><X size={17} /></button>
     </header>
+    {importMessage && <p className="v2-material-origin" role="status">{importMessage}</p>}
     {leaving && <section className="v2-material-leave" role="alert"><p>选择和备注尚未保存。离开会放弃本次草稿。</p><button className="v2-primary-button" autoFocus type="button" onClick={() => setLeaving(false)}>继续阅读</button><button className="v2-secondary-button" type="button" onClick={() => { setLeaving(false); leaveAction.current?.() }}>放弃草稿并离开</button></section>}
     {reader ? <MaterialReader path={reader.path} onStateChange={readerState} onBack={() => requestLeave(() => setReader(null))} /> : <>
-    {mode === 'card' && <div className="v2-material-source-tabs"><span>本地文件</span><button type="button" className="v2-secondary-button" onClick={() => setReader({})}>读取公开网页</button></div>}
+    {mode === 'card' && <div className="v2-material-source-tabs"><button type="button" className="v2-secondary-button" aria-pressed={library} disabled={busy || readerSaving} onClick={() => setLibrary(true)}>已收纳材料</button><button type="button" className="v2-secondary-button" aria-pressed={!library} disabled={busy || readerSaving} onClick={() => setLibrary(false)}>导入文件</button><button type="button" className="v2-secondary-button" disabled={busy || readerSaving} onClick={() => setReader({})}>读取公开网页</button></div>}
+    {library && mode === 'card' ? <MaterialLibrary anchor={anchor} onReadPdf={path => setReader({ path })} onBusy={setReaderSaving} /> : <>
     <nav className="v2-file-picker-nav" aria-label="目录导航">
       <button
         className="v2-icon-button"
@@ -158,9 +161,9 @@ export default function FilePicker({
         <button
           className="v2-file-picker-confirm"
           type="button"
-          disabled={!selected || busy || (!writableBoard && !/\.pdf$/i.test(selected?.path || ''))}
+          disabled={!selected || busy || (mode === 'binding' && !writableBoard)}
           onClick={() => void confirm()}
-        >{busy ? (mode === 'binding' ? '正在绑定…' : '正在添加…') : (mode === 'binding' ? '绑定此文件' : selected && /\.pdf$/i.test(selected.path) ? '阅读 PDF' : confirmLabel(selectedMode || 'reference'))}</button>
+        >{busy ? (mode === 'binding' ? '正在绑定…' : '正在导入…') : (mode === 'binding' ? '绑定此文件' : confirmLabel(selectedMode || 'copy'))}</button>
         {mode === 'binding' && <button
           className="v2-file-picker-overwrite"
           type="button"
@@ -169,6 +172,7 @@ export default function FilePicker({
         >覆盖并绑定</button>}
       </div>
     </footer>
+    </>}
     </>}
   </dialog>
 }

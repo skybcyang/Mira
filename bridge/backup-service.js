@@ -10,6 +10,7 @@ export function createBackupService({
   workflowStore,
   inspirationPoolStore,
   checkpointStore,
+  managedMaterials,
   now = () => new Date().toISOString(),
 } = {}) {
   if (!coordinator || !boardStore || !runStore || !workflowStore || !checkpointStore) {
@@ -32,6 +33,7 @@ export function createBackupService({
         workflows,
         inspirationPool,
         checkpoints,
+        ...(managedMaterials ? { assets: await managedMaterials.export() } : {}),
         exportedAt: now(),
       })
     })

@@ -130,7 +130,7 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions, E
   importBoardFile(file: File): Promise<void>
   backupMira(): Promise<void>
   createCard(position: { x: number; y: number; width?: number; height?: number }): Promise<ContentCard | null>
-  createFileCard(position: { x: number; y: number }, path: string): Promise<void>
+  createFileCard(position: { x: number; y: number }, path: string, name?: string): Promise<boolean>
   bindCardFile(cardId: string, path: string, overwrite?: boolean): Promise<boolean>
   unbindCardFile(cardId: string): Promise<boolean>
   syncCardFile(cardId: string, resolution?: 'overwrite' | 'import'): Promise<boolean>
@@ -145,6 +145,8 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions, E
   commitCard(cardId: string, markdown: string, baseVersionId?: string | null): Promise<boolean>
   saveAndCreateNext(cardId: string, markdown: string, baseVersionId: string | null): Promise<SaveAndCreateNextResult>
   copySelectedCards(): void
+  exportSelectedCards(): Promise<void>
+  importCardPackage(artifact: unknown, position: { x: number; y: number }): Promise<void>
   pasteCards(position: { x: number; y: number }): Promise<void>
   duplicateSelectedCards(): Promise<void>
   requestDeleteSelectedCards(): void

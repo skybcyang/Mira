@@ -45,7 +45,7 @@ function isBrowsable(entry) {
   return !entry.name.startsWith('.') && entry.name !== 'node_modules'
 }
 
-export function createFileLibrary({ workspaceRoot } = {}) {
+export function createFileLibrary({ workspaceRoot, materials } = {}) {
   if (typeof workspaceRoot !== 'string' || !workspaceRoot.trim()) {
     throw new TypeError('A workspace root is required to browse or import files')
   }
@@ -92,6 +92,7 @@ export function createFileLibrary({ workspaceRoot } = {}) {
 
   async function importFile(body = {}) {
     const requested = requirePath(body.path, 'File import')
+    if (materials) return materials.importFile(requested)
     const target = resolve(requested)
     let info
     try {

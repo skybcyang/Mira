@@ -18,6 +18,7 @@ import {
 import type { V2CanvasState, CanvasHistoryEntry } from './storeTypes'
 import type { CanvasStoreContext } from './storeContext'
 import { HISTORY_LIMIT } from './storeContext'
+import { portableDownloads } from './portableDownloads'
 
 const TRANSFORMATION_NODE_PREFIX = 'transformation-node:'
 
@@ -36,6 +37,8 @@ type CanvasSliceDependencies = Pick<
 type CanvasSliceActions = Pick<
   V2CanvasState,
   | 'copySelectedCards'
+  | 'exportSelectedCards'
+  | 'importCardPackage'
   | 'pasteCards'
   | 'duplicateSelectedCards'
   | 'requestDeleteSelectedCards'
@@ -71,6 +74,7 @@ export function createCanvasSlice(
     currentDetailSurface,
   } = context
   let movementGeneration = 0
+  let transferBusy = false
 
   let transformationMovementGeneration = 0
 
@@ -360,6 +364,33 @@ export function createCanvasSlice(
   }
 
   return {
+    async exportSelectedCards() {
+      const { boardId, selectedCardIds } = get()
+      if (!boardId || !selectedCardIds.length || transferBusy) return
+      transferBusy = true
+      try { portableDownloads.downloadJson(await v2Api.exportCardPackage(boardId, [...selectedCardIds]), '所选卡片.mira-cards.json') }
+      catch (error) { setNoticeForBoard(contextFor(boardId), 'error', safeMessage(error)); throw error }
+      finally { transferBusy = false }
+    },
+    async importCardPackage(artifact, position) {
+      const { boardId } = get()
+      if (!boardId || transferBusy) throw new Error('请先打开目标画板，并等待当前导入完成。')
+      transferBusy = true
+      const context = contextFor(boardId)
+      try {
+        const current = await v2Api.getBoard(boardId)
+        const result = await v2Api.importCardPackage(boardId, { artifact, baseRevision: current.board.revision || 0, position })
+        setForBoard(context, state => {
+          if (!state.board) return {}
+          const ids = result.cards.map(card => card.id)
+          const board = { ...state.board, revision: result.board.revision, cards: [...state.board.cards, ...result.cards] }
+          return { board, ...project(board, state.runs, ids), selectedCardIds: ids,
+            historyPast: [...state.historyPast, { kind: 'create' as const, boardId, cardIds: ids }].slice(-HISTORY_LIMIT), historyFuture: [],
+            ...noticePatch(state, 'success', `已导入 ${ids.length} 张独立卡片。`, { boardId }),
+          }
+        })
+      } finally { transferBusy = false }
+    },
     copySelectedCards() {
       const { board, selectedCardIds } = get()
       if (!board || selectedCardIds.length === 0) return

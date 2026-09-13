@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -45,24 +45,18 @@ describe('desktop workspace preparation', () => {
     await expect(readdir(parent)).resolves.toEqual(['not-a-directory'])
   })
 
-  it('initializes only the three business-data directories after validating a directory', async () => {
+  it('probes the project without creating legacy directories before the host owns its lock', async () => {
     const workspaceRoot = await createTemporaryRoot('mira-desktop-workspace-valid-')
     await writeFile(join(workspaceRoot, 'existing-note.md'), 'preserve me', 'utf8')
 
     await expect(prepareWorkspaceRoot(workspaceRoot)).resolves.toBe(workspaceRoot)
 
     await expect(readdir(workspaceRoot)).resolves.toEqual([
-      'boards-v2',
       'existing-note.md',
-      'runs-v2',
-      'workflows-v2',
     ])
     await expect(readFile(join(workspaceRoot, 'existing-note.md'), 'utf8')).resolves.toBe(
       'preserve me',
     )
-    for (const directory of ['boards-v2', 'runs-v2', 'workflows-v2']) {
-      expect((await stat(join(workspaceRoot, directory))).isDirectory()).toBe(true)
-    }
   })
 
   it('does not continue initializing when a required data path is occupied by a file', async () => {

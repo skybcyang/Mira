@@ -1,4 +1,5 @@
 import { validateBoardCheckpoint } from './board-checkpoint.js'
+import { validateAssetClosure } from './managed-assets.js'
 import { validateMaterialOrigin } from '../../src/domain/materials.js'
 import { assertUnique as assertUniqueIds, isObject, nonEmptyString } from './guards.js'
 import {
@@ -26,7 +27,7 @@ function assertUnique(items, getId, label) {
 function validateBackupEnvelope(backup) {
   if (!isObject(backup)) throw portableError('BACKUP_INVALID', 'MiraBackup must be an object')
   if (backup.format !== 'mira-backup') throw portableError('BACKUP_INVALID', 'Invalid MiraBackup format')
-  if (![1, 2].includes(backup.formatVersion)) {
+  if (![1, 2, 3].includes(backup.formatVersion)) {
     throw portableError('BACKUP_INVALID', 'Unsupported MiraBackup formatVersion')
   }
   if (!nonEmptyString(backup.exportedAt)) {
@@ -40,7 +41,7 @@ function validateBackupEnvelope(backup) {
   if (backup.inspirationPool !== undefined && !isObject(backup.inspirationPool)) {
     throw portableError('BACKUP_INVALID', 'MiraBackup inspirationPool must be an object')
   }
-  if (backup.formatVersion === 2 && !Array.isArray(backup.checkpoints)) {
+  if (backup.formatVersion >= 2 && !Array.isArray(backup.checkpoints)) {
     throw portableError('BACKUP_INVALID', 'MiraBackup checkpoints must be an array')
   }
 }
@@ -103,7 +104,10 @@ function validatePortableInspirationPool(pool) {
 
 export function validateWorkspaceBackup(backup, options = {}) {
   validateBackupEnvelope(backup)
-  const checkpoints = backup.formatVersion === 2 ? backup.checkpoints : []
+  if (backup.formatVersion === 3) {
+    try { validateAssetClosure(backup, backup.assets) } catch (error) { throw portableError('BACKUP_INVALID', error.message) }
+  } else if (backup.assets !== undefined) throw portableError('BACKUP_INVALID', 'Legacy backups cannot contain managed assets')
+  const checkpoints = backup.formatVersion >= 2 ? backup.checkpoints : []
   const boardIds = assertUnique(backup.boards, (item) => item?.id, 'Board')
   assertUnique(backup.runs, (item) => item?.id, 'Run')
   assertUnique(backup.workflows, (item) => item?.id, 'WorkflowTemplate')
@@ -211,6 +215,7 @@ export function projectWorkspaceBackup({
   workflows,
   inspirationPool,
   checkpoints = [],
+  assets,
   exportedAt,
 } = {}) {
   try {
@@ -227,7 +232,8 @@ export function projectWorkspaceBackup({
     }
     const backup = {
       format: 'mira-backup',
-      formatVersion: 2,
+      formatVersion: assets ? 3 : 2,
+      ...(assets ? { assets } : {}),
       exportedAt,
       boards: boards.map(normalizePortableBoard),
       runs: cleanPortableValue(runs),

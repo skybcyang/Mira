@@ -3,7 +3,6 @@ import {
   mkdir,
   readFile,
   rename,
-  rmdir,
   stat,
   unlink,
   writeFile,
@@ -66,20 +65,9 @@ export async function prepareWorkspaceRoot(selection) {
 
   await verifyReadableAndWritable(selection)
 
-  const createdDirectories = []
-  try {
-    for (let index = 0; index < dataPaths.length; index += 1) {
-      if (dataPathStats[index]) continue
-      await mkdir(dataPaths[index])
-      createdDirectories.push(dataPaths[index])
-    }
-
-    for (const dataPath of dataPaths) {
-      await verifyReadableAndWritable(dataPath)
-    }
-  } catch (error) {
-    await Promise.allSettled(createdDirectories.reverse().map((path) => rmdir(path)))
-    throw error
+  // The shared Node host initializes layout only after it owns the writer lock.
+  for (let index = 0; index < dataPaths.length; index += 1) {
+    if (dataPathStats[index]) await verifyReadableAndWritable(dataPaths[index])
   }
 
   return selection

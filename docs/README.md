@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+项目工作区增量：[权威规格](specs/project-workspace.md)、[实施与验证进度](refactor/project-workspace-plan.md)、[本地工程与原生验收](validation/2026-09-13-project-workspace.md)。
+
 2026-09-13 增量：[本地安装、恢复与补充验收](validation/2026-09-13-local-install-acceptance.md)、[A3–B8 实施验证](validation/2026-09-13-a3-b8-validation.md)、[真实模型质量复核](validation/2026-09-13-model-quality-review.md)、[正式桌面发行准备](operations/desktop-release.md)。当前完成范围及设备阻挡见[统一 TODO](refactor/evolution-todo.md)。
 
 开源协作入口：[贡献指南](../CONTRIBUTING.md) · [安全说明](../SECURITY.md) · [短期路线图](../ROADMAP.md) · [发布准备](operations/open-source-release.md)。

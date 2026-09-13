@@ -1,4 +1,5 @@
 import * as nodeFs from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { basename, dirname, join, parse, resolve } from 'node:path'
 import {
   BoardCheckpointStore,
@@ -10,6 +11,7 @@ import {
   MIRA_BACKUP_LIMITS,
 } from './domain/portable-format.js'
 import { validateWorkspaceBackup } from './domain/workspace-backup.js'
+import { validateManagedAsset } from './domain/managed-assets.js'
 
 const ENTITY_DIRECTORIES = Object.freeze({
   boards: 'boards-v2',
@@ -82,7 +84,7 @@ function assertSafeEntityIds(backup) {
   assertSafeEntitySet('Run', backup.runs)
   assertSafeEntitySet('WorkflowTemplate', backup.workflows)
   const checkpointNames = new Set()
-  for (const checkpoint of backup.formatVersion === 2 ? backup.checkpoints : []) {
+  for (const checkpoint of backup.formatVersion >= 2 ? backup.checkpoints : []) {
     assertSafeEntityId('BoardCheckpoint', checkpoint.id)
     let filename
     try {
@@ -313,10 +315,35 @@ async function strictReadEntities(root, directory, expected, fs) {
   return reread
 }
 
-async function strictReadWorkspace(root, backup, fs) {
+async function strictReadWorkspace(root, backup, fs, projectData = false) {
+  if (backup.formatVersion === 3) {
+    const entries = await fs.readdir(root, { withFileTypes: true })
+    if (entries.length !== 2 || entries.some(entry => !entry.isDirectory() || entry.isSymbolicLink() || !['.mira', 'materials'].includes(entry.name))) throw new Error('Project restore layout changed')
+    const manifest = JSON.parse(await fs.readFile(join(root, '.mira/workspace.json'), 'utf8'))
+    if (manifest.format !== 'mira-workspace' || manifest.formatVersion !== 1 || typeof manifest.id !== 'string' || !manifest.id || !Number.isFinite(Date.parse(manifest.createdAt))) throw new Error('Project identity changed')
+    const { assets, ...content } = backup
+    const reread = await strictReadWorkspace(join(root, '.mira'), { ...content, formatVersion: 2 }, fs, true)
+    const assetDirs = await fs.readdir(join(root, 'materials'), { withFileTypes: true })
+    if (assetDirs.length !== assets.length || assetDirs.some(entry => !entry.isDirectory() || entry.isSymbolicLink() || !assets.some(asset => asset.id === entry.name))) throw new Error('Restored material set changed')
+    const verifiedAssets = []
+    for (const asset of assets) {
+      const dir = join(root, 'materials', asset.id)
+      const files = await fs.readdir(dir, { withFileTypes: true })
+      if (files.length !== 2 || files.some(entry => !isRealFileEntry(entry) || !['record.json', basename(asset.path)].includes(entry.name))) throw new Error('Restored material files changed')
+      const record = JSON.parse(await fs.readFile(join(dir, 'record.json'), 'utf8'))
+      const verified = { ...record, data: (await fs.readFile(join(root, asset.path))).toString('base64') }
+      validateManagedAsset(verified)
+      if (JSON.stringify(verified) !== JSON.stringify(asset)) throw new Error('Restored material changed')
+      verifiedAssets.push(verified)
+    }
+    const result = { ...reread, formatVersion: 3, assets: verifiedAssets }
+    validateWorkspaceBackup(result)
+    return result
+  }
   const rootEntries = await fs.readdir(root, { withFileTypes: true })
   const expectedDirectories = new Set(Object.values(ENTITY_DIRECTORIES))
   const expectedFiles = backup.inspirationPool ? new Set([INSPIRATION_POOL_FILE]) : new Set()
+  if (projectData) expectedFiles.add('workspace.json')
   if (
     rootEntries.length !== expectedDirectories.size + expectedFiles.size
     || rootEntries.some((entry) =>
@@ -434,7 +461,8 @@ function restoredCounts(backup) {
     boardCount: backup.boards.length,
     runCount: backup.runs.length,
     workflowCount: backup.workflows.length,
-    checkpointCount: backup.formatVersion === 2 ? backup.checkpoints.length : 0,
+    checkpointCount: backup.formatVersion >= 2 ? backup.checkpoints.length : 0,
+    ...(backup.formatVersion === 3 ? { materialCount: backup.assets.length } : {}),
     ...(backup.inspirationPool
       ? { inspirationEntryCount: backup.inspirationPool.entries.length }
       : {}),
@@ -461,20 +489,32 @@ export async function restoreWorkspaceBackup(
 
   try {
     stagingRoot = await fs.mkdtemp(join(parent, `.${basename(target)}.mira-restore-`))
-    await writeEntities(stagingRoot, ENTITY_DIRECTORIES.boards, backup.boards, fs)
-    await writeEntities(stagingRoot, ENTITY_DIRECTORIES.runs, backup.runs, fs)
-    await writeEntities(stagingRoot, ENTITY_DIRECTORIES.workflows, backup.workflows, fs)
-    await fs.mkdir(join(stagingRoot, ENTITY_DIRECTORIES.checkpoints))
+    const dataRoot = backup.formatVersion === 3 ? join(stagingRoot, '.mira') : stagingRoot
+    if (backup.formatVersion === 3) {
+      await fs.mkdir(dataRoot)
+      await fs.writeFile(join(dataRoot, 'workspace.json'), JSON.stringify({ format: 'mira-workspace', formatVersion: 1, id: randomUUID(), name: basename(target), createdAt: new Date().toISOString() }))
+      await fs.mkdir(join(stagingRoot, 'materials'))
+      for (const asset of backup.assets) {
+        const { data, ...record } = asset
+        await fs.mkdir(join(stagingRoot, 'materials', asset.id))
+        await fs.writeFile(join(stagingRoot, asset.path), Buffer.from(data, 'base64'))
+        await fs.writeFile(join(stagingRoot, 'materials', asset.id, 'record.json'), JSON.stringify(record))
+      }
+    }
+    await writeEntities(dataRoot, ENTITY_DIRECTORIES.boards, backup.boards, fs)
+    await writeEntities(dataRoot, ENTITY_DIRECTORIES.runs, backup.runs, fs)
+    await writeEntities(dataRoot, ENTITY_DIRECTORIES.workflows, backup.workflows, fs)
+    await fs.mkdir(join(dataRoot, ENTITY_DIRECTORIES.checkpoints))
     const checkpointStore = new BoardCheckpointStore(
-      createNodeWorkspaceAdapter(stagingRoot, { fs }),
+      createNodeWorkspaceAdapter(dataRoot, { fs }),
       ENTITY_DIRECTORIES.checkpoints,
     )
     await checkpointStore.saveManyPrevalidated(
-      backup.formatVersion === 2 ? backup.checkpoints : [],
+      backup.formatVersion >= 2 ? backup.checkpoints : [],
     )
     if (backup.inspirationPool) {
       await fs.writeFile(
-        join(stagingRoot, INSPIRATION_POOL_FILE),
+        join(dataRoot, INSPIRATION_POOL_FILE),
         `${JSON.stringify(backup.inspirationPool, null, 2)}\n`,
         'utf8',
       )

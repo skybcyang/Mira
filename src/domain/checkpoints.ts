@@ -12,7 +12,8 @@ export interface WorkflowProvenanceSnapshot {
 
 export interface BoardArtifactV1 {
   format: 'mira-board'
-  formatVersion: 1
+  formatVersion: 1 | 2
+  assets?: Array<{ formatVersion: 1; id: string; path: string; name: string; byteLength: number; sha256: string; createdAt: string; data: string }>
   exportedAt: string
   board: BoardV2
   runs: TransformationRun[]

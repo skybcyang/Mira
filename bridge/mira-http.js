@@ -110,6 +110,7 @@ const STATUS_BY_CODE = {
   SOURCE_SCOPE_CHANGED: 409,
   GUIDANCE_INVALID: 422,
   MATERIAL_INVALID: 422,
+  MATERIAL_CORRUPT: 422,
   MATERIAL_SOURCE_BLOCKED: 422,
   MATERIAL_READ_FAILED: 422,
   MATERIAL_UNAVAILABLE: 503,
@@ -233,10 +234,10 @@ export function createMiraApiHandler(application, {
       const segments = path.split('/').filter(Boolean)
       const method = req.method || 'GET'
       const isBoardImport = method === 'POST'
-        && segments.length === 3
         && segments[0] === 'v2'
         && segments[1] === 'boards'
-        && segments[2] === 'imports'
+        && ((segments.length === 3 && segments[2] === 'imports')
+          || (segments.length === 5 && segments[3] === 'cards' && segments[4] === 'import'))
       const body = requestMethodHasJsonBody(method)
         ? await readJsonBody(req, isBoardImport ? { maxBytes: maxImportBodyBytes } : undefined)
         : undefined

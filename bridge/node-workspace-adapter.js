@@ -23,6 +23,16 @@ export function createNodeWorkspaceAdapter(workspaceRoot, { fs = nodeFs } = {}) 
 
   return {
     root,
+    async assertFileBindingPath(path) {
+      const target = resolveInside(root, path)
+      let current = root
+      for (const part of relative(root, target).split(sep)) {
+        current = resolve(current, part)
+        try {
+          if ((await fs.lstat(current)).isSymbolicLink()) throw Object.assign(new Error('绑定文件路径不能包含符号链接。'), { code: 'FILE_BINDING_INVALID' })
+        } catch (error) { if (error.code === 'ENOENT') break; throw error }
+      }
+    },
     async readText(path) {
       return fs.readFile(resolveInside(root, path), 'utf8')
     },

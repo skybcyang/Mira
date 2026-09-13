@@ -16,6 +16,14 @@ HTTP host implementations
     - DSH/Cordis adapter
 ```
 
+## Node 项目工作区与材料端口（2026-09-13）
+
+Node Host 在取得 workspace 单写者锁后调用 `initializeProjectWorkspace`，向原有 Store 注入 `.mira/` 目录映射；桌面 chooser 只做目录准备，不预建旧布局。旧 v2 布局仍按原位置工作，异常布局拒绝启动并释放锁。产品契约见[项目工作区规格](project-workspace.md)。
+
+`createManagedMaterials` 使用同一 storage coordinator，提供 `list/importFile/importText/readText/verify/export/install/missing/rollback`。普通导入使用 import lease，完整备份使用 snapshot lease，跨 Board/材料导入由既有持久 committer 统一提交和恢复。摘要校验覆盖文本读取、PDF 冻结字节及导出；领域资产校验不 import Node。Node 同时为 Desktop 和 Standalone 注入该能力，不在桌面复制实现。
+
+没有材料端口的宿主保留旧格式导出能力；收纳命令明确不可用，不能声称文件已复制。项目物理布局和迁移只由 Node 适配实现，不强制其他平台采用本地目录。公开 HTTP 命令和格式见[项目规格 §5](project-workspace.md#5-对象与命令)。
+
 ## 核心应用
 
 `bridge/mira-application.js` 是应用装配边界。`createMiraApplication(options)` 返回：

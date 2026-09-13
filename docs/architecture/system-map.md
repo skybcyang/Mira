@@ -1,7 +1,7 @@
 # Mira 当前架构图
 
 - 状态：当前生产架构
-- 日期：2026-09-06
+- 日期：2026-09-13
 - 目标：让修改停留在所属边界，避免 UI、状态、HTTP 与领域规则联动扩散
 
 ## 依赖方向
@@ -83,7 +83,13 @@ Desktop packaging
 | `bridge/domain/run-progress.js` | Run 公开进度规范化、最近 20 条追加与持久字段校验 | 模型原始事件或 UI 呈现 |
 | `bridge/domain/organization.js` | 颜色/分组/几何严格校验与 CAS、删除成员回执前后态 | UI、文件 I/O、CardVersion 或 Run 执行 |
 | `bridge/board-checkpoint-service.js`、`board-checkpoint-store.js` | 命名检查点、Board 锁内一致快照、元数据 CAS 与原子存储 | 原地回滚或自动检查点 |
-| `bridge/domain/workspace-backup.js` | MiraBackup V1/V2 全量校验与检查点归属 | 平台 I/O 或第二套 artifact schema |
+| `bridge/domain/workspace-backup.js` | MiraBackup V1/V2/V3 全量校验、材料闭合与检查点归属 | 平台 I/O 或第二套 artifact schema |
+| `bridge/project-workspace.js` | 单写者锁内识别旧布局、初始化或核对 `.mira` 项目身份与数据路径 | 扫描项目代码、自动迁移 |
+| `bridge/domain/managed-assets.js`、`bridge/managed-materials.js` | 纯资产校验；Node 原件读写、摘要、去重和材料库 | Card/Run 领域写回、自动清理 |
+| `bridge/card-portability-service.js` | 所选 Head 导出、独立身份导入、只读复制出处 | 跨画板实时同步、自动 Run |
+| `bridge/board-import-committer.js` | 共享 coordinator 下持久导入日志、材料与 Board 提交/恢复 | 新的并行写入入口 |
+| `bridge/project-migration.js`、`scripts/migrate-workspace.mjs` | 显式离线 v2 布局复制到新目标 | 原地迁移、v1 扫描、历史文件正文猜测 |
+| `src/v2/MaterialLibrary.tsx`、`CardPackageImport.tsx` | 现有材料/画板管理任务内的材料库和卡片包确认 | 新全局模式、重复 Store |
 | `bridge/*-store.js` | 原子持久化与读取 | 产品交互 |
 | `bridge/node-runtime.js` | 以显式 workspace、静态目录、地址和端口启动/关闭可复用 Node Host | CLI 环境变量、Electron 窗口 |
 | adapters/hosts | 文件、模型、进程和 DSH/Cordis 接入 | 核心业务语义 |

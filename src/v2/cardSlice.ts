@@ -189,14 +189,15 @@ export function createCardSlice(
       }
     },
 
-    async createFileCard(position, path) {
+    async createFileCard(position, path, name) {
       const boardId = get().boardId
-      if (!boardId || !path.trim()) return
+      if (!boardId || !path.trim()) return false
       const context = contextFor(boardId)
       try {
         const { card } = await v2Api.createCard(boardId, {
           ...position,
           filePath: path.trim(),
+          ...(name ? { name } : {}),
           readonly: true,
         })
         setForBoard(context, (state) => {
@@ -213,8 +214,10 @@ export function createCardSlice(
             historyFuture: [],
           }
         })
+        return true
       } catch (error) {
         setNoticeForBoard(context, 'error', safeMessage(error))
+        return false
       }
     },
 
