@@ -9,6 +9,11 @@ function response(body, status = 200) {
 }
 
 describe('model settings service', () => {
+  it('exposes tool support without adding it to persisted model snapshots', () => {
+    const service = createModelSettingsService({ initial: { baseUrl: 'https://model.test', model: 'm' } })
+    expect(service.executeModel.supportsTools).toBe(true)
+    expect(service.resolveModel()).toEqual({ provider: 'openai-compatible', model: 'm' })
+  })
   it('redacts the key and applies an updated OpenAI-compatible configuration', async () => {
     const fetchImpl = vi.fn(async () => response({
       choices: [{ message: { content: '# 新成果' } }],

@@ -88,18 +88,21 @@ export function createModelSettingsService({
     return { ok: true, latencyMs: Math.max(0, clock() - startedAt) }
   }
 
+  const executeModel = async (input) => {
+    const modelSnapshot = resolveModel({
+      modelId: input?.modelSnapshot?.model || input?.modelId,
+    })
+    const result = await adapter({ ...current, model: modelSnapshot.model }).executeModel(input)
+    return { ...result, modelSnapshot }
+  }
+  executeModel.supportsTools = true
+
   return {
     get,
     update,
     test,
     resolveModel,
-    executeModel: async (input) => {
-      const modelSnapshot = resolveModel({
-        modelId: input?.modelSnapshot?.model || input?.modelId,
-      })
-      const result = await adapter({ ...current, model: modelSnapshot.model }).executeModel(input)
-      return { ...result, modelSnapshot }
-    },
+    executeModel,
     executeSuggestion: async (input) => adapter().executeSuggestion(input),
   }
 }
