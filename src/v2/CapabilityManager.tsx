@@ -21,18 +21,24 @@ export function CapabilityManager({ mode, onDirtyChange, onRequestLeave }: { mod
   const [data, setData] = useState<CapabilityCatalog | null>(null), [error, setError] = useState(''), [notice, setNotice] = useState('')
   const [selection, setSelection] = useState(mode === 'mcp' ? 'new' : 'environment'), [generation, setGeneration] = useState(0)
   const [dirty, setDirty] = useState(false), [busy, setBusy] = useState(false), [uncertain, setUncertain] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [changes, setChanges] = useState<ReturnType<typeof catalogChanges> | null>(null)
   const [definitions, setDefinitions] = useState<{ before: ToolDefinition; after: ToolDefinition }[]>([])
   const alive = useRef(true), lock = useRef(false)
+  const readEpoch = useRef(0)
   const handleDirty = useCallback((value: boolean) => { setDirty(value); onDirtyChange(value); if (value) setNotice('') }, [onDirtyChange])
   const reload = async () => {
-    setError('')
-    try { const value = await capabilitiesApi.get(); if (alive.current) { setData(value); setGeneration(value => value + 1); setUncertain(false); setChanges(null) } }
-    catch (cause) { if (alive.current) setError(cause instanceof Error ? cause.message : '无法读取能力目录，请重试。') }
+    if (lock.current) return
+    lock.current = true; setLoading(true); setError('')
+    const epoch = ++readEpoch.current
+    try { const value = await capabilitiesApi.get(); if (alive.current && epoch === readEpoch.current) { setData(value); setGeneration(value => value + 1); setUncertain(false); setChanges(null) } }
+    catch (cause) { if (alive.current && epoch === readEpoch.current) setError(cause instanceof Error ? cause.message : '无法读取能力目录，请重试。') }
+    finally { if (epoch === readEpoch.current) { lock.current = false; if (alive.current) setLoading(false) } }
   }
-  useEffect(() => { alive.current = true; void reload(); return () => { alive.current = false } }, [])
+  useEffect(() => { alive.current = true; void reload(); return () => { alive.current = false; readEpoch.current++; lock.current = false } }, [])
   const saved = (settings: CapabilitySettings, nextSelection?: string) => {
     if (!data) return
+    readEpoch.current++; lock.current = false; setLoading(false)
     const difference = catalogChanges(data.settings.tools, settings.tools)
     setDefinitions(difference.changed.flatMap(id => { const before = data.settings.tools.find(tool => tool.id === id), after = settings.tools.find(tool => tool.id === id); return before && after ? [{ before, after }] : [] }))
     setChanges(difference); setData({ ...data, settings }); setGeneration(value => value + 1); setNotice('已保存。请在下方核对项目可用性；已有步骤不会自行更新。')
@@ -45,18 +51,21 @@ export function CapabilityManager({ mode, onDirtyChange, onRequestLeave }: { mod
     catch (cause) { if (alive.current) { setError(cause instanceof Error ? cause.message : '未确认保存成功。'); setUncertain(uncertainCapabilitySave(cause)) } }
     finally { lock.current = false; if (alive.current) setBusy(false) }
   }
-  if (!data) return <div className="v2-model-settings-state" role={error ? 'alert' : 'status'}>{error || '正在读取能力目录…'}{error && <button type="button" onClick={() => void reload()}>重新读取</button>}</div>
+  if (!data) return <div className="v2-model-settings-state" role={error ? 'alert' : 'status'}>{error || '正在读取能力目录…'}{error && <button type="button" disabled={loading} onClick={() => void reload()}>重新读取</button>}</div>
   const settings = data.settings, connection = settings.connections.find(item => item.id === selection), script = [...settings.scripts].reverse().find(item => item.id === selection)
   const tools = settings.tools.filter(tool => mode === 'mcp' ? connection ? tool.bindingId === connection.id : false : script ? tool.bindingId === script.id : tool.source === 'python')
   const props = { settings, available: data.runtime[mode], onDirtyChange: handleDirty, onRequestLeave, onSaved: saved, onReload: () => void reload() }
-  return <div className="v2-model-settings-form v2-capability-manager">
-    <label>{mode === 'mcp' ? 'MCP 连接' : 'Python 环境与脚本'}<select value={selection} disabled={busy} onChange={event => { const value = event.target.value; onRequestLeave(() => { setSelection(value); setNotice(''); setError(''); setChanges(null) }) }}>
+  return <div className="v2-model-settings-form v2-capability-manager" aria-busy={loading || busy}>
+    <label>{mode === 'mcp' ? 'MCP 连接' : 'Python 环境与脚本'}<select value={selection} disabled={busy || loading} onChange={event => { const value = event.target.value; onRequestLeave(() => { setSelection(value); setNotice(''); setError(''); setChanges(null) }) }}>
       {mode === 'mcp' ? <><option value="new">新增 MCP 连接</option>{settings.connections.map(item => <option key={item.id} value={item.id}>{item.title} · {item.transport === 'http' ? '远程' : '本地'}{item.requiresCredential && !item.hasCredential ? ' · 需凭据' : ''}</option>)}</> : <><option value="environment">Python 隔离环境</option><option value="new">登记新脚本</option>{[...new Map(settings.scripts.map(item => [item.id, item])).values()].map(item => <option key={item.id} value={item.id}>{item.title} · 版本 {item.version}{settings.enabled.includes(item.id) ? ' · 已启用' : ' · 未启用'}</option>)}</>}
     </select></label>
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
-    {uncertain && <button type="button" onClick={() => onRequestLeave(() => void reload())}>重新读取并核对</button>}
+    {loading && <p role="status">正在重新读取目录，当前草稿暂时只读。</p>}
+    {uncertain && <button type="button" disabled={loading || busy} onClick={() => onRequestLeave(() => void reload())}>重新读取并核对</button>}
     {changes && Object.values(changes).some(ids => ids.length) && <details><summary>工具目录变化：新增 {changes.added.length}，变化 {changes.changed.length}，移除 {changes.removed.length}</summary>{(['added', 'changed', 'removed'] as const).map(key => changes[key].length ? <p key={key}>{({ added: '新增', changed: '变化', removed: '移除' })[key]}：{changes[key].join('、')}</p> : null)}{definitions.map(pair => <details key={pair.after.id}><summary>核对 {pair.after.title} 的定义变化</summary><h4>变更前</h4><pre>{JSON.stringify(pair.before, null, 2)}</pre><h4>变更后</h4><pre>{JSON.stringify(pair.after, null, 2)}</pre></details>)}<p className="v2-detail-note">请展开对应能力，核对完整结构与定义版本。</p></details>}
-    {mode === 'mcp' ? <McpConnectionEditor key={`${selection}:${generation}`} {...props} connection={connection} /> : <PythonCapabilityEditor key={`${selection}:${generation}`} {...props} mode={selection === 'environment' ? 'environment' : 'script'} script={script} />}
-    <CapabilityToolList settings={settings} tools={tools} disabled={dirty || busy || uncertain} onUpdate={update} />
+    <fieldset disabled={loading || busy} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
+      {mode === 'mcp' ? <McpConnectionEditor key={`${selection}:${generation}`} {...props} connection={connection} /> : <PythonCapabilityEditor key={`${selection}:${generation}`} {...props} mode={selection === 'environment' ? 'environment' : 'script'} script={script} />}
+      <CapabilityToolList settings={settings} tools={tools} disabled={dirty || busy || loading || uncertain} onUpdate={update} />
+    </fieldset>
   </div>
 }

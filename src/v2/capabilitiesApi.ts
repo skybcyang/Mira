@@ -12,7 +12,9 @@ export const capabilitiesApi = {
   get: () => request<CapabilityCatalog>('GET', '/capabilities'),
   update: (input: CapabilityUpdate) => request<{ settings: CapabilitySettings }>('PATCH', '/capabilities', input),
   connect: (input: ConnectionInput, signal?: AbortSignal) => request<{ settings: CapabilitySettings }>('POST', '/capabilities/connections', input, signal),
-  pythonStatus: () => request<PythonStatus>('GET', '/capabilities/python'),
+  pythonStatus: (image?: string) => image === undefined
+    ? request<PythonStatus>('GET', '/capabilities/python')
+    : request<PythonStatus>('POST', '/capabilities/python/status', { image }),
   preparePython: (input: { baseRevision: number; image: string; dependencies: string[] }, signal?: AbortSignal) => request<CapabilityCatalog & { python: PythonStatus }>('POST', '/capabilities/python/prepare', input, signal),
   testPython: (input: { code: string; imageId: string; arguments: Record<string, unknown> }, signal?: AbortSignal) => request<PythonResult>('POST', '/capabilities/python/test', input, signal),
 }
