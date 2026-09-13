@@ -29,7 +29,7 @@ import type { MaterialActions } from './materialSlice'
 export type DrawerState =
   | { tab: 'content'; cardId: string; mode?: 'read' | 'edit' | 'rename' | 'extract' | 'split' | 'compare'; batchId?: string }
   | { tab: 'versions'; cardId: string }
-  | { tab: 'relation'; transformationId: string; edit?: boolean; preview?: boolean; scopeCardId?: string; guidance?: boolean; output?: boolean; focusOutput?: boolean }
+  | { tab: 'relation'; transformationId: string; edit?: boolean; preview?: boolean; scopeCardId?: string; guidance?: boolean; output?: boolean; focusOutput?: boolean; tools?: boolean; focusTools?: boolean }
   | { tab: 'run'; runId: string }
   | null
 
@@ -172,6 +172,7 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions, E
       sourceScopes?: import('../domain/sourceScopes.js').SourceScope[]
       guidance?: import('../domain/guidance.js').GuidanceInput | null
       outputPolicy?: import('../domain/outputPolicy.js').OutputPolicyInput | null
+      toolPolicy?: import('../domain/toolPolicy.js').ToolPolicy | null
     },
     baseUpdatedAt?: string,
   ): Promise<boolean>

@@ -203,6 +203,7 @@ export function createTransformationSlice(
           ...(changes.sourceScopes === undefined ? {} : { sourceScopes: changes.sourceScopes }),
           ...(changes.guidance === undefined ? {} : { guidance: changes.guidance }),
           ...(changes.outputPolicy === undefined ? {} : { outputPolicy: changes.outputPolicy }),
+          ...(changes.toolPolicy === undefined ? {} : { toolPolicy: changes.toolPolicy }),
           ...(changes.sourceCardIds === undefined
             ? {}
             : { sourceRefs: sourceRefsFor(board, changes.sourceCardIds) }),

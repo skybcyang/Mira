@@ -6,8 +6,26 @@ import { useDrawerAction } from '../drawerIntent'
 import { useInspectorDraft } from '../inspectorDrafts'
 import { sourceEditBlock } from '../transformationSources'
 import { compareVersionText } from '../cardVersions'
+import type { ToolPolicy } from '../../domain/toolPolicy.js'
+import { missingRequiredTools } from './toolControls'
 
 const key = (item: GuidanceSnapshot) => `${item.id}@${item.version}`
+
+export function GuidanceToolDependencies({ selected, previous, policy, onTools }: {
+  selected: Pick<GuidanceSnapshot, 'requiredTools' | 'optionalTools'>
+  previous?: Pick<GuidanceSnapshot, 'requiredTools' | 'optionalTools'>
+  policy?: ToolPolicy; onTools: () => void
+}) {
+  const missing = missingRequiredTools(selected.requiredTools, policy)
+  const changed = previous && (JSON.stringify(previous.requiredTools || []) !== JSON.stringify(selected.requiredTools || [])
+    || JSON.stringify(previous.optionalTools || []) !== JSON.stringify(selected.optionalTools || []))
+  return <section aria-label="指导所需工具"><h4>指导所需工具</h4>
+    <p>必需：{selected.requiredTools?.join('、') || '无'}</p><p>可选：{selected.optionalTools?.join('、') || '无'}</p>
+    {missing.length > 0 && <p role="status">缺少必需工具：{missing.join('、')}。可以保存指导，补齐后才能运行。</p>}
+    {changed && <details open><summary>工具依赖有变化</summary><p>原必需：{previous.requiredTools?.join('、') || '无'}</p><p>原可选：{previous.optionalTools?.join('、') || '无'}</p></details>}
+    <p className="v2-detail-note">选择指导不会自动启用或授权工具。</p><button type="button" className="v2-secondary-button" onClick={onTools}>查看与配置本步工具</button>
+  </section>
+}
 
 export function GuidancePanel({ transformationId, onDirtyChange }: {
   transformationId: string; onDirtyChange?: (dirty: boolean) => void
@@ -46,6 +64,7 @@ export function GuidancePanel({ transformationId, onDirtyChange }: {
   useEffect(() => () => onDirtyChange?.(false), [onDirtyChange])
   const blocked = !board || !step ? '这一步已不可用。' : sourceEditBlock(board, step, runs)
   const conflict = step?.updatedAt !== initial?.updatedAt
+  const readOnly = saving || Boolean(blocked) || conflict
   const missingCriteria = selected?.id === 'mira-evidence-review' && !acceptance.trim()
   const invalid = Boolean(choice && (!text.trim() || text.length > 20000 || (changedGuide && !editable)))
   const save = async () => {
@@ -67,7 +86,7 @@ export function GuidancePanel({ transformationId, onDirtyChange }: {
   const diff = useMemo(() => compareVersionText(initial?.guidance?.text || '', text), [initial, text])
   return <section className="v2-extraction-panel v2-guidance-panel" aria-label="本步指导" aria-busy={loading || saving}>
     <h3>本步指导</h3><p>指导只辅助完成你填写的目标。默认不使用，也可以修改指导正文。</p>
-    <label>选择指导<select disabled={saving || loading || Boolean(blocked)} value={choice} onChange={event => {
+    <label>选择指导<select disabled={readOnly || loading} value={choice} onChange={event => {
       const value = event.target.value
       setChoice(value); setText(catalog.find(item => key(item) === value)?.text || (initial?.guidance && key(initial.guidance) === value ? initial.guidance.text : ''))
     }}><option value="">不使用指导</option>
@@ -75,11 +94,12 @@ export function GuidancePanel({ transformationId, onDirtyChange }: {
       {catalog.map(item => <option key={key(item)} value={key(item)}>{item.title} · {item.version}{item.origin === 'custom' ? ' · 自定义' : item.origin === 'imported' ? ' · 导入文本' : ' · 内置'}</option>)}
     </select></label>
     {selected && <>
-      <label>完整指导正文<textarea rows={10} value={text} readOnly={!editable} disabled={saving} maxLength={20000} onChange={event => setText(event.target.value)} /></label>
+      <label>完整指导正文<textarea rows={10} value={text} readOnly={!editable || readOnly} maxLength={20000} onChange={event => setText(event.target.value)} /></label>
       {!editable && !loading && <p>这是已保存的旧版本或导入快照。可以继续使用；替换时请先查看新旧差异。</p>}
-      {editable && text !== catalog.find(item => key(item) === choice)?.text && <button type="button" className="v2-quiet-button" disabled={saving} onClick={() => setText(catalog.find(item => key(item) === choice)!.text)}>使用内置原文</button>}
+      {editable && text !== catalog.find(item => key(item) === choice)?.text && <button type="button" className="v2-quiet-button" disabled={readOnly} onClick={() => setText(catalog.find(item => key(item) === choice)!.text)}>使用目录原文</button>}
+      <GuidanceToolDependencies selected={selected} previous={initial?.guidance} policy={step?.toolPolicy} onTools={() => action(() => open({ tab: 'relation', transformationId, tools: true }))} />
     </>}
-    <label>完成标准<textarea value={acceptance} rows={3} disabled={saving} onChange={event => setAcceptance(event.target.value)} /></label>
+    <label>完成标准<textarea value={acceptance} rows={3} readOnly={readOnly} onChange={event => setAcceptance(event.target.value)} /></label>
     {missingCriteria && <p role="status">请填写你要核对的标准。</p>}
     {initial?.guidance && diff.hasChanges && <section aria-label="指导变更"><h4>指导变更</h4>{diff.tooLarge
       ? <><p>内容较长，请对照原文阅读。</p><pre>{initial.guidance.text}</pre></>
