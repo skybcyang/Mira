@@ -20,6 +20,7 @@ import { sourceEditBlock } from '../transformationSources'
 import { RunRangePreview } from './RunRangePreview'
 import { sourceComparisonRows } from '../sourceComparison'
 import { useSourcePreview } from '../sourcePreviewContext'
+import { missingRequiredTools } from './toolControls'
 
 function appliedRunForRelation(
   transformation: Transformation,
@@ -32,8 +33,9 @@ function appliedRunForRelation(
     : undefined
 }
 
-export function RelationPanel({ transformationId, initialEditing = false, initialPreview = false, focusOutput = false, onDirtyChange }: { transformationId: string; initialEditing?: boolean; initialPreview?: boolean; focusOutput?: boolean; onDirtyChange?: (dirty: boolean) => void }) {
+export function RelationPanel({ transformationId, initialEditing = false, initialPreview = false, focusOutput = false, focusTools = false, onDirtyChange }: { transformationId: string; initialEditing?: boolean; initialPreview?: boolean; focusOutput?: boolean; focusTools?: boolean; onDirtyChange?: (dirty: boolean) => void }) {
   useEffect(() => { if (focusOutput) document.getElementById('v2-output-policy-entry')?.focus() }, [focusOutput])
+  useEffect(() => { if (focusTools) document.getElementById('v2-tools-entry')?.focus() }, [focusTools])
   const runDrawerAction = useDrawerAction()
   const board = useV2Canvas((state) => state.board)
   const runs = useV2Canvas((state) => state.runs)
@@ -68,6 +70,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
     && (appliedSourceIds.length !== transformation.sourceCardIds.length
       || transformation.sourceCardIds.some((cardId, index) => cardId !== appliedSourceIds[index])))
   const candidatePending = run?.result?.disposition === 'candidate'
+  const missingTools = missingRequiredTools(transformation.guidance?.requiredTools, transformation.toolPolicy)
   const extractionPreview = workflowExtractionPreview(board, transformation.id)
   const extractionReady = workflowExtractionReady(board, transformation.id, extractionPreview)
   const sourcesReady = transformationSourcesReady(board, transformation)
@@ -126,6 +129,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
     <section aria-label="本步指导"><button type="button" className="v2-secondary-button" disabled={candidatePending} onClick={() => runDrawerAction(() => open({ tab: 'relation', transformationId, guidance: true }))}>本步指导 · {transformation.guidance?.title || '不使用'}</button>
       {transformation.guidance && <details className="v2-guidance-read"><summary>查看已保存指导 · {transformation.guidance.version}{transformation.guidance.customized ? ' · 已调整' : ''}</summary><p>{transformation.guidance.text}</p></details>}
     </section>
+    <section aria-label="工具能力"><button id="v2-tools-entry" type="button" className="v2-secondary-button" onClick={() => runDrawerAction(() => open({ tab: 'relation', transformationId, tools: true }))}>工具能力 · {transformation.toolPolicy?.tools.length || 0} 项{transformation.toolPolicy?.allowTemporaryPython ? ' · 临时 Python' : ''}</button>{missingTools.length > 0 && <p role="status">指导缺少必需工具：{missingTools.join('、')}。请先补齐本步工具。</p>}</section>
     <details className="v2-source-state-summary"><summary>来源状态摘要</summary>
     <ul className="v2-source-comparison">{sourceComparisonRows(board, transformation, appliedRun).map((row) => <li key={row.cardId}>
       <button type="button" disabled={!sourcePreview} onClick={() => sourcePreview?.({ boardId: board.id, cardId: row.cardId, snapshot: row.snapshot, runId: appliedRun?.id })}>
@@ -141,6 +145,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
       hasRun={Boolean(transformation.lastRunId)}
       sourcesReady={sourcesReady}
       candidatePending={candidatePending}
+      blocked={missingTools.length > 0 ? '先补齐必需工具' : undefined}
       busy={Boolean(runningToTransformationId)}
       running={runningToTransformationId === transformation.id}
       onRun={() => runDrawerAction(() => runTo(transformation.id))}

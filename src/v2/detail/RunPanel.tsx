@@ -6,6 +6,7 @@ import { runExclusiveAction } from '../drawerSafety'
 import { dateTime, elapsed, when } from './formatters'
 import CandidateComparison from './CandidateComparison'
 import { OutputPolicyView } from './OutputPolicyView'
+import { ToolRunView } from './ToolRunView'
 export { CandidateDecisionActions } from './CandidateComparison'
 
 export function TransformationRunControl({
@@ -14,6 +15,7 @@ export function TransformationRunControl({
   running = false,
   onRun,
   onStop,
+  blocked,
 }: {
   workflowStep: boolean
   hasRun: boolean
@@ -23,6 +25,7 @@ export function TransformationRunControl({
   running?: boolean
   onRun: () => void
   onStop?: () => void | Promise<void>
+  blocked?: string
 }) {
   if (running && onStop) return <RunStopButton onStop={onStop} />
   const label = candidatePending
@@ -31,8 +34,8 @@ export function TransformationRunControl({
       ? '正在运行到这里'
       : busy
         ? '正在运行其他位置'
-        : '运行到这里'
-  return <button className="v2-primary-button v2-run-transformation" type="button" disabled={candidatePending || busy} onClick={onRun}>
+        : blocked || '运行到这里'
+  return <button className="v2-primary-button v2-run-transformation" type="button" disabled={candidatePending || busy || Boolean(blocked)} onClick={onRun}>
     {busy ? <LoaderCircle className="is-spinning" size={15} /> : <Play size={15} />}{label}
   </button>
 }
@@ -109,6 +112,7 @@ export function RunPanelView({
     {run.modelSnapshot && <div className="v2-run-model"><span>实际模型</span><code>{run.modelSnapshot.provider} / {run.modelSnapshot.model}</code></div>}
     {run.guidanceSnapshot && <details className="v2-guidance-read"><summary>本次指导 · {run.guidanceSnapshot.title} · {run.guidanceSnapshot.version}</summary><p>{run.guidanceSnapshot.text}</p></details>}
     {run.outputPolicySnapshot && <OutputPolicyView policy={run.outputPolicySnapshot} check={run.outputCheck} />}
+    <ToolRunView key={run.id} run={run} />
     {candidate && <><div className="v2-candidate-head"><GitCompareArrows size={16} />当前内容与生成结果</div>
       <p className="v2-candidate-excerpt">{candidate}</p>
       <button className="v2-primary-button" type="button" onClick={onCompare}><GitCompareArrows size={16} />查看待比较结果</button>

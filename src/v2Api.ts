@@ -199,6 +199,8 @@ export const v2Api = {
   }) => request<{ card: ContentCard; noop: boolean; fileSync?: FileSyncResult }>('POST', `/boards/${boardId}/cards/${cardId}/extraction-revisions`, body),
   getGuidance: () => request<{ guidance: import('./domain/guidance.js').GuidanceSnapshot[] }>('GET', '/guidance'),
   getOutputPolicies: () => request<{ policies: import('./domain/outputPolicy.js').OutputPolicy[] }>('GET', '/output-policies'),
+  getCapabilities: () => request<{ settings: { schemaVersion: 1; revision: number; tools: import('./domain/toolPolicy.js').ToolDefinition[]; enabled: string[]; pythonImageId?: string }; builtins: import('./domain/toolPolicy.js').ToolDefinition[]; runtime: { mcp: boolean; python: boolean } }>('GET', '/capabilities'),
+  approveToolReview: (runId: string, body: { requestId: string; digest: string; approve: boolean }) => request<{ accepted: true }>('POST', `/runs/${runId}/review`, body),
   getExecutionSettings: () => request<{ settings: import('./domain/executionSettings.js').ExecutionSettings }>('GET', '/execution-settings'),
   updateExecutionSettings: (body: import('./domain/executionSettings.js').ExecutionSettingsInput) => request<{ settings: import('./domain/executionSettings.js').ExecutionSettings }>('PATCH', '/execution-settings', body),
   extractCards: (boardId: string, cardId: string, body: { baseVersionId: string; items: ExtractionItem[] }) =>
@@ -435,6 +437,7 @@ export const v2Api = {
       sourceScopes?: import('./domain/sourceScopes.js').SourceScope[]
       guidance?: import('./domain/guidance.js').GuidanceInput | null
       outputPolicy?: import('./domain/outputPolicy.js').OutputPolicyInput | null
+      toolPolicy?: import('./domain/toolPolicy.js').ToolPolicy | null
     },
   ) => request<{ transformation: Transformation }>(
     'PATCH',

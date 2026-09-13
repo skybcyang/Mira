@@ -1,0 +1,28 @@
+.v2-step-tools, .v2-tool-run { min-width: 0; overflow-wrap: anywhere; }
+.v2-tool-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(100px, .7fr); gap: 10px; }
+.v2-tool-filters label, .v2-selected-tools label { display: grid; gap: 6px; min-width: 0; margin-block: 10px; }
+.v2-tool-catalog, .v2-selected-tools, .v2-tool-executions { list-style: none; margin: 0; padding: 0; }
+.v2-tool-catalog > li { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--mira-border); }
+.v2-tool-catalog > li > div { min-width: 0; flex: 1; }
+.v2-tool-catalog small, .v2-tool-row-heading span { display: block; color: var(--mira-muted); margin-top: 4px; }
+.v2-tool-catalog p { margin-block: 5px; }
+.v2-selected-tools > li, .v2-tool-executions > li { border-top: 1px solid var(--mira-border); padding: 16px 0; }
+.v2-tool-actions, .v2-tool-review-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 10px; }
+.v2-step-tools pre, .v2-tool-run pre { max-width: 100%; min-width: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; background: var(--mira-surface-subtle); border-radius: var(--mira-radius-control); font-size: 12px; line-height: 1.6; }
+.v2-tool-run pre.v2-tool-code { white-space: pre; overflow-wrap: normal; max-height: 420px; }
+.v2-selected-tools textarea { width: 100%; min-height: 90px; resize: vertical; font-family: var(--mira-font-meta); }
+.v2-step-tools input:not([type=checkbox]), .v2-step-tools select { width: 100%; min-width: 0; }
+.v2-tool-temporary { display: flex !important; align-items: center; gap: 10px; }
+.v2-tool-review { padding-block: 12px 20px; border-block: 1px solid var(--mira-border); }
+.v2-tool-review h3 { margin-top: 0; }
+.v2-tool-attachment { margin-block: 12px; }
+.v2-tool-attachment img { display: block; max-width: 100%; height: auto; margin-block: 10px; }
+.v2-tool-attachment a { display: inline-block; padding-block: 10px; }
+.v2-tool-run details { margin-block: 12px; }
+.v2-step-tools summary, .v2-tool-run summary { cursor: pointer; padding-block: 8px; }
+@media (max-width: 600px) {
+  .v2-tool-filters { grid-template-columns: minmax(0, 1fr); }
+  .v2-step-tools button, .v2-tool-run button, .v2-step-tools select, .v2-step-tools summary, .v2-tool-run summary { min-height: 44px; }
+  .v2-step-tools .v2-scope-footer { flex-wrap: wrap; }
+  .v2-tool-review-actions > button { flex: 1 1 130px; }
+}

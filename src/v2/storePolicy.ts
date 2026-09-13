@@ -29,6 +29,7 @@ function sameDrawer(left: DrawerState, right: DrawerState): boolean {
       && left.scopeCardId === right.scopeCardId
       && left.guidance === right.guidance
       && left.output === right.output
+      && left.tools === right.tools
   }
   return right.tab === 'run' && left.runId === right.runId
 }
@@ -69,6 +70,22 @@ export function resolveAsyncDetailSurface(
 
 export function userFacingStoreError(error: unknown): string {
   const code = (error as { code?: string })?.code
+  if (code === 'TOOL_POLICY_INVALID') return '工具配置不完整，请核对调用方式、参数和范围。'
+  if (code === 'TOOL_UNAVAILABLE') return '工具当前不可用，请在能力管理中核对启用状态。'
+  if (code === 'TOOL_CHANGED') return '工具或连接已变化，请重新选择并核对参数。'
+  if (code === 'TOOL_DEPENDENCY_MISSING') return '指导缺少必需工具，请先补齐本步工具。'
+  if (code === 'MODEL_TOOLS_UNAVAILABLE') return '当前模型通道不支持按需工具，请更换通道或调整调用方式。'
+  if (code === 'CAPABILITY_CONFLICT') return '能力设置已在别处修改，草稿已保留。请重新读取并核对。'
+  if (code === 'REVIEW_CONFLICT' || code === 'REVIEW_EXPIRED') return '这次审阅已处理或过期，请重新核对运行记录。'
+  if (code === 'MCP_AUTH_REQUIRED') return '连接需要凭据，请在能力管理中重新填写并测试。'
+  if (code === 'MCP_UNAVAILABLE' || code === 'MCP_INCOMPATIBLE') return 'MCP 连接不可用或不兼容，请重新测试连接。'
+  if (code === 'PYTHON_UNAVAILABLE') return 'Python 隔离环境不可用，请在能力管理中核对环境。'
+  if (code === 'TOOL_TIMEOUT') return '工具执行超时，已停止等待。请核对运行记录与外部结果。'
+  if (code === 'TOOL_LIMIT') return '工具达到次数、时间或大小上限，请缩小任务后再明确运行。'
+  if (code === 'TOOL_OUTCOME_UNKNOWN') return '外部操作结果未确认，请先核对目的地，不要重复执行。'
+  if (code === 'TOOL_FAILED') return '工具未能完成，请核对本次参数和运行诊断。'
+  if (code === 'MODEL_RESPONSE_LIMIT') return '模型响应超过大小上限，请缩小任务后重试。'
+  if (code === 'MODEL_TIMEOUT') return '模型请求超时，请核对服务状态后再运行。'
   if (code === 'SOURCE_VERSION_CHANGED') return '来源已变化，请重新绑定最新内容后重试。'
   if (code === 'SOURCE_SCOPE_REQUIRED') return '请先选择输入范围，或明确改用全文。'
   if (code === 'SOURCE_SCOPE_CHANGED') return '原文或范围已变化，请重新读取原文并选择范围。'
