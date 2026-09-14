@@ -71,9 +71,10 @@ async function selectProject(action) {
   if (action.kind === 'recent') {
     const recent = projectState.getRecentProjects().find(project => project.id === action.projectId)
     if (!recent) throw projectHostError('BAD_REQUEST', '这个项目不在最近项目中，请重新选择。')
-    return recent.path
+    return { path: recent.path, allowCreate: false }
   }
-  return action.kind === 'restore' ? chooseRestore() : chooseDirectory(action.kind)
+  const path = action.kind === 'restore' ? await chooseRestore() : await chooseDirectory(action.kind)
+  return path ? { path, allowCreate: action.kind === 'new' } : null
 }
 async function chooseStartupAction() {
   const recent = projectState.getRecentProjects()
@@ -136,19 +137,19 @@ async function startProjectRuntime(path) {
 }
 function activateProject({ runtime, window, project }) {
   const previousRuntime = nodeRuntime, previousWindow = mainWindow
+  window.show()
   nodeRuntime = runtime
   mainWindow = window
   workspaceRoot = project.path
-  // Closing the old host inside its /project/open request would deadlock its request drain.
-  setImmediate(() => {
+  void queueDesktopStateWrite().catch(reportStateWriteFailure)
+  installApplicationMenu()
+  if (previousRuntime || previousWindow) return async () => {
     if (previousWindow && !previousWindow.isDestroyed()) previousWindow.destroy()
-    void previousRuntime?.close().catch(error => console.error('[mira-desktop] previous host cleanup failed:', error))
-    void queueDesktopStateWrite().catch(reportStateWriteFailure)
-    installApplicationMenu()
-  })
+    await previousRuntime?.close()
+  }
 }
-async function openProjectPath(path) {
-  return openDesktopProject({ path, currentPath: workspaceRoot, prepareWorkspaceRoot,
+async function openProjectPath(path, allowCreate = false) {
+  return openDesktopProject({ path, currentPath: workspaceRoot, allowCreate, prepareWorkspaceRoot,
     startRuntime: startProjectRuntime, createWindow: createMainWindow,
     commitProject: (project, runtime) => runtime.projectHost.commit(project), activate: activateProject,
   })
@@ -159,8 +160,8 @@ async function switchProject(action) {
   clearTimeout(stateWriteTimer)
   try {
     await projectState.flush()
-    const path = await selectProject(action)
-    return await openProjectPath(path)
+    const selection = await selectProject(action)
+    return selection ? await openProjectPath(selection.path, selection.allowCreate) : { cancelled: true }
   } finally { switchingWorkspace = false }
 }
 function requestProjectAction(action) {
@@ -202,14 +203,15 @@ async function bootstrap() {
   const smoke = desktopSmokeStartupOverrides(process.env)
   if (smoke.restore === null) throw new Error('Packed restore smoke requires a backup file and restore workspace')
   let remembered = smoke.rememberedWorkspaceRoot || projectState.currentProject()?.path || desktopState.workspaceRoot
-  if (smoke.restore) remembered = (await restoreWorkspaceBackup(smoke.restore)).workspaceRoot
+  let allowCreate = Boolean(smoke.rememberedWorkspaceRoot)
+  if (smoke.restore) { remembered = (await restoreWorkspaceBackup(smoke.restore)).workspaceRoot; allowCreate = false }
   while (!shutdownRequested) {
-    let path = remembered
-    remembered = null
+    let selection = remembered ? { path: remembered, allowCreate } : null
+    remembered = null; allowCreate = false
     try {
-      if (!path) { const action = await chooseStartupAction(); if (!action) { void requestShutdown(); return }; path = await selectProject(action) }
-      if (!path) continue
-      const result = await openProjectPath(path)
+      if (!selection) { const action = await chooseStartupAction(); if (!action) { void requestShutdown(); return }; selection = await selectProject(action) }
+      if (!selection) continue
+      const result = await openProjectPath(selection.path, selection.allowCreate)
       if (result.cancelled) continue
       console.log('[mira-desktop] ready')
       if (process.env.MIRA_DESKTOP_SMOKE === '1' && process.env.MIRA_DESKTOP_SMOKE_PDF === '1') await verifyPackedMaterialReader(nodeRuntime.host.application)
@@ -217,7 +219,7 @@ async function bootstrap() {
       return
     } catch (error) {
       if (process.env.MIRA_DESKTOP_SMOKE === '1') throw error
-      await showMessage({ type: 'error', title: '无法打开项目', message: '项目未能打开，请重新选择。', detail: `${path || ''}\n\n${error?.message || '请确认文件夹存在且可读写。'}` })
+      await showMessage({ type: 'error', title: '无法打开项目', message: '项目未能打开，请重新选择。', detail: `${selection?.path || ''}\n\n${error?.message || '请确认文件夹存在且可读写。'}` })
     }
   }
 }

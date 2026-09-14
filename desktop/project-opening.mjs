@@ -26,9 +26,9 @@ export function createStagedProjectHost({ projectState, open }) {
   }
 }
 
-export async function openDesktopProject({ path, currentPath, prepareWorkspaceRoot = async path => path, startRuntime, createWindow, commitProject, activate }) {
+export async function openDesktopProject({ path, currentPath, allowCreate = false, prepareWorkspaceRoot = async path => path, startRuntime, createWindow, commitProject, activate }) {
   if (!path) return { cancelled: true }
-  const selected = await prepareWorkspaceRoot(path)
+  const selected = await prepareWorkspaceRoot(path, { mustExist: !allowCreate })
   if (!selected) return { cancelled: true }
   if (currentPath && (resolve(selected) === resolve(currentPath)
     || await realpath(selected).catch(() => selected) === await realpath(currentPath).catch(() => currentPath))) return { cancelled: true }
@@ -39,10 +39,9 @@ export async function openDesktopProject({ path, currentPath, prepareWorkspaceRo
     if (response.status !== 200) throw Object.assign(new Error(response.body.message), { code: response.body.code })
     const project = response.body.project
     window = await createWindow(runtime)
-    window.show()
     await commitProject(project, runtime)
-    activate({ runtime, window, project })
-    return { cancelled: false }
+    const afterResponse = activate({ runtime, window, project })
+    return { cancelled: false, ...(afterResponse ? { afterResponse } : {}) }
   } catch (error) {
     window?.destroy()
     await runtime?.close()

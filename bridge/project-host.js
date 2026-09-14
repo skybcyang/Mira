@@ -56,7 +56,11 @@ export function createProjectHostRoutes({ project, adapter, application, drainMu
           }
           const result = await adapter.open(body, project)
           if (result.cancelled) switching = false
-          return { status: 200, body: { cancelled: Boolean(result.cancelled) } }
+          return {
+            status: 200,
+            body: { cancelled: Boolean(result.cancelled) },
+            ...(result.afterResponse ? { afterResponse: result.afterResponse } : {}),
+          }
         } catch (error) { switching = false; throw error }
       } catch (error) {
         return { status: statuses[error.code] || httpStatusForCode(error.code), body: { code: error.code || 'INTERNAL', message: error.message, details: error.details } }

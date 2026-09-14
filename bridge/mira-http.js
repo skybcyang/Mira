@@ -251,10 +251,15 @@ export function sendJson(res, status, body) {
 export function createMiraApiHandler(application, {
   apiPrefix = API_PREFIX,
   maxImportBodyBytes = BOARD_ARTIFACT_LIMITS.maxBytes,
+  onAfterResponseError = () => {},
 } = {}) {
   return async function handleApi(req, res) {
     const controller = new AbortController()
-    const disconnected = () => { if (!res.writableEnded) controller.abort() }
+    let responseClosed = false
+    const disconnected = () => {
+      responseClosed = true
+      if (!res.writableEnded) controller.abort()
+    }
     res.on?.('close', disconnected)
     try {
       const url = String(req.url || '')
@@ -272,6 +277,17 @@ export function createMiraApiHandler(application, {
       const response = (segments[1] === 'materials' && segments[2] === 'previews') || segments[1] === 'capabilities'
         ? await application.dispatch(method, segments, body, { signal: controller.signal })
         : await application.dispatch(method, segments, body)
+      if (typeof response.afterResponse === 'function') {
+        let cleanupStarted = false
+        const runAfterResponse = () => {
+          if (cleanupStarted) return
+          cleanupStarted = true
+          void Promise.resolve().then(response.afterResponse).catch(onAfterResponseError)
+        }
+        res.once?.('finish', runAfterResponse)
+        res.once?.('close', runAfterResponse)
+        if (responseClosed) runAfterResponse()
+      }
       sendJson(res, response.status, response.body)
     } catch (error) {
       sendJson(res, httpStatusForCode(error?.code), {

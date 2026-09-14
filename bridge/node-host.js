@@ -230,7 +230,9 @@ export function createStandaloneMiraHost({
       return operation
     },
   }
-  const handleApi = createMiraApiHandler(application)
+  const handleApi = createMiraApiHandler(application, {
+    onAfterResponseError: error => logger.error('[mira] post-response cleanup failed:', error),
+  })
   const handleStatic = createStaticHandler(resolvedStaticRoot)
   const verifyAccessToken = createTokenVerifier(accessToken)
 

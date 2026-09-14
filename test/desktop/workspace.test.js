@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -57,6 +57,19 @@ describe('desktop workspace preparation', () => {
     await expect(readFile(join(workspaceRoot, 'existing-note.md'), 'utf8')).resolves.toBe(
       'preserve me',
     )
+  })
+
+  it('rejects an ordinary folder when opening an existing project without modifying it', async () => {
+    const workspaceRoot = await createTemporaryRoot('mira-desktop-workspace-existing-')
+    await writeFile(join(workspaceRoot, 'notes.md'), 'ordinary folder', 'utf8')
+
+    await expect(prepareWorkspaceRoot(workspaceRoot, { mustExist: true })).rejects.toMatchObject({
+      code: 'WORKSPACE_FORMAT_INVALID',
+    })
+    await expect(readdir(workspaceRoot)).resolves.toEqual(['notes.md'])
+
+    await mkdir(join(workspaceRoot, 'boards-v2'))
+    await expect(prepareWorkspaceRoot(workspaceRoot, { mustExist: true })).resolves.toBe(workspaceRoot)
   })
 
   it('does not continue initializing when a required data path is occupied by a file', async () => {

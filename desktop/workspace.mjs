@@ -9,6 +9,7 @@ import {
 } from 'node:fs/promises'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
+import { WORKSPACE_DATA_PATHS } from '../bridge/project-workspace.js'
 
 const DATA_DIRECTORIES = ['boards-v2', 'runs-v2', 'workflows-v2']
 const STATE_FILE_NAME = 'desktop-state.json'
@@ -43,7 +44,7 @@ async function verifyReadableAndWritable(directory) {
   }
 }
 
-export async function prepareWorkspaceRoot(selection) {
+export async function prepareWorkspaceRoot(selection, { mustExist = false } = {}) {
   if (selection === undefined || selection === null) return null
   if (typeof selection !== 'string' || selection.trim() === '') {
     throw new TypeError('Workspace selection must be a non-empty path')
@@ -52,6 +53,16 @@ export async function prepareWorkspaceRoot(selection) {
   const rootStats = await stat(selection)
   if (!rootStats.isDirectory()) {
     throw new Error(`Workspace is not a directory: ${selection}`)
+  }
+
+  if (mustExist) {
+    const markers = ['.mira', ...Object.values(WORKSPACE_DATA_PATHS)]
+    const existing = await Promise.all(markers.map(name => existingPathType(join(selection, name))))
+    if (!existing.some(Boolean)) {
+      throw Object.assign(new Error('所选文件夹不是现有 Mira 项目，请使用“新建项目”。'), {
+        code: 'WORKSPACE_FORMAT_INVALID',
+      })
+    }
   }
 
   const dataPaths = DATA_DIRECTORIES.map((name) => join(selection, name))

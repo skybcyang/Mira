@@ -57,3 +57,16 @@
 - 两个补验进程均输出 ready，并各出现一次 `IMKCFRunLoopWakeUpReliable` mach-port 诊断（第二次在退出时取得的日志中出现）。该系统输入法日志单独保留，不归为 renderer 零消息结论。检查后关闭 DevTools 并正常退出测试应用，两个进程退出码均为 0。
 
 本次没有修改生产源码、真实用户项目或 `/Applications/Mira.app`，没有重新打包或合并 main。临时项目甲保留已打开原画板的最终导航状态。原生重启画面的缺口已补齐；Windows / Intel 与发布边界保持上文限制。
+
+## 待推送提交复审与修复（2026-09-14 12:29–12:45）
+
+在本地 main 的 8 个待推送提交上重新按产品、规格、宿主生命周期和实际调用链审阅，发现并修复以下问题：
+
+- “打开项目”与“新建项目”在目录选择后丢失模式，导致普通目录可能被初始化为项目。现在只有新建允许初始化；打开和最近项目先识别 `.mira` 或 legacy v2 标记，普通目录在任何探测写入前以 `WORKSPACE_FORMAT_INVALID` 拒绝。
+- 候选窗口曾在本机项目记录提交前显示。现在 renderer 验证完成后仍保持隐藏，项目记录提交成功才显示；提交失败销毁候选窗口并保留原窗口和宿主。
+- 旧窗口和宿主曾通过脱离 HTTP 响应的 `setImmediate` 清理，无法证明旧写锁何时释放。现在切换结果携带内部 `afterResponse` 回调，响应 `finish` 或 `close` 后销毁旧窗口并等待旧宿主关闭；客户端在 dispatch 完成前已经断连也会执行一次且只执行一次。
+- `desktop/main-policy.mjs` 中一组未被生产入口调用的工作区/恢复辅助函数及对应测试被删除；行为测试改为覆盖 `main -> project-opening -> workspace -> Node Host -> HTTP response` 的真实连接路径。
+
+失败先行回归分别观察到普通目录被接受、提交失败前候选窗口已显示、清理回调未透传，以及响应断连时清理调用为 0；修复后相关桌面与项目宿主回归为 **10 文件 / 85 项通过**。最终完整门禁为 `pnpm test` **184 文件 / 1844 项通过**，`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 与 `git diff --check` 通过。最新源码重新运行 arm64 make、普通 packed smoke 和恢复 packed smoke，均通过；产物仍为未签名内部测试包。
+
+真实 macOS 复验使用 `/tmp/mira-review.4UmVQg` 的独立 userData、项目和普通目录；同一源码打包应用到达 `[mira-desktop] ready`，没有修改真实用户项目或 `/Applications/Mira.app`。由于用户安装版 Mira 同时运行，自动化接口无法区分相同 bundle ID；改用临时 bundle ID 的隔离副本后仍连续超时，未取得可核验画面。因此本节不新增原生目视通过结论；上文已经完成的重启画面证据仍有效，而本次新修复由真实文件系统、HTTP、桌面编排测试和 packed smoke 覆盖。Windows / Intel、签名、公证、远端 Actions 与发布仍未在本批验证。
