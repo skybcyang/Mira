@@ -114,3 +114,15 @@ it('waits for a previously admitted write before opening and retains the fence o
   expect(await open).toEqual({ status: 200, body: { cancelled: false } })
   expect(await request('boards', 'POST', { title: 'still blocked' })).toMatchObject({ status: 409, body: { code: 'PROJECT_SWITCHING' } })
 })
+
+it('runs successful project cleanup after the HTTP response finishes', async () => {
+  const afterResponse = vi.fn()
+  const projectHost = {
+    open: vi.fn(async () => ({ cancelled: false, afterResponse })),
+    getNavigation: async () => null,
+    getRecentProjects: async () => [],
+  }
+  const { request } = await start({ projectHost })
+  expect(await request('project/open', 'POST', { kind: 'open' })).toEqual({ status: 200, body: { cancelled: false } })
+  await vi.waitFor(() => expect(afterResponse).toHaveBeenCalledOnce())
+})

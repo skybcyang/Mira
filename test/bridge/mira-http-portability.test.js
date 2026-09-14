@@ -1,4 +1,5 @@
 import { createServer, request as httpRequest } from 'node:http'
+import { EventEmitter } from 'node:events'
 import { Readable } from 'node:stream'
 import { describe, expect, it, vi } from 'vitest'
 import { createMiraApiHandler, readJsonBody } from '../../bridge/mira-http.js'
@@ -26,6 +27,49 @@ function request({ method = 'POST', url, chunks }) {
 }
 
 describe('portable HTTP request limits', () => {
+  it('runs response cleanup only after the response has finished', async () => {
+    const afterResponse = vi.fn()
+    const response = Object.assign(new EventEmitter(), {
+      writeHead: vi.fn(),
+      end: vi.fn(function () { this.emit('finish') }),
+    })
+    await createMiraApiHandler({ dispatch: async () => ({ status: 200, body: {}, afterResponse }) })(
+      request({ method: 'GET', url: '/graphmind/api/v2/project', chunks: [] }), response,
+    )
+    await vi.waitFor(() => expect(afterResponse).toHaveBeenCalledOnce())
+  })
+
+  it('runs response cleanup once when the connection closes before finish', async () => {
+    const afterResponse = vi.fn()
+    const response = Object.assign(new EventEmitter(), {
+      writeHead: vi.fn(),
+      end: vi.fn(function () { this.emit('close') }),
+    })
+    await createMiraApiHandler({ dispatch: async () => ({ status: 200, body: {}, afterResponse }) })(
+      request({ method: 'GET', url: '/graphmind/api/v2/project', chunks: [] }), response,
+    )
+    await vi.waitFor(() => expect(afterResponse).toHaveBeenCalledOnce())
+    response.emit('finish')
+    await Promise.resolve()
+    expect(afterResponse).toHaveBeenCalledOnce()
+  })
+
+  it('runs response cleanup when the connection closed before dispatch completed', async () => {
+    let completeDispatch
+    const afterResponse = vi.fn()
+    const response = Object.assign(new EventEmitter(), {
+      writeHead: vi.fn(),
+      end: vi.fn(),
+    })
+    const handling = createMiraApiHandler({
+      dispatch: () => new Promise(resolve => { completeDispatch = resolve }),
+    })(request({ method: 'GET', url: '/graphmind/api/v2/project', chunks: [] }), response)
+    response.emit('close')
+    completeDispatch({ status: 200, body: {}, afterResponse })
+    await handling
+    await vi.waitFor(() => expect(afterResponse).toHaveBeenCalledOnce())
+  })
+
   it('caps card packages before dispatching or parsing their assets', async () => {
     const application = { dispatch: vi.fn() }
     const response = responseRecorder()

@@ -45,6 +45,45 @@ it('closes a staged target on renderer failure and only commits a validated targ
   expect(activate).toHaveBeenCalledOnce()
 })
 
+it('keeps a candidate window hidden when the project record commit fails', async () => {
+  const { root, startRuntime } = await fixture()
+  const candidateWindow = { show: vi.fn(), destroy: vi.fn() }
+  await expect(openDesktopProject({
+    path: join(root, 'target'),
+    startRuntime,
+    createWindow: async () => candidateWindow,
+    commitProject: async () => { throw new Error('state commit failed') },
+    activate: vi.fn(),
+  })).rejects.toThrow('state commit failed')
+  expect(candidateWindow.show).not.toHaveBeenCalled()
+  expect(candidateWindow.destroy).toHaveBeenCalledOnce()
+})
+
+it('returns activation cleanup for the HTTP response lifecycle', async () => {
+  const { root, startRuntime } = await fixture()
+  const cleanup = vi.fn(), candidateWindow = { show: vi.fn(), destroy: vi.fn() }
+  const result = await openDesktopProject({
+    path: join(root, 'target'),
+    startRuntime,
+    createWindow: async () => candidateWindow,
+    commitProject: vi.fn(),
+    activate: vi.fn(() => cleanup),
+  })
+  expect(result).toEqual({ cancelled: false, afterResponse: cleanup })
+})
+
+it('requires an existing project unless initialization was explicitly selected', async () => {
+  const startRuntime = vi.fn(async () => ({ host: { application: { dispatch: async () => ({ status: 200, body: { project: { id: 'p', name: 'P', path: '/target' } } }) } }, close: vi.fn() }))
+  const prepareWorkspaceRoot = vi.fn(async path => path)
+  const createWindow = vi.fn(async () => ({ show: vi.fn(), destroy: vi.fn() }))
+  const options = { path: '/target', prepareWorkspaceRoot, startRuntime, createWindow, commitProject: vi.fn(), activate: vi.fn() }
+
+  await openDesktopProject(options)
+  expect(prepareWorkspaceRoot).toHaveBeenLastCalledWith('/target', { mustExist: true })
+  await openDesktopProject({ ...options, allowCreate: true })
+  expect(prepareWorkspaceRoot).toHaveBeenLastCalledWith('/target', { mustExist: false })
+})
+
 it('treats selecting the active project as cancellation without a second writer', async () => {
   const { root, startRuntime } = await fixture(), runtime = await startRuntime(root)
   const start = vi.fn()
