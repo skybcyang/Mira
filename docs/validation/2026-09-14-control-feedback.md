@@ -1,5 +1,7 @@
 # 按钮反馈、运行指示与设置开关验证
 
+当前状态：以下首轮报告中的“未合并”已由本文末尾的主干集成记录取代；历史验证事实保留。
+
 日期：2026-09-14，Asia/Shanghai。本地分支 `codex/ui-control-feedback`，本批为前端局部打磨，未推送、合并 main、发布或替换安装版。工作期间共享仓库中的其他任务改动保留，本报告仅归属下述 UI 与验证改动。
 
 ## 产品命题与范围
@@ -51,3 +53,13 @@ MIRA_PLAYWRIGHT_REQUIRE=/path/to/playwright/package.json node scripts/check-cont
 ## 边界
 
 未验证真实触屏设备、系统读屏器、Safari、原生桌面安装包或真实模型产物质量。390px 是浏览器窄屏证据。没有修改桌面宿主或打包配置，本批不声称完成 make/packed smoke 或安装版更新。临时验证 workspace 与截图保留供复核，测试 browser/runtime 已关闭。
+
+## 合入本地主干与复验（2026-09-14）
+
+用户明确要求合入主干后，将本批 16 个文件提交为 `4222a3c1b602926a2c0715d082375ae73683ad96`，从 `b47e58c` 快进合入本地 `main`，没有冲突或额外产品改动。合并前复审完整 diff，定向 5 文件 / 67 项通过。
+
+在 `main` 的 `4222a3c` 上重新运行 `pnpm test`（185 文件 / 1857 项）、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check`，全部通过；Node 测试仍有上述 4 条 localStorage ExperimentalWarning。
+
+主干生产构建再次运行可见 Chrome 验证：六套外观、1440×1000 / 390×844、Space 切换、偏好保持、焦点返回、按压反馈、减少动态效果以及真实 HTTP 生成完成/停止均通过。browser warning/error 与 pageerror 为 0。此次截图位于 `/var/folders/7z/5dcj6kmx005b6sm35w8tnnl80000gn/T/mira-control-feedback-VUzLd7/screenshots/`，测试 browser/runtime 已关闭。
+
+仅同步路线与本验证记录，不改写首轮证据。未推送远端、创建 PR、删除分支、发布或替换安装版；原生设备和模型质量验证边界保持不变。
