@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rename, rm, rmdir, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, expect, it } from 'vitest'
@@ -50,4 +50,19 @@ it('commits buffered renderer navigation together with the successful recent pro
   const reopened = await createProjectStateStore(path)
   expect(reopened.currentProject()).toEqual(project('a'))
   expect(reopened.getNavigation(project('a'))).toEqual(navigation)
+})
+
+it('drains a failed project commit and allows a subsequent switch without a navigation write', async () => {
+  const path = await root(), store = await createProjectStateStore(path)
+  await store.commitOpen(project('a'))
+  const statePath = join(path, 'project-state.json'), savedPath = join(path, 'saved-state.json')
+  await rename(statePath, savedPath)
+  await mkdir(statePath)
+  await expect(store.commitOpen(project('b'))).rejects.toThrow()
+  expect(store.currentProject()).toEqual(project('a'))
+  await rmdir(statePath)
+  await rename(savedPath, statePath)
+  await expect(store.flush()).resolves.toBeUndefined()
+  await store.commitOpen(project('b'))
+  expect((await createProjectStateStore(path)).currentProject()).toEqual(project('b'))
 })

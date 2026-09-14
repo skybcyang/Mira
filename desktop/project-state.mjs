@@ -36,7 +36,7 @@ export async function createProjectStateStore(userDataRoot, { onReadError } = {}
   }
   let tail = Promise.resolve()
   function update(change) {
-    const operation = tail.catch(() => undefined).then(async () => {
+    const operation = tail.then(async () => {
       const next = validateState(change(structuredClone(state)))
       const temporaryPath = join(userDataRoot, `.project-state-${randomUUID()}.tmp`)
       await mkdir(userDataRoot, { recursive: true })
@@ -47,7 +47,8 @@ export async function createProjectStateStore(userDataRoot, { onReadError } = {}
         state = next
       } finally { await unlink(temporaryPath).catch(error => { if (error.code !== 'ENOENT') throw error }) }
     })
-    tail = operation
+    // Callers receive write failures; the queue itself only tracks completion.
+    tail = operation.catch(() => undefined)
     return operation
   }
   return {
