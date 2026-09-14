@@ -42,7 +42,7 @@
 
 `pnpm desktop:make:arm64`、`pnpm desktop:smoke:packed:arm64` 和 `node scripts/packed-desktop-smoke.mjs --arch=arm64 --restore` 均通过。普通 packed smoke 含 PDF 原件读取，恢复 smoke 核对备份与检查点；每个 smoke 使用独立临时目录。
 
-最终未签名产物：`out/desktop/make/Mira-0.1.0-beta.2-arm64.dmg`，SHA-256 `c1c7fd7d4cf18c61385afa2ce9210f1f33122f33d6bda665c908313b1bf4c463`；同批生成 arm64 ZIP。未替换 `/Applications/Mira.app`，未修改真实用户项目。
+当次未签名产物：`out/desktop/make/Mira-0.1.0-beta.2-arm64.dmg`，SHA-256 `c1c7fd7d4cf18c61385afa2ce9210f1f33122f33d6bda665c908313b1bf4c463`；同批生成 arm64 ZIP。该值保留初次打包事实，同一路径后来由下文深度复审重新构建并覆盖。未替换 `/Applications/Mira.app`，未修改真实用户项目。
 
 本轮证明项目导航、状态恢复与安全切换的行为，不涉及模型调用质量或新增付费调用。Windows / Intel 原生 make、客户端 UI、真实触屏软键盘、签名、公证和发布未在本批验证，不能以 macOS 证据替代。临时浏览器/原生测试进程在验收后停止，临时演示项目及本地打包产物保留供复核。
 
@@ -78,4 +78,4 @@
 - 原先打开/新建意图只在取得写锁前预检；目录在预检与宿主初始化之间变化时，Node Host 仍会按“打开或创建”执行。现在桌面把原始意图传到 Node Host，并在持有写锁时强制 `open` 或 `create`；打开普通目录、重复新建已有项目以及未知模式均拒绝且不留下项目数据或锁。旧布局迁移源显式使用只打开模式。
 - 宿主关闭时，能力适配器清理异常会跳过 workspace 解锁，留下阻止后续打开的锁文件。现在能力清理仍把原错误返回调用方，但解锁位于内层 `finally`，即使清理失败也执行。
 
-失败先行测试分别复现了打开模式仍初始化普通目录、未知模式被静默接受，以及能力清理失败后锁文件残留。修复后定向回归 `test/bridge/standalone-host.test.js`、`test/bridge/project-host.test.js`、`test/bridge/project-workspace.test.js`、`test/desktop/project-opening.test.js`、`test/bridge/project-migration.test.js` 为 **5 文件 / 32 项通过**。完整门禁为 `pnpm test` **184 文件 / 1849 项通过**，`pnpm exec tsc --noEmit`、`pnpm build` 与 `pnpm build:bridge` 通过；最新源码的 arm64 make、普通 packed smoke 和恢复 packed smoke 均通过，最终 `git diff --check` 在提交前通过。仍未执行 Windows / Intel、远端 Actions、签名、公证或发布。
+失败先行测试分别复现了打开模式仍初始化普通目录、未知模式被静默接受，以及能力清理失败后锁文件残留。修复后定向回归 `test/bridge/standalone-host.test.js`、`test/bridge/project-host.test.js`、`test/bridge/project-workspace.test.js`、`test/desktop/project-opening.test.js`、`test/bridge/project-migration.test.js` 为 **5 文件 / 32 项通过**。完整门禁为 `pnpm test` **184 文件 / 1849 项通过**，`pnpm exec tsc --noEmit`、`pnpm build` 与 `pnpm build:bridge` 通过；最新源码的 arm64 make、普通 packed smoke 和恢复 packed smoke 均通过。最新 DMG 的 SHA-256 为 `e3f851453d4e020fd7583e00433d3aaef5cc813596e5162f2fad8f87b0722bda`，最终 `git diff --check` 在提交前通过。仍未执行 Windows / Intel、远端 Actions、签名、公证或发布。
