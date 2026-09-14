@@ -45,7 +45,7 @@
     "ajv": "^8.20.0",
     "ipaddr.js": "^2.5.0",
     "linkedom": "^0.18.13",
-    "lucide-react": "^1.33.0",
+    "lucide-react": "^1.44.0",
     "mdast-util-from-markdown": "2.0.3",
     "mdast-util-gfm-table": "2.0.0",
     "micromark-extension-gfm-table": "2.1.1",
