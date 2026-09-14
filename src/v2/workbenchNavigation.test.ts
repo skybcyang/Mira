@@ -5,6 +5,7 @@ import { WorkbenchNavigation } from './WorkbenchNavigation'
 import { readWorkbenchPreference } from './workbenchPreferences'
 import AppBar from './AppBar'
 import { ReactFlowProvider } from '@xyflow/react'
+import { parseHTML } from 'linkedom'
 
 describe('workbench navigation', () => {
   it('exposes every work tool directly with no more menu or duplicate search', () => {
@@ -26,7 +27,7 @@ describe('workbench navigation', () => {
     for (const label of ['撤销', '重做', '系统设置']) expect(actions).toContain(`aria-label="${label}"`)
     expect(actions).not.toContain('新建')
     expect(html).toContain('aria-label="新建卡片"')
-    const location = html.match(/<div class="v2-app-location">([\s\S]*?)<\/div>/)?.[1] || ''
+    const location = parseHTML(html).document.querySelector('.v2-app-location')!.innerHTML
     expect(location).toContain('aria-label="切换画板"')
     expect(location).not.toContain('<select')
     expect(html.match(/<span>搜索卡片或命令<\/span>/g)).toHaveLength(1)

@@ -19,6 +19,7 @@ export const useV2Canvas = create<V2CanvasState>()((set, get) => {
   const runSlice = createRunSlice(context)
   const inspirationSlice = createInspirationSlice({ ...context })
   return {
+    projectInfo: null,
     boardId: null,
     board: null,
     boards: [],

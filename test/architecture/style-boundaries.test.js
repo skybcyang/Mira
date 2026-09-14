@@ -23,6 +23,7 @@ const modules = [
   'workflow-library.css',
   'notices-and-plan-draft.css',
   'board-manager.css',
+  'project-opening.css',
   'appearance.css',
   'command-palette.css',
   'responsive-desktop.css',
@@ -65,8 +66,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Tools and capability settings: desktop/1024/390px light/dark verified on 2026-09-14.
-    expect(digest).toBe('25ad8ef3e86460e95776c38ad2b7e9fe7dd15d56166ead3320e6c83a30ea3de3')
+    // Project overview and navigation: 1280/390px light/dark and native macOS verified on 2026-09-14.
+    expect(digest).toBe('71b2fcc3722eba34492fa16f28a9b6cf790d0f458c0a0efba5611beb4fe2cc8b')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {
@@ -89,7 +90,7 @@ describe('stylesheet boundaries', () => {
       const root = postcss.parse(await readFile(new URL(`../../src/styles/${name}`, import.meta.url), 'utf8'))
       root.walkDecls(/^--mira-/, () => expect(name).toBe('tokens.css'))
       root.walkAtRules('media', () => {
-        expect(['responsive-desktop.css', 'responsive-mobile.css', 'accessibility.css', 'step-tools.css', 'capability-management.css']).toContain(name)
+        expect(['responsive-desktop.css', 'responsive-mobile.css', 'accessibility.css', 'step-tools.css', 'capability-management.css', 'project-opening.css']).toContain(name)
       })
       for (const node of root.nodes) {
         if (!featureBases.has(node.selector) || seen.has(node.selector)) continue

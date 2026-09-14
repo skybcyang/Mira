@@ -217,7 +217,7 @@ describe('detail drawer safety integration', () => {
     expect(app).toContain('onAppearanceChange={setAppearance}')
     expect(app).toContain('onSwitchBoard=')
     expect(app).toMatch(/switchBoard\(boardId\)\.catch\(\(\) => \{\}\)/)
-    expect(app).toContain("commandBlocked={drawerDirty || planDirty || loadState === 'loading' || modalTaskOpen}")
+    expect(app).toContain("commandBlocked={drawerDirty || planDirty || loadState === 'loading' || modalTaskOpen || projectOpening.busy}")
     expect(app).toContain('useMobilePanelModal(sourcePicker ? null : mobilePanelIdentity, surfaceOpenerRef.current)')
     expect(app).not.toContain('<AppearanceSwitcher appearance={appearance}')
   })

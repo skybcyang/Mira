@@ -136,7 +136,7 @@ export function SingleStepControls({
   </div>
 }
 
-export default function ContextDock() {
+export default function ContextDock({ onDraftChange }: { onDraftChange?: (dirty: boolean) => void }) {
   const runDrawerAction = useDrawerAction()
   const board = useV2Canvas((state) => state.board)
   const selectedIds = useV2Canvas((state) => state.selectedCardIds)
@@ -155,6 +155,9 @@ export default function ContextDock() {
   const [branchSubmitting, setBranchSubmitting] = useState(false)
   const createStepPendingRef = useRef(false)
   const [createStepPending, setCreateStepPending] = useState(false)
+  const draftPending = Boolean(custom.trim() || branchValues.some(value => value.trim()) || branchSubmitting || createStepPending)
+  useEffect(() => { onDraftChange?.(draftPending) }, [draftPending, onDraftChange])
+  useEffect(() => () => onDraftChange?.(false), [onDraftChange])
   const sources = selectedIds
     .map((id) => board?.cards.find((card) => card.id === id))
     .filter((card): card is ContentCard => Boolean(card))

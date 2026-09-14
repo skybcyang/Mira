@@ -153,6 +153,7 @@ export function WorkflowLibraryView({
   onUse,
   onBuildPlan,
   onRefresh,
+  boardAvailable = true,
 }: {
   workflows: WorkflowTemplate[]
   state: LibraryState
@@ -161,6 +162,7 @@ export function WorkflowLibraryView({
   onUse: (workflowId: string) => void
   onBuildPlan?: () => void
   onRefresh?: () => void
+  boardAvailable?: boolean
 }) {
   const [confirmingWorkflowId, setConfirmingWorkflowId] = useState<string | null>(null)
   return <aside className="v2-workflow-library" aria-label="方法与计划">
@@ -169,8 +171,9 @@ export function WorkflowLibraryView({
       <button autoFocus className="v2-icon-button" type="button" aria-label="关闭方法与计划" title="关闭方法与计划" onClick={onClose}><X size={18} /></button>
     </header>
     <div className="v2-workflow-library-body">
+      {!boardAvailable && <p className="v2-library-state">先打开或新建画板，再使用方法或搭计划。</p>}
       {onBuildPlan && <div className="v2-plan-entry">
-        <button className="v2-secondary-button" type="button" onClick={onBuildPlan}>
+        <button className="v2-secondary-button" type="button" disabled={!boardAvailable} onClick={onBuildPlan}>
           <Plus size={18} /><span><strong>搭一个计划</strong><small>从零安排这次任务的步骤</small></span><ArrowRight size={16} />
         </button>
       </div>}
@@ -197,7 +200,7 @@ export function WorkflowLibraryView({
             {step.guidance && <details className="v2-guidance-read"><summary>指导：{step.guidance.title} · {step.guidance.version}</summary><p>{step.guidance.text}</p></details>}
           </div></li>)}</ol>
           </details>
-          <button className="v2-secondary-button v2-workflow-use" type="button" onClick={() => onUse(workflow.id)}><LayoutTemplate size={15} />使用方法</button>
+          <button className="v2-secondary-button v2-workflow-use" type="button" disabled={!boardAvailable} onClick={() => onUse(workflow.id)}><LayoutTemplate size={15} />使用方法</button>
         </article>})}
       </div>}
     </div>
@@ -218,6 +221,7 @@ export default function WorkflowLibrary({
   onRequestLeave?: (action:()=>void) => void
 }) {
   const workflows = useV2Canvas((state) => state.workflows)
+  const boardAvailable = useV2Canvas((state) => Boolean(state.boardId) && state.loadState === 'ready')
   const state = useV2Canvas((canvas) => canvas.workflowState)
   const refresh = useV2Canvas((canvas) => canvas.refreshWorkflows)
   const deleteWorkflow = useV2Canvas((canvas) => canvas.deleteWorkflow)
@@ -231,7 +235,7 @@ export default function WorkflowLibrary({
   useEffect(() => { void refresh() }, [refresh])
   useEffect(() => { setView(initialView); setPlan(emptyPlan()) }, [initialView])
 
-  if (view === 'plan') return <aside className="v2-workflow-library" aria-label="计划编辑">
+  if (view === 'plan' && boardAvailable) return <aside className="v2-workflow-library" aria-label="计划编辑">
     <header className="v2-workflow-library-head">
       <div><button className="v2-plan-back" type="button" onClick={() => onRequestLeave(() => {setPlan(emptyPlan());setView('library')})}><ArrowLeft size={14}/>方法与计划</button><h2>搭一个计划</h2></div>
       <button autoFocus className="v2-icon-button" type="button" aria-label="关闭计划编辑" title="关闭" onClick={() => onRequestLeave(onClose)}><X size={18} /></button>
@@ -252,6 +256,7 @@ export default function WorkflowLibrary({
   return <WorkflowLibraryView
     workflows={workflows}
     state={state}
+    boardAvailable={boardAvailable}
     onClose={onClose}
     onDelete={(workflowId) => void deleteWorkflow(workflowId)}
     onUse={(workflowId) => { beginWorkflowDraft(workflowId, draftOrigin); onClose() }}

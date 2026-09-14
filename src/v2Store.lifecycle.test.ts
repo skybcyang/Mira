@@ -528,7 +528,7 @@ describe('board catalog, lifecycle, and portability commands', () => {
     expect(useV2Canvas.getState().board?.id).toBe('next')
   })
 
-  it('uses the ordinary default-board creation path when trashing the only active board', async () => {
+  it('returns to the project overview when trashing the only active board', async () => {
     vi.spyOn(v2Api, 'trashBoard').mockResolvedValue({
       board: { ...board('home'), lifecycle: { state: 'trashed' }, revision: 2 },
     })
@@ -545,10 +545,10 @@ describe('board catalog, lifecycle, and portability commands', () => {
 
     await useV2Canvas.getState().trashBoard('home', 1)
 
-    expect(create).toHaveBeenCalledWith('Mira 画板')
-    expect(useV2Canvas.getState().boardId).toBe('default')
+    expect(create).not.toHaveBeenCalled()
+    expect(useV2Canvas.getState().boardId).toBeNull()
     expect(useV2Canvas.getState().boardCatalog.map((item) => item.id))
-      .toEqual(['default', 'home'])
+      .toEqual(['home'])
   })
 
   it('fails closed after lifecycle commit when catalog or fallback reconciliation cannot load', async () => {

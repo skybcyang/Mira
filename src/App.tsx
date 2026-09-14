@@ -24,6 +24,8 @@ import {
 } from './canvasViewport'
 import { branchIntentFromConnection, edgeDrawerIntent } from './v2Projection'
 import AppBar from './v2/AppBar'
+import ProjectOverview from './v2/ProjectOverview'
+import { useProjectOpening, notifyProjectOpening } from './v2/useProjectOpening'
 import ContentCardNode from './v2/ContentCard'
 import CanvasGroupNode from './v2/CanvasGroupNode'
 import ContextDock from './v2/ContextDock'
@@ -91,6 +93,9 @@ function V2Canvas({ appearance, setAppearance }: {
   const edges = useV2Canvas((state) => state.edges)
   const board = useV2Canvas((state) => state.board)
   const boardId = useV2Canvas((state) => state.boardId)
+  const projectInfo = useV2Canvas((state) => state.projectInfo)
+  const boards = useV2Canvas((state) => state.boards)
+  const message = useV2Canvas((state) => state.message)
   const loadState = useV2Canvas((state) => state.loadState)
   const selectedIds = useV2Canvas((state) => state.selectedCardIds)
   const drawer = useV2Canvas((state) => state.drawer)
@@ -142,6 +147,7 @@ function V2Canvas({ appearance, setAppearance }: {
   const [filePickerOpen, setFilePickerOpen] = useState(false)
   const [fileBindingCardId, setFileBindingCardId] = useState<string | null>(null)
   const [boardManagerOpen, setBoardManagerOpen] = useState(false)
+  const [dockDraft, setDockDraft] = useState(false)
   const [boardHistoryTarget, setBoardHistoryTarget] = useState<BoardSummary | null>(null)
   const [sourcePreview, setSourcePreview] = useState<SourcePreviewRequest | null>(null)
   const closeSourcePreview = useCallback(() => {
@@ -225,6 +231,24 @@ function V2Canvas({ appearance, setAppearance }: {
     }
     intent()
   }, [drawer])
+
+  const projectBlockedReason = modalTaskOpen || pendingDrawerIntent
+    ? '请先完成或关闭当前窗口，再切换项目。'
+    : sidePanel === 'model'
+      ? '请先保存或关闭模型设置，再切换项目。'
+      : dockDraft || branchDraft || sourcePicker || workflowDraft
+        ? '请先完成或取消当前计划、来源选择，或清空底部步骤输入。'
+        : null
+  const projectOpening = useProjectOpening(requestDrawerIntent, projectBlockedReason)
+  const requestProjectOverview = () => {
+    if (projectBlockedReason) { notifyProjectOpening(projectBlockedReason); return }
+    requestDrawerIntent(() => {
+      void useV2Canvas.getState().showProjectOverview().then(() => {
+        setBoardHistoryTarget(null)
+        setSourcePreview(null)
+      }, () => {})
+    })
+  }
 
   const rememberSurfaceOpener = useCallback(() => {
     const active = document.activeElement instanceof HTMLElement
@@ -633,8 +657,11 @@ function V2Canvas({ appearance, setAppearance }: {
     select: requestCardSelection,
   }), [requestDrawerAction, requestDrawerChange, requestCardSelection])
 
-  return <SourcePreviewContext.Provider value={previewSource}><DrawerIntentContext.Provider value={drawerIntentController}><InspectorDraftContext.Provider value={inspectorDrafts.current}><main className={`v2-app ${drawer || sidePanel || boardHistoryTarget || sourcePreview ? 'has-drawer' : ''}${workflowDraft ? ' has-workflow-draft' : ''}`}>
+  return <SourcePreviewContext.Provider value={previewSource}><DrawerIntentContext.Provider value={drawerIntentController}><InspectorDraftContext.Provider value={inspectorDrafts.current}><main data-project-ready={loadState === 'ready' ? 'true' : loadState === 'error' ? 'error' : 'false'} className={`v2-app ${drawer || sidePanel || boardHistoryTarget || sourcePreview ? 'has-drawer' : ''}${workflowDraft ? ' has-workflow-draft' : ''}`}>
     <AppBar
+      onProjectOverview={requestProjectOverview}
+      onOpenProject={projectOpening.requestOpen}
+      projectOpening={projectOpening.busy}
       createContentCard={createCanvasCard}
       onCanvas={() => requestDrawerIntent(() => { closeSourcePreview(); openDrawer(null); openPanel(null); setBoardHistoryTarget(null) })}
       appearance={appearance}
@@ -642,7 +669,7 @@ function V2Canvas({ appearance, setAppearance }: {
       onSwitchBoard={(boardId) => requestDrawerIntent(() => { setBoardHistoryTarget(null); void switchBoard(boardId).catch(() => {}) })}
       onCloseBoard={(id) => requestDrawerIntent(() => { void useV2Canvas.getState().closeBoard(id).then(closed => { if (closed) setBoardHistoryTarget(null) }, () => {}) })}
       onCreateBoard={(title) => requestDrawerIntent(() => { setBoardHistoryTarget(null); void createBoard(title).catch(() => {}) })}
-      commandBlocked={drawerDirty || planDirty || loadState === 'loading' || modalTaskOpen}
+      commandBlocked={drawerDirty || planDirty || loadState === 'loading' || modalTaskOpen || projectOpening.busy}
       inspirationPickerOpen={inspirationPickerOpen}
       openInspirationPicker={() => {
         rememberModalTaskOpener()
@@ -689,7 +716,16 @@ function V2Canvas({ appearance, setAppearance }: {
       openExecutionSettings={() => requestPanelChange('execution')}
     />
     <div ref={canvasShellRef} className="v2-canvas-shell" aria-busy={loadState === 'loading'}>
-      <ReactFlow nodes={displayNodes} edges={displayEdges} nodeTypes={nodeTypes} onNodesChange={onNodesChange}
+      {!board ? <ProjectOverview projectName={projectInfo?.project.name || '当前项目'} boards={boards}
+        busy={loadState === 'loading'} error={loadState === 'error' ? message || '项目暂时无法读取，请重试。' : null}
+        onRetry={() => void load()}
+        onOpenBoard={id => requestDrawerIntent(() => { void switchBoard(id).catch(() => {}) })}
+        onCreateBoard={() => requestDrawerIntent(() => { void createBoard('未命名画板').catch(() => {}) })}
+        onManageBoards={() => requestDrawerIntent(() => { setBoardManagerOpen(true); void refreshBoardCatalog().catch(() => {}) })}
+        onMaterials={() => { rememberModalTaskOpener(); requestDrawerIntent(() => setFilePickerOpen(true)) }}
+        onInspiration={() => { rememberModalTaskOpener(); setInspirationPickerOpen(true) }}
+        onMethods={() => requestPanelChange('workflow')} />
+      : <ReactFlow nodes={displayNodes} edges={displayEdges} nodeTypes={nodeTypes} onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange} onConnect={onConnect} onConnectEnd={onConnectEnd}
         onMoveStart={(event) => { if (event) manualViewportRevision.current += 1 }}
         onNodeClick={(event, node) => {
@@ -748,8 +784,8 @@ function V2Canvas({ appearance, setAppearance }: {
             />
           ))}
         </ViewportPortal>}
-      </ReactFlow>
-      {sourcePicker ? <SourcePickerToolbar /> : <><CanvasSelectionToolbar /><ContextDock /></>}
+      </ReactFlow>}
+      {board && (sourcePicker ? <SourcePickerToolbar /> : <><CanvasSelectionToolbar /><ContextDock onDraftChange={setDockDraft} /></>)}
     </div>
     {(drawer || sidePanel || boardHistoryTarget || sourcePreview) && <button
       className="v2-drawer-scrim"
@@ -861,6 +897,7 @@ function V2Canvas({ appearance, setAppearance }: {
       />
     </Suspense>}
     <NoticeRegion />
+    {projectOpening.busy && <ModalTaskLoading label="正在打开项目…" />}
   </main></InspectorDraftContext.Provider></DrawerIntentContext.Provider></SourcePreviewContext.Provider>
 }
 

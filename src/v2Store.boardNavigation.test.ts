@@ -2,9 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useV2Canvas } from './v2Store'
 import { v2Api } from './v2Api'
 import type { BoardV2 } from './domain'
+import { projectApi } from './v2/projectApi'
 
 const board = (id: string): BoardV2 => ({ schemaVersion: 2, id, title: id, cards: [], transformations: [], viewport: {x:0,y:0,zoom:1}, createdAt:'',updatedAt:'' })
 beforeEach(() => {
+  vi.spyOn(projectApi, 'read').mockResolvedValue(null)
   useV2Canvas.setState({ ...useV2Canvas.getInitialState(), board:board('a'), boardId:'a', loadState:'ready', boards:[{id:'a',title:'a'},{id:'b',title:'b'}], openedBoardIds:['a','b'] })
   vi.spyOn(v2Api, 'getBoard').mockImplementation(async id => ({board:board(id)}))
   vi.spyOn(v2Api, 'getBoardActivity').mockResolvedValue({activity:{}})
