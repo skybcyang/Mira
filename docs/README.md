@@ -2,6 +2,8 @@
 
 执行能力增量规格：[步骤工具、MCP 与 Python](specs/tool-execution.md)。
 
+步骤执行能力及卡片重试修复已于 2026-09-14 合入本地 `main`（实现提交 `53413ac`）；主干验证与原稿保留记录见[集成报告](validation/2026-09-14-tool-execution.md)。未推送远端或替换安装版。
+
 2026-09-14 步骤执行设置：[整体需求与进度](refactor/generation-controls-requirements.md)、[完整交互方案](design/step-execution-design-proposal.md)、[输出要求第一批验证](validation/2026-09-14-output-policy.md)、[项目默认与指导目录第二批验证](validation/2026-09-14-execution-settings.md)、[工具/MCP/Python 完整集成验证](validation/2026-09-14-tool-execution.md)。已实现全套步骤设置与运行审阅，平台及模型质量证据按报告分别记录。操作入口和参数示例见[使用步骤能力](operations/tool-capabilities.md)。
 
 项目工作区已合入本地 main，并完成本机迁移与安装：[权威规格](specs/project-workspace.md)、[实施进度](refactor/project-workspace-plan.md)、[功能验证](validation/2026-09-13-project-workspace.md)、[迁移、安装与回退记录](validation/2026-09-13-project-workspace-install.md)。

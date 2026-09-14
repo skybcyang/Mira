@@ -103,3 +103,13 @@
 - 重新完成 arm64 make、普通与恢复两种 packed smoke。新 DMG SHA-256 为 `95cb8eae64524e002abf20d12e490a5b657d0baa4ec4f96a98395c052860cf78`；上文旧 hash 对应修复前产物。未替换安装版、未合入 main 或发布。
 
 此次验证证明重试意图、错误入口、单次调度和版本写回正确；不是线上模型质量证据。其他平台、真实触屏和线上质量边界保持不变。
+
+## 本地主干合并验证（2026-09-14）
+
+用户明确要求合入主干后，本地 `main` 从 `1f31fa2` 快进至 `53413ac`，包含完整步骤执行能力与上述卡片重试修复，没有代码冲突。主工作区四份未提交文档是本需求的早期草案，要求已纳入新版文档；原稿保留在 Git stash `59938aa185434671757f2aef7cb46657c572809b`（`pre-merge step-execution original planning drafts 2026-09-14`），未丢弃，也未把旧的待实现状态覆盖到当前进度。
+
+主干执行 `pnpm install --frozen-lockfile` 成功；重新运行 `pnpm test`，**177 文件 / 1803 项通过**。`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 与 `git diff --check` 均通过。测试保留既有 Node experimental localStorage 警告。
+
+生产目录及依赖文件与 `codex/step-execution` 完全一致，前节浏览器、原生 macOS arm64、make 与两种 packed smoke 证据继续适用于同一实现；本轮没有重复这些验收，也没有新增线上质量或其他平台证据。当前索引和路线同步本地 main 状态，历史章节中的“未合入”保留为当时事实。
+
+未推送远端、未替换安装版、未迁移或改写用户数据。
