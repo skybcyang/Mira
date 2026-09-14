@@ -80,8 +80,10 @@ it('requires an existing project unless initialization was explicitly selected',
 
   await openDesktopProject(options)
   expect(prepareWorkspaceRoot).toHaveBeenLastCalledWith('/target', { mustExist: true })
+  expect(startRuntime).toHaveBeenLastCalledWith('/target', { allowCreate: false })
   await openDesktopProject({ ...options, allowCreate: true })
   expect(prepareWorkspaceRoot).toHaveBeenLastCalledWith('/target', { mustExist: false })
+  expect(startRuntime).toHaveBeenLastCalledWith('/target', { allowCreate: true })
 })
 
 it('treats selecting the active project as cancellation without a second writer', async () => {

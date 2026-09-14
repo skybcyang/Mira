@@ -91,6 +91,36 @@ describe('standalone Node host', () => {
       .resolves.toContain('offline-test')
   })
 
+  it('releases the workspace lock when capability cleanup fails', async () => {
+    const { createStandaloneMiraHost } = await import(hostModule.href)
+    const workspaceRoot = await mkdtemp(join(tmpdir(), 'mira-workspace-close-failure-'))
+    temporaryRoots.push(workspaceRoot)
+    const host = createStandaloneMiraHost({ workspaceRoot, logger: { log() {}, error() {} } })
+    host.application.capabilities.close = async () => { throw new Error('capability cleanup failed') }
+
+    await expect(host.close()).rejects.toThrow('capability cleanup failed')
+    await expect(access(join(workspaceRoot, '.mira-workspace.lock')))
+      .rejects.toMatchObject({ code: 'ENOENT' })
+  })
+
+  it('enforces workspace open/create mode under the host lock and releases rejected starts', async () => {
+    const { createStandaloneMiraHost } = await import(hostModule.href)
+    const workspaceRoot = await mkdtemp(join(tmpdir(), 'mira-workspace-mode-'))
+    temporaryRoots.push(workspaceRoot)
+
+    expect(() => createStandaloneMiraHost({ workspaceRoot, workspaceMode: 'open' }))
+      .toThrowError(expect.objectContaining({ code: 'WORKSPACE_FORMAT_INVALID' }))
+    await expect(access(join(workspaceRoot, '.mira'))).rejects.toMatchObject({ code: 'ENOENT' })
+
+    const created = createStandaloneMiraHost({ workspaceRoot, workspaceMode: 'create' })
+    await created.close()
+    expect(() => createStandaloneMiraHost({ workspaceRoot, workspaceMode: 'create' }))
+      .toThrowError(expect.objectContaining({ code: 'WORKSPACE_FORMAT_INVALID' }))
+
+    const opened = createStandaloneMiraHost({ workspaceRoot, workspaceMode: 'open' })
+    await opened.close()
+  })
+
   it('serves the Mira UI and persists v2 API writes without DSH', async () => {
     expect(await exists(hostModule)).toBe(true)
     const { createStandaloneMiraHost } = await import(hostModule.href)

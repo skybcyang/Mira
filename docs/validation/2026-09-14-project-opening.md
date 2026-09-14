@@ -1,6 +1,6 @@
 # 项目打开与画板恢复验证
 
-日期：2026-09-14，Asia/Shanghai。实现分支 `codex/project-opening`，基线 `main` 的 `5949147`；产品确认 `d0b1aaf`，宿主 `f8dd40b` / `73ab872`，前端集成 `eb123af`。当前是本地实现，未合入 main、推送、发布或替换安装版。
+日期：2026-09-14，Asia/Shanghai。实现分支 `codex/project-opening`，基线 `main` 的 `5949147`；产品确认 `d0b1aaf`，宿主 `f8dd40b` / `73ab872`，前端集成 `eb123af`。实现和后续修复现已提交到本地 `main`，仍未推送、发布或替换安装版。
 
 ## 产品命题
 
@@ -16,7 +16,7 @@
 - Desktop 临时状态覆盖跨重启隔离、最近 10 项、串行原子写入、损坏记录、真实锁冲突、目标 renderer 失败回退、提交失败后重试。迟到导航等待候选提交后保存，不覆盖较新记录；renderer 就绪检测等待项目/画板恢复，读取错误立即失败。
 - 独立审阅发现并修复导航容量与失败队列重试问题；最终跨模块复查没有未解决的实际缺陷。
 
-最终门禁：`pnpm test` **184 文件 / 1851 项通过**；`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`、`git diff --check` 通过。另运行 `pnpm test test/desktop test/bridge/project-host.test.js`，**9 文件 / 88 项通过**。测试进程保留 Node 26 既有 experimental localStorage 警告。
+初次实现门禁：`pnpm test` **184 文件 / 1851 项通过**；`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`、`git diff --check` 通过。另运行 `pnpm test test/desktop test/bridge/project-host.test.js`，**9 文件 / 88 项通过**。测试进程保留 Node 26 既有 experimental localStorage 警告；后续复审删除脱离生产入口的测试，因此最终总数以后文最新记录为准。
 
 ## UX 可发现性与可见客户端
 
@@ -70,3 +70,12 @@
 失败先行回归分别观察到普通目录被接受、提交失败前候选窗口已显示、清理回调未透传，以及响应断连时清理调用为 0；修复后相关桌面与项目宿主回归为 **10 文件 / 85 项通过**。最终完整门禁为 `pnpm test` **184 文件 / 1844 项通过**，`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 与 `git diff --check` 通过。最新源码重新运行 arm64 make、普通 packed smoke 和恢复 packed smoke，均通过；产物仍为未签名内部测试包。
 
 真实 macOS 复验使用 `/tmp/mira-review.4UmVQg` 的独立 userData、项目和普通目录；同一源码打包应用到达 `[mira-desktop] ready`，没有修改真实用户项目或 `/Applications/Mira.app`。由于用户安装版 Mira 同时运行，自动化接口无法区分相同 bundle ID；改用临时 bundle ID 的隔离副本后仍连续超时，未取得可核验画面。因此本节不新增原生目视通过结论；上文已经完成的重启画面证据仍有效，而本次新修复由真实文件系统、HTTP、桌面编排测试和 packed smoke 覆盖。Windows / Intel、签名、公证、远端 Actions 与发布仍未在本批验证。
+
+## 本地 main 深度复审（2026-09-14 12:46–13:05）
+
+继续沿目录选择、Node Host 初始化、workspace 锁、HTTP 切换响应和宿主关闭链路审阅，新增修复两项：
+
+- 原先打开/新建意图只在取得写锁前预检；目录在预检与宿主初始化之间变化时，Node Host 仍会按“打开或创建”执行。现在桌面把原始意图传到 Node Host，并在持有写锁时强制 `open` 或 `create`；打开普通目录、重复新建已有项目以及未知模式均拒绝且不留下项目数据或锁。旧布局迁移源显式使用只打开模式。
+- 宿主关闭时，能力适配器清理异常会跳过 workspace 解锁，留下阻止后续打开的锁文件。现在能力清理仍把原错误返回调用方，但解锁位于内层 `finally`，即使清理失败也执行。
+
+失败先行测试分别复现了打开模式仍初始化普通目录、未知模式被静默接受，以及能力清理失败后锁文件残留。修复后定向回归 `test/bridge/standalone-host.test.js`、`test/bridge/project-host.test.js`、`test/bridge/project-workspace.test.js`、`test/desktop/project-opening.test.js`、`test/bridge/project-migration.test.js` 为 **5 文件 / 32 项通过**。完整门禁为 `pnpm test` **184 文件 / 1849 项通过**，`pnpm exec tsc --noEmit`、`pnpm build` 与 `pnpm build:bridge` 通过；最新源码的 arm64 make、普通 packed smoke 和恢复 packed smoke 均通过，最终 `git diff --check` 在提交前通过。仍未执行 Windows / Intel、远端 Actions、签名、公证或发布。

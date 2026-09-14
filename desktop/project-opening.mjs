@@ -34,7 +34,7 @@ export async function openDesktopProject({ path, currentPath, allowCreate = fals
     || await realpath(selected).catch(() => selected) === await realpath(currentPath).catch(() => currentPath))) return { cancelled: true }
   let runtime, window
   try {
-    runtime = await startRuntime(selected)
+    runtime = await startRuntime(selected, { allowCreate })
     const response = await runtime.host.application.dispatch('GET', ['v2', 'project'])
     if (response.status !== 200) throw Object.assign(new Error(response.body.message), { code: response.body.code })
     const project = response.body.project

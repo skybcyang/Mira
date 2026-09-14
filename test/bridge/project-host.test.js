@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
+import { access, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { afterEach, expect, it, vi } from 'vitest'
@@ -125,4 +125,25 @@ it('runs successful project cleanup after the HTTP response finishes', async () 
   const { request } = await start({ projectHost })
   expect(await request('project/open', 'POST', { kind: 'open' })).toEqual({ status: 200, body: { cancelled: false } })
   await vi.waitFor(() => expect(afterResponse).toHaveBeenCalledOnce())
+})
+
+it('releases the old workspace lock after a successful HTTP switch response', async () => {
+  let oldRuntime
+  const projectHost = {
+    open: async () => ({ cancelled: false, afterResponse: () => oldRuntime.close() }),
+    getNavigation: async () => null,
+    getRecentProjects: async () => [],
+  }
+  const old = await start({ projectHost })
+  oldRuntime = old.runtime
+
+  expect(await old.request('project/open', 'POST', { kind: 'open' }))
+    .toEqual({ status: 200, body: { cancelled: false } })
+  await vi.waitFor(async () => {
+    await expect(access(join(old.workspaceRoot, '.mira-workspace.lock')))
+      .rejects.toMatchObject({ code: 'ENOENT' })
+  })
+
+  const reopened = await start({}, old.workspaceRoot)
+  expect((await reopened.request('project')).status).toBe(200)
 })
