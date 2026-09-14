@@ -4,13 +4,16 @@ import type { V2TransformationNodeData } from '../v2Projection'
 import { useV2Canvas } from '../v2Store'
 import { useDrawerAction, useDrawerIntent } from './drawerIntent'
 import { appendedSources, sourceEditBlock, sourceListError } from './transformationSources'
+import RunActivityIndicator from './RunActivityIndicator'
 
 type TransformationNodeType = Node<V2TransformationNodeData, 'transformation'>
 
 function stateCopy(data: V2TransformationNodeData) {
   if (data.candidateRunId) return '待比较'
-  if (data.status === 'queued' || data.status === 'running') return '生成中'
+  if (data.status === 'queued') return '排队中'
+  if (data.status === 'running') return '生成中'
   if (data.status === 'failed') return '未完成'
+  if (data.status === 'interrupted') return '已停止'
   if (data.stale) return '来源已变化'
   if (data.status === 'succeeded') return '已完成'
   return '尚未生成'
@@ -57,7 +60,7 @@ export function TransformationCardView({
         {data.candidateRunId
           ? <GitCompareArrows size={12} />
           : running
-            ? <LoaderCircle className="is-spinning" size={12} />
+            ? <RunActivityIndicator status={data.status} size={12} />
             : data.status === 'failed'
               ? <AlertCircle size={12} />
               : data.stale

@@ -66,8 +66,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Project overview and navigation: 1280/390px light/dark and native macOS verified on 2026-09-14.
-    expect(digest).toBe('71b2fcc3722eba34492fa16f28a9b6cf790d0f458c0a0efba5611beb4fe2cc8b')
+    // Control feedback: six appearances, 1440/390px Chrome, keyboard and reduced motion verified on 2026-09-14.
+    expect(digest).toBe('2c6100dca2260a44a48fc2803dcf27282d26223f7fb5a12276a8b9a4bcb2cb66')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {

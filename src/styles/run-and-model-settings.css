@@ -12,6 +12,9 @@
   background: var(--mira-danger-soft);
 }
 
+.v2-run-heading { display: flex; align-items: center; gap: 8px; }
+.v2-run-heading > .v2-run-indicator { color: var(--mira-accent); }
+
 .v2-run-state.interrupted {
   border-color: var(--mira-warning);
   background: var(--mira-warning-soft);

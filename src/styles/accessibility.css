@@ -1,5 +1,7 @@
 @media (prefers-reduced-motion: reduce) {
   .v2-notice-spinner { animation: none; }
+  .v2-run-indicator.is-running { animation: none; }
+  .v2-app button:active:not(:disabled):not([aria-disabled='true']) { transform: none !important; }
 }
 
 @media (max-width: 399px) {

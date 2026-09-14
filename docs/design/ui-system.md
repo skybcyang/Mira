@@ -310,9 +310,11 @@ NoticeRegion 使用可预测的堆叠区域并避让 App bar、选择工具栏�
 
 ## 7. 状态与动效
 
-- hover/focus：100-140ms。
+- hover/focus：100-140ms。常用命令按钮按下时使用 60ms 内描边反馈；Studio 可轻缩至 97%，Editorial / Blueprint 保持原尺寸。释放回到普通状态，不改变布局或扩大命中区；disabled 不显示按压反馈。
 - drawer/sheet：160-220ms。
-- Running 指示可循环，但尊重 `prefers-reduced-motion`。
+- 画布步骤、空目标和运行详情共用小尺寸运行指示：queued 为静态时钟与`排队中`，running 为 900ms 旋转线圈与原有状态文字，完成、失败、停止和 Candidate 不保留运行动画。停止步骤显示`已停止`。空目标不使用模拟正文骨架或虚构百分比；已有正文继续可读。
+- Running 指示尊重 `prefers-reduced-motion`，启用时静止，按钮不缩放；状态文字、焦点环和按压描边仍可辨认。
+- 系统设置的网格与深色外观使用同一原生 checkbox/switch：整行可点击，支持 Space 和焦点环；深色外观保持固定名称并显示开启/关闭状态。滑块用 140ms 位移，轨道与圆点使用语义色；Blueprint 使用方角。只更改对应本机偏好。
 - 不用脉冲光环、粒子或整条 Workflow 的持续流动动画。
 - 状态改变不得移动 Card、改变 dock 高度或遮挡相邻内容。
 - success/info 默认短暂显示；生成、导入、导出和备份 progress 必须在成功、失败或停止后离开进行态。
