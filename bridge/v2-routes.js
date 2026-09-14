@@ -68,6 +68,9 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
   if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'extractions') {
     return { status: 201, body: await handlers.extractCards(seg[1], seg[3], body || {}) }
   }
+  if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'continuations') {
+    return { status: 201, body: await handlers.continueCard(seg[1], seg[3], body || {}) }
+  }
 
   if (method === 'GET' && seg.length === 1 && seg[0] === 'inspiration-pool') {
     return { status: 200, body: await inspirationPoolHandlers.getPool() }
@@ -77,6 +80,9 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
   }
   if (method === 'PATCH' && seg.length === 3 && seg[0] === 'inspiration-pool' && seg[1] === 'entries') {
     return { status: 200, body: await inspirationPoolHandlers.updateEntry(seg[2], body || {}) }
+  }
+  if (method === 'DELETE' && seg.length === 3 && seg[0] === 'inspiration-pool' && seg[1] === 'entries') {
+    return { status: 200, body: await inspirationPoolHandlers.deleteEntry(seg[2], body || {}) }
   }
 
   if (method === 'POST' && seg.length === 2 && seg[0] === 'files' && ['browse', 'import'].includes(seg[1])) {

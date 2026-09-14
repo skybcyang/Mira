@@ -116,6 +116,7 @@ export async function createTransformationRun(input, options = {}) {
     id: input.id,
     boardId: input.boardId,
     transformationId: input.transformation.id,
+    definitionRevisionSnapshot: input.transformation.definitionRevision ?? 0,
     status: 'queued',
     sourceSnapshot,
     targetCardId: target.id,
@@ -155,6 +156,7 @@ export function isStale(
 
   if (!Array.isArray(latestAppliedRun.sourceSnapshot)) return true
   if (currentTransformation) {
+    if ((currentTransformation.definitionRevision ?? 0) !== (latestAppliedRun.definitionRevisionSnapshot ?? 0)) return true
     const currentSourceIds = currentTransformation.sourceCardIds
     const appliedSourceIds = latestAppliedRun.sourceSnapshot.map(
       (snapshot) => snapshot.cardId,

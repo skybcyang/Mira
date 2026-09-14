@@ -22,6 +22,7 @@ export interface V2TransformationNodeData extends Record<string, unknown> {
   status: TransformationRun['status'] | 'idle'
   runId?: string
   stale: boolean
+  definitionChanged?: boolean
   candidateRunId?: string
   collapsedSources: boolean
   workflowStepIndex?: number
@@ -51,6 +52,7 @@ function runMakesTransformationStale(
   run: TransformationRun | undefined,
 ): boolean {
   if (run?.status !== 'succeeded' || run.result?.disposition !== 'applied') return false
+  if ((transformation.definitionRevision ?? 0) !== (run.definitionRevisionSnapshot ?? 0)) return true
   const snapshotCardIds = run.sourceSnapshot.map((snapshot) => snapshot.cardId)
   if (
     transformation.sourceCardIds.length !== snapshotCardIds.length
@@ -115,7 +117,15 @@ export function projectV2Board(
     })
   }
 
-  const nodes: Node[] = board.cards.map((card) => {
+  const extractedByList = new Map<string, ContentCard[]>()
+  for (const card of board.cards) {
+    const listId = card.extractionRef?.boardId === board.id ? card.extractionRef.cardId : undefined
+    if (listId) extractedByList.set(listId, [...(extractedByList.get(listId) || []), card])
+  }
+  const hiddenListIds = new Set(board.transformations
+    .map(transformation => transformation.targetCardId)
+    .filter(targetCardId => extractedByList.has(targetCardId)))
+  const nodes: Node[] = board.cards.filter(card => !hiddenListIds.has(card.id)).map((card) => {
     const version = head(card)
     const content = version?.content
     return {
@@ -143,10 +153,12 @@ export function projectV2Board(
     const workflowPosition = planPositions.get(transformation.id)
     const state: Pick<
       V2TransformationNodeData,
-      'transformationId' | 'stale' | 'status' | 'workflowStepIndex' | 'workflowStepTotal'
+      'transformationId' | 'stale' | 'definitionChanged' | 'status' | 'workflowStepIndex' | 'workflowStepTotal'
     > = {
       transformationId: transformation.id,
       stale: runMakesTransformationStale(board, transformation, appliedRun),
+      definitionChanged: appliedRun !== undefined
+        && (transformation.definitionRevision ?? 0) !== (appliedRun.definitionRevisionSnapshot ?? 0),
       status: run?.status ?? 'idle',
       ...(workflowPosition ? {
         workflowStepIndex: workflowPosition.index,
@@ -157,8 +169,11 @@ export function projectV2Board(
       .map((id) => board.cards.find((card) => card.id === id))
       .filter((card): card is ContentCard => Boolean(card))
     const target = board.cards.find((card) => card.id === transformation.targetCardId)
+    const projectedTargets = extractedByList.get(transformation.targetCardId) || (target ? [target] : [])
     const sourceRight = Math.max(0, ...sources.map((card) => card.x + card.width))
-    const targetLeft = target?.x ?? sourceRight + 160
+    const targetLeft = projectedTargets.length > 0
+      ? Math.min(...projectedTargets.map(card => card.x))
+      : sourceRight + 160
     const sourceCenter =
       sources.reduce((sum, card) => sum + card.y + card.height / 2, 0) /
       Math.max(1, sources.length)
@@ -198,13 +213,13 @@ export function projectV2Board(
         })
       })
     }
-    edges.push({
-      id: `transformation:${transformation.id}:main`,
+    projectedTargets.forEach((projectedTarget, index) => edges.push({
+      id: `transformation:${transformation.id}:main${index ? `:${index}` : ''}`,
       source: transformationNodeId,
-      target: transformation.targetCardId,
+      target: projectedTarget.id,
       className: 'transformation-edge',
       data: state,
-    })
+    }))
   }
 
   return { nodes, edges }

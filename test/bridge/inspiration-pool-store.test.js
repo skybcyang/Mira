@@ -61,6 +61,24 @@ describe('InspirationPoolStore', () => {
     await expect(store.updateEntry(entry.id, edit(entry))).rejects.toMatchObject({ code: 'INSPIRATION_WRITE_FAILED' })
     expect((await store.load()).entries).toEqual([entry])
   })
+
+  it('deletes an entry only from a matching immutable baseline', async () => {
+    const store = editingStore()
+    const first = await store.createEntry({ markdown: '会删除', tags: ['主意'] })
+    const second = await store.createEntry({ markdown: '会保留' })
+    const input = {
+      baseVersionId: first.headVersionId,
+      baseUpdatedAt: first.updatedAt,
+      confirmation: 'delete-inspiration',
+    }
+
+    await expect(store.deleteEntry(first.id, { ...input, baseVersionId: 'stale' }))
+      .rejects.toMatchObject({ code: 'INSPIRATION_CONFLICT' })
+    await expect(store.deleteEntry(first.id, input)).resolves.toEqual({ deletedEntryId: first.id })
+    expect((await store.load()).entries).toEqual([second])
+    await expect(store.deleteEntry(first.id, input))
+      .rejects.toMatchObject({ code: 'INSPIRATION_NOT_FOUND' })
+  })
   it('creates and persists a workspace-level pool without canvas geometry', async () => {
     const fs = memoryFs()
     const store = new InspirationPoolStore(fs, { newId: (() => {

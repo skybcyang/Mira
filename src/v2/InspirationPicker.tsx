@@ -9,6 +9,7 @@ import {
   appendInspirationCaptureTag,
   filterInspirationPool,
   inspirationCaptureErrorMessage,
+  inspirationDeletionErrorMessage,
   toggleInspirationSelection,
   type InspirationCandidate,
 } from './inspiration'
@@ -87,10 +88,13 @@ export default function InspirationPicker({
   const [captureError, setCaptureError] = useState<string | null>(null)
   const [captureNotice, setCaptureNotice] = useState<string | null>(null)
   const [recording, setRecording] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
   const resultListRef = useRef<HTMLDivElement>(null)
   const densityAnchor = useRef<{ index: number; offset: number } | null>(null)
   const savedCaptureTags = useRef<string[]>([])
-  const busy = submitting || recording
+  const busy = submitting || recording || deleting
   const operationLock = useRef(false)
   const readOpener = useRef<HTMLButtonElement | null>(null)
   const readTitleRef = useRef<HTMLHeadingElement>(null)
@@ -129,8 +133,37 @@ export default function InspirationPicker({
   }, [reading])
 
   const closeReading = () => {
+    setDeleteConfirm(false)
+    setDeleteError(null)
     setReading(null)
     window.requestAnimationFrame(() => readOpener.current?.focus())
+  }
+  const deleteReading = async () => {
+    if (!reading?.entryId || !reading.versionId || operationLock.current) return
+    operationLock.current = true
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      await v2Api.deleteInspirationEntry(reading.entryId, {
+        baseVersionId: reading.versionId,
+        baseUpdatedAt: reading.updatedAt,
+        confirmation: 'delete-inspiration',
+      })
+      setSourceState(current => current.status === 'ready' ? {
+        ...current,
+        pool: { ...current.pool, entries: current.pool.entries.filter(entry => entry.id !== reading.entryId) },
+      } : current)
+      setSelected(current => current.filter(candidate => candidate.entryId !== reading.entryId))
+      setReading(null)
+      setDeleteConfirm(false)
+      setCaptureNotice('已永久删除这条灵感；已放入画板的卡片保持原样。')
+      window.requestAnimationFrame(() => searchRef.current?.focus())
+    } catch (error) {
+      setDeleteError(inspirationDeletionErrorMessage(error))
+    } finally {
+      operationLock.current = false
+      setDeleting(false)
+    }
   }
   const leave = (intent: 'browse' | 'close') => {
     if (operationLock.current) return
@@ -366,10 +399,17 @@ export default function InspirationPicker({
       <h3 ref={readTitleRef} tabIndex={-1}>{candidateTitle(reading)}</h3></header>
       <div className="v2-reading-scroll" tabIndex={0} aria-label="灵感全文"><MarkdownContent>{reading.content.kind === 'markdown' ? reading.content.markdown : reading.content.path}</MarkdownContent></div>
       <footer>{captureNotice && <span role="status">{captureNotice}</span>}
+        {deleteError && <span role="alert">{deleteError}</span>}
+        {deleteConfirm ? <div className="v2-inspiration-delete-confirm" role="alert">
+          <div><strong>永久删除这条灵感？</strong><span>已放入画板的卡片不受影响。</span></div>
+          <button type="button" className="v2-secondary-button" disabled={deleting} onClick={() => { setDeleteConfirm(false); setDeleteError(null); readTitleRef.current?.focus() }}>取消</button>
+          <button type="button" className="v2-danger-button" disabled={deleting} onClick={() => void deleteReading()}>{deleting ? '删除中…' : '确认删除'}</button>
+        </div> : <>
         {reading.entryId && reading.content.kind === 'markdown' && <button type="button" className="v2-secondary-button" onClick={() => editCandidate(reading)}><PenLine size={14} />编辑灵感</button>}
+        {reading.entryId && <button type="button" className="v2-icon-button is-danger" aria-label="删除这条灵感" title="删除灵感" onClick={() => setDeleteConfirm(true)}><Trash2 size={15} /></button>}
         <button type="button" className="v2-primary-button" aria-pressed={selected.some(item => item.key === reading.key)}
         onClick={() => setSelected(current => toggleInspirationSelection(current, reading))}>
-        {selected.some(item => item.key === reading.key) ? '从已选中移除' : '加入已选'}</button></footer>
+        {selected.some(item => item.key === reading.key) ? '从已选中移除' : '加入已选'}</button></>}</footer>
     </div>}
     <div className="v2-inspiration-capture-pane" hidden={mode !== 'capture' || Boolean(reading)}>
       <section className="v2-inspiration-capture" id="v2-inspiration-capture" aria-labelledby="v2-inspiration-capture-title">
@@ -470,7 +510,7 @@ export default function InspirationPicker({
       </div>
 
       <footer className="v2-inspiration-picker-footer">
-        <div>{!canAdd && <span>打开一个可编辑画板后，即可添加灵感。</span>}{submitError && <span role="alert">{submitError}</span>}</div>
+        <div>{captureNotice && <span role="status">{captureNotice}</span>}{!canAdd && <span>打开一个可编辑画板后，即可添加灵感。</span>}{submitError && <span role="alert">{submitError}</span>}</div>
         <button className="v2-secondary-button" type="button" disabled={submitting} onClick={() => onClose('cancel')}>取消</button>
         <button className="v2-primary-button v2-inspiration-import" type="button" disabled={!canAdd || sourceState.status !== 'ready' || selected.length === 0 || busy || addBlocked} onClick={() => {
           if (operationLock.current || !canAdd || addBlocked) return

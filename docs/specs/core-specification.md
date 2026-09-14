@@ -159,6 +159,7 @@ interface InspirationVersion {
 - 灵感池独立保存于 workspace 根存储，不依赖 Board 是否存在、处于何种生命周期或当前 Canvas 是否打开。
 - 灵感池条目的版本创建后不可修改；筛选只读取每条目的 Head，正文关键词大小写不敏感，多个标签使用 AND 语义。
 - 编辑只接受 `{ markdown, tags, baseVersionId, baseUpdatedAt }`。池内串行检查 Head 与更新时间；过期返回 `INSPIRATION_CONFLICT` (409)，不存在返回 `INSPIRATION_NOT_FOUND` (404)。正文变化追加 human Version，仅标签变化只更新元数据；updatedAt 单调增加。保存失败保持原数据完整，已选旧版与画板副本不被替换。
+- 删除使用 `DELETE /inspiration-pool/entries/:entryId`，请求体只接受 `{ baseVersionId, baseUpdatedAt, confirmation: 'delete-inspiration' }`。池内串行检查 Head 与更新时间，确认缺失或额外字段返回 `INSPIRATION_DELETE_INVALID` (422)，冲突和不存在沿用上述错误；成功响应 `{ deletedEntryId }` 并原子移除整个条目及全部版本。删除不修改任何 Board、Card、CanvasHistory 或 `inspirationRef`，且不提供恢复入口。
 - 直接记录通过 `POST /inspiration-pool/entries` 写入灵感池；不创建 Card、CanvasHistory、Transformation、Run 或 Candidate。
 - 添加到当前画板才通过 Board 批量创建一张普通 Card，并将 `{ poolId, entryId, versionId }` 保存为 `inspirationRef`；随后灵感池变化不自动同步该 Card。
 
@@ -419,11 +420,19 @@ instruction 以独立段落 `<!-- mira:extraction-format:v1 -->` 分隔用户要
 
 `POST /boards/:boardId/cards/:cardId/extractions` 请求为 `{ baseVersionId, items: [{ itemId, title, markdown }] }`，items 为用户选定顺序，长度 1..100、itemId 唯一且必须出现在指定清单中。用户可改标题和正文，但不能伪造条目归属；无效结构/输入返回 `EXTRACTION_INVALID` (422)。服务在 Board 写锁中确认 active、清单当前 Head 等于 baseVersionId、版本存在且可解析，冲突返回 `SOURCE_VERSION_CHANGED`，零写入；首版只接受当前清单版本。清单为目标的活动 Run 或未处理 Candidate 分别返回现有 `TARGET_BUSY` / `CANDIDATE_PENDING`。
 
-服务计算碰撞避让布局，创建新身份的 Markdown Card 与 `origin: human` 初始 Version（用户审阅后的快照，不伪造针对新卡的模型 Run），并原子保存 Card 上的 `extractionRef: { boardId, cardId, versionId, itemId, batchId }`。前四项指向明确清单和条目，batchId 由服务为本次创建生成；出处不是结构边、不影响 stale，也不要求历史来源永久存在。响应 `{ cards }` 按请求顺序返回。新卡、版本与出处整批成功或零写入，不调用模型、不创建 Transformation/Run/Group。重复点击由客户端提交锁阻止；若响应不确定，保留草稿并禁止直接重试该提交，先刷新核对清单的已有批次，不能声称服务提供持久幂等回执。
+服务计算碰撞避让布局，创建新身份的 Markdown Card 与 `origin: human` 初始 Version（用户审阅后的快照，不伪造针对新卡的模型 Run），并原子保存 Card 上的 `extractionRef: { boardId, cardId, versionId, itemId, batchId }`。前四项指向明确清单和条目，batchId 由服务为本次创建生成；出处不是新的结构边、不影响 stale，也不要求历史来源永久存在。响应 `{ cards }` 按请求顺序返回。新卡、版本与出处整批成功或零写入，不调用模型、不创建 Transformation/Run/Group。若清单是 Transformation 目标，投影隐藏有至少一张现存拆分卡的清单 Card，并把该单目标关系的输出边投影到所有仍存在、出处指向该清单的拆分卡；底层 Transformation 目标和清单对象不变，所有拆分卡删除后清单恢复显示。重复点击由客户端提交锁阻止；若响应不确定，保留草稿并禁止直接重试该提交，先刷新核对清单的已有批次，不能声称服务提供持久幂等回执。
 
 拆分草稿绑定打开时的版本，Head 更新不替换草稿，提交旧基线被拒绝。成功后一次 create history；撤销只删除本批新卡，沿用 CARD_IN_USE，不删除原清单/Run。重做使用受管精确删除回执恢复原身份与出处。普通复制只复制正文等既有字段，不携带 extractionRef；导入和 Checkpoint 副本重映射包内来源 Board/Card/Version 与批次身份，历史缺失或包外出处映射为不解析到本地对象的 opaque ID；完整备份保留出处，仍不额外读取引用文件正文。旧 Card 无此字段继续合法。
 
 验收：`EXTRACT-01` 添加步骤零 Run、显式生成单清单；`EXTRACT-02` 动态数量、编辑排序选择、确认前零新卡、确认后零模型调用；`EXTRACT-03` 畸形/空条目/重复标识/超限拒绝；`EXTRACT-04` 故障零半写、旧基线/只读/活动 Run/Candidate 拒绝、响应不确定不盲重试；`EXTRACT-05` 重跑保留旧卡、人工 Head 变化进入 Candidate；`EXTRACT-06` 批次历史与出处、精确撤销重做、导入/备份/Checkpoint 映射；`EXTRACT-07` 桌面/390px 草稿保护、焦点、长列表、真实文本模型输出质量。
+
+### 4.4.6 接续写作（2026-09-14）
+
+`POST /boards/:boardId/cards/:cardId/continuations` 只接受 `{ baseVersionId, markdown }`。`markdown` 是待追加的非空 Markdown，最多 1,000,000 字符；服务在 Board 写锁中确认 active、来源为当前 Markdown Head 且等于 `baseVersionId`，否则返回 `CONTINUATION_INVALID` 或 `SOURCE_VERSION_CHANGED`。提交前找出所有既有 `sourceCardIds` 包含原卡的 Transformation；任一目标存在活动 Run 或未处理 Candidate 时分别返回 `TARGET_BUSY` / `CANDIDATE_PENDING`，整笔零写入。
+
+成功时服务创建一张新身份 human Markdown Card，正文为原卡当前正文、两个换行与 trim 后追加正文，并保留原卡名称、标签、颜色和尺寸；不复制版本历史、文件绑定、灵感/提取出处或 Run。服务再创建一条普通人工 Transformation `原卡 -> 新卡`，不得创建 Run；随后把提交前找出的每条下游 Transformation 中原卡的来源位置替换为新卡，保持其余来源及顺序。原卡的范围若是全文则继续全文；若有片段范围则替换为新卡的 `{ mode: 'required' }`，不得把旧区间静默用于组合后的正文。每条被改接的 Transformation 递增定义版本并将已有 `planRef.adjusted` 置为 true。
+
+新 Card、人工 Transformation 与全部下游改接只允许一次 Board 原子保存，响应为 `{ card, transformation, updatedTransformations }`。原 Card、入向关系、Version 和 Run 保留；命令不调用模型、不进入 CanvasHistory，也不把人工正文伪装成模型 Candidate。验收：`CONTINUE-01` 无下游时创建完整新正文和人工关系；`CONTINUE-02` 多个及多来源下游按原位置全部改接；`CONTINUE-03` 旧范围转为待选择；`CONTINUE-04` 旧基线、活动 Run、Candidate、保存失败均零写入。
 
 ### 4.5 Transformation
 
@@ -453,6 +462,7 @@ interface Transformation {
   instruction: string
   acceptance: string
   modelId?: string
+  definitionRevision?: number
   permissions: { workspaceWrite: boolean }
   planRef?: PlanRef
   workflowRef?: WorkflowRef
@@ -481,12 +491,14 @@ interface UpdateTransformationPositionRequest {
 - `x/y` 是可选的转化块画布位置，必须同时缺失或同时为有限数值。缺失时客户端按来源与目标的中点投影；首次手动移动后持久化。
 - 目标恰好一个，不得同时作为自身来源；全部 Card 属于同一 Board。
 - `label` 使用成果语言；当前尝试状态从 `lastRunId` 指向的 Run 派生，stale provenance 从 `lastAppliedRunId` 指向的最近已采用 Run 派生。
+- `definitionRevision` 是从 0 开始的非负整数；旧数据缺失时按 0 解释。创建后的每次语义更新递增一次，位置、`lastRunId`、`lastAppliedRunId` 等运行追踪更新不得递增。
 - `lastRunId` 在每次显式启动时更新；`lastAppliedRunId` 只在结果直接采用或 Candidate 明确采用后更新。失败、停止、产生 Candidate 或丢弃 Candidate 都不能清除或替换最近已采用 provenance。
 - `workflowRef` 只记录来源，不改变 Transformation 行为。
 - `planRef` 只记录计划来源、稳定编号和导航分组，不改变 Transformation 行为；用户显式编辑计划步骤语义时服务把该步 `adjusted` 置为 `true`，删除步骤则由编号缺口推导调整状态，两者都不级联。
 - `modelId` 是可选的当前步骤模型覆盖。缺失时继承平台适配器的当前模型；非空时平台必须实际使用该模型或在创建 Run 前返回明确的不支持错误，不得静默回退。
 - 模型覆盖不属于 Card，也不改变来源、目标、Version 或 Candidate 语义。旧 Board 未保存 `modelId` 时按继承处理。
 - 修改或创建 Transformation 均不得自动创建 Run。
+- 成功语义 PATCH 若实际值发生变化，必须递增 `definitionRevision`；无实际变化保持原值。最近已采用 Run 的定义版本不同于当前值时，投影显示`步骤已变化`，`运行到这里`把该步视为需要生成，但不自动启动。
 - 位置更新只修改 `x/y` 和 Board revision，不修改 Transformation 的语义 `updatedAt`，不受 Run/Candidate 编辑锁限制，也不改变来源、目标或 provenance。
 - PATCH 必须携带用户打开编辑时看到的 `baseUpdatedAt`。服务在最新 Board 锁内比较；缺失或不匹配返回 `TRANSFORMATION_CONFLICT`，Board 零写入。每次成功更新必须产生与旧值不同的单调 revision，即使系统时钟仍处于同一毫秒。
 - 更新只接受 `label`、`instruction`、`acceptance`、`modelId` 和 `sourceRefs`；`modelId: null` 清除覆盖，非空值去除首尾空白后必须仍非空。不得通过 PATCH 改写 `targetCardId`、`planRef`、`workflowRef`、`createdAt`、`lastRunId`、`lastAppliedRunId` 或 `permissions`。
@@ -752,7 +764,7 @@ interface RunProgressEvent {
 }
 ```
 
-Run 至少持久化：ID、Board/Transformation/target ID、source snapshots、target base version ID、`modelSnapshot:{provider,model}`、状态、当前 `progress`、最近的 `progressEvents`、错误、Candidate 或 applied version ID，以及时间戳。平台无法解析或执行步骤指定模型时必须在创建持久 Run 前失败；成功创建的 Run 不得在执行中静默换模型。
+Run 至少持久化：ID、Board/Transformation/target ID、source snapshots、target base version ID、`definitionRevisionSnapshot`、`modelSnapshot:{provider,model}`、状态、当前 `progress`、最近的 `progressEvents`、错误、Candidate 或 applied version ID，以及时间戳。`definitionRevisionSnapshot` 冻结启动时的步骤定义版本；旧 Run 缺失时按 0 解释。平台无法解析或执行步骤指定模型时必须在创建持久 Run 前失败；成功创建的 Run 不得在执行中静默换模型。
 
 - `phase` trim 后为 `1..40` 字符，`label` 为 `1..160` 字符，可选 `detail` 最多 200 字符；进度对象不得包含其他字段。
 - `progressEvents` 最多保留最近 20 条，`sequence` 在一个 Run 内严格递增且裁剪后不重新编号。存在事件时，`progress` 必须精确镜像最后一条事件的阶段、文案、细节和时间。
@@ -787,7 +799,7 @@ Run 开始时记录 `targetBaseVersionId`，允许为 `null`。成功写回时�
 
 ### 6.4 Stale
 
-stale 必须只相对 `lastAppliedRunId` 指向的 Run 判断，不能被最近一次失败、停止或 Candidate 尝试遮蔽。先精确比较 Transformation 当前有序 `sourceCardIds` 与该 Run 的有序 source snapshot Card ID；数量、成员或顺序任一变化即 stale。结构一致时，再比较每个 snapshot Version/digest 与对应 Card 当前 Head/文件内容；任一变化即 stale。无已采用 Run 时不是 stale。
+stale 必须只相对 `lastAppliedRunId` 指向的 Run 判断，不能被最近一次失败、停止或 Candidate 尝试遮蔽。先比较 Transformation 当前 `definitionRevision` 与该 Run 的 `definitionRevisionSnapshot`；不同即`步骤已变化`。定义一致时再精确比较当前有序 `sourceCardIds` 与该 Run 的有序 source snapshot Card ID；数量、成员或顺序任一变化即 stale。结构一致时，再比较每个 snapshot Version/digest 与对应 Card 当前 Head/文件内容；任一变化即 stale。无已采用 Run 时不是 stale。
 
 Stale 只提供提示，不会自行运行、创建 Card 或创建分支。它是`运行到这里`判断某一步是否需要重新生成的依据之一。
 

@@ -69,6 +69,8 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
   const run = transformation.lastRunId ? runs[transformation.lastRunId] : undefined
   const activeRun = Object.values(runs).find((item) => item.status === 'queued' || item.status === 'running')
   const appliedRun = appliedRunForRelation(transformation, runs)
+  const definitionChanged = Boolean(appliedRun)
+    && (transformation.definitionRevision ?? 0) !== (appliedRun?.definitionRevisionSnapshot ?? 0)
   const appliedSourceIds = appliedRun?.sourceSnapshot.map((snapshot) => snapshot.cardId)
   const sourceStructureChanged = Boolean(appliedSourceIds
     && (appliedSourceIds.length !== transformation.sourceCardIds.length
@@ -116,6 +118,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
       : <><div className="v2-structure-toolbar"><button className="v2-secondary-button" type="button" disabled={candidatePending} onClick={() => setEditing(true)}><Pencil size={14} />{transformationEditCommandLabel(transformation)}</button></div>
     <dl><dt>成果</dt><dd>{transformation.label}</dd><dt>目标</dt><dd>{extractionRequirement(transformation.instruction) ?? transformation.instruction}</dd><dt>模型</dt><dd>{transformation.modelId || '继承默认模型'}</dd>
       {transformation.acceptance && <><dt>完成标准</dt><dd>{transformation.acceptance}</dd></>}</dl>
+    {definitionChanged && <p role="status" className="v2-detail-note">步骤已变化。下次运行会使用新设置生成。</p>}
     <SourceManager transformation={transformation} blocked={sourceEditBlock(board, transformation, runs)} sources={transformation.sourceCardIds.map((cardId) => {
       const card = board.cards.find((item) => item.id === cardId)
       const snap = appliedRun?.sourceSnapshot.find((item) => item.cardId === cardId)
@@ -153,6 +156,7 @@ export function RelationPanel({ transformationId, initialEditing = false, initia
       busy={Boolean(runningToTransformationId || activeRun) || rerunStarting}
       running={runningToTransformationId === transformation.id || activeRun?.transformationId === transformation.id}
       starting={rerunStarting}
+      definitionChanged={definitionChanged}
       onRun={() => runDrawerAction(() => runTo(transformation.id))}
       onRerun={() => runDrawerAction(() => {
         const task = runExclusiveAction(rerunLock, () => rerun(transformation.id))

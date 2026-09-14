@@ -14,6 +14,7 @@ function stateCopy(data: V2TransformationNodeData) {
   if (data.status === 'running') return '生成中'
   if (data.status === 'failed') return '未完成'
   if (data.status === 'interrupted') return '已停止'
+  if (data.definitionChanged) return '步骤已变化'
   if (data.stale) return '来源已变化'
   if (data.status === 'succeeded') return '已完成'
   return '尚未生成'

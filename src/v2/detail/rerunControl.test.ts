@@ -8,6 +8,7 @@ import type { BoardV2, ContentCard, TransformationRun } from '../../domain'
 import { useV2Canvas } from '../../v2Store'
 import { v2Api } from '../../v2Api'
 import { projectV2Board } from '../../v2Projection'
+import { transformationExecutionDecision } from '../../v2State'
 import ContentCardNode from '../ContentCard'
 import { DrawerIntentContext } from '../drawerIntent'
 import { RelationPanel } from './RelationPanel'
@@ -40,6 +41,20 @@ it('keeps run-to-here and offers explicit single-step rerun only after a histori
   expect(again).toContain('运行到这里')
   expect(again).toContain('仅重跑这一步')
   expect(again).toContain('上游步骤不会运行')
+})
+
+it('runs a populated target again after the step definition changes', () => {
+  const current = {
+    ...board,
+    transformations: [{ ...board.transformations[0], definitionRevision: 2, lastAppliedRunId: 'old' }],
+  }
+  const applied = {
+    ...run,
+    definitionRevisionSnapshot: 1,
+    sourceSnapshot: [{ cardId: 'source', versionId: 'source-v', contentKind: 'markdown' as const, resolvedContent: 'source', digest: 'source' }],
+  }
+  expect(transformationExecutionDecision(current, { old: applied }, 't'))
+    .toEqual({ kind: 'run', reason: 'definition-changed' })
 })
 
 it.each([

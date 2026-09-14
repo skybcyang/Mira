@@ -24,6 +24,10 @@
 .v2-inspiration-full-read .v2-reading-scroll { flex: 1; min-height: 0; overflow: auto; padding: 20px max(20px, calc((100% - 720px) / 2)); }
 .v2-inspiration-full-read > footer { padding: 12px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--mira-border); }
 .v2-inspiration-full-read > footer > span { flex: 1 1 100%; color: var(--mira-muted); font-size: 12px; }
+.v2-inspiration-delete-confirm { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; padding: 10px; border-left: 3px solid var(--mira-danger); background: var(--mira-danger-soft); }
+.v2-inspiration-delete-confirm > div { display: grid; flex: 1 1 220px; gap: 2px; text-align: left; }
+.v2-inspiration-delete-confirm span { color: var(--mira-muted); font-size: 12px; }
+.v2-inspiration-full-read .v2-icon-button.is-danger { color: var(--mira-danger); }
 .v2-inspiration-leave { padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; background: var(--mira-warning-soft); font-size: 12px; }
 .v2-inspiration-leave > span { flex-basis: 100%; }
 .v2-inspiration-density { display: flex; gap: 3px; }
