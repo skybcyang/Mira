@@ -135,13 +135,13 @@ AI 工具统一从仓库根目录的 [AGENTS.md](../AGENTS.md) 开始，其中�
 
 ## 当前演进与待讨论
 
-本地最新增量：[2026-09-13 A3–B8 实施与验证](validation/2026-09-13-a3-b8-validation.md)，逐项记录本批真实进度和验证边界。
+最新增量：[2026-09-14 项目打开与画板恢复](validation/2026-09-14-project-opening.md)，记录本地 main 的项目恢复、安全切换、浏览器、原生窗口与打包验证边界。前一批读取、限定输入与剪藏见[2026-09-13 A3–B8 实施与验证](validation/2026-09-13-a3-b8-validation.md)。
 
 前序证据：[2026-09-12 自动建议删除与文本提取验证](validation/2026-09-12-content-extraction-validation.md)，含真实 Kimi 8/2 项输出、可导入证据画板、桌面/390px 截图和 1556 项测试结果；原生设备与扩展材料质量边界单列。
 
-B7 限定输入范围的[产品 §5.4](product/product-definition.md)、[核心契约 §6.1.1](specs/core-specification.md)和[交互 §4.3.1](design/experience-design.md)已获确认，暂缓后又纳入 A3–B8；尚未实施，不替代当前全文输入行为。
+B7 限定输入范围已按[产品 §5.4](product/product-definition.md)、[核心契约 §6.1.1](specs/core-specification.md)和[交互 §4.3.1](design/experience-design.md)实现并验证；普通生成和提取均可明确选择全文、段落或章节，原文变化时拒绝使用过期范围。
 
-- [A3–B8 整批交付计划](refactor/a3-b8-delivery-plan.md)：2026-09-13 登记用户要求的完整范围、依赖顺序、真实模型质量计划、触屏和发行条件。新增产品语义见[产品定义 §5.11](product/product-definition.md)、[核心规格 §11](specs/core-specification.md)、[体验设计 §11](design/experience-design.md)、[UI 系统 §10](design/ui-system.md)和[平台适配与发行草案](specs/platform-adapters.md)，均明确区分待确认/未实现状态。
+- [A3–B8 整批交付计划](refactor/a3-b8-delivery-plan.md)：保留 2026-09-13 实施前的范围、依赖顺序、真实模型质量计划、触屏和发行条件；当前实现状态以[本批验证](validation/2026-09-13-a3-b8-validation.md)和[演进 TODO](refactor/evolution-todo.md)为准。
 
 - [当前演进 TODO](refactor/evolution-todo.md)：2026-09-12 汇总首次使用/设备验收、删除自动建议、动态提取/拆卡/重跑、限定输入范围、局部改写、带出处剪藏、多卡合成体验、主动交付检查、文档导出及读取/skill/互通候选；记录哲学边界与开发验收，区分已确认方向、已有能力、候选设计和原有暂缓项，不作为产品规格。
 

@@ -92,7 +92,7 @@ Board 是可独立原子保存的 JSON 聚合。Card、Version 和 Transformatio
 - Board lifecycle lock 是现有每 Board 聚合写序列化边界。重命名、归档、移入废纸篓与恢复都必须携带 `baseRevision`；全部 Card、Transformation、Plan、Workflow application、Run 启动、Candidate 写回与 Board 导出也必须在同一锁内重新读取 lifecycle/revision 后提交。竞争命令只能按锁顺序成功：普通写入先成功会增加 revision，使旧 lifecycle 请求返回 `BOARD_CONFLICT`；生命周期转换先成功会使普通写入返回 `BOARD_READ_ONLY`。归档/移入废纸篓还必须在锁内重新读取 Run 和 Candidate 状态。完整备份使用覆盖所有 Board/Run/Workflow 写命令的独占 snapshot lease。
 - archived 与 trashed Board 的 Card、Transformation、Plan、Workflow application、Run 启动和 Candidate 写回命令均返回 `BOARD_READ_ONLY`。永久清除只接受 trashed Board，必须通过独立二次确认命令；确认缺失、状态不是 trashed、活动 Run/Candidate 或任一文件提交失败时整体拒绝并零写入。
 - 所有 Node-backed Standalone、Desktop 和其他可写 Host 在恢复和开放写入前必须取得 workspace 级独占写锁。锁以原子创建持有到 Host 关闭；已有其他写者时返回 `WORKSPACE_LOCKED` 并 fail-closed，不自动覆盖或降级为可写无锁模式。正常关闭释放锁；异常残留必须通过明确的离线运维步骤处理，不能依据不可靠的 PID 猜测自动删除。DSH/Cordis 的 `fsService` 若没有原子锁适配器，则不能宣称获得这项保护，仍必须由宿主保证单写者。
-- 当前 Board 离开 active 集合后，客户端选择另一个 active Board；若不存在，则使用普通创建命令建立一个新的默认 Board。归档/移入废纸篓本身仍是单 Board 原子变更，不能把跨文件创建伪装成同一事务。
+- 当前 Board 离开 active 集合后，客户端只选择仍在 `openedBoardIds` 中的另一个 active Board；若不存在，则进入项目总览。不得自动创建默认 Board，也不得打开用户未选择的 Board。归档/移入废纸篓本身仍是单 Board 原子变更。
 
 #### 本机画板导航
 

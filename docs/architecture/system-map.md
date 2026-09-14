@@ -155,7 +155,8 @@ feature、外观、命令面板、Desktop/Mobile 与无障碍覆盖。规则必�
 
 ## 当前边界与后续约束
 
-根 Store 已是组合入口，7 个 command slice 共用 `storeContext.ts`。只有 Board slice 推进
+根 Store 已是组合入口，10 个顶层 command slice factory 共用 `storeContext.ts`；Board 与 Transformation
+还分别组合 Checkpoint 与 Source slice。只有 Board slice 推进
 共享导航代次；movement、Run tracking、创建 Card 的异步意图各在所属 slice 内保留独立
 生命周期。后续变更继续保留模板提取、移动写回、Run polling、灵感记录与 history replay 的
 特征测试，不为文件变短而把同一并发边界再拆成多份状态。

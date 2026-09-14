@@ -65,6 +65,12 @@ describe('project opening', () => {
     expect(useV2Canvas.getState()).toMatchObject({ boardId: null, openedBoardIds: ['a'], pinnedBoardIds: ['a'] })
     expect(requests.filter(r => r.path.endsWith('/navigation')).slice(-1)[0]?.body).toEqual({ opened: ['a'], pinned: ['a'], lastBoardId: null })
   })
+  it('explains why overview navigation is blocked while a board save is pending', async () => {
+    useV2Canvas.setState({ loadState: 'ready', saveState: 'saving', board: board('a'), boardId: 'a', openedBoardIds: ['a'] })
+    await expect(useV2Canvas.getState().showProjectOverview()).rejects.toThrow('等待当前加载或保存完成')
+    expect(useV2Canvas.getState()).toMatchObject({ boardId: 'a', openedBoardIds: ['a'] })
+    expect(useV2Canvas.getState().notices.some(notice => notice.message.includes('等待当前加载或保存完成'))).toBe(true)
+  })
   it('keeps browser navigation separate for two project identities', async () => {
     project.canSwitch = false
     vi.mocked(v2Api.listBoards).mockResolvedValue({ boards: [summary('a')] })
