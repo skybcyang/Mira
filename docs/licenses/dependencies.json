@@ -1916,7 +1916,7 @@
     },
     {
       "name": "electron",
-      "version": "44.0.0",
+      "version": "44.3.0",
       "license": "MIT",
       "scope": "development",
       "homepage": "https://github.com/electron/electron#readme"

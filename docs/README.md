@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+2026-09-14 依赖维护与本机桌面替换：[Electron 44.3 与 Actions artifact v7 验证](validation/2026-09-14-dependency-maintenance.md)。记录 5 个 Dependabot PR 的取舍、四平台 CI 边界、arm64 make/packed smoke、原生窗口与 `/Applications/Mira.app` 替换回退证据；不改变产品或 workspace 数据语义。
+
 2026-09-14 局部 UI 打磨已合入 `main`（`219b9e4`）：[按钮反馈、运行指示与设置开关验证](validation/2026-09-14-control-feedback.md)。沿用六套外观，主干复验包含键盘、减少动态效果、桌面/390px 和真实 HTTP 运行状态；[使用手册](user/user-guide.md)已补充开关与运行指示说明。远端测试包按对应源码 SHA 的 Actions 结果核对，本批未替换安装版。
 
 2026-09-14 项目打开调整已实现：[项目打开与画板恢复](specs/project-opening.md)、[验证记录](validation/2026-09-14-project-opening.md)。默认继续上次项目，按项目恢复打开画板，无画板时进入总览；项目切换保护草稿、保存、运行与待处理结果。
