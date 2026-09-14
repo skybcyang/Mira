@@ -154,7 +154,7 @@ Context dock 是一次局部推进的入口，位于画布底部：
 - `导入卡片到当前画板`；在管理弹窗内选择卡片包，预览数量和携带原件数后确认。仅向预览时的 active Board 追加独立卡片，失败保留文件和报告，不自动重试。导出入口位于所选卡片的`更多卡片操作`。复制出处只读，不跳转到可能同名的本地对象。
 - 每行使用 `History` 图标进入该 Board 的画布版本；archived/trashed 版本只能预览、导出、创建副本、重命名或删除。
 
-archived 与 trashed Board 不进入普通画板切换或灵感来源。面板允许恢复和导出，不把只读 Board 偷偷打开为可编辑 Canvas。当前 Board 离开 active 集合后切换到另一个 active Board；若没有，则通过普通创建流程建立默认画板。
+archived 与 trashed Board 不进入普通画板切换或灵感来源。面板允许恢复和导出，不把只读 Board 偷偷打开为可编辑 Canvas。当前 Board 离开 active 集合后，只切换到仍已打开的另一个 active Board；若没有则进入项目总览。恢复与回退规则见[项目打开规格](../specs/project-opening.md)。
 
 ### 2.8 画布版本
 

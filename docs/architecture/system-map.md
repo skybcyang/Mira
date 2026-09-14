@@ -10,7 +10,7 @@
 Browser
   App.tsx
     -> canvas shell + lazy DetailDrawer / WorkflowLibrary / ModelSettings / InspirationPicker / FilePicker / BoardManager / BoardHistory
-    -> AppBar / BoardMenu (search, local open/pin state, activity markers)
+    -> AppBar / ProjectMenu / ProjectOverview / BoardMenu (project entry, search, open/pin state, activity markers)
     -> useV2Canvas contract (src/v2/storeTypes.ts)
        -> composition (src/v2Store.ts)
           -> shared request context/projection/notices (src/v2/storeContext.ts)
@@ -64,6 +64,7 @@ Desktop packaging
 | `src/v2Store.ts` | 初始 UI state 与 slice 组合，稳定 `useV2Canvas` 导出 | HTTP 命令体、重复领域校验 |
 | `src/v2/storeContext.ts` | 共享请求代次、写序号、刷新防覆盖、投影与通知 | 生命周期或 feature 命令实现 |
 | `src/v2/boardSlice.ts` | Board 导航、生命周期、目录与可移植数据命令 | Card、方法或 Run 的执行实现 |
+| `src/v2/projectNavigation.ts`、`projectApi.ts`、`projectSwitch.ts`、`useProjectOpening.ts` | 分项目偏好、宿主请求、切换前检查与页面/原生共同离开入口 | 项目目录 I/O、第二套 Board 状态 |
 | `src/v2/cardSlice.ts` | Card 创建、独立名称、正文、标签、恢复与文件绑定 | 几何移动、剪贴板与历史重放 |
 | `src/v2/canvasSlice.ts` | 选择、几何移动、剪贴板、批量删除与会话历史 | 正文领域规则或结构级联删除 |
 | `src/v2/organizationSlice.ts` | 显式分组、颜色 CAS、组选择和冻结整体拖动 | 正文、Run、自动归组或新执行模型 |
@@ -92,6 +93,8 @@ Desktop packaging
 | `src/v2/MaterialLibrary.tsx`、`CardPackageImport.tsx` | 现有材料/画板管理任务内的材料库和卡片包确认 | 新全局模式、重复 Store |
 | `bridge/*-store.js` | 原子持久化与读取 | 产品交互 |
 | `bridge/node-runtime.js` | 以显式 workspace、静态目录、地址和端口启动/关闭可复用 Node Host | CLI 环境变量、Electron 窗口 |
+| `bridge/project-host.js` | Node 项目身份、导航/切换 API、写入排空与 Run/Candidate 门禁 | 原生目录选择、本机偏好文件 |
+| `desktop/project-state.mjs`、`project-opening.mjs` | 原子本机记录、串行队列、候选 runtime/window 验证与失败回退 | 可移植项目数据、领域写回 |
 | adapters/hosts | 文件、模型、进程和 DSH/Cordis 接入 | 核心业务语义 |
 | `desktop/` | workspace 选择、窗口、菜单、本地鉴权、安全策略与 Electron 生命周期 | 领域、Store、route 或 React feature |
 | desktop staging/Forge scripts | 显式载荷、双架构打包与 packed `.app` smoke | 用户数据、公开发布、产品逻辑 |
@@ -130,11 +133,13 @@ Desktop packaging
 不得改变原有 component key、dirty guard、异步意图和焦点归属。方法库、模型设置与灵感选择器
 仍修改对应 `src/v2/` feature。它们都是动态入口，不应重新变成 `App.tsx` 的静态依赖。
 
-改样式：`src/styles.css` 仅按固定顺序导入 `src/styles/` 的 18 个模块，依次为 token、基础壳、
+改样式：`src/styles.css` 仅按固定顺序导入 `src/styles/` 的有界模块，依次为 token、基础壳、
 feature、外观、命令面板、Desktop/Mobile 与无障碍覆盖。规则必须放回对应 owner；不要在
 拆分时按 selector 合并或重排旧覆盖。测试使用 `test/helpers/read-styles.js` 读取完整导入树。
 
 改平台部署：通过 `mira-application.js` 注入 adapter；Standalone、Desktop 和 DSH/Cordis 不能绕过同一套 application/handler。Node Host 的可复用启动入口位于 `bridge/node-runtime.js`，Standalone 环境变量与信号处理留在 `scripts/start-standalone.mjs`，Electron 窗口和 workspace 生命周期留在 `desktop/`。
+
+项目打开与画板恢复以[项目打开规格](../specs/project-opening.md)为准。`project-host.js` 注入 Desktop 适配器，普通 Node 返回当前身份和 `canSwitch:false`；React 通过同一 HTTP 路径请求原生选择，系统菜单只派发受保护的页面意图。目标 renderer 的 `main[data-project-ready]` 确认恢复完成后才提交最近项目，旧 Host 的关闭延至当前打开请求返回后排空；无 raw IPC 或重新启动绕过保护。
 
 改桌面打包：renderer 仍由 Vite 生产构建；`scripts/stage-desktop.mjs` 只允许写入仓库根目录的 `.desktop-stage/`，并通过显式清单装入 bundled main/preload、`dist/` 和最小 `package.json`。架构、格式、最低 macOS 版本和 fuse 策略统一由 `forge.config.mjs` 定义，不得把 Board、Run、Workflow、`.env`、源码或测试打入产物。
 
