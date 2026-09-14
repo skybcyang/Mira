@@ -2,7 +2,7 @@
 
 执行能力增量规格：[步骤工具、MCP 与 Python](specs/tool-execution.md)。
 
-步骤执行能力及卡片重试修复已于 2026-09-14 合入本地 `main`（实现提交 `53413ac`）；主干验证与原稿保留记录见[集成报告](validation/2026-09-14-tool-execution.md)。未推送远端或替换安装版。
+步骤执行能力及卡片重试修复已于 2026-09-14 合入 `main`（实现提交 `53413ac`）；主干验证、已完成的本地分支清理及恢复记录见[集成报告](validation/2026-09-14-tool-execution.md)。本批未替换安装版；远端测试包按[主干 Actions](operations/desktop-internal-builds.md)的源码 SHA 和实际结果核对。
 
 2026-09-14 步骤执行设置：[整体需求与进度](refactor/generation-controls-requirements.md)、[完整交互方案](design/step-execution-design-proposal.md)、[输出要求第一批验证](validation/2026-09-14-output-policy.md)、[项目默认与指导目录第二批验证](validation/2026-09-14-execution-settings.md)、[工具/MCP/Python 完整集成验证](validation/2026-09-14-tool-execution.md)。已实现全套步骤设置与运行审阅，平台及模型质量证据按报告分别记录。操作入口和参数示例见[使用步骤能力](operations/tool-capabilities.md)。
 
