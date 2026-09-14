@@ -1,4 +1,4 @@
-import { Activity, AlertCircle, BookOpen, ChevronDown, GitCompareArrows, History, Maximize2, Pencil, RotateCw, Square, TextCursorInput } from 'lucide-react'
+import { AlertCircle, BookOpen, ChevronDown, GitCompareArrows, History, Maximize2, Pencil, RotateCw, Square, TextCursorInput } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import MarkdownContent from './MarkdownContent'
@@ -9,6 +9,7 @@ import { useCardSelection, useDrawerAction, useDrawerIntent } from './drawerInte
 import CardResizeHandle from './CardResizeHandle'
 import { readerKeyDown } from './cardReadingEvents'
 import { runExclusiveAction } from './drawerSafety'
+import RunActivityIndicator from './RunActivityIndicator'
 
 type ContentNode = Node<V2CardNodeData, 'contentCard'>
 
@@ -74,7 +75,8 @@ export default function ContentCardNode({ id, data, selected }: NodeProps<Conten
       }}
       onKeyDown={readerKeyDown}
     >{isRunning && !data.markdown ? <div className="v2-running" aria-live="polite">
-          <span>正在整理内容</span><i /><i /><i />
+          <span className="v2-running-label"><RunActivityIndicator status={data.runStatus} />{data.runStatus === 'queued' ? '排队中' : '正在生成'}</span>
+          <small>完成后可阅读和编辑</small>
         </div> : data.runStatus === 'failed' && !data.markdown ? <div className="v2-failed-copy">
           <strong>生成未完成</strong><span>{retryable ? '内容没有被覆盖，可以重新尝试。' : '内容没有被覆盖，请查看失败原因。'}</span>
         </div> : data.card.contentKind === 'file-reference' ? <div className="v2-file-card">
@@ -113,7 +115,7 @@ export default function ContentCardNode({ id, data, selected }: NodeProps<Conten
         <button className="v2-icon-button nodrag" type="button" aria-label="查看运行进度" title="查看运行进度" onClick={(event) => {
           event.stopPropagation()
           openDrawer({ tab: 'run', runId: data.runId! })
-        }}><Activity size={13} /></button>
+        }}><RunActivityIndicator status={data.runStatus} size={13} /></button>
         <button className="v2-icon-button nodrag" type="button" aria-label="停止生成" title="停止生成" onClick={(event) => {
           event.stopPropagation()
           void interrupt(data.runId!)

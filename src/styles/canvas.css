@@ -395,7 +395,6 @@
   color: var(--mira-muted);
 }
 
-.v2-running i,
 .v2-canvas-loading i {
   display: block;
   height: 10px;
@@ -404,13 +403,10 @@
   animation: mira-pulse 1.2s ease-in-out infinite alternate;
 }
 
-.v2-running i:nth-of-type(2) {
-  width: 84%;
-}
-
-.v2-running i:nth-of-type(3) {
-  width: 62%;
-}
+.v2-running-label { display: flex; align-items: center; gap: 8px; color: var(--mira-accent); }
+.v2-running small { color: var(--mira-muted); font-size: 11px; }
+.v2-run-indicator { flex: 0 0 auto; vertical-align: middle; }
+.v2-run-indicator.is-running { animation: mira-spin 900ms linear infinite; }
 
 .v2-failed-copy strong {
   color: var(--mira-danger);

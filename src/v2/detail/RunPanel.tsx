@@ -7,6 +7,7 @@ import { dateTime, elapsed, when } from './formatters'
 import CandidateComparison from './CandidateComparison'
 import { OutputPolicyView } from './OutputPolicyView'
 import { ToolRunView } from './ToolRunView'
+import RunActivityIndicator from '../RunActivityIndicator'
 export { CandidateDecisionActions } from './CandidateComparison'
 
 export function TransformationRunControl({
@@ -100,7 +101,7 @@ export function RunPanelView({
       ? '生成未完成'
       : run.status === 'interrupted'
         ? '已停止'
-        : '正在生成'
+        : run.status === 'queued' ? '排队中' : '正在生成'
   const progressSummary = active
     ? visibleProgress?.label || run.error?.message || when(latestAt)
     : run.status === 'failed' || run.status === 'interrupted'
@@ -109,7 +110,7 @@ export function RunPanelView({
   return <div className="v2-run-panel">
     {step && <div className="v2-run-step"><span>第 {step.index}/{step.total} 步</span><strong>{step.label}</strong></div>}
     <div className={`v2-run-state ${run.status}`}>
-      <strong aria-live="polite" aria-atomic="true">{statusTitle}</strong>
+      <div className="v2-run-heading"><RunActivityIndicator status={run.status} /><strong aria-live="polite" aria-atomic="true">{statusTitle}</strong></div>
       {(progressSummary || visibleProgress?.detail) && <div className="v2-run-current" aria-live="polite" aria-atomic="true">
         {progressSummary && <span>{progressSummary}</span>}
         {visibleProgress?.detail && <small>{visibleProgress.detail}</small>}

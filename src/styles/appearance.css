@@ -102,13 +102,21 @@ kbd {
 .v2-command-button,
 .v2-icon-button {
   border-radius: var(--mira-radius-control);
-  transition: color 150ms var(--mira-ease), background-color 150ms var(--mira-ease), border-color 150ms var(--mira-ease), transform 150ms var(--mira-ease);
 }
 
-.v2-command-button:active:not(:disabled),
-.v2-icon-button:active:not(:disabled),
-.v2-appearance-switcher button:active:not(:disabled) {
-  transform: scale(0.96);
+.v2-app :is(.v2-command-button, .v2-icon-button, .v2-primary-button, .v2-secondary-button, .v2-danger-button, .v2-text-button, .v2-appearance-switcher button, .v2-transformation-node > footer > button, .v2-workbench-navigation button) {
+  transition: color 120ms var(--mira-ease), background-color 120ms var(--mira-ease), border-color 120ms var(--mira-ease), box-shadow 120ms var(--mira-ease), transform 120ms var(--mira-ease);
+}
+
+.v2-app :is(.v2-command-button, .v2-icon-button, .v2-primary-button, .v2-secondary-button, .v2-danger-button, .v2-text-button, .v2-appearance-switcher button, .v2-transformation-node > footer > button, .v2-workbench-navigation button):active:not(:disabled):not([aria-disabled='true']) {
+  transform: scale(0.97);
+  box-shadow: inset 0 0 0 1px currentColor;
+  transition-duration: 60ms;
+}
+
+:root[data-theme='editorial'] .v2-app button:active:not(:disabled):not([aria-disabled='true']),
+:root[data-theme='blueprint'] .v2-app button:active:not(:disabled):not([aria-disabled='true']) {
+  transform: none;
 }
 
 .v2-app-actions > .v2-command-button {
@@ -376,13 +384,6 @@ kbd {
   padding: 0 5px;
 }
 
-.v2-appearance-switcher.is-embedded .v2-scheme-toggle {
-  height: 40px;
-  margin-top: 6px;
-  border-top: 1px solid var(--mira-border);
-  border-left: 0;
-}
-
 :root[data-theme='editorial'] .v2-appearance-switcher,
 :root[data-theme='blueprint'] .v2-appearance-switcher {
   backdrop-filter: none;
@@ -440,10 +441,17 @@ kbd {
 .v2-more-menu.is-settings { inset: 66px 12px auto auto; width: min(320px, calc(100vw - 24px)); max-height: calc(100dvh - 84px); }
 .v2-settings-heading { display: flex; align-items: center; justify-content: space-between; padding: 4px 6px 10px; }
 .v2-settings-heading h2 { margin: 0; font-size: 15px; }
-.v2-grid-setting { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 8px 10px; cursor: pointer; border-block: 1px solid var(--mira-border); font-size: 13px; }
+.v2-grid-setting { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 8px 10px; cursor: pointer; border-block: 1px solid var(--mira-border); color: var(--mira-ink); font-size: 13px; }
 .v2-grid-setting small { display: block; color: var(--mira-muted); font-size: 11px; margin-top: 4px; }
-.v2-grid-setting input { appearance: none; width: 36px; min-width: 36px; height: 22px; border: 1px solid var(--mira-control-border); border-radius: 20px; background: var(--mira-surface-subtle); padding: 2px; cursor: pointer; }
-.v2-grid-setting input::before { content: ''; display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--mira-muted); transition: transform 150ms ease; }
+.v2-grid-setting input { appearance: none; flex: 0 0 40px; width: 40px; min-width: 40px; height: 24px; margin: 0; border: 1px solid var(--mira-control-border); border-radius: 24px; background: var(--mira-surface-subtle); padding: 3px; cursor: pointer; transition: background-color 140ms var(--mira-ease), border-color 140ms var(--mira-ease); }
+.v2-grid-setting input::before { content: ''; display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--mira-muted); transition: transform 140ms var(--mira-ease), background-color 140ms var(--mira-ease); }
 .v2-grid-setting input:checked { background: var(--mira-accent); border-color: var(--mira-accent); }
 .v2-grid-setting input:checked::before { background: var(--mira-on-accent); transform: translateX(14px); }
+.v2-grid-setting input:hover:not(:disabled) { border-color: var(--mira-accent); }
+.v2-grid-setting input:active:not(:disabled) { box-shadow: 0 0 0 3px var(--mira-accent-soft); }
+.v2-grid-setting:has(input:disabled) { cursor: not-allowed; }
+.v2-grid-setting input:disabled { cursor: not-allowed; }
+.v2-scheme-setting { margin-top: 8px; padding: 8px 0 0; border-bottom: 0; }
+:root[data-theme='blueprint'] .v2-grid-setting input,
+:root[data-theme='blueprint'] .v2-grid-setting input::before { border-radius: 0; }
 .v2-more-menu > .v2-settings-models { border-top: 1px solid var(--mira-border); border-radius: 0; min-height: 44px; }

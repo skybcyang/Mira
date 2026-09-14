@@ -27,7 +27,11 @@ export default function AppearanceSwitcher({
         <span>{direction.shortLabel}</span>
       </button>)}
     </div>
-    <button
+    {embedded ? <label className="v2-grid-setting v2-scheme-setting">
+      <span>深色外观<small aria-hidden="true">{appearance.scheme === 'dark' ? '已开启' : '已关闭'}</small></span>
+      <input type="checkbox" role="switch" aria-label="深色外观" checked={appearance.scheme === 'dark'}
+        onChange={(event) => onChange({ ...appearance, scheme: event.target.checked ? 'dark' : 'light' })} />
+    </label> : <button
       className="v2-scheme-toggle"
       type="button"
       aria-label={`切换为${nextScheme === 'dark' ? '深色' : '浅色'}外观`}
@@ -35,7 +39,7 @@ export default function AppearanceSwitcher({
       onClick={() => onChange({ ...appearance, scheme: nextScheme })}
     >
       {appearance.scheme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
-    </button>
+    </button>}
   </>
 
   if (embedded) return <fieldset className="v2-appearance-switcher is-embedded">
