@@ -1,0 +1,36 @@
+# 项目打开与画板恢复
+
+状态：2026-09-14 用户确认默认继续上次项目，实施中。产品来源：产品定义 §5.14；本文件是项目打开增量契约。
+
+## 打开规则
+
+- Desktop 记忆最近 10 个成功打开的项目，包含稳定项目 ID、显示名及本机绝对路径。启动先验证上次路径并尝试取得写锁、启动宿主；失败回到项目入口，不创建隐式替代目录。原生入口区分新建、打开、最近项目与备份恢复；取消子操作返回入口。
+- 每项目保存 `{ opened: string[], pinned: string[], lastBoardId: string | null }`；ID 去重，单数组最多 1000 项，单 ID 最多 200 字符。`lastBoardId: null` 表示总览，`opened: []` 明确表示全部关闭。存在记录时仅保留仍 active 的引用；没有记录时进入总览，不自动选择第一个画板。查看总览保留 opened 和 pinned；关闭最后一张保持空列表。首次进入新项目零 Board、零 Run。
+- 打开记录是本机偏好：Desktop 保存在 userData 的独立文件，按稳定项目 ID 隔离，不使用临时浏览器 origin 作为身份；legacy workspace 采用宿主计算的稳定路径标识。Web/Standalone 按宿主提供的项目 ID 使用本机浏览器存储，不复制到领域或可移植数据。旧浏览器偏好只在能核对旧 Board 引用属于当前项目时迁入，不把其他项目的空记录当作当前项目关闭意图。
+- 归档、废纸篓或永久删除后的当前画板，优先选择仍打开且 active 的另一个画板；没有则进入总览。不得自动创建默认画板，也不得重新打开未在 opened 中的画板。目录或 Run 读取失败不清除成功记录，不进入伪空白状态。
+- 打开/关闭/总览偏好在导航确认成功后保存，失败明确显示且保留当前可用内容；项目切换前必须等待偏好写入结束。写入顺序受串行队列保护，迟到旧请求不能覆盖新导航。
+
+## 宿主与 API 边界
+
+继续复用 React UI、HTTP API 和 Node Host。Node Host 注入可选项目宿主适配器，Electron 只负责目录/备份选择、本机偏好和宿主生命周期；不增加 raw IPC、任意文件读写或第二套领域服务。默认 API 路径为 `/graphmind/api/v2`。
+
+| 请求 | 契约 |
+| --- | --- |
+| `GET /project` | `{ project: { id, name, path }, navigation: BoardNavigation|null, recentProjects: [{ id, name, path }], canSwitch: boolean }`。Node 总能给出当前项目；只有 Desktop 注入适配器才 `canSwitch:true` 并提供本机记录 |
+| `PATCH /project/navigation` | `{ opened, pinned, lastBoardId }`，保存当前项目本机导航，返回 `{ navigation }`；Desktop 适配器严格校验、串行及原子持久化。非 Desktop 返回 `PROJECT_HOST_UNAVAILABLE`，浏览器自行保存 |
+| `POST /project/open` | `{ kind:'open'|'new'|'recent'|'restore', projectId?:string }`，recent 只能匹配本机已登记项目 ID，不能从请求传入任意目录。原生目录/备份选择由适配器执行，返回 `{ cancelled:boolean }`；成功切换由宿主载入已验证的目标 UI |
+
+无该 API 的旧宿主可沿原浏览器导航降级，但不得恢复自动创建默认 Board。项目 API 返回其他错误时显示真实错误，不猜测当前项目身份。
+
+项目切换属于显式宿主动作。浏览器先处理所有已登记草稿并冻结切换操作；宿主再次读取当前项目全部 Run，活动 Run、Candidate 或读取失败均拒绝。宿主切换期间阻止旧项目新的领域写请求（包括 Run 启动），读取与本机导航保存可继续。先验证目标路径、格式、写锁及 UI 可用性，再提交最近项目/当前项目并关闭原宿主；失败清理候选宿主、保留原宿主/窗口/记录。同一个项目不能重复启动写者，选当前项目等同取消。原生系统菜单只触发页面的相同受保护动作，不直接切换。首次入口没有草稿，直接走启动验证。
+
+错误包括 `PROJECT_NAVIGATION_INVALID`、`PROJECT_HOST_UNAVAILABLE`、`PROJECT_BUSY`、`PROJECT_SWITCHING` 与已有路径/格式/写锁错误。受限 HTTP 调用沿用现有 origin/token 检查。最近路径、导航、会话与秘密不进入备份；恢复旧包不安装这些偏好。
+
+## 验收
+
+1. 空项目零隐式 Board；无记录、全关闭、记录全部失效时进入总览；保存总览与 opened 可并存。
+2. 同项目跨 renderer/应用重启恢复打开项、当前项及常用；项目 A/B 隔离，切回各自恢复。损坏偏好可提示后从总览继续，不改业务数据。
+3. 关闭、归档、废纸篓、删除的所有客户端回退使用同一策略；只选择仍打开的其他 active Board。
+4. 页面/原生菜单切换均保护草稿、保存、活动 Run、Candidate 和并发写；取消、路径失效、锁冲突、格式或目标 UI 失败保持原项目。
+5. 总览提供搜索、明确打开/新建/管理，材料、灵感池与方法可用；无 Board 时使用方法或计划不能写入。
+6. 按 AGENTS 完整工程门禁、Bridge 及桌面集成、桌面/390px、原生窗口、arm64 make 与两种 packed smoke 验证；只用临时项目。
