@@ -509,7 +509,11 @@ export function createBoardSlice(
     ...createCheckpointSlice(checkpointDependencies),
     async flushBoardNavigation() { await persistNavigation() },
     async showProjectOverview() {
-      if (get().loadState !== 'ready' || get().saveState === 'saving' || get().historyState === 'applying') return
+      if (get().loadState !== 'ready' || get().saveState === 'saving' || get().historyState === 'applying') {
+        const message = '请等待当前加载或保存完成后再查看项目总览。'
+        setNotice('attention', message)
+        throw new Error(message)
+      }
       ++navigation.boardGeneration
       ++boardNavigationSequence
       activeBoardNavigation = null
