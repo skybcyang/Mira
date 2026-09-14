@@ -1,7 +1,7 @@
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { EventEmitter } from 'node:events'
 import { tmpdir } from 'node:os'
-import { dirname, join, relative } from 'node:path'
+import { dirname, join, normalize, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
@@ -127,7 +127,7 @@ describe('desktop package staging', () => {
 
       const expectedFiles = [
         ...DESKTOP_STAGE_ENTRIES.map(({ kind, target }) => (
-          kind === 'directory' ? join(target, 'index.html') : target
+          kind === 'directory' ? join(target, 'index.html') : normalize(target)
         )),
         'package.json',
       ].sort()
