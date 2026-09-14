@@ -1,5 +1,7 @@
 # 步骤执行能力：完整集成验证
 
+后续状态：重试问题已修复，实现已合入 main；本地功能分支与 worktree 已清理。分支恢复包、打包产物新位置与远端同步准备记录见文末；以下各阶段的“未合入 / 未推送”保留为当时事实。
+
 日期：2026-09-14（Asia/Shanghai）。分支 `codex/step-execution`，工作树 `.worktrees/step-execution`；接续[输出要求](2026-09-14-output-policy.md)及[项目默认与指导目录](2026-09-14-execution-settings.md)。仅本地实现与临时演示项目验证，未合入 main、推送、发布或替换已安装 Mira。
 
 ## 产品命题
@@ -113,3 +115,21 @@
 生产目录及依赖文件与 `codex/step-execution` 完全一致，前节浏览器、原生 macOS arm64、make 与两种 packed smoke 证据继续适用于同一实现；本轮没有重复这些验收，也没有新增线上质量或其他平台证据。当前索引和路线同步本地 main 状态，历史章节中的“未合入”保留为当时事实。
 
 未推送远端、未替换安装版、未迁移或改写用户数据。
+
+## 本地分支清理与远端同步准备（2026-09-14）
+
+用户明确要求清理后，删除 12 个已集成本地功能分支和 11 个 worktree。`content-extraction`、`project-workspace`、`step-execution` 为 main 的祖先；其余九个 `step-*` 切片逐一通过 `git cherry main` 核对，均为已 cherry-pick 的等价补丁，没有遗漏改动。全部 worktree 在删除前均无未提交或未跟踪文件，忽略项仅依赖、staging 和构建产物。清理后只保留 main 主工作树，HEAD 仍为 `e975830`，工作区干净，草案 stash `59938aa` 保留，远端分支未删除。
+
+以下路径相对本机仓库根目录，均位于被 Git 忽略的 `out/`，不随源码推送，也不是远端下载地址：
+
+| 保留内容 | 本机位置 |
+| --- | --- |
+| 全部原分支及完整历史的恢复包，已通过 `git bundle verify` | `out/branch-cleanup-20260914.F3QidD/local-branches.bundle` |
+| 项目工作区批次的原打包目录 | `out/branch-cleanup-20260914.F3QidD/project-workspace-artifacts/` |
+| 步骤执行与重试修复批次的原打包目录 | `out/branch-cleanup-20260914.F3QidD/step-execution-artifacts/` |
+
+最新本机 DMG 位于最后一项下的 `desktop/make/Mira-0.1.0-beta.2-arm64.dmg`，移动后重新核对 SHA-256 仍为 `95cb8eae64524e002abf20d12e490a5b657d0baa4ec4f96a98395c052860cf78`。原 worktree 路径不再可用；历史报告中的路径只表示当时位置。需要恢复某一分支时可显式执行，例如 `git fetch out/branch-cleanup-20260914.F3QidD/local-branches.bundle refs/heads/codex/step-execution:refs/heads/codex/step-execution`；不需要覆盖 main。
+
+随后用户要求更新文档并提交远端。本轮 `git fetch origin` 后，`origin/main` 为 `c1f82ed`，本地 main 比它领先 22 个提交、落后 0 个；本次文档提交随这些已集成改动一同正常推送，不强推、不上传本机恢复包或安装包。源码推送后的 CI 和四平台测试包必须核对对应提交的 [Actions 记录](https://github.com/skybcyang/Mira/actions/workflows/desktop-build.yml)；本机 arm64 证据不替代远端四平台结果，也不表示已签名或正式发布。
+
+推送前在主工作树重新执行工程门禁：08:57:57 开始的 `pnpm test` 为 **177 文件 / 1803 项通过**，`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check` 均通过。保留既有 Node experimental localStorage 测试警告。本轮仅修改文档，没有新增 UI、运行或打包行为，因此浏览器与原生证据沿用前述同一实现的实际验收，不重复宣称新的设备或线上模型质量结论。
