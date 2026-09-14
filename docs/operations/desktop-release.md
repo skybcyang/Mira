@@ -44,3 +44,5 @@ workflow 只上传有效期 7 天的 Actions 审阅附件，权限为 contents: 
 应用内自动更新属于后续阶段：先定义平台安装格式、签名 feed、用户确认、草稿/运行退出及失败恢复，再实现；本次未接 updater。
 
 2026-09-13 项目工作区安装补充：本机 arm64 已从 `95a8e8c` 主干构建替换，实际旧布局复制到新项目，原目录和旧应用保留；完整备份及恢复副本重启验证通过，见[迁移、安装与回退记录](../validation/2026-09-13-project-workspace-install.md)。这不替代正式签名或其他原生目标验收。
+
+2026-09-14 依赖维护补充：本机 arm64 已替换为 Electron 44.3.0 构建，旧应用、workspace 和桌面状态保留在私有回退目录；普通/恢复 packed smoke、原生窗口与安装后原 workspace 启动通过，见[依赖维护与本机安装验证](../validation/2026-09-14-dependency-maintenance.md)。仍是未签名 internal Alpha，不改变正式发行门禁。

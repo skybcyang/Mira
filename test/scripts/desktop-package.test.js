@@ -462,10 +462,10 @@ describe('desktop artifact configuration', () => {
     expect(desktopIcon.subarray(0, 4).toString('ascii')).toBe('icns')
     expect(desktopIcon.byteLength).toBeGreaterThan(10_000)
     expect(forgeConfig.packagerConfig?.download?.checksums).toMatchObject({
-      'electron-v44.0.0-darwin-arm64.zip':
-        '076d79742986e1b100b69ebecc691cb07368045e54c9087cef631b8622b76a80',
-      'electron-v44.0.0-darwin-x64.zip':
-        '28429e700ad68d9624aaa90b6543ffe891a48c14121fd904cd294e5edcee63ff',
+      'electron-v44.3.0-darwin-arm64.zip':
+        '49b91ef265c603c8888500f807484b63816069c30f87ba2b403e7c87f0f45035',
+      'electron-v44.3.0-darwin-x64.zip':
+        '6e3278d96377085af532380e2b23a38cdcf4c58b4efb3f6ada2f251db95c9560',
     })
     expect(forgeConfig.packagerConfig?.extendInfo).toMatchObject({
       LSMinimumSystemVersion: '13.0',
