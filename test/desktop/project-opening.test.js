@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, expect, it, vi } from 'vitest'
 import { startNodeRuntime } from '../../bridge/node-runtime.js'
 import { createProjectStateStore } from '../../desktop/project-state.mjs'
-import { openDesktopProject, dispatchProjectMenuAction } from '../../desktop/project-opening.mjs'
+import { openDesktopProject, dispatchProjectMenuAction, createStagedProjectHost } from '../../desktop/project-opening.mjs'
 
 const roots = [], runtimes = []
 afterEach(async () => {
@@ -59,4 +59,27 @@ it('routes native menu actions through the renderer leave guard event', async ()
   const CustomEvent = class { constructor(type, options) { this.type = type; this.detail = options.detail } }
   new Function('window', 'CustomEvent', executeJavaScript.mock.calls[0][0])({ dispatchEvent: event => events.push(event) }, CustomEvent)
   expect(events).toMatchObject([{ type: 'mira:open-project', detail: { kind: 'recent', projectId: 'p-1' } }])
+})
+
+it('waits for candidate project commit before saving late renderer navigation', async () => {
+  const { store } = await fixture()
+  const project = { id: 'target', name: 'Target', path: '/tmp/target' }
+  const entered = Promise.withResolvers(), release = Promise.withResolvers()
+  const host = createStagedProjectHost({ projectState: {
+    ...store, async commitOpen(...args) { entered.resolve(); await release.promise; return store.commitOpen(...args) },
+  }, open: vi.fn() })
+  const initial = { opened: ['one'], pinned: [], lastBoardId: 'one' }
+  await host.saveNavigation(project, initial)
+  expect(store.getNavigation(project)).toBeNull()
+  const commit = host.commit(project)
+  await entered.promise
+  const next = { opened: ['one', 'two'], pinned: [], lastBoardId: 'two' }
+  const save = host.saveNavigation(project, next)
+  expect(store.currentProject()).toBeNull()
+  release.resolve()
+  await commit
+  await expect(save).resolves.toEqual(next)
+  expect(store.getNavigation(project)).toEqual(next)
+  expect(host.getNavigation(project)).toEqual(next)
+  expect(host.isStaging()).toBe(false)
 })

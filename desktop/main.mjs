@@ -14,7 +14,7 @@ import { addDesktopAuthHeader, desktopSmokeStartupOverrides } from './main-polic
 import { verifyRendererReady } from './renderer-readiness.mjs'
 import { createDesktopStateWriter } from './state-writer.mjs'
 import { createProjectStateStore } from './project-state.mjs'
-import { openDesktopProject, dispatchProjectMenuAction } from './project-opening.mjs'
+import { openDesktopProject, dispatchProjectMenuAction, createStagedProjectHost } from './project-opening.mjs'
 import { createBrowserWindowOptions, desktopListenOptions, isAllowedExternalUrl, isAllowedNavigation, visibleWindowBounds } from './security-policy.mjs'
 import { prepareWorkspaceRoot, readDesktopState, writeDesktopState } from './workspace.mjs'
 
@@ -120,24 +120,7 @@ async function createMainWindow(runtime = nodeRuntime) {
 async function startProjectRuntime(path) {
   if (shutdownRequested) throw projectHostError('HOST_CLOSING', 'Mira 正在关闭。')
   const accessToken = randomBytes(32).toString('base64url')
-  let staging = true, committing = false, pendingNavigation
-  const projectHost = {
-    isStaging: () => staging,
-    getNavigation: project => pendingNavigation || projectState.getNavigation(project),
-    getRecentProjects: projectState.getRecentProjects,
-    async saveNavigation(project, navigation) {
-      if (committing) throw projectHostError('PROJECT_SWITCHING', '正在打开项目，请稍候。')
-      if (!staging) return projectState.saveNavigation(project, navigation)
-      pendingNavigation = navigation
-      return navigation
-    },
-    async commit(project) {
-      committing = true
-      try { await projectState.commitOpen(project, pendingNavigation); staging = false }
-      finally { committing = false }
-    },
-    open: switchProject,
-  }
+  const projectHost = createStagedProjectHost({ projectState, open: switchProject })
   const startup = startNodeRuntime({ workspaceRoot: path, staticRoot, ...desktopListenOptions(), hostOptions: {
     accessToken,
     modelSettings: createModelSettingsService({ initial: { baseUrl: process.env.MIRA_LLM_BASE_URL, model: process.env.MIRA_LLM_MODEL, apiKey: process.env.MIRA_LLM_API_KEY } }),
