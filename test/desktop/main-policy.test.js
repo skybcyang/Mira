@@ -296,7 +296,8 @@ describe('desktop restore from an existing workspace', () => {
     const source = await readFile(new URL('../../desktop/main.mjs', import.meta.url), 'utf8')
 
     expect(source).toContain("label: '从 Mira 备份恢复…'")
-    expect(source).toContain('click: () => void restoreIntoAnotherWorkspace()')
+    expect(source).toContain("requestProjectAction({ kind: 'restore' })")
+    expect(source).not.toContain('app.relaunch()')
   })
 })
 
@@ -357,14 +358,10 @@ describe('desktop restore error presentation', () => {
 })
 
 describe('desktop startup host ordering', () => {
-  it('persists the resolved workspace after restore and before starting the Node Host', async () => {
+  it('routes startup through target validation before committing a project', async () => {
     const source = await readFile(new URL('../../desktop/main.mjs', import.meta.url), 'utf8')
-    const resolveIndex = source.indexOf('await selectStartupWorkspace(')
-    const persistIndex = source.indexOf('await queueDesktopStateWrite()', resolveIndex)
-    const hostIndex = source.indexOf('startNodeRuntime({', persistIndex)
-
-    expect(resolveIndex).toBeGreaterThan(-1)
-    expect(persistIndex).toBeGreaterThan(resolveIndex)
-    expect(hostIndex).toBeGreaterThan(persistIndex)
+    expect(source).toContain('openDesktopProject({')
+    expect(source).toContain('runtime.projectHost.commit(project)')
+    expect(source).toContain('projectState.currentProject()?.path')
   })
 })

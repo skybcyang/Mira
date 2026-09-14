@@ -18,6 +18,7 @@ import { createNodeWebReader } from './node-web-reader.js'
 import { createNodePdfReader } from './node-pdf-reader.js'
 import { initializeProjectWorkspace } from './project-workspace.js'
 import { createManagedMaterials, isManagedMaterialPath } from './managed-materials.js'
+import { createProjectHostRoutes, describeProject } from './project-host.js'
 
 const MAX_STATIC_BYTES = 8 * 1024 * 1024
 const DESKTOP_TOKEN_HEADER = 'x-mira-desktop-token'
@@ -148,6 +149,7 @@ export function createStandaloneMiraHost({
   executeSuggestion,
   modelSettings,
   applicationInfo,
+  projectHost,
   accessToken,
   logger = console,
 } = {}) {
@@ -156,8 +158,10 @@ export function createStandaloneMiraHost({
   const workspaceLock = acquireNodeWorkspaceWriteLock(resolvedWorkspaceRoot)
   const fs = createNodeWorkspaceAdapter(resolvedWorkspaceRoot)
   let coreApplication
+  let projectDescription
   try {
     const project = initializeProjectWorkspace(resolvedWorkspaceRoot)
+    projectDescription = describeProject(resolvedWorkspaceRoot, project.workspace)
     const stores = createMiraStores({ fs, newId, now, directories: project.directories })
     const materials = createManagedMaterials({ workspaceRoot: resolvedWorkspaceRoot, coordinator: stores.coordinator })
     const pdfReader = createNodePdfReader({ workspaceRoot: resolvedWorkspaceRoot })
@@ -194,12 +198,21 @@ export function createStandaloneMiraHost({
     throw error
   }
   const requests = new Set()
+  const mutations = new Set()
+  const projectRoutes = createProjectHostRoutes({
+    project: projectDescription, adapter: projectHost, application: coreApplication,
+    drainMutations: () => Promise.allSettled([...mutations]),
+  })
   const application = {
     ...coreApplication,
     dispatch(method, segments, body, options) {
       if (closed) return Promise.reject(Object.assign(new Error('宿主正在关闭，请重新打开项目。'), { code: 'HOST_CLOSING' }))
+      const domainMutation = !['GET', 'HEAD'].includes(method) && segments[1] !== 'project'
+      if (domainMutation && (projectRoutes.switching || projectHost?.isStaging?.())) return Promise.resolve(projectRoutes.switchingResponse())
       const operation = (async () => {
       await coreApplication.ready
+      const projectResponse = await projectRoutes.dispatch(method, segments, body)
+      if (projectResponse) return projectResponse
       if (method === 'GET' && segments.join('/') === 'v2/application-info') return {
         status: 200, body: applicationInfo ? { desktop: true, version: applicationInfo.version, platform: applicationInfo.platform, architecture: applicationInfo.architecture } : { desktop: false },
       }
@@ -209,6 +222,10 @@ export function createStandaloneMiraHost({
       )
       })()
       requests.add(operation)
+      if (domainMutation) {
+        mutations.add(operation)
+        operation.then(() => mutations.delete(operation), () => mutations.delete(operation))
+      }
       operation.then(() => requests.delete(operation), () => requests.delete(operation))
       return operation
     },
