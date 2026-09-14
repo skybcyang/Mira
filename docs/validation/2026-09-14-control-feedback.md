@@ -1,6 +1,6 @@
 # 按钮反馈、运行指示与设置开关验证
 
-当前状态：以下首轮报告中的“未合并”已由本文末尾的主干集成记录取代；历史验证事实保留。
+当前状态：实现已合入 `main`，并已基于最新远端主干完成同步准备；初次提交 SHA 与当时的交付状态保留为历史事实，当前提交和复验见末尾记录。
 
 日期：2026-09-14，Asia/Shanghai。本地分支 `codex/ui-control-feedback`，本批为前端局部打磨，未推送、合并 main、发布或替换安装版。工作期间共享仓库中的其他任务改动保留，本报告仅归属下述 UI 与验证改动。
 
@@ -63,3 +63,15 @@ MIRA_PLAYWRIGHT_REQUIRE=/path/to/playwright/package.json node scripts/check-cont
 主干生产构建再次运行可见 Chrome 验证：六套外观、1440×1000 / 390×844、Space 切换、偏好保持、焦点返回、按压反馈、减少动态效果以及真实 HTTP 生成完成/停止均通过。browser warning/error 与 pageerror 为 0。此次截图位于 `/var/folders/7z/5dcj6kmx005b6sm35w8tnnl80000gn/T/mira-control-feedback-VUzLd7/screenshots/`，测试 browser/runtime 已关闭。
 
 仅同步路线与本验证记录，不改写首轮证据。未推送远端、创建 PR、删除分支、发布或替换安装版；原生设备和模型质量验证边界保持不变。
+
+## 远端同步准备与复验（2026-09-14）
+
+用户要求更新文档并提交远端后，fetch 确认 `origin/main` 为 `cd048a1`：此前项目打开相关提交已有等价远端提交，且远端另含 PDF 打包资源路径修复。仅将本批两个尚未推送的 UI/文档提交重放到该基线上，没有冲突，保留远端修复；实现提交由 `4222a3c` 变为 `219b9e4`，主干集成记录提交由 `e26457a` 变为 `04d0b9c`。
+
+更新使用手册中的深色/网格开关操作、减少动态效果及排队/运行/停止指示说明，并同步文档入口与路线。文档提交随 `main` 正常推送，不强制覆盖远端历史。
+
+在合并后的源码上重新运行 `pnpm test`（185 文件 / 1858 项）、`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge`，全部通过。新增的一项测试来自远端 PDF 资源路径修复；Node 测试仍有 4 条 localStorage ExperimentalWarning，前端构建无 500 kB chunk warning。
+
+同一生产构建再次通过 `scripts/check-control-feedback-browser.mjs`：六套外观、1440/390px、键盘与焦点、按压、减少动态效果、真实 HTTP 完成与停止均通过，browser warning/error 与 pageerror 为 0。证据目录为 `/var/folders/7z/5dcj6kmx005b6sm35w8tnnl80000gn/T/mira-control-feedback-0cnWLg/screenshots/`；测试 browser/runtime 已关闭。文档 diff 已复核，`git diff --check` 通过。
+
+源码推送与桌面包构建分开核对：主干 push 会触发 Actions，测试包必须按此次最终源码 SHA 和实际工作流结果确认。本批没有替换本机安装版，也不新增原生设备或真实模型质量验收结论。
