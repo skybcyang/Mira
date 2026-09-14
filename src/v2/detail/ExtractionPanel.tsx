@@ -70,7 +70,7 @@ export function ExtractionPanel({ cardId, mode, onDirtyChange }: {
       } else {
         const status = await split(cardId, base, chosen)
         if (!alive.current) return
-        if (status === 'created') { setFinished(true); if (useV2Canvas.getState().drawer === startedDrawer) openDrawer({ tab: 'content', cardId, mode: 'read' }) }
+        if (status === 'created') { setFinished(true); if (useV2Canvas.getState().drawer === startedDrawer) openDrawer(null) }
         else if (status === 'uncertain') { setUncertain(true); setError('结果待核对，请先刷新并检查已有批次。') }
         else setError('没有完成创建，选择和编辑已保留。请检查错误提示。')
       }

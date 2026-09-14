@@ -30,4 +30,14 @@ describe('inspiration pool HTTP', () => {
     expect(response).toEqual({ status: 201, body: { entry: { markdown: '一条想法', tags: [] } } })
     expect(handlers.createEntry).toHaveBeenCalledWith({ markdown: '一条想法', tags: [] })
   })
+
+  it('dispatches permanent deletion with its concurrency baseline', async () => {
+    const input = { baseVersionId: 'v1', baseUpdatedAt: 'now', confirmation: 'delete-inspiration' }
+    const handlers = { deleteEntry: vi.fn(async () => ({ deletedEntryId: 'entry-1' })) }
+
+    await expect(dispatchV2Route('DELETE', ['v2', 'inspiration-pool', 'entries', 'entry-1'], input, {
+      inspirationPoolHandlers: handlers,
+    })).resolves.toEqual({ status: 200, body: { deletedEntryId: 'entry-1' } })
+    expect(handlers.deleteEntry).toHaveBeenCalledWith('entry-1', input)
+  })
 })

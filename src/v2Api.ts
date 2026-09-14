@@ -210,6 +210,8 @@ export const v2Api = {
     request<{ entry: InspirationEntry }>('POST', '/inspiration-pool/entries', body),
   updateInspirationEntry: (entryId: string, body: { markdown: string; tags: string[]; baseVersionId: string; baseUpdatedAt: string }) =>
     request<{ entry: InspirationEntry }>('PATCH', `/inspiration-pool/entries/${encodeURIComponent(entryId)}`, body),
+  deleteInspirationEntry: (entryId: string, body: { baseVersionId: string; baseUpdatedAt: string; confirmation: 'delete-inspiration' }) =>
+    request<{ deletedEntryId: string }>('DELETE', `/inspiration-pool/entries/${encodeURIComponent(entryId)}`, body),
   getModelSettings: () => request<ModelSettings>('GET', '/model-settings'),
   saveModelSettings: (body: ModelSettingsInput) =>
     request<ModelSettings>('PUT', '/model-settings', body),
@@ -311,6 +313,10 @@ export const v2Api = {
     boardId: string,
     body: CreateCardInput,
   ) => request<{ card: ContentCard }>('POST', `/boards/${boardId}/cards`, body),
+  continueCard: (boardId: string, cardId: string, body: { baseVersionId: string; markdown: string }) =>
+    request<{ card: ContentCard; transformation: Transformation; updatedTransformations: Transformation[] }>(
+      'POST', `/boards/${boardId}/cards/${cardId}/continuations`, body,
+    ),
   updateOrganization: (boardId: string, body: OrganizationRequest) =>
     request<OrganizationResult>('PATCH', `/boards/${boardId}/organization`, body),
   createCards: (boardId: string, body: { cards: (PositionedCreateCardInput | PoolSnapshotCreateCardInput)[]; group?: Pick<CanvasGroup, 'title' | 'color'> }) =>

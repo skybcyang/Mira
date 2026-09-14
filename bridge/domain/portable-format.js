@@ -359,6 +359,10 @@ export function validatePortableRun(run, { terminalOnly = false } = {}) {
     errors.push('Run targetBaseVersionId is invalid')
   }
   if (!['create', 'update'].includes(run.intent)) errors.push('Run intent is invalid')
+  if (run.definitionRevisionSnapshot !== undefined
+    && (!Number.isSafeInteger(run.definitionRevisionSnapshot) || run.definitionRevisionSnapshot < 0)) {
+    errors.push('Run definitionRevisionSnapshot is invalid')
+  }
   if (run.modelSnapshot !== undefined && (
     !isObject(run.modelSnapshot)
     || !nonEmptyString(run.modelSnapshot.provider)

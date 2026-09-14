@@ -46,6 +46,7 @@ export interface TransformationRun {
   id: string
   boardId: string
   transformationId: string
+  definitionRevisionSnapshot?: number
   status: RunStatus
   sourceSnapshot: SourceSnapshot[]
   targetCardId: string

@@ -66,8 +66,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Control feedback: six appearances, 1440/390px Chrome, keyboard and reduced motion verified on 2026-09-14.
-    expect(digest).toBe('2c6100dca2260a44a48fc2803dcf27282d26223f7fb5a12276a8b9a4bcb2cb66')
+    // Content continuity: append and inspiration deletion verified at desktop/390px on 2026-09-14.
+    expect(digest).toBe('a869ab794114719bb6385f52921b2e8b535df47b92991a86e831713e11531ffc')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {

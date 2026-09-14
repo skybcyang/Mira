@@ -81,6 +81,45 @@ describe('v2 canvas projection', () => {
     expect(projected.nodes.find((node) => node.type === 'junction')).toBeUndefined()
   })
 
+  it('visually replaces a split list with its extracted cards and fans out the original output', () => {
+    const canvas = board()
+    const list = canvas.cards.find(card => card.id === 'target')!
+    canvas.cards.push(...['one', 'two'].map((id, index) => ({
+      ...list,
+      id,
+      x: 920,
+      y: index * 260,
+      headVersionId: `${id}-v1`,
+      versions: [{ ...list.versions[0], id: `${id}-v1`, cardId: id }],
+      extractionRef: { boardId: canvas.id, cardId: list.id, versionId: list.headVersionId!, itemId: id, batchId: 'batch-1' },
+    })))
+
+    const projected = projectV2Board(canvas, {})
+    expect(projected.nodes.some(node => node.id === list.id)).toBe(false)
+    expect(projected.nodes.filter(node => ['one', 'two'].includes(node.id))).toHaveLength(2)
+    expect(projected.edges.filter(edge => edge.source === 'transformation-node:t1').map(edge => edge.target))
+      .toEqual(['one', 'two'])
+  })
+
+  it('marks a step stale when its current definition differs from the applied run', () => {
+    const canvas = board()
+    canvas.transformations = [{ ...canvas.transformations[0], definitionRevision: 2, lastAppliedRunId: 'run-new' }]
+    const applied: TransformationRun = {
+      id: 'run-new', boardId: canvas.id, transformationId: 't1', status: 'succeeded',
+      definitionRevisionSnapshot: 1,
+      sourceSnapshot: canvas.transformations[0].sourceCardIds.map(cardId => {
+        const source = canvas.cards.find(card => card.id === cardId)!
+        return { cardId, versionId: source.headVersionId!, contentKind: 'markdown', resolvedContent: cardId, digest: cardId }
+      }),
+      targetCardId: 'target', targetBaseVersionId: 'target-v1', intent: 'update',
+      result: { output: '当前成果', digest: 'target', disposition: 'applied', appliedVersionId: 'target-v1' }, createdAt: '2',
+    }
+
+    expect(projectV2Board(canvas, { 'run-new': applied }).nodes
+      .find(node => node.id === 'transformation-node:t1')?.data)
+      .toMatchObject({ stale: true, definitionChanged: true })
+  })
+
   it('keeps at least 32px clear on both sides of a newly positioned transformation', () => {
     const canvas = board()
     const target = canvas.cards.find((card) => card.id === 'target')!

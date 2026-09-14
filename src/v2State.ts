@@ -74,7 +74,7 @@ export type TransformationDependencyOrder = {
 }
 
 export type TransformationExecutionDecision =
-  | { kind: 'run'; reason: 'empty-target' | 'stale' }
+  | { kind: 'run'; reason: 'empty-target' | 'stale' | 'definition-changed' }
   | { kind: 'current' }
   | { kind: 'candidate'; reason: string }
   | { kind: 'sources-unavailable'; reason: string }
@@ -164,6 +164,9 @@ export function transformationExecutionDecision(
     return { kind: 'tracking-unavailable', reason: transformation.lastAppliedRunId }
   }
   if (!appliedRun) return { kind: 'current' }
+  if ((transformation.definitionRevision ?? 0) !== (appliedRun.definitionRevisionSnapshot ?? 0)) {
+    return { kind: 'run', reason: 'definition-changed' }
+  }
   const snapshotCardIds = appliedRun.sourceSnapshot.map((snapshot) => snapshot.cardId)
   const structureChanged = transformation.sourceCardIds.length !== snapshotCardIds.length
     || transformation.sourceCardIds.some((cardId, index) => cardId !== snapshotCardIds[index])

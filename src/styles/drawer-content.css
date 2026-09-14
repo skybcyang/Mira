@@ -778,3 +778,5 @@
 .v2-extraction-panel fieldset { min-width: 0; border: 1px solid var(--mira-border); }
 .v2-extraction-panel fieldset label { display: flex; gap: 8px; align-items: center; min-height: 44px; }
 .v2-extraction-panel button, .v2-extraction-panel summary { min-height: 44px; }
+.v2-append-original { min-width: 0; padding: 10px 0; border-block: 1px solid var(--mira-border); }
+.v2-append-original pre { max-height: 220px; margin: 8px 0 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: var(--mira-muted); }

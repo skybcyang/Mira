@@ -506,15 +506,104 @@ export function createV2Handlers({
         if (!source) throw typed('EXTRACTION_INVALID', '当前内容不是可拆分清单。')
         const items = validateExtractionItems(body.items, source)
         const batchId = newId('extraction-batch')
-        const cards = items.map(item => {
-          const card = createCardRecord(resolveCreateCardPlacement(board, {
-            placement: 'board-bottom', name: item.title, markdown: item.markdown,
-          }))
+        const cards = items.map((item, index) => {
+          const width = 312
+          const height = 208
+          const gap = 32
+          let y = sourceCard.y + index * (height + gap)
+          const overlaps = candidate => board.cards.some(existing => existing.id !== sourceCard.id
+            && candidate.x < existing.x + existing.width + gap
+            && candidate.x + width + gap > existing.x
+            && candidate.y < existing.y + existing.height + gap
+            && candidate.y + height + gap > existing.y)
+          while (overlaps({ x: sourceCard.x, y })) y += height + gap
+          const card = createCardRecord({
+            x: sourceCard.x, y, width, height, name: item.title, markdown: item.markdown,
+          })
           card.extractionRef = { boardId, cardId, versionId: version.id, itemId: item.itemId, batchId }
           board.cards.push(card)
           return card
         })
         return { cards }
+      })
+    },
+    async continueCard(boardId, cardId, body) {
+      if (!body || typeof body !== 'object' || Array.isArray(body)
+        || Object.keys(body).some(key => !['baseVersionId', 'markdown'].includes(key))
+        || typeof body.baseVersionId !== 'string' || !body.baseVersionId.trim()
+        || typeof body.markdown !== 'string' || !body.markdown.trim()
+        || body.markdown.length > 1_000_000 || /[\u0000\uFFFD]/.test(body.markdown)) {
+        throw typed('CONTINUATION_INVALID', '请填写可用的追加内容。')
+      }
+      return changeBoard(boardId, async board => {
+        if (board.lifecycle && board.lifecycle.state !== 'active') throw typed('BOARD_READ_ONLY', '当前画板只读。')
+        const source = cardById(board, cardId)
+        if (source.headVersionId !== body.baseVersionId) {
+          throw typed('SOURCE_VERSION_CHANGED', '原卡已有新版本，请保留草稿并重新核对。')
+        }
+        const sourceVersion = source.versions.find(version => version.id === source.headVersionId)
+        if (!sourceVersion || sourceVersion.content?.kind !== 'markdown') {
+          throw typed('CONTINUATION_INVALID', '只有可读取的 Markdown 卡片可以接续写作。')
+        }
+        const affected = board.transformations.filter(transformation => transformation.sourceCardIds.includes(cardId))
+        for (const transformation of affected) {
+          await assertTargetIdle(boardId, transformation.targetCardId, true)
+        }
+
+        const width = source.width
+        const height = source.height
+        const gap = 32
+        const x = source.x + source.width + 320
+        let y = source.y
+        const overlaps = () => board.cards.some(existing => x < existing.x + existing.width + gap
+          && x + width + gap > existing.x
+          && y < existing.y + existing.height + gap
+          && y + height + gap > existing.y)
+        while (overlaps()) y += height + gap
+        const card = createCardRecord({
+          x,
+          y,
+          width: source.width,
+          height: source.height,
+          markdown: `${sourceVersion.content.markdown}\n\n${body.markdown.trim()}`,
+          ...(source.name ? { name: source.name } : {}),
+          ...(source.tags ? { tags: structuredClone(source.tags) } : {}),
+          ...(source.color ? { color: source.color } : {}),
+        })
+        const timestamp = now()
+        const transformation = {
+          id: newId('transformation'),
+          sourceCardIds: [source.id],
+          targetCardId: card.id,
+          label: '接续写作',
+          instruction: '保留原内容并追加人工笔记。',
+          acceptance: '',
+          permissions: { workspaceWrite: false },
+          definitionRevision: 0,
+          createdAt: timestamp,
+          updatedAt: timestamp,
+        }
+        const updatedTransformations = affected.map(current => {
+          const sourceCardIds = current.sourceCardIds.map(sourceCardId => sourceCardId === cardId ? card.id : sourceCardId)
+          const sourceScopes = (current.sourceScopes || []).map(scope => scope.cardId !== cardId
+            ? structuredClone(scope)
+            : { cardId: card.id, mode: 'required' })
+          return {
+            ...current,
+            sourceCardIds,
+            ...(sourceScopes.length ? { sourceScopes } : {}),
+            definitionRevision: (current.definitionRevision ?? 0) + 1,
+            updatedAt: nextUpdatedAt(current.updatedAt, timestamp),
+            ...(current.planRef ? { planRef: { ...current.planRef, adjusted: true } } : {}),
+          }
+        })
+        const replacements = new Map(updatedTransformations.map(item => [item.id, item]))
+        board.cards.push(card)
+        board.transformations = [
+          ...board.transformations.map(item => replacements.get(item.id) || item),
+          transformation,
+        ]
+        return { card, transformation, updatedTransformations }
       })
     },
     async getBoardActivity() {
@@ -1095,6 +1184,9 @@ export function createV2Handlers({
           JSON.stringify(sourceScopes) !== JSON.stringify(current.sourceScopes || []) ||
           sourceCardIds.length !== current.sourceCardIds.length ||
           sourceCardIds.some((cardId, index) => cardId !== current.sourceCardIds[index])
+        if (semanticsChanged) {
+          transformation.definitionRevision = (current.definitionRevision ?? 0) + 1
+        }
         if (current.planRef && semanticsChanged) {
           transformation.planRef = { ...current.planRef, adjusted: true }
         }

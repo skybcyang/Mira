@@ -113,7 +113,8 @@ export function createExtractionSlice(context: CanvasStoreContext): ExtractionAc
           if (!state.board) return {}
           const ids = new Set(cards.map(card => card.id))
           const next = { ...state.board, cards: [...state.board.cards.filter(card => !ids.has(card.id)), ...cards] }
-          return { board: next, ...project(next, state.runs, state.selectedCardIds),
+          const selectedCardIds = cards.map(card => card.id)
+          return { board: next, selectedCardIds, ...project(next, state.runs, selectedCardIds),
             historyPast: [...state.historyPast, { kind: 'create' as const, boardId, cardIds: cards.map(card => card.id) }].slice(-historyLimit), historyFuture: [],
             ...noticePatch(state, 'success', `已创建 ${cards.length} 张卡片，可使用画板撤销。`, { boardId }) }
         })

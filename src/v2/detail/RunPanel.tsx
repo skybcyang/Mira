@@ -21,6 +21,7 @@ export function TransformationRunControl({
   onRerun,
   onStop,
   blocked,
+  definitionChanged = false,
 }: {
   workflowStep: boolean
   hasRun: boolean
@@ -33,6 +34,7 @@ export function TransformationRunControl({
   onRerun?: () => void
   onStop?: () => void | Promise<void>
   blocked?: string
+  definitionChanged?: boolean
 }) {
   if (running && onStop) return <RunStopButton onStop={onStop} />
   const label = candidatePending
@@ -47,7 +49,7 @@ export function TransformationRunControl({
   return <><button className="v2-primary-button v2-run-transformation" type="button" disabled={candidatePending || busy || starting || Boolean(blocked)} onClick={onRun}>
     {busy ? <LoaderCircle className="is-spinning" size={15} /> : <Play size={15} />}{label}
   </button>{hasRun && onRerun && <>
-    <button className="v2-secondary-button" type="button" disabled={!sourcesReady || candidatePending || busy || starting || Boolean(blocked)} onClick={onRerun}>仅重跑这一步</button>
+    <button className="v2-secondary-button" type="button" disabled={!sourcesReady || candidatePending || busy || starting || Boolean(blocked)} onClick={onRerun}>{definitionChanged ? '使用新设置重跑这一步' : '仅重跑这一步'}</button>
     <p className="v2-detail-note">使用已保存设置与当前来源重新生成，上游步骤不会运行。{!sourcesReady && '请先补齐本步可用来源。'}</p>
   </>}</>
 }

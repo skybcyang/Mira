@@ -164,6 +164,26 @@ export class InspirationPoolStore {
     return updated
   }
 
+  async deleteEntry(entryId, body = {}) {
+    if (!body || typeof body !== 'object' || Array.isArray(body)
+      || Object.keys(body).some(key => !['baseVersionId', 'baseUpdatedAt', 'confirmation'].includes(key))
+      || typeof body.baseVersionId !== 'string' || !body.baseVersionId
+      || typeof body.baseUpdatedAt !== 'string' || !body.baseUpdatedAt
+      || body.confirmation !== 'delete-inspiration') {
+      throw typed('INSPIRATION_DELETE_INVALID', '请明确确认永久删除这条灵感。')
+    }
+    await this.update(pool => {
+      const entry = pool.entries.find(item => item.id === entryId)
+      if (!entry) throw typed('INSPIRATION_NOT_FOUND', '灵感条目已不存在。')
+      if (entry.headVersionId !== body.baseVersionId || entry.updatedAt !== body.baseUpdatedAt) {
+        throw typed('INSPIRATION_CONFLICT', '这条灵感已被修改，请核对最新内容。')
+      }
+      pool.entries = pool.entries.filter(item => item.id !== entryId)
+      return pool
+    })
+    return { deletedEntryId: entryId }
+  }
+
   async createEntry({ markdown, tags = [] } = {}, materialOrigin) {
     if (materialOrigin !== undefined) validateMaterialOrigin(materialOrigin)
     const content = { kind: 'markdown', markdown: String(markdown || '').trim() }

@@ -67,6 +67,7 @@ type MapInspirationCaptureToCardInput = (
   inspirationRef?: never
 }
 type InspirationCaptureErrorMessage = (error: unknown) => string
+type InspirationDeletionErrorMessage = (error: unknown) => string
 type AppendInspirationCaptureTag = (tags: string[], rawTag: string) => string[]
 
 const filterCards = filterInspirationCards as unknown as FilterInspirationCards
@@ -78,6 +79,9 @@ const mapCapture = (inspirationPolicy as unknown as {
 const captureErrorMessage = (inspirationPolicy as unknown as {
   inspirationCaptureErrorMessage?: InspirationCaptureErrorMessage
 }).inspirationCaptureErrorMessage
+const deletionErrorMessage = (inspirationPolicy as unknown as {
+  inspirationDeletionErrorMessage?: InspirationDeletionErrorMessage
+}).inspirationDeletionErrorMessage
 const appendCaptureTag = (inspirationPolicy as unknown as {
   appendInspirationCaptureTag?: AppendInspirationCaptureTag
 }).appendInspirationCaptureTag
@@ -321,6 +325,19 @@ describe('direct inspiration capture', () => {
       Array.from({ length: 20 }, (_, index) => `标签${index}`),
       '新增',
     )).toThrow('每条灵感最多 20 个标签。')
+  })
+})
+
+describe('inspiration deletion errors', () => {
+  it('describes deletion failures without referring to an edit draft', () => {
+    expect(deletionErrorMessage).toBeTypeOf('function')
+    if (!deletionErrorMessage) return
+    expect(deletionErrorMessage({ code: 'INSPIRATION_CONFLICT' }))
+      .toBe('这条灵感已被修改，未删除。请返回结果后重新打开核对。')
+    expect(deletionErrorMessage({ code: 'INSPIRATION_NOT_FOUND' }))
+      .toBe('这条灵感已不存在，请返回结果。')
+    expect(deletionErrorMessage(new Error('offline')))
+      .toBe('灵感没有删除，请重试。')
   })
 })
 

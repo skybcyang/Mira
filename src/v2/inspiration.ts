@@ -131,6 +131,14 @@ export function inspirationCaptureErrorMessage(error: unknown): string {
   return '灵感没有保存，请重试。'
 }
 
+export function inspirationDeletionErrorMessage(error: unknown): string {
+  const code = (error as { code?: unknown })?.code
+  if (code === 'INSPIRATION_NOT_FOUND') return '这条灵感已不存在，请返回结果。'
+  if (code === 'INSPIRATION_CONFLICT') return '这条灵感已被修改，未删除。请返回结果后重新打开核对。'
+  if (code === 'INSPIRATION_DELETE_INVALID') return '删除请求无效，请重新打开灵感后再试。'
+  return '灵感没有删除，请重试。'
+}
+
 export function filterInspirationCards(
   board: BoardV2,
   filters: InspirationFilters,

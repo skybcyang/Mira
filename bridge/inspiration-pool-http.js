@@ -35,5 +35,8 @@ export function createInspirationPoolHandlers({ poolStore } = {}) {
     async updateEntry(entryId, body = {}) {
       return { entry: await poolStore.updateEntry(entryId, body) }
     },
+    async deleteEntry(entryId, body = {}) {
+      return poolStore.deleteEntry(entryId, body)
+    },
   }
 }

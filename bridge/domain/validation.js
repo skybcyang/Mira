@@ -272,6 +272,10 @@ export function validateBoardV2(board) {
     ) {
       errors.push(`transformation ${transformation.id} has invalid modelId`)
     }
+    if (transformation.definitionRevision !== undefined
+      && (!Number.isSafeInteger(transformation.definitionRevision) || transformation.definitionRevision < 0)) {
+      errors.push(`transformation ${transformation.id} has invalid definitionRevision`)
+    }
     if (typeof transformation.permissions?.workspaceWrite !== 'boolean') {
       errors.push(`transformation ${transformation.id} has invalid permissions`)
     }

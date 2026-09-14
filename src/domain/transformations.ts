@@ -23,6 +23,7 @@ export interface Transformation {
   instruction: string
   acceptance: string
   modelId?: string
+  definitionRevision?: number
   permissions: {
     workspaceWrite: boolean
   }

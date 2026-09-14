@@ -302,6 +302,16 @@ describe('v2 route dispatcher', () => {
     expect(handlers.createTransformations).toHaveBeenCalledWith('board-1', { transformations: [] })
   })
 
+  it('routes an atomic content continuation to the board handler', async () => {
+    const created = { card: { id: 'continued' }, transformation: { id: 'manual' }, updatedTransformations: [] }
+    const handlers = { continueCard: vi.fn(async () => created) }
+    const body = { baseVersionId: 'source-v1', markdown: '补充' }
+
+    await expect(dispatchV2Route('POST', ['v2', 'boards', 'board-1', 'cards', 'source', 'continuations'], body, { handlers }))
+      .resolves.toEqual({ status: 201, body: created })
+    expect(handlers.continueCard).toHaveBeenCalledWith('board-1', 'source', body)
+  })
+
   it('routes workspace inspiration pool read to its handler', async () => {
     const pool = { schemaVersion: 1, id: 'inspiration-pool', entries: [] }
     const inspirationPoolHandlers = { getPool: vi.fn(async () => ({ pool })) }
