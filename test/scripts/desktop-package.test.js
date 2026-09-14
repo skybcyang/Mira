@@ -208,6 +208,27 @@ describe('desktop package staging', () => {
 })
 
 describe('desktop artifact configuration', () => {
+  it('retries packed smoke cleanup while Windows releases Chromium files', async () => {
+    const { cleanupPackedSmokeTemporaryRoot } = await import(
+      '../../scripts/packed-desktop-smoke.mjs'
+    )
+    const calls = []
+
+    await cleanupPackedSmokeTemporaryRoot('C:\\temp\\mira-smoke', async (...args) => {
+      calls.push(args)
+    })
+
+    expect(calls).toEqual([[
+      'C:\\temp\\mira-smoke',
+      {
+        recursive: true,
+        force: true,
+        maxRetries: 20,
+        retryDelay: 250,
+      },
+    ]])
+  })
+
   it('reports a packed executable spawn error immediately', async () => {
     const { waitForPackedExit } = await import('../../scripts/packed-desktop-smoke.mjs')
     const child = new EventEmitter()
