@@ -13,7 +13,9 @@
 - [x] Run 快照与诊断、普通 Candidate/CAS、方法与可移植数据往返；类型、两套构建、全仓测试与桌面/390px 浏览器验收见[验证记录](../validation/2026-09-14-output-policy.md)。
 - [x] 第二批项目默认与指导目录：自定义/导入文本、版本追加、停用恢复、CAS 保存与 V4 整库备份；见[验证记录](../validation/2026-09-14-execution-settings.md)。
 - [x] 整套执行能力集成：Skill 工具依赖、五项内置工具、模型工具循环、HTTP/stdio MCP、已审阅 Python、临时代码/外部操作单次审阅及步骤/能力管理界面；见[整体需求](generation-controls-requirements.md)和[集成验证](../validation/2026-09-14-tool-execution.md)。
-- [ ] 本批原生可见窗口、真实触屏软键盘、Windows/Intel 与线上同材料/模型质量对照；不得用本地协议服务、390px 或 packed smoke 代替。
+- [x] 补做 macOS arm64 原生目录选择、风格/Skill 设置、模型工具调用、MCP 审阅、Python 测试与预览；见[08:01–08:24 复验](../validation/2026-09-14-tool-execution.md)。该证据不表示下列缺陷已关闭。
+- [x] 修复卡片失败入口：可重试错误明确重跑本步，不可重试错误先查看原因；防重复提交并保留草稿保护。四项回归、桌面/390px/原生实际 Run 与 v2 写回见[08:25–08:36 修复复验](../validation/2026-09-14-tool-execution.md)。
+- [ ] 真实触屏软键盘、Windows/Intel 与线上同材料/模型质量对照；不得用本地协议服务、390px 或 packed smoke 代替。
 - 本批位于 `codex/step-execution`，未合入 main、未推送、未替换安装版。
 
 ### 项目工作区（2026-09-13 本地 main 与 arm64 安装交付）

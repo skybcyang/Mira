@@ -8,6 +8,7 @@ import { canvasCardTags, cardSummary } from '../v2View'
 import { useCardSelection, useDrawerAction, useDrawerIntent } from './drawerIntent'
 import CardResizeHandle from './CardResizeHandle'
 import { readerKeyDown } from './cardReadingEvents'
+import { runExclusiveAction } from './drawerSafety'
 
 type ContentNode = Node<V2CardNodeData, 'contentCard'>
 
@@ -22,7 +23,11 @@ export default function ContentCardNode({ id, data, selected }: NodeProps<Conten
   const openDrawer = useDrawerIntent(storeOpenDrawer)
   const runDrawerAction = useDrawerAction()
   const interrupt = useV2Canvas((state) => state.interruptRun)
-  const runTo = useV2Canvas((state) => state.runToTransformation)
+  const rerun = useV2Canvas((state) => state.rerunTransformation)
+  const retryable = useV2Canvas((state) => Boolean(data.runId && state.runs[data.runId]?.error?.retryable))
+  const activeRun = useV2Canvas((state) => Object.values(state.runs).some(run => run.status === 'queued' || run.status === 'running'))
+  const retryLock = useRef(false)
+  const [retryStarting, setRetryStarting] = useState(false)
   const runningToTransformationId = useV2Canvas((state) => state.runningToTransformationId)
   const selectedIds = useV2Canvas((state) => state.selectedCardIds)
   const setSelectedCardIds = useCardSelection(useV2Canvas((state) => state.setSelectedCardIds))
@@ -71,7 +76,7 @@ export default function ContentCardNode({ id, data, selected }: NodeProps<Conten
     >{isRunning && !data.markdown ? <div className="v2-running" aria-live="polite">
           <span>正在整理内容</span><i /><i /><i />
         </div> : data.runStatus === 'failed' && !data.markdown ? <div className="v2-failed-copy">
-          <strong>生成未完成</strong><span>内容没有被覆盖，可以重新尝试。</span>
+          <strong>生成未完成</strong><span>{retryable ? '内容没有被覆盖，可以重新尝试。' : '内容没有被覆盖，请查看失败原因。'}</span>
         </div> : data.card.contentKind === 'file-reference' ? <div className="v2-file-card">
           <span>文件材料</span><strong>{data.filePath?.split('/').pop()}</strong><code>{data.filePath}</code>
         </div> : data.markdown ? <MarkdownContent>{data.markdown}</MarkdownContent> : <EmptyCardMessage waitingExecution={data.waitingExecution} />}
@@ -91,9 +96,19 @@ export default function ContentCardNode({ id, data, selected }: NodeProps<Conten
       {data.candidateRunId && <button className="v2-status warning nodrag" type="button" onClick={() => openDrawer({ tab: 'run', runId: data.candidateRunId! })}>
         <GitCompareArrows size={13} />待比较
       </button>}
-      {data.runStatus === 'failed' && <button className="v2-status danger nodrag" type="button" disabled={Boolean(runningToTransformationId)} onClick={() => transformation && runDrawerAction(() => runTo(transformation.id))}>
-        <AlertCircle size={13} />重试
-      </button>}
+      {data.runStatus === 'failed' && (retryable
+        ? <button className="v2-status danger nodrag" type="button" disabled={!transformation || Boolean(runningToTransformationId) || activeRun || retryStarting} onClick={() => transformation && runDrawerAction(() => {
+          const task = runExclusiveAction(retryLock, () => rerun(transformation.id))
+          if (!task) return
+          setRetryStarting(true)
+          const settle = () => setRetryStarting(false)
+          void task.then(settle, settle)
+        })}>
+          <AlertCircle size={13} />重试
+        </button>
+        : <button className="v2-status danger nodrag" type="button" onClick={() => data.runId && openDrawer({ tab: 'run', runId: data.runId })}>
+          <AlertCircle size={13} />查看原因
+        </button>)}
       {isRunning && data.runId && <>
         <button className="v2-icon-button nodrag" type="button" aria-label="查看运行进度" title="查看运行进度" onClick={(event) => {
           event.stopPropagation()
