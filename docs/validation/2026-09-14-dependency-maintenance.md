@@ -7,7 +7,7 @@
 | 项目 | 结论 | 依据 |
 | --- | --- | --- |
 | `actions/upload-artifact` 7.0.1 | 已通过 PR #18 合入 | 同一固定 SHA 覆盖 3 个上传点；普通 CI 与 macOS/Windows arm64/x64 原生 make、两种 packed smoke、artifact 上传均通过。原 Dependabot #10 只覆盖 1 个调用点，关闭后由完整 PR 取代。 |
-| Electron 44.3.0 | 本批升级 | 保持 Electron 44 major 和 Node `>=22.12.0` 基线，只更新 patch、锁文件、四平台包键及 macOS 官方 SHA-256。原 #13 的 44.2.0 不直接合入。 |
+| Electron 44.3.0 | 本批升级 | 保持 Electron 44 major 和 Node `>=22.12.0` 基线，只更新 patch、锁文件、四平台包键及 macOS 官方 SHA-256。Dependabot #13 在关闭前也刷新到 44.3.0，但只更新依赖与锁文件；本批以包含校验和、许可、打包及安装证据的完整 PR 取代。 |
 | `pnpm/action-setup` 6.1.0 | 暂不升级 | Windows arm64 runner 上，v6 先启动 pnpm 11 再切换项目固定的 pnpm 9.0.0；`@pnpm/exe@9.0.0` 没有 win32-arm64 包，实际失败为 `ERR_PNPM_PNPM_ENGINE_IDENTITY_UNVERIFIABLE`。#11 已关闭，后续应作为 pnpm 工具链升级独立处理。 |
 | Vitest 5 | 暂不升级 | 属于测试工具 major migration，没有当前产品或安全修复要求；#12 已关闭，待独立迁移和兼容性验证。 |
 | Lucide 1.44 | 不升级 | 当前按钮反馈、运行指示和设置开关不需要新增图标，且无安全修复；#14 已关闭，避免无收益锁文件变更。 |
