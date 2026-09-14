@@ -4,6 +4,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createNodePdfReader } from '../../bridge/node-pdf-reader.js'
 
+it('formats packaged PDF asset directories with a portable trailing slash', async () => {
+  const { pdfAssetBasePath } = await import('../../bridge/pdf-runtime/pdf-asset-path.mjs')
+
+  expect(pdfAssetBasePath('C:\\app.asar\\node_modules\\pdfjs-dist', 'cmaps'))
+    .toBe('C:/app.asar/node_modules/pdfjs-dist/cmaps/')
+  expect(pdfAssetBasePath('/app.asar/node_modules/pdfjs-dist/', 'standard_fonts'))
+    .toBe('/app.asar/node_modules/pdfjs-dist/standard_fonts/')
+})
+
 it('distinguishes unreadable graphics from blank pages and rejects malformed or cancelled reads', async () => {
   const root = await mkdtemp(join(tmpdir(), 'mira-pdf-failures-'))
   let result

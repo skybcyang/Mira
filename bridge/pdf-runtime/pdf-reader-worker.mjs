@@ -1,7 +1,8 @@
 import { parentPort, workerData } from 'node:worker_threads'
 import { createRequire } from 'node:module'
-import { dirname, join, sep } from 'node:path'
+import { dirname } from 'node:path'
 import { getDocument, AnnotationMode, version } from 'pdfjs-dist/legacy/build/pdf.mjs'
+import { pdfAssetBasePath } from './pdf-asset-path.mjs'
 
 // This isolated runtime receives bytes, never a URL. Assets are shipped locally; PDF actions
 // and attachments are never requested or interpreted by this reader.
@@ -13,8 +14,8 @@ const error = (message, code = 'MATERIAL_READ_FAILED') => ({ message, code })
 try {
   document = await getDocument({ data: new Uint8Array(workerData.bytes), isEvalSupported: false, useSystemFonts: false,
     disableFontFace: true, verbosity: 0, stopAtErrors: true, useWasm: false,
-    cMapUrl: join(root, 'cmaps') + sep, cMapPacked: true,
-    standardFontDataUrl: join(root, 'standard_fonts') + sep,
+    cMapUrl: pdfAssetBasePath(root, 'cmaps'), cMapPacked: true,
+    standardFontDataUrl: pdfAssetBasePath(root, 'standard_fonts'),
   }).promise
   if (document.numPages > 500) throw error('PDF 超过 500 页上限。', 'MATERIAL_LIMIT')
   const pages = [], warnings = [{ code: 'PDF_LAYOUT', message: '物理页码从 1 开始。表格、多栏和公式可能存在阅读顺序偏差，请对照原页；不支持 OCR。' }]
