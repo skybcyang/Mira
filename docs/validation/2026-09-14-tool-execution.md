@@ -133,3 +133,9 @@
 随后用户要求更新文档并提交远端。本轮 `git fetch origin` 后，`origin/main` 为 `c1f82ed`，本地 main 比它领先 22 个提交、落后 0 个；本次文档提交随这些已集成改动一同正常推送，不强推、不上传本机恢复包或安装包。源码推送后的 CI 和四平台测试包必须核对对应提交的 [Actions 记录](https://github.com/skybcyang/Mira/actions/workflows/desktop-build.yml)；本机 arm64 证据不替代远端四平台结果，也不表示已签名或正式发布。
 
 推送前在主工作树重新执行工程门禁：08:57:57 开始的 `pnpm test` 为 **177 文件 / 1803 项通过**，`pnpm exec tsc --noEmit`、`pnpm build`、`pnpm build:bridge` 和 `git diff --check` 均通过。保留既有 Node experimental localStorage 测试警告。本轮仅修改文档，没有新增 UI、运行或打包行为，因此浏览器与原生证据沿用前述同一实现的实际验收，不重复宣称新的设备或线上模型质量结论。
+
+### 远端主干保护与提交路径
+
+文档提交 `679451e` 后，首次 HTTPS 推送被 GitHub 拒绝：main 要求 Pull Request 和 `CI required`，当前 OAuth 凭据也没有上传 `.github/workflows/desktop-release-prepare.yml` 所需的 `workflow` scope。远端 main 未改变；没有绕过保护或修改仓库规则。
+
+现有 SSH 凭据已成功认证。完整提交改用 SSH 上传到远端 `codex/main-sync-20260914`，保留本地 main；进入远端 main 仍须经过 PR 和必需检查。本条记录上传路径，不将源码分支上传等同于主干合入或桌面构建通过。没有重建已清理的本地功能分支，也没有推送恢复包、草案 stash 或本机产物。
