@@ -25,7 +25,7 @@ export async function migrateProjectWorkspace({ sourceRoot, targetRoot } = {}) {
     }))
     if (!markers.some(Boolean)) throw typed('WORKSPACE_MIGRATION_INVALID', '源目录不包含旧版 Mira 工作区数据。')
     // With a legacy marker present this only validates; it cannot initialize a new workspace.
-    if (initializeProjectWorkspace(source).layout !== 'legacy') throw typed('WORKSPACE_MIGRATION_INVALID', '源目录不是旧版工作区。')
+    if (initializeProjectWorkspace(source, { mode: 'open' }).layout !== 'legacy') throw typed('WORKSPACE_MIGRATION_INVALID', '源目录不是旧版工作区。')
     const fs = createNodeWorkspaceAdapter(source)
     // Pending import journals require opening the old workspace for its normal recovery first.
     try { if ((await fs.listJson('transactions-v2')).length) throw typed('WORKSPACE_MIGRATION_INVALID', '存在未完成导入，请先打开旧工作区完成恢复并退出。') } catch (error) { if (error.code !== 'ENOENT') throw error }

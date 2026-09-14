@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { initializeProjectWorkspace } from '../../bridge/project-workspace.js'
@@ -22,6 +22,19 @@ describe('project workspace layout', () => {
     await mkdir(join(root, 'boards-v2'))
     expect(initializeProjectWorkspace(root)).toMatchObject({ layout: 'legacy', directories: {} })
     await expect(readFile(join(root, '.mira/workspace.json'))).rejects.toMatchObject({ code: 'ENOENT' })
+  })
+  it('enforces open and create intent at final initialization', async () => {
+    const root = await temporary()
+    expect(() => initializeProjectWorkspace(root, { mode: 'open' })).toThrow(/现有 Mira 项目/)
+    await expect(readdir(root)).resolves.toEqual([])
+
+    initializeProjectWorkspace(root)
+    expect(() => initializeProjectWorkspace(root, { mode: 'create' })).toThrow(/已包含 Mira 项目/)
+  })
+  it('rejects an unknown initialization mode without writing', async () => {
+    const root = await temporary()
+    expect(() => initializeProjectWorkspace(root, { mode: 'typo' })).toThrow(/初始化方式/)
+    await expect(readdir(root)).resolves.toEqual([])
   })
   it('fails closed on unknown metadata and ambiguous layouts', async () => {
     const root = await temporary()

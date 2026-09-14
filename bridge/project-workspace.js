@@ -19,10 +19,13 @@ function validateDataPaths(root) {
 }
 
 // Called by the Node host only after acquiring the shared workspace writer lock.
-export function initializeProjectWorkspace(root) {
+export function initializeProjectWorkspace(root, { mode = 'open-or-create' } = {}) {
+  if (!['open', 'create', 'open-or-create'].includes(mode)) fail('工作区初始化方式无效。')
   const internal = join(root, '.mira'), existing = info(internal)
   validateDataPaths(root)
   const legacy = Object.values(WORKSPACE_DATA_PATHS).filter(path => info(join(root, path)))
+  if (mode === 'create' && (existing || legacy.length)) fail('这个文件夹已包含 Mira 项目，请使用“打开项目”。')
+  if (mode === 'open' && !existing && !legacy.length) fail('所选文件夹不是现有 Mira 项目，请使用“新建项目”。')
   if (existing) {
     if (!existing.isDirectory() || existing.isSymbolicLink()) fail('工作区格式无效：.mira 必须是普通目录。')
     validateDataPaths(internal)
@@ -47,5 +50,5 @@ export function initializeProjectWorkspace(root) {
     if (JSON.parse(readFileSync(join(stage, 'workspace.json'), 'utf8')).id !== workspace.id) fail('工作区格式写入校验失败。')
     renameSync(stage, internal)
   } finally { rmSync(stage, { recursive: true, force: true }) }
-  return initializeProjectWorkspace(root)
+  return initializeProjectWorkspace(root, { mode: 'open' })
 }

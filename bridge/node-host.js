@@ -150,6 +150,7 @@ export function createStandaloneMiraHost({
   modelSettings,
   applicationInfo,
   projectHost,
+  workspaceMode,
   accessToken,
   logger = console,
 } = {}) {
@@ -160,7 +161,7 @@ export function createStandaloneMiraHost({
   let coreApplication
   let projectDescription
   try {
-    const project = initializeProjectWorkspace(resolvedWorkspaceRoot)
+    const project = initializeProjectWorkspace(resolvedWorkspaceRoot, { mode: workspaceMode })
     projectDescription = describeProject(resolvedWorkspaceRoot, project.workspace)
     const stores = createMiraStores({ fs, newId, now, directories: project.directories })
     const materials = createManagedMaterials({ workspaceRoot: resolvedWorkspaceRoot, coordinator: stores.coordinator })
@@ -325,8 +326,11 @@ export function createStandaloneMiraHost({
           await Promise.all([stoppedServer, Promise.allSettled([...requests])])
           await application.handlers.interruptActiveRuns()
         } finally {
-          await application.capabilities.close()
-          if (!server.listening && requests.size === 0) workspaceLock.release()
+          try {
+            await application.capabilities.close()
+          } finally {
+            if (!server.listening && requests.size === 0) workspaceLock.release()
+          }
         }
       })()
       return closePromise

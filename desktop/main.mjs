@@ -118,7 +118,7 @@ async function createMainWindow(runtime = nodeRuntime) {
     return window
   } catch (error) { if (!window.isDestroyed()) window.destroy(); throw error }
 }
-async function startProjectRuntime(path) {
+async function startProjectRuntime(path, { allowCreate = false } = {}) {
   if (shutdownRequested) throw projectHostError('HOST_CLOSING', 'Mira 正在关闭。')
   const accessToken = randomBytes(32).toString('base64url')
   const projectHost = createStagedProjectHost({ projectState, open: switchProject })
@@ -127,6 +127,7 @@ async function startProjectRuntime(path) {
     modelSettings: createModelSettingsService({ initial: { baseUrl: process.env.MIRA_LLM_BASE_URL, model: process.env.MIRA_LLM_MODEL, apiKey: process.env.MIRA_LLM_API_KEY } }),
     applicationInfo: { version: app.getVersion(), platform: process.platform, architecture: process.arch },
     projectHost,
+    workspaceMode: allowCreate ? 'create' : 'open',
   } })
   nodeRuntimeStartup = startup
   try {
