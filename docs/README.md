@@ -1,5 +1,7 @@
 # Mira 文档地图
 
+2026-09-14 项目打开调整：[项目打开与画板恢复](specs/project-opening.md)。用户已确认默认继续上次项目；按项目持久导航、项目总览与安全切换正在实施。
+
 执行能力增量规格：[步骤工具、MCP 与 Python](specs/tool-execution.md)。
 
 步骤执行能力及卡片重试修复已于 2026-09-14 合入 `main`（实现提交 `53413ac`）；主干验证、已完成的本地分支清理及恢复记录见[集成报告](validation/2026-09-14-tool-execution.md)。本批未替换安装版；远端测试包按[主干 Actions](operations/desktop-internal-builds.md)的源码 SHA 和实际结果核对。
