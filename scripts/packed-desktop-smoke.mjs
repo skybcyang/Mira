@@ -181,6 +181,15 @@ export function waitForPackedExit(child, timeoutMs) {
   })
 }
 
+export async function cleanupPackedSmokeTemporaryRoot(temporaryRoot, remove = rm) {
+  await remove(temporaryRoot, {
+    recursive: true,
+    force: true,
+    maxRetries: 20,
+    retryDelay: 250,
+  })
+}
+
 export async function runPackedDesktopSmoke({
   appPath,
   restore = false,
@@ -228,7 +237,7 @@ export async function runPackedDesktopSmoke({
     if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL')
     throw error
   } finally {
-    await rm(temporaryRoot, { recursive: true, force: true })
+    await cleanupPackedSmokeTemporaryRoot(temporaryRoot)
   }
 }
 
