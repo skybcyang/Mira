@@ -58,6 +58,7 @@ export type CanvasHistoryEntry =
   | { kind: 'delete'; boardId: string; cardIds: string[]; restoreReceiptId: string }
 
 export interface V2CanvasState extends CheckpointActions, OrganizationActions, ExtractionActions, MaterialActions {
+  projectInfo: import('./projectApi').ProjectContext | null
   sourcePicker: SourcePicker | null
   appendTransformationSources(transformationId: string, cardIds: string[]): Promise<boolean>
   beginSourcePicker(transformationId: string): void
@@ -116,6 +117,8 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions, E
   bindSelectedCardsToWorkflowInput(inputId: string): void
   materializeWorkflowDraft(): Promise<void>
   load(): Promise<void>
+  showProjectOverview(): Promise<void>
+  flushBoardNavigation(): Promise<void>
   switchBoard(boardId: string): Promise<void>
   closeBoard(boardId: string): Promise<boolean>
   togglePinnedBoard(boardId: string): void

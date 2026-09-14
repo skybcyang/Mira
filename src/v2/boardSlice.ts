@@ -12,7 +12,9 @@ import type { V2CanvasState } from './storeTypes'
 import { backupFileName, boardArtifactFileName, portableDownloads } from './portableDownloads'
 import type { CanvasStoreContext } from './storeContext'
 import { createCheckpointSlice, type CheckpointActions } from './checkpointSlice'
-import { readBoardNavigation, writeBoardNavigation, rememberOpenedBoard } from './boardNavigation'
+import { writeBoardNavigation, rememberOpenedBoard } from './boardNavigation'
+import { projectApi } from './projectApi'
+import { readProjectNavigation, reconcileProjectNavigation, writeProjectNavigation, PROJECT_NAVIGATION_LIMIT, validNavigationId } from './projectNavigation'
 
 const LAST_BOARD = 'mira.v2.lastBoardId'
 type InitialRunLoad =
@@ -29,14 +31,6 @@ function rememberBoard(boardId: string) {
   try {
     localStorage.setItem(LAST_BOARD, boardId)
   } catch {}
-}
-
-function rememberedBoard() {
-  try {
-    return localStorage.getItem(LAST_BOARD) || ''
-  } catch {
-    return ''
-  }
 }
 
 function boardLifecycleState(board: BoardV2): BoardLifecycleState {
@@ -71,6 +65,8 @@ type BoardSliceDependencies = Pick<
 type BoardSliceActions = Pick<
   V2CanvasState,
   | 'load'
+  | 'showProjectOverview'
+  | 'flushBoardNavigation'
   | 'switchBoard'
   | 'closeBoard'
   | 'togglePinnedBoard'
@@ -109,11 +105,23 @@ export function createBoardSlice(
   let activeBoardNavigation: number | null = null
 
   let boardCatalogSequence = 0
+  let navigationWrite: Promise<unknown> = Promise.resolve()
+
+  function checkOpenCapacity(boardId?: string) {
+    const opened = get().openedBoardIds
+    if (boardId && !validNavigationId(boardId)) throw new Error('画板标识无效，无法保存打开记录。')
+    if (opened.length >= PROJECT_NAVIGATION_LIMIT && (!boardId || !opened.includes(boardId))) {
+      const message = '最多同时打开 1000 个画板，请先关闭一些画板。'
+      setNotice('attention', message)
+      throw new Error(message)
+    }
+  }
 
   async function readBoardForOpen(
     boardId: string,
     requestIsCurrent: () => boolean,
   ): Promise<BoardOpenSnapshot | null> {
+    checkOpenCapacity(boardId)
     const { board } = await v2Api.getBoard(boardId)
     if (!requestIsCurrent()) return null
     if (boardLifecycleState(board) !== 'active') {
@@ -187,7 +195,6 @@ export function createBoardSlice(
         )
         : { message: null, notices: [] }),
     }))
-    rememberBoard(boardId)
     persistNavigation()
     const startedDetailSurface = currentDetailSurface()
     for (const run of Object.values(runs)) {
@@ -336,13 +343,7 @@ export function createBoardSlice(
       const lists = await readBoardLists()
       applyBoardLists(lists)
       if (generation === null) return
-      if (lists.boards.length === 0) {
-        navigation.pendingBoardGeneration = null
-        await get().createBoard('Mira 画板')
-        return
-      }
-      const opened = await openBoard(lists.boards[0].id, generation)
-      if (opened && generation === navigation.boardGeneration) set({ loadState: 'ready' })
+      await openRemainingBoard(lists.boards, generation)
     } catch (error) {
       committedReconciliationError(label, error, leavingCurrent)
     }
@@ -359,13 +360,7 @@ export function createBoardSlice(
       }
       const generation = invalidateCurrentBoard(boardId)
       if (generation === null) return
-      if (lists.boards.length > 0) {
-        const opened = await openBoard(lists.boards[0].id, generation)
-        if (opened && generation === navigation.boardGeneration) set({ loadState: 'ready' })
-      } else {
-        navigation.pendingBoardGeneration = null
-        await get().createBoard('Mira 画板')
-      }
+      await openRemainingBoard(lists.boards, generation)
     } catch (refreshError) {
       navigation.pendingBoardGeneration = null
       set({
@@ -406,13 +401,7 @@ export function createBoardSlice(
       const lists = await readBoardLists()
       applyBoardLists(lists)
       if (generation === null) return
-      if (lists.boards.length === 0) {
-        navigation.pendingBoardGeneration = null
-        await get().createBoard('Mira 画板')
-        return
-      }
-      const opened = await openBoard(lists.boards[0].id, generation)
-      if (opened && generation === navigation.boardGeneration) set({ loadState: 'ready' })
+      await openRemainingBoard(lists.boards, generation)
     } catch (error) {
       committedReconciliationError('永久删除', error, leavingCurrent)
     }
@@ -479,13 +468,60 @@ export function createBoardSlice(
   }
 
   function persistNavigation() {
-    writeBoardNavigation({ opened:get().openedBoardIds, pinned:get().pinnedBoardIds })
+    const { projectInfo, openedBoardIds, pinnedBoardIds, boardId } = get()
+    const value = { opened: [...openedBoardIds], pinned: [...pinnedBoardIds], lastBoardId: boardId }
+    const operation = navigationWrite.catch(() => undefined).then(async () => {
+      if (projectInfo?.canSwitch) { await projectApi.saveNavigation(value); return }
+      if (projectInfo) return writeProjectNavigation(projectInfo.project.id, value)
+      writeBoardNavigation(value)
+      rememberBoard(boardId || '')
+    })
+    navigationWrite = operation
+    void operation.catch(() => setNotice('error', '打开记录未保存，请重试后再切换项目。'))
+    return operation
+  }
+
+  function commitOverview() {
+    navigation.pendingBoardGeneration = null
+    set(state => ({ boardId: null, board: null, runs: {}, nodes: [], edges: [],
+      selectedCardIds: [], selectedGroupId: null, alignmentGuides: null, multiSelectMode: false,
+      organizationPending: false, deleteConfirmationIds: null,
+      ...transitionDetailSurface(currentDetailSurface(state), null, null),
+      branchDraft: null, workflowDraft: null, sourcePicker: null, editingCardId: null,
+      applyingWorkflowId: null, runningToTransformationId: null, saveState: 'saved',
+      historyPast: [], historyFuture: [], historyState: 'idle', loadState: 'ready' }))
+  }
+
+  async function openRemainingBoard(boards: BoardSummary[], generation: number) {
+    const remaining = reconcileProjectNavigation({ opened: get().openedBoardIds, pinned: get().pinnedBoardIds, lastBoardId: null }, boards.map(b => b.id))
+    const nextId = remaining.opened[0]
+    set({ openedBoardIds: remaining.opened, pinnedBoardIds: remaining.pinned })
+    if (nextId) {
+      const opened = await openBoard(nextId, generation)
+      if (opened && generation === navigation.boardGeneration) set({ loadState: 'ready' })
+    } else {
+      commitOverview()
+      await persistNavigation()
+    }
   }
 
   return {
     ...createCheckpointSlice(checkpointDependencies),
+    async flushBoardNavigation() { await persistNavigation() },
+    async showProjectOverview() {
+      if (get().loadState !== 'ready' || get().saveState === 'saving' || get().historyState === 'applying') return
+      ++navigation.boardGeneration
+      ++boardNavigationSequence
+      activeBoardNavigation = null
+      commitOverview()
+      await persistNavigation()
+    },
     togglePinnedBoard(boardId) {
-      if (!boardId) return
+      if (!boardId || !validNavigationId(boardId)) return
+      if (!get().pinnedBoardIds.includes(boardId) && get().pinnedBoardIds.length >= PROJECT_NAVIGATION_LIMIT) {
+        setNotice('attention', '最多固定 1000 个常用画板，请先取消一些固定。')
+        return
+      }
       set(state => ({ pinnedBoardIds:state.pinnedBoardIds.includes(boardId)
         ? state.pinnedBoardIds.filter(id => id !== boardId) : [...state.pinnedBoardIds, boardId] }))
       persistNavigation()
@@ -519,19 +555,11 @@ export function createBoardSlice(
             ++navigation.boardGeneration
             ++boardNavigationSequence
             activeBoardNavigation = null
-            navigation.pendingBoardGeneration = null
-            set(state => ({ boardId:null, board:null, runs:{}, nodes:[], edges:[],
-              selectedCardIds:[], selectedGroupId:null, alignmentGuides:null, multiSelectMode:false,
-              organizationPending:false, deleteConfirmationIds:null,
-              ...transitionDetailSurface(currentDetailSurface(state), null, null),
-              branchDraft:null, workflowDraft:null, sourcePicker:null, editingCardId:null,
-              applyingWorkflowId:null, runningToTransformationId:null, saveState:'saved',
-              historyPast:[], historyFuture:[], historyState:'idle', notices:[], message:null, loadState:'ready' }))
-            rememberBoard('')
+            commitOverview()
           }
         }
         set(state => ({ openedBoardIds:state.openedBoardIds.filter(id => id !== boardId) }))
-        persistNavigation()
+        await persistNavigation()
         return true
       } catch (error) {
         setNotice('error', `未能关闭画板：${safeMessage(error)}`)
@@ -545,30 +573,18 @@ export function createBoardSlice(
       navigation.pendingBoardGeneration = generation
       set({ loadState: 'loading', message: null })
       try {
-        let { boards } = await v2Api.listBoards()
+        const [{ boards }, projectInfo] = await Promise.all([v2Api.listBoards(), projectApi.read()])
         if (generation !== navigation.boardGeneration) return
-        const preferences = readBoardNavigation()
-        if (preferences?.opened.length === 0 && !get().board) {
-          navigation.pendingBoardGeneration = null
-          set({ boards, openedBoardIds:[], pinnedBoardIds:preferences.pinned, loadState:'ready' })
-          await get().refreshWorkflows()
-          return
+        const activeIds = boards.map(board => board.id)
+        const preferences = reconcileProjectNavigation(projectInfo?.canSwitch ? projectInfo.navigation
+          : readProjectNavigation(projectInfo?.project.id || 'legacy-browser', activeIds), activeIds)
+        set({ projectInfo, boards, openedBoardIds: preferences.opened, pinnedBoardIds: preferences.pinned })
+        if (preferences.lastBoardId) {
+          const opened = await openBoard(preferences.lastBoardId, generation)
+          if (!opened || generation !== navigation.boardGeneration) return
+        } else {
+          commitOverview()
         }
-        if (boards.length === 0) {
-          const created = await v2Api.createBoard('Mira 画板')
-          if (generation !== navigation.boardGeneration) return
-          boards = [boardSummary(created.board)]
-        }
-        set({ boards })
-        if (preferences) {
-          set({ openedBoardIds:preferences.opened.filter(id => boards.some(board => board.id === id)), pinnedBoardIds:preferences.pinned })
-        }
-        const preferred = rememberedBoard()
-        const opened = await openBoard(
-          boards.some((board) => board.id === preferred) ? preferred : boards[0].id,
-          generation,
-        )
-        if (!opened || generation !== navigation.boardGeneration) return
         await get().refreshWorkflows()
         if (generation === navigation.boardGeneration) set({ loadState: 'ready' })
       } catch (error) {
@@ -619,6 +635,7 @@ export function createBoardSlice(
     },
 
     async createBoard(title) {
+      checkOpenCapacity()
       const startingGeneration = navigation.boardGeneration
       const navigationId = boardNavigationSequence += 1
       activeBoardNavigation = navigationId

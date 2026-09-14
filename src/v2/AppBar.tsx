@@ -8,6 +8,8 @@ import AppearanceSwitcher from './AppearanceSwitcher'
 import CommandPalette, { type CommandItem } from './CommandPalette'
 import { WorkbenchNavigation } from './WorkbenchNavigation'
 import BoardMenu from './BoardMenu'
+import ProjectMenu from './ProjectMenu'
+import type { OpenProjectInput } from './projectApi'
 import { useCardSelection } from './drawerIntent'
 import { useWorkbenchPreference } from './workbenchPreferences'
 import { ApplicationInfo } from './ApplicationInfo'
@@ -72,6 +74,9 @@ export default function AppBar({
   onCreateBoard,
   commandBlocked = false,
   onCanvas = () => {},
+  onProjectOverview = () => {},
+  onOpenProject = () => {},
+  projectOpening = false,
 }: {
   inspirationPickerOpen?: boolean
   openInspirationPicker?: () => void
@@ -93,10 +98,14 @@ export default function AppBar({
   onCreateBoard?: (title: string) => void
   commandBlocked?: boolean
   onCanvas?: () => void
+  onProjectOverview?: () => void
+  onOpenProject?: (input: OpenProjectInput) => void
+  projectOpening?: boolean
 }) {
   const selectCards = useCardSelection(useV2Canvas(state => state.setSelectedCardIds))
   const boardId = useV2Canvas((state) => state.boardId)
   const board = useV2Canvas((state) => state.board)
+  const projectInfo = useV2Canvas((state) => state.projectInfo)
   const panel = useV2Canvas((state) => state.panel)
   const [grid, setGrid] = useWorkbenchPreference('grid', ['visible', 'hidden'], 'visible')
   useEffect(() => {
@@ -230,7 +239,7 @@ export default function AppBar({
     { id: 'file', label: '阅读材料', description: '读取网页、PDF，或添加本地文件', icon: <FilePlus2 size={17} />, action: openFilePicker },
     { id: 'inspiration', label: '打开灵感池', description: '记录灵感或添加到当前画板', icon: <Lightbulb size={17} />, action: openInspirationPicker },
     { id: 'plan', label: '搭一个计划', description: '只铺步骤，不自动运行', icon: <ListTodo size={17} />, disabled: canvasUnavailable, action: openPlanComposer },
-    { id: 'workflow', label: '方法与计划', description: '搭计划或使用已经验证的方法', icon: <Workflow size={17} />, disabled: canvasUnavailable, action: openWorkflowLibrary },
+    { id: 'workflow', label: '方法与计划', description: '搭计划或使用已经验证的方法', icon: <Workflow size={17} />, disabled: navigationPending, action: openWorkflowLibrary },
     { id: 'select', label: multiSelectMode ? '结束多选' : '进入多选', description: '按顺序组织多个来源', icon: <MousePointer2 size={17} />, disabled: canvasUnavailable, action: toggleMultiSelectMode },
     { id: 'undo', label: '撤销', description: '撤销最近一次受支持的卡片操作', shortcut: '⌘Z', icon: <Undo2 size={17} />, disabled: canvasUnavailable || historyPast.length === 0 || historyState === 'applying', action: () => { void undo() } },
     { id: 'redo', label: '重做', description: '重新应用刚刚撤销的卡片操作', shortcut: '⇧⌘Z', icon: <Redo2 size={17} />, disabled: canvasUnavailable || historyFuture.length === 0 || historyState === 'applying', action: () => { void redo() } },
@@ -245,8 +254,11 @@ export default function AppBar({
     icon: <Palette size={17} />,
     action: () => setMenu(true),
   })
-  return <><header className="v2-app-bar">
+  return <><header className="v2-app-bar has-project-navigation">
     <div className="v2-app-location"><strong className="v2-brand" aria-label="Mira">mira.</strong>
+    <ProjectMenu project={projectInfo?.project || null} recentProjects={projectInfo?.recentProjects || []}
+      canSwitch={Boolean(projectInfo?.canSwitch)} busy={projectOpening || navigationPending}
+      onOverview={onProjectOverview} onOpenProject={onOpenProject} />
     <BoardMenu ref={boardsButtonRef} onSwitch={id => { void switchBoardAction(id) }}
       onCloseBoard={onCloseBoard || (id => { void useV2Canvas.getState().closeBoard(id).catch(() => {}) })}
       onCreate={onCreateBoard || (title => { void useV2Canvas.getState().createBoard(title).catch(() => {}) })}

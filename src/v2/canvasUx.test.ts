@@ -200,7 +200,7 @@ describe('canvas selection toolbar', () => {
     expect(app).toMatch(/boardManagerOpen && <Suspense fallback=\{<ModalTaskLoading/)
     expect(app).toMatch(/<Suspense fallback=\{<ModalTaskLoading label="正在打开侧栏"/)
     expect(app).toContain("target?.closest?.('.v2-modal-loading')")
-    expect(app).toMatch(/commandBlocked=\{drawerDirty \|\| planDirty \|\| loadState === 'loading' \|\| modalTaskOpen\}/)
+    expect(app).toMatch(/commandBlocked=\{drawerDirty \|\| planDirty \|\| loadState === 'loading' \|\| modalTaskOpen \|\| projectOpening.busy\}/)
   })
 
   it('keeps the opener across an asynchronous action until its detail surface mounts', async () => {

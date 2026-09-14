@@ -4,7 +4,7 @@ import type { BoardSummary } from '../v2Api'
 
 export interface ProjectOverviewProps {
   projectName: string
-  boards: BoardSummary[]
+  boards: Array<Pick<BoardSummary, 'id' | 'title'> & Partial<BoardSummary>>
   busy?: boolean
   error?: string | null
   onOpenBoard: (id: string) => void
@@ -20,7 +20,7 @@ export default function ProjectOverview({ projectName, boards, busy = false, err
   const [query, setQuery] = useState('')
   const search = useRef<HTMLInputElement>(null)
   const titleId = useId()
-  const active = boards.filter(board => board.state === 'active')
+  const active = boards.filter(board => board.state === undefined || board.state === 'active')
   const matches = active.filter(board => board.title.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()))
   return <section className="v2-project-overview" aria-labelledby={titleId} aria-busy={busy}>
     <div className="v2-project-overview-content">

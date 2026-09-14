@@ -14,6 +14,15 @@ const workflow: WorkflowTemplate = {
 }
 
 describe('compact method library', () => {
+  it('keeps methods readable without allowing plans or use when no board is open', () => {
+    const html = renderToStaticMarkup(createElement(WorkflowLibraryView, {
+      workflows: [workflow], state: 'ready', onClose() {}, onDelete() {}, onUse() {}, onBuildPlan() {}, boardAvailable: false,
+    }))
+    expect(html).toContain('研究方法')
+    expect(html).toContain('先打开或新建画板')
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>.*?使用方法<\/button>/)
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>[\s\S]*?搭一个计划/)
+  })
   it('shows outcome, required materials and step count before a native collapsed step list', () => {
     const html = renderToStaticMarkup(createElement(WorkflowLibraryView, {
       workflows: [workflow], state: 'ready', onClose() {}, onDelete() {}, onUse() {},

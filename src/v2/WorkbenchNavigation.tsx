@@ -27,7 +27,7 @@ export function WorkbenchNavigation({ active, collapsed, unavailable, onCanvas, 
     <button className="v2-navigation-select" type="button" aria-label={multiSelectMode ? '结束多选' : '多选卡片'} title={multiSelectMode ? '结束多选' : '多选卡片'} aria-pressed={multiSelectMode} disabled={unavailable} onClick={onMultiSelect}><MousePointer2 size={19} /><span>{multiSelectMode ? '结束多选' : '多选'}</span></button>
     {items.map(({ id, label, Icon, action }) => <button key={id} type="button"
       aria-label={label} title={label} aria-pressed={active === id}
-      disabled={unavailable && id !== 'canvas' && id !== 'inspiration' && id !== 'file'}
+      disabled={unavailable && id === 'history'}
       aria-haspopup={id === 'inspiration' || id === 'file' ? 'dialog' : undefined}
       aria-expanded={id !== 'canvas' ? active === id : undefined}
       onClick={action}><Icon size={19} /><span>{label}</span></button>)}
