@@ -1,6 +1,6 @@
 # Mira 当前演进 TODO
 
-- 更新：2026-09-13。
+- 更新：2026-09-14。
 - 状态：A3–B8 已按用户批准规格实施；本文件统一列出已验证能力与剩余质量/设备/发行缺口。复核依据见[本批报告](../validation/2026-09-13-a3-b8-validation.md)。
 - 本文件集中记录下一阶段待办与已有缺口，不定义产品规则。实现进度与证据仍见[实施路线](implementation-roadmap.md)，行为契约以[产品定义](../product/product-definition.md)、[核心规格](../specs/core-specification.md)和[平台契约](../specs/platform-adapters.md)为准。
 
@@ -8,15 +8,16 @@
 
 ## 步骤执行设置增量（2026-09-14）
 
-用户确认一次完成总体设计、按依赖实施。范围与剩余验收见[整体需求](generation-controls-requirements.md)，交互见[完整方案](../design/step-execution-design-proposal.md)。第一批输出要求的源码与浏览器验收见[本批验证](../validation/2026-09-14-output-policy.md)，不代表工具执行或新的桌面安装交付。
+用户确认一次完成总体设计、按依赖实施。整套步骤执行能力与重试修复 `53413ac` 已合入本地 main，见[集成验证](../validation/2026-09-14-tool-execution.md)。范围与剩余验收见[整体需求](generation-controls-requirements.md)，交互见[完整方案](../design/step-execution-design-proposal.md)。本批未替换已安装的桌面应用。
 
 - [x] 独立输出风格、完整规则调整、字符/Markdown 结构检查；与既有单步 Skill 并存。
 - [x] Run 冻结、失败诊断保留全文、普通 Candidate/CAS，以及方法/Artifact/备份/Checkpoint 往返。
-- [ ] workspace 默认管理、自定义/导入指导目录与升级。
-- [ ] 统一工具契约、按需调用/前处理/后检查与权限范围。
-- [ ] MCP 连接、身份与能力变化、跨 workspace 重新绑定。
-- [ ] Python 已审阅脚本、可靠隔离与产物契约，再接临时代码及外部写入审阅。
-- [ ] 真实模型质量对照、目标系统原生包及交互验收。
+- [x] workspace 默认管理、自定义/导入指导目录与升级。
+- [x] 统一工具契约、按需调用/前处理/后检查与权限范围。
+- [x] MCP 连接、身份与能力变化、跨 workspace 重新绑定。
+- [x] Python 已审阅脚本、Docker Linux 隔离与有界附件，以及临时代码/外部操作单次审阅。
+- [x] macOS arm64 原生包、可见窗口及重试修复验收。
+- [ ] 真实模型质量对照、Windows/Intel 原生与真实触屏验收。
 
 ## 项目工作区增量（2026-09-13）
 
@@ -106,7 +107,7 @@
 
 ### 接入时必须解决的问题
 
-- 读取工具负责取得内容，skill 指导一步怎样完成，WorkflowTemplate 保存已经走通的步骤组合。Mira 当前默认模型适配器是普通文本请求，没有自动加载 `SKILL.md` 或工具调用循环。
+- 读取工具负责取得内容，skill 指导一步怎样完成，WorkflowTemplate 保存已经走通的步骤组合。模型适配器已支持有界工具调用循环；指导由用户显式选择，不自动扫描或加载系统 `SKILL.md`，以[步骤执行契约](../specs/tool-execution.md)为准。
 - 第一版优先内置少量已审阅的指导与读取工具；第三方 skill 先作为评估材料，不自动安装、执行其脚本或扫描用户其他技能目录。通用技能格式与工具运行环境分开评估。
 - 明确技能选择、加载失败、上下文长度、版本与有效指令记录方式，以及 Run 历史、模板引用、导入导出/备份的兼容规则；不得让以后更新的 skill 改写旧 Run 的解释。
 - 读取后的内容、出处与定位如何冻结，需要与现有 snapshot 对齐；引用文件正文当前不在备份范围，新增阅读能力不能暗中改变这一承诺。外部材料中的指令按来源数据处理。
