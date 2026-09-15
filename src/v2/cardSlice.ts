@@ -44,7 +44,6 @@ type CardSliceActions = Pick<
   | 'renameCard'
   | 'commitCard'
   | 'saveAndCreateNext'
-  | 'continueCard'
   | 'restoreVersion'
   | 'setEditingCardId'
 >
@@ -439,43 +438,6 @@ export function createCardSlice(
         }
       } finally {
         recordingPending = false
-      }
-    },
-
-    async continueCard(cardId, baseVersionId, markdown) {
-      const { boardId, board } = get()
-      if (!boardId || !board?.cards.some(card => card.id === cardId) || !markdown.trim()) return null
-      const request = contextFor(boardId)
-      setForBoard(request, { saveState: 'saving', message: null })
-      try {
-        const result = await v2Api.continueCard(boardId, cardId, { baseVersionId, markdown })
-        if (!contextIsCurrent(request)) return null
-        setForBoard(request, state => {
-          if (!state.board) return {}
-          const replacements = new Map(result.updatedTransformations.map(item => [item.id, item]))
-          const next = {
-            ...state.board,
-            cards: [...state.board.cards, result.card],
-            transformations: [
-              ...state.board.transformations.map(item => replacements.get(item.id) || item),
-              result.transformation,
-            ],
-          }
-          return {
-            board: next,
-            selectedCardIds: [result.card.id],
-            saveState: 'saved',
-            ...project(next, state.runs, [result.card.id]),
-            ...noticePatch(state, 'success', '已保存为新卡并接续下游步骤', { boardId }),
-          }
-        })
-        return result.card
-      } catch (error) {
-        setForBoard(request, state => ({
-          saveState: 'error',
-          ...noticePatch(state, 'error', safeMessage(error), { boardId }),
-        }))
-        return null
       }
     },
 

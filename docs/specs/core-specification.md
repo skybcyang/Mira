@@ -426,14 +426,6 @@ instruction 以独立段落 `<!-- mira:extraction-format:v1 -->` 分隔用户要
 
 验收：`EXTRACT-01` 添加步骤零 Run、显式生成单清单；`EXTRACT-02` 动态数量、编辑排序选择、确认前零新卡、确认后零模型调用；`EXTRACT-03` 畸形/空条目/重复标识/超限拒绝；`EXTRACT-04` 故障零半写、旧基线/只读/活动 Run/Candidate 拒绝、响应不确定不盲重试；`EXTRACT-05` 重跑保留旧卡、人工 Head 变化进入 Candidate；`EXTRACT-06` 批次历史与出处、精确撤销重做、导入/备份/Checkpoint 映射；`EXTRACT-07` 桌面/390px 草稿保护、焦点、长列表、真实文本模型输出质量。
 
-### 4.4.6 接续写作（2026-09-14）
-
-`POST /boards/:boardId/cards/:cardId/continuations` 只接受 `{ baseVersionId, markdown }`。`markdown` 是待追加的非空 Markdown，最多 1,000,000 字符；服务在 Board 写锁中确认 active、来源为当前 Markdown Head 且等于 `baseVersionId`，否则返回 `CONTINUATION_INVALID` 或 `SOURCE_VERSION_CHANGED`。提交前找出所有既有 `sourceCardIds` 包含原卡的 Transformation；任一目标存在活动 Run 或未处理 Candidate 时分别返回 `TARGET_BUSY` / `CANDIDATE_PENDING`，整笔零写入。
-
-成功时服务创建一张新身份 human Markdown Card，正文为原卡当前正文、两个换行与 trim 后追加正文，并保留原卡名称、标签、颜色和尺寸；不复制版本历史、文件绑定、灵感/提取出处或 Run。服务再创建一条普通人工 Transformation `原卡 -> 新卡`，不得创建 Run；随后把提交前找出的每条下游 Transformation 中原卡的来源位置替换为新卡，保持其余来源及顺序。原卡的范围若是全文则继续全文；若有片段范围则替换为新卡的 `{ mode: 'required' }`，不得把旧区间静默用于组合后的正文。每条被改接的 Transformation 递增定义版本并将已有 `planRef.adjusted` 置为 true。
-
-新 Card、人工 Transformation 与全部下游改接只允许一次 Board 原子保存，响应为 `{ card, transformation, updatedTransformations }`。原 Card、入向关系、Version 和 Run 保留；命令不调用模型、不进入 CanvasHistory，也不把人工正文伪装成模型 Candidate。验收：`CONTINUE-01` 无下游时创建完整新正文和人工关系；`CONTINUE-02` 多个及多来源下游按原位置全部改接；`CONTINUE-03` 旧范围转为待选择；`CONTINUE-04` 旧基线、活动 Run、Candidate、保存失败均零写入。
-
 ### 4.5 Transformation
 
 ```ts

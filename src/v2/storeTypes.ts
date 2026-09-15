@@ -27,7 +27,7 @@ import type { ExtractionActions } from './extractionSlice'
 import type { MaterialActions } from './materialSlice'
 
 export type DrawerState =
-  | { tab: 'content'; cardId: string; mode?: 'read' | 'edit' | 'rename' | 'extract' | 'split' | 'compare' | 'append'; batchId?: string }
+  | { tab: 'content'; cardId: string; mode?: 'read' | 'edit' | 'rename' | 'extract' | 'split' | 'compare'; batchId?: string }
   | { tab: 'versions'; cardId: string }
   | { tab: 'relation'; transformationId: string; edit?: boolean; preview?: boolean; scopeCardId?: string; guidance?: boolean; output?: boolean; focusOutput?: boolean; tools?: boolean; focusTools?: boolean }
   | { tab: 'run'; runId: string }
@@ -147,7 +147,6 @@ export interface V2CanvasState extends CheckpointActions, OrganizationActions, E
   renameCard(cardId: string, name: string | null, baseName: string | null): Promise<boolean>
   commitCard(cardId: string, markdown: string, baseVersionId?: string | null): Promise<boolean>
   saveAndCreateNext(cardId: string, markdown: string, baseVersionId: string | null): Promise<SaveAndCreateNextResult>
-  continueCard(cardId: string, baseVersionId: string, markdown: string): Promise<ContentCard | null>
   copySelectedCards(): void
   exportSelectedCards(): Promise<void>
   importCardPackage(artifact: unknown, position: { x: number; y: number }): Promise<void>
