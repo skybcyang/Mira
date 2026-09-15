@@ -15,16 +15,19 @@ it('distinguishes a changed step definition from changed source content', () => 
   expect(html).toContain('步骤已变化')
 })
 
-it('keeps inspiration deletion and append writing in their existing task surfaces', async () => {
-  const [picker, drawer, append] = await Promise.all([
+it('keeps inspiration deletion without exposing the retired append-note path', async () => {
+  const [picker, content, drawer, api, routes, handlers] = await Promise.all([
     readFile(new URL('./InspirationPicker.tsx', import.meta.url), 'utf8'),
+    readFile(new URL('./detail/ContentPanel.tsx', import.meta.url), 'utf8'),
     readFile(new URL('./DetailDrawer.tsx', import.meta.url), 'utf8'),
-    readFile(new URL('./detail/AppendNotePanel.tsx', import.meta.url), 'utf8'),
+    readFile(new URL('../v2Api.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../bridge/v2-routes.js', import.meta.url), 'utf8'),
+    readFile(new URL('../../bridge/v2-http.js', import.meta.url), 'utf8'),
   ])
   expect(picker).toContain('永久删除这条灵感？')
   expect(picker).toContain('已放入画板的卡片不受影响')
   expect(picker).toContain('deleteInspirationEntry')
-  expect(drawer).toContain('<AppendNotePanel')
-  expect(append).toContain('保存为新卡并接续')
-  expect(append).toContain('追加内容')
+  expect([content, drawer, api, routes, handlers].join('\n')).not.toMatch(
+    /追加笔记|接续写作|continueCard|continuations|CONTINUATION_INVALID|AppendNotePanel/,
+  )
 })

@@ -87,7 +87,7 @@ Markdown Card 可以绑定一个工作区内的本地相对路径，作为该 Ca
 
 Markdown 编辑器可明确“保存并新建”：先确认当前正文保存成功，再创建下一张相邻、同尺寸的普通空 Card。两次提交不伪装为事务；新建失败不回滚已保存正文，响应不确定时停止并要求核对，不盲目重试创建。离开已创建空卡不自动删除；重复提交不追加相同正文 Version。
 
-用户可从 Markdown Card 发起`追加笔记`，在只读原文之后填写补充内容。确认后 Mira 原子创建一张保留当前正文并追加补充内容的新 Card，建立一条人工`接续写作` Transformation，并把原卡作为来源的既有下游 Transformation 按原有来源顺序改接到新卡；原卡、入向关系和历史不变。下游存在活动 Run、未处理 Candidate 或旧片段范围不能安全沿用时不得半写：前两者整笔拒绝，后者在新来源上变为`待选择范围`。该操作不调用模型、不覆盖原 Card，也不进入 Card 会话撤销。
+用户要把自己的笔记与既有内容结合时，先创建独立 Markdown Card，再把笔记卡与原卡作为有序来源创建普通 Transformation。原文、笔记与生成成果保持独立；Mira 不提供复制原文并自动改接下游的追加命令。
 
 Mira 提供有限的当前画板会话历史，用于撤销或重做已提交的 Markdown 正文、Card 位置，以及界面明确记录的 Card 创建和删除。正文撤销仍追加新的 CardVersion；删除撤销只恢复本进程刚删除的原 Card。同一 Bridge 进程仍持有精确批次回执时，页面保留的删除历史不因批次 Card 数量而提前失效；进程重启等原因使回执永久失效时，只失效该条历史并允许继续撤销更早操作。直接记录灵感池不进入 CanvasHistory；只有将灵感添加到当前 Board 形成普通 Card 时，才进入当前 Board 的 create history。切换画板或刷新后历史清空，Transformation、标签、Run、Candidate、计划和方法不进入这套历史。
 
@@ -449,7 +449,6 @@ Mira 只有一个内容画板、一处 workspace 灵感池和一套安全语义�
 26. BoardCheckpoint 只能由用户为无活动 Run、无未处理 Candidate 的 active Board 手动创建；每 Board 最多 20 个且不得静默淘汰。
 27. 从 BoardCheckpoint 恢复只创建全新 active Board 副本，不覆盖原 Board；BoardArtifact 不携带 Checkpoint，MiraBackup 必须完整携带并恢复 Checkpoint。
 28. 灵感条目删除不级联删除或改写已放入 Board 的 Card；删除必须通过当前 Head 与更新时间的并发校验并明确二次确认。
-29. 接续写作必须在一次 Board 原子提交中创建新 Card、人工 Transformation 并改接全部既有下游来源；任一门禁或校验失败时零写入。
 
 ## 10. 成功标准
 

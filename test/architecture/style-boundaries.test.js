@@ -66,8 +66,8 @@ describe('stylesheet boundaries', () => {
     })
     root.walkAtRules((rule) => { if (rule.nodes?.length === 0) rule.remove() })
     const digest = createHash('sha256').update(JSON.stringify(canonical(root))).digest('hex')
-    // Content continuity: append and inspiration deletion verified at desktop/390px on 2026-09-14.
-    expect(digest).toBe('a869ab794114719bb6385f52921b2e8b535df47b92991a86e831713e11531ffc')
+    // Retired append-note UI; content detail verified at desktop/390px on 2026-09-15.
+    expect(digest).toBe('3d8510a525fa6e6e918f13fa20832ffba6caa218cc45432c1bafc41a30d3c0b1')
   })
 
   it('keeps token definitions, feature bases and adaptive overrides with their owners', async () => {

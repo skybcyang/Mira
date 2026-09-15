@@ -175,55 +175,6 @@ describe('source scope commands', () => {
   })
 })
 
-describe('content continuations', () => {
-  it('creates a human continuation and atomically rewires every existing downstream source', async () => {
-    const board = emptyBoardV2('continue-board', '接续', '2026-09-14T00:00:00.000Z')
-    const source = { ...markdownCard('source', '# 读书笔记'), name: '读书笔记', tags: ['阅读'], color: 'blue', x: 20, y: 30 }
-    const other = markdownCard('other', '其他来源')
-    const targetA = markdownCard('target-a', '成果 A')
-    const targetB = markdownCard('target-b', '成果 B')
-    board.cards.push(source, other, targetA, targetB)
-    board.transformations.push(
-      { id: 'down-a', sourceCardIds: ['other', 'source'], sourceScopes: [{ cardId: 'source', mode: 'ranges', versionId: source.headVersionId, contentDigest: 'digest', spans: [{ start: 0, end: 2 }] }], targetCardId: 'target-a', label: 'A', instruction: 'A', acceptance: '', permissions: { workspaceWrite: false }, definitionRevision: 3, createdAt: '1', updatedAt: '1' },
-      { id: 'down-b', sourceCardIds: ['source'], targetCardId: 'target-b', label: 'B', instruction: 'B', acceptance: '', permissions: { workspaceWrite: false }, createdAt: '1', updatedAt: '1' },
-    )
-    const store = memoryBoardStore(board)
-    const handlers = createV2Handlers({ store, runStore: memoryRunStore(), newId: ids('continued', 'continued-v1', 'manual-step'), now: () => '2026-09-14T00:01:00.000Z' })
-
-    const result = await handlers.continueCard('continue-board', 'source', {
-      baseVersionId: source.headVersionId,
-      markdown: '补充：作者忽略了反例。',
-    })
-
-    expect(result.card).toMatchObject({ id: 'continued', name: '读书笔记', tags: ['阅读'], color: 'blue' })
-    expect(result.card.versions[0].content.markdown).toBe('# 读书笔记\n\n补充：作者忽略了反例。')
-    expect(result.transformation).toMatchObject({ id: 'manual-step', sourceCardIds: ['source'], targetCardId: 'continued', label: '接续写作' })
-    expect(result.updatedTransformations.map(item => [item.id, item.sourceCardIds, item.definitionRevision])).toEqual([
-      ['down-a', ['other', 'continued'], 4],
-      ['down-b', ['continued'], 1],
-    ])
-    expect(result.updatedTransformations[0].sourceScopes).toEqual([{ cardId: 'continued', mode: 'required' }])
-    expect(store.current().transformations).toHaveLength(3)
-  })
-
-  it('leaves the board unchanged when a downstream target has a pending candidate', async () => {
-    const board = emptyBoardV2('continue-board', '接续', '2026-09-14T00:00:00.000Z')
-    const source = markdownCard('source', '原文')
-    const target = markdownCard('target', '成果')
-    board.cards.push(source, target)
-    board.transformations.push({ id: 'down', sourceCardIds: ['source'], targetCardId: 'target', label: '下游', instruction: '生成', acceptance: '', permissions: { workspaceWrite: false }, createdAt: '1', updatedAt: '1' })
-    const store = memoryBoardStore(board)
-    const runStore = memoryRunStore()
-    await runStore.save(pendingCandidateRun({ id: 'candidate', boardId: board.id, transformationId: 'down', targetCardId: 'target' }))
-    const handlers = createV2Handlers({ store, runStore })
-    const before = store.current()
-
-    await expect(handlers.continueCard(board.id, source.id, { baseVersionId: source.headVersionId, markdown: '补充' }))
-      .rejects.toMatchObject({ code: 'CANDIDATE_PENDING' })
-    expect(store.current()).toEqual(before)
-  })
-})
-
 describe('independent card names', () => {
   it('checks actual extraction file text before saving or executing a Run', async () => {
     const store = memoryBoardStore(emptyBoardV2('extract', '课题'))

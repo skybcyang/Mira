@@ -65,7 +65,7 @@ Desktop packaging
 | `src/v2/storeContext.ts` | 共享请求代次、写序号、刷新防覆盖、投影与通知 | 生命周期或 feature 命令实现 |
 | `src/v2/boardSlice.ts` | Board 导航、生命周期、目录与可移植数据命令 | Card、方法或 Run 的执行实现 |
 | `src/v2/projectNavigation.ts`、`projectApi.ts`、`projectSwitch.ts`、`useProjectOpening.ts` | 分项目偏好、宿主请求、切换前检查与页面/原生共同离开入口 | 项目目录 I/O、第二套 Board 状态 |
-| `src/v2/cardSlice.ts` | Card 创建、独立名称、正文、标签、接续写作、恢复与文件绑定 | 几何移动、剪贴板与历史重放 |
+| `src/v2/cardSlice.ts` | Card 创建、独立名称、正文、标签、恢复与文件绑定 | 几何移动、剪贴板与历史重放 |
 | `src/v2/canvasSlice.ts` | 选择、几何移动、剪贴板、批量删除与会话历史 | 正文领域规则或结构级联删除 |
 | `src/v2/organizationSlice.ts` | 显式分组、颜色 CAS、组选择和冻结整体拖动 | 正文、Run、自动归组或新执行模型 |
 | `src/v2/canvasOrganization.ts` | 颜色枚举文案、成员转换、组框投影、整理请求反转与元数据合并 | HTTP I/O、领域写回或持久历史 |
@@ -79,7 +79,7 @@ Desktop packaging
 | `src/styles.css`、`src/styles/` | 固定导入顺序与 token、feature、外观、响应式模块 | 重排层叠或组件隐式重复加载样式 |
 | `src/v2Api.ts` | HTTP 序列化和错误解码 | 业务决策 |
 | `bridge/v2-http-policy.js` | 请求校验 helper、prompt 与 Run 进度 helper 的兼容导出 | 存储写入 |
-| `bridge/v2-http.js` | Card/Transformation/Run、接续写作原子改接命令编排 | host 路由与产品 UI |
+| `bridge/v2-http.js` | Card/Transformation/Run 命令编排 | host 路由与产品 UI |
 | `bridge/domain/` | Version、snapshot、Candidate、Board 校验 | HTTP 和宿主能力 |
 | `bridge/domain/run-progress.js` | Run 公开进度规范化、最近 20 条追加与持久字段校验 | 模型原始事件或 UI 呈现 |
 | `bridge/domain/organization.js` | 颜色/分组/几何严格校验与 CAS、删除成员回执前后态 | UI、文件 I/O、CardVersion 或 Run 执行 |

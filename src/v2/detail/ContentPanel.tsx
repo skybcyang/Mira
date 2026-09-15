@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { BookOpen, Link2, NotebookPen } from 'lucide-react'
+import { BookOpen, Link2 } from 'lucide-react'
 import { v2Api, type FileBindingStatus, type FileSyncStatus } from '../../v2Api'
 import { useV2Canvas } from '../../v2Store'
 import { cardSummary, headVersion } from '../../v2View'
@@ -148,7 +148,6 @@ export function ContentPanel({
       {sourceIds.map((id, index) => <button className="v2-quiet-button" type="button" key={id} onClick={() => sourcePreview({ boardId, cardId: id })}><BookOpen size={14} />查看来源 {index + 1}</button>)}
     </div> : null}
     <div className="v2-extraction-entry">
-      <button type="button" className="v2-secondary-button" onClick={() => action(() => openDrawer({ tab: 'content', cardId, mode: 'append' }))}><NotebookPen size={14} />追加笔记…</button>
       <button type="button" className="v2-secondary-button" onClick={() => action(() => openDrawer({ tab: 'content', cardId, mode: 'extract' }))}>提取为多张卡片…</button>
       {markdown.trimStart().startsWith(EXTRACTION_HEADER) && <button type="button" className="v2-secondary-button" onClick={() => action(() => openDrawer({ tab: 'content', cardId, mode: 'split' }))}>拆成卡片…</button>}
     </div>

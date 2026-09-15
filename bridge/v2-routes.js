@@ -68,10 +68,6 @@ export async function dispatchV2Route(method, segments, body, dependencies) {
   if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'extractions') {
     return { status: 201, body: await handlers.extractCards(seg[1], seg[3], body || {}) }
   }
-  if (method === 'POST' && seg.length === 5 && seg[0] === 'boards' && seg[2] === 'cards' && seg[4] === 'continuations') {
-    return { status: 201, body: await handlers.continueCard(seg[1], seg[3], body || {}) }
-  }
-
   if (method === 'GET' && seg.length === 1 && seg[0] === 'inspiration-pool') {
     return { status: 200, body: await inspirationPoolHandlers.getPool() }
   }
